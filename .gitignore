@@ -6,3 +6,10 @@
 
 # Allow this file
 !.gitignore
+
+# Allow images in the maps folder
+!maps/
+!maps/*.jpg
+!maps/*.jpeg
+!maps/*.png
+!maps/*.webp

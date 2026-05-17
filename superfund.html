@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Groundwater Contamination — SMART Terminal Site Vicinity</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --navy:   #1e3a5f;
+  --amber:  #b45309;
+  --green:  #166534;
+  --bg:     #f1f4f8;
+  --card:   #ffffff;
+}
+
+body {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: #1a2330;
+  min-height: 100vh;
+}
+
+/* ── NAV ── */
+.site-nav {
+  background: var(--navy);
+  padding: 10px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+.site-nav a {
+  color: #93c5fd;
+  text-decoration: none;
+  font-size: .85rem;
+  font-weight: 600;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  letter-spacing: .02em;
+}
+.site-nav a:hover { color: #fff; }
+
+/* ── PAGE HEADER ── */
+.page-header {
+  background: var(--navy);
+  color: #fff;
+  padding: 36px 24px 30px;
+  text-align: center;
+}
+.page-header .pre-label {
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #93c5fd;
+  margin-bottom: 10px;
+}
+.page-header h1 {
+  font-size: 1.75rem;
+  font-weight: 900;
+  line-height: 1.25;
+  margin-bottom: 8px;
+}
+.page-header .sub {
+  font-size: .9rem;
+  color: #cbd5e1;
+  max-width: 640px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* ── DISCLAIMER BAND ── */
+.disclaimer-band {
+  background: #fef9c3;
+  border-bottom: 1px solid #fde047;
+  padding: 14px 24px;
+  text-align: center;
+  font-size: .83rem;
+  color: #713f12;
+  line-height: 1.65;
+}
+.disclaimer-band strong { font-weight: 700; }
+
+/* ── MAIN CONTENT ── */
+main {
+  max-width: 860px;
+  margin: 40px auto 80px;
+  padding: 0 20px;
+}
+
+/* ── SECTION ── */
+.section {
+  background: var(--card);
+  border-radius: 12px;
+  padding: 28px 28px 24px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.09);
+  margin-bottom: 28px;
+  border-top: 4px solid var(--navy);
+}
+.section.amber  { border-top-color: var(--amber); }
+.section.red    { border-top-color: #be185d; }
+.section.green  { border-top-color: var(--green); }
+.section.teal   { border-top-color: #0f6b8e; }
+
+.section-icon {
+  font-size: 1.5rem;
+  line-height: 1;
+  margin-bottom: 10px;
+}
+
+.section h2 {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #1a2330;
+  margin-bottom: 14px;
+  line-height: 1.3;
+}
+
+.section p {
+  font-size: .88rem;
+  color: #374151;
+  line-height: 1.7;
+  margin-bottom: 10px;
+}
+.section p:last-child { margin-bottom: 0; }
+
+/* ── DATA TABLE ── */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .84rem;
+  margin: 14px 0;
+}
+.data-table th {
+  background: #f1f4f8;
+  text-align: left;
+  padding: 8px 12px;
+  font-weight: 700;
+  color: #374151;
+  border-bottom: 2px solid #e2e8f0;
+  font-size: .78rem;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+.data-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid #e2e8f0;
+  color: #374151;
+  vertical-align: top;
+}
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:hover td { background: #f8fafc; }
+.flag { color: #be185d; font-weight: 700; }
+.note-cell { font-style: italic; color: #64748b; font-size: .8rem; }
+
+/* ── HIGHLIGHT BOX ── */
+.highlight-box {
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  border-left: 4px solid var(--amber);
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin: 14px 0;
+  font-size: .86rem;
+  color: #431407;
+  line-height: 1.65;
+}
+.highlight-box.blue {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+  border-left-color: #1d4ed8;
+  color: #1e3a5f;
+}
+.highlight-box.red {
+  background: #fff1f2;
+  border-color: #fecdd3;
+  border-left-color: #be185d;
+  color: #4c0519;
+}
+.highlight-box strong { font-weight: 700; }
+
+/* ── STATUS BADGES ── */
+.badge {
+  display: inline-block;
+  border-radius: 4px;
+  padding: 2px 9px;
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .03em;
+  vertical-align: middle;
+}
+.badge.nfrap    { background: #dcfce7; color: #166534; }
+.badge.incomplete { background: #fef9c3; color: #713f12; }
+.badge.violation  { background: #fce7f3; color: #be185d; }
+
+/* ── STAT ROW ── */
+.stat-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin: 16px 0;
+}
+.stat-box {
+  flex: 1;
+  min-width: 140px;
+  background: #f1f4f8;
+  border-radius: 8px;
+  padding: 14px 16px;
+  text-align: center;
+}
+.stat-box .stat-num { font-size: 1.5rem; font-weight: 800; color: #1a2330; line-height: 1.1; }
+.stat-box .stat-label { font-size: .74rem; color: #64748b; margin-top: 4px; line-height: 1.4; }
+
+/* ── SOURCES ── */
+.sources {
+  background: var(--card);
+  border-radius: 12px;
+  padding: 22px 28px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.09);
+  margin-bottom: 28px;
+}
+.sources h3 {
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: #94a3b8;
+  margin-bottom: 12px;
+}
+.sources ol {
+  padding-left: 18px;
+  font-size: .82rem;
+  color: #64748b;
+  line-height: 1.65;
+}
+.sources ol li { margin-bottom: 6px; }
+.sources ol li strong { color: #374151; }
+
+/* ── FOOTER ── */
+footer {
+  text-align: center;
+  font-size: .78rem;
+  color: #94a3b8;
+  padding: 28px 20px 40px;
+  border-top: 1px solid #e2e8f0;
+}
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="index.html">&#8592; Citizens Against Smart Axis</a>
+</nav>
+
+<div class="page-header">
+  <div class="pre-label">Environmental Research</div>
+  <h1>Groundwater Contamination<br>in the SMART Terminal Vicinity</h1>
+  <p class="sub">
+    Historical contamination at Gary Air Force Base / Gary Job Corps Center,
+    Caldwell County, Texas — and its potential relevance to ground-disturbing
+    construction at the TriTexas Logistics Park site.
+  </p>
+</div>
+
+<div class="disclaimer-band">
+  <strong>Important disclaimer:</strong> EPA classified the San Marcos Municipal Landfill site as <strong>NFRAP</strong> (No Further Remedial Action Planned) with a Hazard Ranking Score of 2.01, well below the NPL listing threshold of 28.5. No Maximum Contaminant Level (MCL) exceedances were confirmed at the time of that determination. This page presents documented historical findings from public records; it does not allege that any active Superfund hazard exists today. All information is sourced from official government documents.
+</div>
+
+<main>
+
+  <!-- ── OVERVIEW ── -->
+  <div class="section amber">
+    <div class="section-icon">&#x1F30E;</div>
+    <h2>Overview: Why This Matters for the SMART Terminal Site</h2>
+    <p>
+      The TriTexas Logistics Park (formerly SMART Terminal / Axis Logistics Park) involves large-scale ground disturbance in Caldwell County, Texas — including 15-foot-deep retention/detention ponds, building foundations, and utility trenching across hundreds of acres. Public records establish that the immediate area has a documented history of groundwater contamination from chlorinated solvents, tracing to operations at Gary Air Force Base (later Gary Job Corps Center) and a former municipal landfill.
+    </p>
+    <p>
+      The question raised by community researchers: <strong>could construction activity at this depth disturb or mobilize a contaminated alluvial aquifer</strong> that underlies the area? The documents reviewed do not answer this question — but they document that the contamination exists, that federal remediation work is incomplete, and that the aquifer sits at a depth consistent with planned construction activity.
+    </p>
+    <div class="highlight-box">
+      <strong>Key fact:</strong> The contaminated Quaternary Alluvium aquifer is described in federal documents as approximately 40 feet thick, with the water table approximately 16 feet below the surface — within range of planned retention pond excavation at the SMART Terminal site (which proposes ponds up to 15 feet deep).
+    </div>
+  </div>
+
+  <!-- ── SITE BACKGROUND ── -->
+  <div class="section">
+    <div class="section-icon">&#x1F3DB;&#xFE0F;</div>
+    <h2>Site Background: Gary Air Force Base / Gary Job Corps Center</h2>
+    <p>
+      Gary Air Force Base operated in San Marcos, Texas from the 1940s until it was closed in 1971 under the Base Realignment and Closure process. The site was subsequently converted to Gary Job Corps Center, a federal vocational training facility operated by the U.S. Department of Labor, located in Caldwell County near Reedville, Texas.
+    </p>
+    <p>
+      The base's industrial operations — including fuel storage, vehicle maintenance, and waste disposal — left a legacy of soil and groundwater contamination that has been the subject of multiple federal environmental investigations over decades.
+    </p>
+
+    <div class="stat-row">
+      <div class="stat-box">
+        <div class="stat-num">1940s</div>
+        <div class="stat-label">Gary AFB opened for military aviation training</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">1971</div>
+        <div class="stat-label">Base closed; converted to Job Corps Center</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">1995</div>
+        <div class="stat-label">EPA Phase II Site Inspection completed</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">2019</div>
+        <div class="stat-label">USACE remediation work still incomplete (OU 02 &amp; OU 03)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SAN MARCOS MUNICIPAL LANDFILL ── -->
+  <div class="section teal">
+    <div class="section-icon">&#x1F5C4;&#xFE0F;</div>
+    <h2>San Marcos Municipal Landfill — Texas/EPA Superfund Record</h2>
+    <p>
+      The San Marcos Municipal Landfill (EPA Site ID: <strong>TXD980625222</strong>) was listed as a Texas Superfund site and evaluated under the federal Hazard Ranking System. EPA conducted a Phase II Site Inspection in September 1995 (Report TX1161630644), documenting contamination in the surrounding soil and groundwater.
+    </p>
+    <p>
+      EPA ultimately assigned a Hazard Ranking Score of <strong>2.01</strong> — well below the 28.5 threshold required for listing on the National Priorities List (NPL). As a result, the site was classified as <strong>NFRAP</strong> (No Further Remedial Action Planned) and archived. This means EPA determined no federal Superfund cleanup was warranted at that time based on measured contamination levels.
+    </p>
+    <div class="highlight-box blue">
+      <strong>NFRAP does not mean "clean."</strong> NFRAP means EPA determined the site did not meet the threshold for federally-funded cleanup under CERCLA at the time of evaluation. Contamination documented in the inspection reports remains in the historical record and may still be present in soil and groundwater.
+    </div>
+  </div>
+
+  <!-- ── CONTAMINATION FINDINGS ── -->
+  <div class="section red">
+    <div class="section-icon">&#x26A0;&#xFE0F;</div>
+    <h2>Documented Contamination Findings (EPA 1995 Inspection)</h2>
+    <p>
+      The EPA Phase II Site Inspection (September 1995) documented contamination in residential drinking water wells and in the Quaternary Alluvium aquifer underlying the site. The following contaminants were detected:
+    </p>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Contaminant</th>
+          <th>Where Found</th>
+          <th>Levels Detected</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>cis-1,2-Dichloroethene (cis-1,2-DCE)</strong></td>
+          <td>4 residential drinking water wells</td>
+          <td class="flag">5 – 54.3 ppb</td>
+          <td class="note-cell">Chlorinated solvent breakdown product; MCL = 70 ppb</td>
+        </tr>
+        <tr>
+          <td><strong>1,1-Dichloroethene (1,1-DCE)</strong></td>
+          <td>Groundwater</td>
+          <td>Detected</td>
+          <td class="note-cell">Vinyl chloride precursor; MCL = 7 ppb</td>
+        </tr>
+        <tr>
+          <td><strong>Vinyl Chloride</strong></td>
+          <td>Groundwater</td>
+          <td>Detected</td>
+          <td class="note-cell">Known human carcinogen; MCL = 2 ppb</td>
+        </tr>
+        <tr>
+          <td><strong>Carbon Disulfide</strong></td>
+          <td>Groundwater</td>
+          <td>Detected</td>
+          <td class="note-cell">Neurotoxic solvent</td>
+        </tr>
+        <tr>
+          <td><strong>Pyrene</strong></td>
+          <td>Soil / groundwater</td>
+          <td>Detected</td>
+          <td class="note-cell">Polycyclic aromatic hydrocarbon (PAH)</td>
+        </tr>
+        <tr>
+          <td><strong>Delta-BHC (Lindane isomer)</strong></td>
+          <td>Soil / groundwater</td>
+          <td>Detected</td>
+          <td class="note-cell">Legacy organochlorine pesticide</td>
+        </tr>
+        <tr>
+          <td><strong>Arsenic, Barium, Lead</strong></td>
+          <td>Soil / groundwater</td>
+          <td>Detected</td>
+          <td class="note-cell">Heavy metals from landfill and industrial waste</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>
+      The contaminated aquifer is the <strong>Quaternary Alluvium</strong> — a shallow alluvial deposit approximately <strong>40 feet thick</strong>, with the water table approximately <strong>16 feet below the surface</strong>. This is a locally used water source. Four residential wells were found to contain detectable levels of cis-1,2-DCE, though none exceeded the EPA Maximum Contaminant Level (MCL) of 70 ppb at the time of the evaluation.
+    </p>
+  </div>
+
+  <!-- ── USACE FUDS ── -->
+  <div class="section">
+    <div class="section-icon">&#x1F6A7;</div>
+    <h2>U.S. Army Corps of Engineers — Incomplete Remediation (FUDS)</h2>
+    <p>
+      Gary Air Force Base is listed as a <strong>Formerly Used Defense Site (FUDS)</strong> under the U.S. Army Corps of Engineers remediation program. FUDS addresses environmental contamination at properties that were formerly owned or controlled by the Department of Defense.
+    </p>
+    <p>
+      As of 2019 (the most recent records reviewed), two FUDS remediation projects at the site remained <strong>incomplete</strong>:
+    </p>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Project</th>
+          <th>Operable Unit</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Gary Job Corps — OU 02</strong></td>
+          <td>Operable Unit 02</td>
+          <td><span class="badge incomplete">INCOMPLETE (as of 2019)</span></td>
+        </tr>
+        <tr>
+          <td><strong>Gary Job Corps — OU 03</strong></td>
+          <td>Operable Unit 03</td>
+          <td><span class="badge incomplete">INCOMPLETE (as of 2019)</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>
+      The Department of Labor prepared a Draft Environmental Assessment for Gary Job Corps Center in July 2022. That document acknowledges prior environmental investigations at the site. The current cleanup status of OU 02 and OU 03 beyond 2019 is not reflected in the documents reviewed.
+    </p>
+    <div class="highlight-box">
+      <strong>Note on scope:</strong> The FUDS projects cover the Gary Job Corps Center itself. The SMART Terminal / TriTexas Logistics Park site is a separate property. The question raised in community research is whether the groundwater plume from the Gary AFB contamination extends toward, or underlies, the SMART Terminal site given the shared Quaternary Alluvium aquifer in the area.
+    </div>
+  </div>
+
+  <!-- ── CONNECTION TO SMART TERMINAL ── -->
+  <div class="section amber">
+    <div class="section-icon">&#x1F50D;</div>
+    <h2>The SMART Terminal Connection — Questions Raised</h2>
+    <p>
+      Community researchers have identified a specific concern: the TriTexas Logistics Park project plans include ground disturbance at depths potentially reaching the contaminated alluvial aquifer. Key construction features include:
+    </p>
+    <ul style="margin: 12px 0 14px 20px; font-size: .88rem; color: #374151; line-height: 1.75;">
+      <li><strong>Stormwater retention/detention ponds</strong> up to 15 feet deep (per project permits)</li>
+      <li><strong>Building foundations</strong> for large industrial/warehouse structures</li>
+      <li><strong>Utility trenching</strong> across hundreds of acres in Caldwell County</li>
+    </ul>
+    <p>
+      The Quaternary Alluvium aquifer in the area sits approximately 16 feet below the surface. Excavation at these depths could intersect the water table and potentially disturb, expose, or mobilize contaminated groundwater — particularly if any portion of the alluvial plume extends beneath the project footprint.
+    </p>
+    <div class="highlight-box red">
+      <strong>What is not known:</strong> The documents reviewed do not establish that contaminated groundwater extends beneath the SMART Terminal site specifically. No sampling data for the SMART Terminal parcels was found in the records reviewed. This concern warrants independent environmental due diligence — including groundwater sampling and review of current USACE FUDS project status — before major ground disturbance proceeds.
+    </div>
+    <p>
+      This is a question for regulators, the developer's environmental consultants, and the Texas Commission on Environmental Quality (TCEQ) — not a finding of confirmed contamination at the project site.
+    </p>
+  </div>
+
+  <!-- ── SOURCES ── -->
+  <div class="sources">
+    <h3>Sources</h3>
+    <ol>
+      <li><strong>EPA Phase II Site Inspection Report — TX1161630644</strong>: San Marcos Municipal Landfill, Gary Job Corps Center, Reedville, Caldwell County, TX. Prepared September 1, 1995. EPA ID: TXD980625222.</li>
+      <li><strong>U.S. Army Corps of Engineers FUDS Records</strong>: Gary Job Corps Center — Operable Units 02 and 03. Status as of 2019. (FUDS Program, Formerly Used Defense Sites.)</li>
+      <li><strong>Department of Labor, Gary Job Corps Center Draft Environmental Assessment</strong>: July 12, 2022. Reviews site history and prior environmental investigations.</li>
+      <li><strong>CASA Research Summary — Superfund Notes</strong>: Internal research memo connecting Gary AFB contamination history to SMART Terminal construction plans; prepared by Citizens Against Smart Axis.</li>
+      <li><strong>SMART Terminal / TriTexas Logistics Park Permit Records</strong>: PICP 2024-49692 (Energy Parkway road and water main), City of San Marcos, issued September 30, 2024.</li>
+    </ol>
+  </div>
+
+</main>
+
+<footer>
+  Citizens Against Smart Axis &mdash; San Marcos, Texas &mdash;
+  <a href="https://www.instagram.com/casa.smtx" target="_blank" rel="noopener" style="color:#64748b;">@casa.smtx</a>
+  &mdash; <a href="mailto:smartterminalcommunityinfo@gmail.com" style="color:#64748b;">smartterminalcommunityinfo@gmail.com</a>
+</footer>
+
+</body>
+</html>

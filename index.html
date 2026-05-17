@@ -155,6 +155,57 @@ main {
   margin-top: 4px;
 }
 
+/* ── FACTS SECTION ── */
+.facts-section {
+  background: var(--card);
+  border-radius: 12px;
+  padding: 28px 28px 24px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.09);
+  margin-bottom: 40px;
+}
+
+.facts-section .about {
+  font-size: .88rem;
+  color: #374151;
+  line-height: 1.75;
+  margin-bottom: 24px;
+  max-width: 780px;
+}
+
+.facts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 14px;
+}
+
+.fact {
+  background: #f1f4f8;
+  border-radius: 8px;
+  padding: 14px 16px;
+  border-left: 3px solid var(--navy);
+}
+
+.fact.amber { border-left-color: var(--accent); }
+.fact.red   { border-left-color: #be185d; }
+.fact.green { border-left-color: #166534; }
+
+.fact-value {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #1a2330;
+  line-height: 1.2;
+  margin-bottom: 4px;
+}
+
+.fact-label {
+  font-size: .72rem;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  line-height: 1.4;
+}
+
 /* ── FOOTER ── */
 footer {
   text-align: center;
@@ -188,6 +239,58 @@ footer {
 </div>
 
 <main>
+
+  <p class="section-label">About the Project</p>
+
+  <div class="facts-section">
+    <p class="about">
+      The <strong>TriTexas Logistics Park</strong> (formerly SMART Terminal / Axis Logistics Park) is a large-scale
+      industrial warehouse and logistics development proposed for Caldwell County, Texas along FM&nbsp;1984 near
+      San Marcos. The project is owned by El Paso billionaire Paul L. Foster through Franklin Mountain San Marcos I,&nbsp;LP,
+      and is being developed by Scarborough Lane Development. Phase I infrastructure — including a 1.2-mile road,
+      water and wastewater systems, and an on-site electrical substation — was reported complete as of May 2026.
+      No tenants have been publicly announced.
+    </p>
+
+    <div class="facts-grid">
+      <div class="fact">
+        <div class="fact-value">~736 ac</div>
+        <div class="fact-label">Phase I footprint</div>
+      </div>
+      <div class="fact">
+        <div class="fact-value">~2,017 ac</div>
+        <div class="fact-label">Total site area</div>
+      </div>
+      <div class="fact">
+        <div class="fact-value">Caldwell County</div>
+        <div class="fact-label">Location — FM 1984, San Marcos area</div>
+      </div>
+      <div class="fact amber">
+        <div class="fact-value">Paul L. Foster</div>
+        <div class="fact-label">Ultimate owner — Franklin Mountain Investments</div>
+      </div>
+      <div class="fact amber">
+        <div class="fact-value">Scarborough Lane</div>
+        <div class="fact-label">Developer — James Feagin, Ryan Burkhardt</div>
+      </div>
+      <div class="fact amber">
+        <div class="fact-value">~$52.8M</div>
+        <div class="fact-label">Outstanding loans — AgTrust, ACA</div>
+      </div>
+      <div class="fact green">
+        <div class="fact-value">14 businesses</div>
+        <div class="fact-label">Actively recruited as prospective tenants</div>
+      </div>
+      <div class="fact green">
+        <div class="fact-value">0 announced</div>
+        <div class="fact-label">Tenants publicly committed</div>
+      </div>
+      <div class="fact red">
+        <div class="fact-value">Summer 2028</div>
+        <div class="fact-label">Earliest city wastewater capacity available</div>
+      </div>
+    </div>
+  </div>
 
   <p class="section-label">Research Reports</p>
 

@@ -207,87 +207,6 @@ main {
 .fact.red   { border-left-color: #be185d; }
 .fact.green { border-left-color: #166534; }
 
-/* ── PROPERTY CONTEXT ── */
-.property-section {
-  background: var(--card);
-  border-radius: 12px;
-  padding: 28px 28px 24px;
-  box-shadow: 0 1px 4px rgba(0,0,0,.09);
-  margin-bottom: 40px;
-  font-size: .86rem;
-  color: #374151;
-  line-height: 1.7;
-}
-
-.property-section h3 {
-  font-size: .95rem;
-  font-weight: 700;
-  color: #1a2330;
-  margin: 0 0 16px;
-}
-
-.property-section p {
-  margin: 0 0 12px;
-}
-
-.property-section .prop-label {
-  font-weight: 700;
-  color: #1a2330;
-}
-
-.prop-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: .79rem;
-  margin-top: 12px;
-}
-
-.prop-table th {
-  background: #f1f4f8;
-  text-align: left;
-  padding: 6px 10px;
-  border: 1px solid #dde3ec;
-  font-weight: 700;
-  color: #374151;
-}
-
-.prop-table td {
-  padding: 5px 10px;
-  border: 1px solid #dde3ec;
-  color: #374151;
-}
-
-.prop-table tr:nth-child(even) td { background: #fafbfc; }
-.prop-table tfoot td { background: #f1f4f8; font-weight: 700; }
-
-.prop-table-wrap { overflow-x: auto; }
-
-.property-section .prop-blocks {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 14px;
-  margin-bottom: 20px;
-}
-
-.prop-block {
-  background: #f8fafc;
-  border-radius: 8px;
-  border-left: 3px solid var(--navy);
-  padding: 12px 14px;
-}
-
-.prop-block.amber { border-left-color: var(--accent); }
-
-.prop-block .pb-title {
-  font-size: .75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: .06em;
-  color: #64748b;
-  margin-bottom: 5px;
-}
-
-.prop-block p { margin: 0; font-size: .84rem; }
 
 .fact-value {
   font-size: 1.15rem;
@@ -399,53 +318,38 @@ footer {
 
   <p class="section-label">Site &amp; Property Context</p>
 
-  <div class="property-section">
-    <div class="prop-blocks">
-      <div class="prop-block">
-        <div class="pb-title">Developer</div>
-        <p><strong>Franklin Mountain San Marcos I, LP</strong> — GP: Scarborough San Marcos GP LLC. Manager: Ryan Burkhardt. 16380 Addison Road, Addison TX 75001. Tax contacts: James Feagin &amp; Bruce Browne. A separate entity, <strong>Franklin Mountain San Marcos 75, LP</strong>, holds ~75 acres (William Pettus Survey, Abs. 21) acquired April 17, 2024 — may be a parcel-specific or tenant-specific SPE.</p>
-      </div>
-      <div class="prop-block amber">
-        <div class="pb-title">Lender</div>
-        <p><strong>AgTrust, ACA</strong> (formerly Lone Star, ACA) — two loans totaling approximately <strong>$52.8M</strong> secured against the ~2,017-acre site.</p>
-      </div>
-      <div class="prop-block">
-        <div class="pb-title">ARWA Pipeline Corridor</div>
-        <p>Three perpetual 90-ft-wide pipeline easements (recorded Feb 2024) run through the property for the Alliance Regional Water Authority Phase 1B regional water transmission project — totaling approximately <strong>15.25 acres</strong> of permanent encumbrance. Easements are assignable to GBRA. All tenant site plans must route around this corridor.</p>
-      </div>
-      <div class="prop-block">
-        <div class="pb-title">Governing Development Agreement</div>
-        <p>First Amended &amp; Restated SMART Terminal DA (Caldwell Co. 2023-001629, adopted Jan 17, 2023) governs FM's ~2,017 acres. Franklin Mountain was formally removed from the Cotton Center Development Agreement per §2.04 of the Second Amended &amp; Restated Cotton Center DA (executed Jun–Aug 2024).</p>
-      </div>
-    </div>
-
-    <div class="pb-title" style="margin-bottom:8px;">CAD Parcel Inventory — 2026 Tax Year (Caldwell County Appraisal District)</div>
-    <p style="margin-bottom:10px;font-size:.82rem;color:#64748b;">Combined market value: ~$24.3M across 9 parcels (~2,058 ac total). All parcels carry agricultural exemptions; taxable values are a small fraction of market values.</p>
-    <div class="prop-table-wrap">
-      <table class="prop-table">
+  <div style="background:var(--card);border-radius:12px;padding:20px 24px 18px;box-shadow:0 1px 4px rgba(0,0,0,.09);margin-bottom:40px;font-size:.84rem;line-height:1.65;color:#374151;">
+    <b>Developer:</b> Franklin Mountain San Marcos I, LP (GP: Scarborough San Marcos GP LLC; Manager: Ryan Burkhardt; 16380 Addison Road, Addison TX 75001; Tax contacts: James Feagin &amp; Bruce Browne). A separate entity — <b>Franklin Mountain San Marcos 75, LP</b> (Owner ID 242650) — holds ~75 acres (William Pettus Survey, Abs. 21) acquired April 17, 2024. Same address and manager; may be a parcel-specific or tenant-specific SPE.<br><br>
+    <b>Lender:</b> AgTrust, ACA (formerly Lone Star, ACA) — two loans totaling approximately $52.8M secured against the ~2,017-acre site.<br><br>
+    <b>ARWA Pipeline Corridor:</b> Three perpetual 90-ft-wide pipeline easements (recorded Feb 2024) run through the Axis property for the Alliance Regional Water Authority Phase 1B regional water transmission project — totaling approximately <b>15.25 acres</b> of permanent encumbrance. Easements are assignable to the Guadalupe-Blanco River Authority (GBRA). All tenant site plans and lot layouts must route around this pipeline corridor.<br><br>
+    <b>Governing Development Agreement:</b> First Amended &amp; Restated SMART Terminal DA (Caldwell Co. 2023-001629, adopted Jan 17, 2023) governs FM&rsquo;s ~2,017 acres. Franklin Mountain is no longer a party to the Cotton Center Development Agreement (formally removed per §2.04 of the Second Amended &amp; Restated Cotton Center DA, executed Jun&ndash;Aug 2024).<br><br>
+    <b>CAD Parcel Inventory (2026 Tax Year &mdash; Caldwell County Appraisal District)</b><br>
+    Combined market value: ~$24.3M across 9 parcels (~2,058 ac total). All parcels carry agricultural exemptions; taxable values are a small fraction of market values.
+    <div style="overflow-x:auto;margin-top:8px;">
+      <table style="width:100%;border-collapse:collapse;font-size:.79rem;">
         <thead>
-          <tr>
-            <th>CAD ID</th>
-            <th>Acres</th>
-            <th>Address / Location</th>
-            <th>Market Value</th>
-            <th>Owner Entity</th>
-            <th>Notes</th>
+          <tr style="background:#f1f4f8;text-align:left;">
+            <th style="padding:5px 8px;border:1px solid #dde3ec;">CAD ID</th>
+            <th style="padding:5px 8px;border:1px solid #dde3ec;">Acres</th>
+            <th style="padding:5px 8px;border:1px solid #dde3ec;">Address / Location</th>
+            <th style="padding:5px 8px;border:1px solid #dde3ec;">Market Value</th>
+            <th style="padding:5px 8px;border:1px solid #dde3ec;">Owner Entity</th>
+            <th style="padding:5px 8px;border:1px solid #dde3ec;">Notes</th>
           </tr>
         </thead>
         <tbody>
-          <tr><td>28002</td><td>762.583</td><td>FM 1984, Maxwell</td><td>$9,761,340</td><td>FM-I LP</td><td>Largest parcel; CMA-S (Martindale ETJ Release) taxing entity at $0</td></tr>
-          <tr><td>28280</td><td>660.503</td><td>Valley Way Dr, Maxwell</td><td>$5,844,280</td><td>FM-I LP</td><td>Core SMART Terminal parcel; Cotton Center MUD No. 1 at $0; straddles Lockhart ISD / San Marcos ISD</td></tr>
-          <tr><td>27809</td><td>213.680</td><td>FM 1984, Maxwell</td><td>$2,467,180</td><td>FM-I LP</td><td>City of San Marcos taxing entity (confirms annexation)</td></tr>
-          <tr><td>11678</td><td>143.444</td><td>10920 Hwy 142, Maxwell</td><td>$2,059,850</td><td>FM-I LP</td><td>A188 Maxwell, Thomas survey; acquired from Best David Matthew Jul 2022</td></tr>
-          <tr><td>28052</td><td>75.000</td><td>FM 1984, Maxwell</td><td>$1,202,440</td><td><strong>FM-75 LP</strong></td><td>Held by separate entity (Owner ID 242650); acquired from Maxwell Acres Co. &amp; Kasch Apr 2024</td></tr>
-          <tr><td>28119</td><td>130.296</td><td>Quail Run Rd, Martindale</td><td>$1,580,890</td><td>FM-I LP</td><td>Barns/sheds on site; acquired from Tack Redwood Partners Jun 2022</td></tr>
-          <tr><td>27881</td><td>70.046</td><td>19780 San Marcos Hwy</td><td>$1,147,610</td><td>FM-I LP</td><td>CMA-S (Martindale ETJ Release) at $0; confirms former Martindale ETJ boundary</td></tr>
-          <tr><td>27868</td><td>0.950</td><td>2862 FM 1984</td><td>$114,090</td><td>FM-I LP</td><td>Former homesite; $216K improvements removed by 2024; acquired from Van Lee LLC Mar 2022</td></tr>
-          <tr><td>129763</td><td>1.255</td><td>Quail Run, Martindale</td><td>$121,790</td><td>FM-I LP</td><td>"Old 24-ft county road strip"; acquired directly from Caldwell County Apr 2024 (WD 2024-002658)</td></tr>
+          <tr><td style="padding:4px 8px;border:1px solid #dde3ec;">28002</td><td style="padding:4px 8px;border:1px solid #dde3ec;">762.583</td><td style="padding:4px 8px;border:1px solid #dde3ec;">FM 1984, Maxwell</td><td style="padding:4px 8px;border:1px solid #dde3ec;">$9,761,340</td><td style="padding:4px 8px;border:1px solid #dde3ec;">FM-I LP</td><td style="padding:4px 8px;border:1px solid #dde3ec;">Largest parcel; CMA-S (Martindale ETJ Release) taxing entity at $0</td></tr>
+          <tr style="background:#fafbfc;"><td style="padding:4px 8px;border:1px solid #dde3ec;">28280</td><td style="padding:4px 8px;border:1px solid #dde3ec;">660.503</td><td style="padding:4px 8px;border:1px solid #dde3ec;">Valley Way Dr, Maxwell</td><td style="padding:4px 8px;border:1px solid #dde3ec;">$5,844,280</td><td style="padding:4px 8px;border:1px solid #dde3ec;">FM-I LP</td><td style="padding:4px 8px;border:1px solid #dde3ec;">Core SMART Terminal parcel; Cotton Center MUD No. 1 at $0; straddles Lockhart ISD / San Marcos ISD</td></tr>
+          <tr><td style="padding:4px 8px;border:1px solid #dde3ec;">27809</td><td style="padding:4px 8px;border:1px solid #dde3ec;">213.680</td><td style="padding:4px 8px;border:1px solid #dde3ec;">FM 1984, Maxwell</td><td style="padding:4px 8px;border:1px solid #dde3ec;">$2,467,180</td><td style="padding:4px 8px;border:1px solid #dde3ec;">FM-I LP</td><td style="padding:4px 8px;border:1px solid #dde3ec;">City of San Marcos taxing entity (confirms annexation)</td></tr>
+          <tr style="background:#fafbfc;"><td style="padding:4px 8px;border:1px solid #dde3ec;">11678</td><td style="padding:4px 8px;border:1px solid #dde3ec;">143.444</td><td style="padding:4px 8px;border:1px solid #dde3ec;">10920 Hwy 142, Maxwell</td><td style="padding:4px 8px;border:1px solid #dde3ec;">$2,059,850</td><td style="padding:4px 8px;border:1px solid #dde3ec;">FM-I LP</td><td style="padding:4px 8px;border:1px solid #dde3ec;">A188 Maxwell, Thomas survey; acquired from Best David Matthew Jul 2022</td></tr>
+          <tr><td style="padding:4px 8px;border:1px solid #dde3ec;">28052</td><td style="padding:4px 8px;border:1px solid #dde3ec;">75.000</td><td style="padding:4px 8px;border:1px solid #dde3ec;">FM 1984, Maxwell</td><td style="padding:4px 8px;border:1px solid #dde3ec;">$1,202,440</td><td style="padding:4px 8px;border:1px solid #dde3ec;"><b>FM-75 LP</b></td><td style="padding:4px 8px;border:1px solid #dde3ec;">Held by separate entity (Owner ID 242650); acquired from Maxwell Acres Co. &amp; Kasch Apr 2024</td></tr>
+          <tr style="background:#fafbfc;"><td style="padding:4px 8px;border:1px solid #dde3ec;">28119</td><td style="padding:4px 8px;border:1px solid #dde3ec;">130.296</td><td style="padding:4px 8px;border:1px solid #dde3ec;">Quail Run Rd, Martindale</td><td style="padding:4px 8px;border:1px solid #dde3ec;">$1,580,890</td><td style="padding:4px 8px;border:1px solid #dde3ec;">FM-I LP</td><td style="padding:4px 8px;border:1px solid #dde3ec;">Barns/sheds on site; acquired from Tack Redwood Partners Jun 2022</td></tr>
+          <tr><td style="padding:4px 8px;border:1px solid #dde3ec;">27881</td><td style="padding:4px 8px;border:1px solid #dde3ec;">70.046</td><td style="padding:4px 8px;border:1px solid #dde3ec;">19780 San Marcos Hwy</td><td style="padding:4px 8px;border:1px solid #dde3ec;">$1,147,610</td><td style="padding:4px 8px;border:1px solid #dde3ec;">FM-I LP</td><td style="padding:4px 8px;border:1px solid #dde3ec;">CMA-S (Martindale ETJ Release) at $0; confirms former Martindale ETJ boundary</td></tr>
+          <tr style="background:#fafbfc;"><td style="padding:4px 8px;border:1px solid #dde3ec;">27868</td><td style="padding:4px 8px;border:1px solid #dde3ec;">0.950</td><td style="padding:4px 8px;border:1px solid #dde3ec;">2862 FM 1984</td><td style="padding:4px 8px;border:1px solid #dde3ec;">$114,090</td><td style="padding:4px 8px;border:1px solid #dde3ec;">FM-I LP</td><td style="padding:4px 8px;border:1px solid #dde3ec;">Former homesite; $216K improvements removed by 2024; acquired from Van Lee LLC Mar 2022</td></tr>
+          <tr><td style="padding:4px 8px;border:1px solid #dde3ec;">129763</td><td style="padding:4px 8px;border:1px solid #dde3ec;">1.255</td><td style="padding:4px 8px;border:1px solid #dde3ec;">Quail Run, Martindale</td><td style="padding:4px 8px;border:1px solid #dde3ec;">$121,790</td><td style="padding:4px 8px;border:1px solid #dde3ec;">FM-I LP</td><td style="padding:4px 8px;border:1px solid #dde3ec;">"Old 24-ft county road strip"; acquired directly from Caldwell County Apr 2024 (WD 2024-002658)</td></tr>
         </tbody>
         <tfoot>
-          <tr><td>Total</td><td>2,057.757</td><td></td><td>$24,299,470</td><td>FM-I LP (8) + FM-75 LP (1)</td><td>All ag-exempt; taxable values well below market</td></tr>
+          <tr style="background:#f1f4f8;font-weight:bold;"><td style="padding:5px 8px;border:1px solid #dde3ec;">Total</td><td style="padding:5px 8px;border:1px solid #dde3ec;">2,057.757</td><td style="padding:5px 8px;border:1px solid #dde3ec;"></td><td style="padding:5px 8px;border:1px solid #dde3ec;">$24,299,470</td><td style="padding:5px 8px;border:1px solid #dde3ec;">FM-I LP (8) + FM-75 LP (1)</td><td style="padding:5px 8px;border:1px solid #dde3ec;">All ag-exempt; taxable values well below market</td></tr>
         </tfoot>
       </table>
     </div>
@@ -473,7 +377,7 @@ footer {
       <div class="open-label">View Report &rarr;</div>
     </a>
 
-    <a class="card teal" href="projects_summary.html">
+    <a class="card teal" href="businesses_summary.html">
       <h2>Prospective Businesses Summary</h2>
       <p>Overview of industrial recruitment efforts — the companies being pursued, projected investment figures, job claims, and current status of each prospect.</p>
       <div class="open-label">View Report &rarr;</div>

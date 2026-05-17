@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SMART Terminal / Axis Logistics Park — Project Timeline</title>
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+         background: #f0f2f5; margin: 0; padding: 20px; color: #222; }
+  h1  { font-size: 1.6rem; margin-bottom: 4px; }
+  .subtitle { color: #666; font-size: .9rem; margin-bottom: 20px; }
+
+  .filters { display: flex; gap: 10px; flex-wrap: wrap; background: #fff;
+             padding: 12px 16px; border-radius: 8px; margin-bottom: 20px;
+             box-shadow: 0 1px 4px rgba(0,0,0,.1); }
+  .filters input  { flex: 1; min-width: 200px; padding: 6px 10px;
+                    border: 1px solid #ccc; border-radius: 4px; font-size: .9rem; }
+  .filters select { padding: 6px 10px; border: 1px solid #ccc; border-radius: 4px; font-size: .9rem; }
+  label { font-size: .85rem; color: #555; display: flex; align-items: center; gap: 6px; }
+
+  /* timeline rail */
+  .timeline { position: relative; padding-left: 40px; }
+  .timeline::before { content: ''; position: absolute; left: 14px; top: 0; bottom: 0;
+                      width: 3px; background: #d0d5dd; border-radius: 2px; }
+
+  /* year group */
+  .year-group { margin-bottom: 8px; }
+  .year-label { font-size: 1.3rem; font-weight: 700; color: #1a3a5c;
+                margin: 28px 0 10px -30px; padding-left: 8px;
+                border-left: 5px solid #1a3a5c; }
+
+  /* event card */
+  .event { position: relative; margin-bottom: 12px; }
+  .event::before { content: ''; position: absolute; left: -32px; top: 14px;
+                   width: 14px; height: 14px; border-radius: 50%; border: 3px solid #fff;
+                   box-shadow: 0 0 0 2px #999; background: #999; z-index: 1; }
+
+  .event.milestone::before  { background: #c0392b; box-shadow: 0 0 0 2px #c0392b; }
+  .event.council::before    { background: #1a3a5c; box-shadow: 0 0 0 2px #1a3a5c; }
+  .event.pz::before         { background: #16a085; box-shadow: 0 0 0 2px #16a085; }
+  .event.permit::before     { background: #8e44ad; box-shadow: 0 0 0 2px #8e44ad; }
+  .event.violation::before  { background: #e74c3c; box-shadow: 0 0 0 2px #e74c3c; }
+  .event.opposition::before { background: #e67e22; box-shadow: 0 0 0 2px #e67e22; }
+  .event.meeting::before    { background: #2980b9; box-shadow: 0 0 0 2px #2980b9; }
+  .event.legal::before      { background: #7f8c8d; box-shadow: 0 0 0 2px #7f8c8d; }
+
+  .card { background: #fff; border-radius: 8px; padding: 12px 16px;
+          box-shadow: 0 1px 3px rgba(0,0,0,.08); border-left: 4px solid #ccc; }
+  .event.milestone .card  { border-left-color: #c0392b; }
+  .event.council .card    { border-left-color: #1a3a5c; }
+  .event.pz .card         { border-left-color: #16a085; }
+  .event.permit .card     { border-left-color: #8e44ad; }
+  .event.violation .card  { border-left-color: #e74c3c; }
+  .event.opposition .card { border-left-color: #e67e22; }
+  .event.meeting .card    { border-left-color: #2980b9; }
+  .event.legal .card      { border-left-color: #7f8c8d; }
+
+  .card-date  { font-size: .78rem; font-weight: 600; color: #888; margin-bottom: 3px; }
+  .card-title { font-weight: 700; font-size: .97rem; margin-bottom: 4px; }
+  .card-body  { font-size: .87rem; color: #444; line-height: 1.55; }
+  .card-body ul { margin: 4px 0 0 0; padding-left: 18px; }
+  .card-body li { margin-bottom: 2px; }
+  .badge { display: inline-block; border-radius: 4px; padding: 1px 7px;
+           font-size: .72rem; font-weight: 700; margin-right: 4px; vertical-align: middle; }
+  .b-milestone  { background: #c0392b; color: #fff; }
+  .b-council    { background: #1a3a5c; color: #fff; }
+  .b-pz         { background: #16a085; color: #fff; }
+  .b-permit     { background: #8e44ad; color: #fff; }
+  .b-violation  { background: #e74c3c; color: #fff; }
+  .b-opposition { background: #e67e22; color: #fff; }
+  .b-meeting    { background: #2980b9; color: #fff; }
+  .b-legal      { background: #7f8c8d; color: #fff; }
+  .source { font-size: .73rem; color: #aaa; margin-top: 6px; font-style: italic; }
+
+  .hidden { display: none !important; }
+
+  /* legend */
+  .legend { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px;
+            font-size: .82rem; }
+  .legend-item { display: flex; align-items: center; gap: 5px; }
+  .dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+</style>
+</head>
+<body>
+
+<h1>SMART Terminal / Axis Logistics Park — Project Timeline</h1>
+<p class="subtitle">Synthesized from 836 public information request documents, City of San Marcos Legistar legislative records, and 32 Caldwell County deed/easement/agreement records &mdash;
+San Marcos, Texas &mdash; Updated May 2026</p>
+
+<div class="legend">
+  <div class="legend-item"><div class="dot" style="background:#c0392b"></div> Milestone</div>
+  <div class="legend-item"><div class="dot" style="background:#1a3a5c"></div> City Council</div>
+  <div class="legend-item"><div class="dot" style="background:#16a085"></div> P&amp;Z Meeting</div>
+  <div class="legend-item"><div class="dot" style="background:#8e44ad"></div> Permit</div>
+  <div class="legend-item"><div class="dot" style="background:#e74c3c"></div> Violation / Flag</div>
+  <div class="legend-item"><div class="dot" style="background:#e67e22"></div> Opposition</div>
+  <div class="legend-item"><div class="dot" style="background:#2980b9"></div> Staff Meeting</div>
+  <div class="legend-item"><div class="dot" style="background:#7f8c8d"></div> Legal / Agreement</div>
+</div>
+
+<div class="filters">
+  <input id="search" type="text" placeholder="Search events..." oninput="filter()">
+  <select id="catFilter" onchange="filter()">
+    <option value="">All Categories</option>
+    <option value="milestone">Milestone</option>
+    <option value="council">City Council</option>
+    <option value="pz">P&amp;Z</option>
+    <option value="permit">Permit</option>
+    <option value="violation">Violation / Flag</option>
+    <option value="opposition">Opposition</option>
+    <option value="meeting">Staff Meeting</option>
+    <option value="legal">Legal / Agreement</option>
+  </select>
+</div>
+
+<div class="timeline" id="timeline">
+
+<!-- ============================================= 2016-2017 == -->
+<div class="year-group" data-year="pre">
+<div class="year-label">Background (2016&ndash;2017)</div>
+
+<div class="event legal" data-cat="legal" data-text="2014 Cotton Center Consent Agreement MUD-14-02 Ord 2014-70 Municipal Utility District Walton Texas petition Caldwell County CCN sewer">
+<div class="card">
+  <div class="card-date">December 11, 2014</div>
+  <div class="card-title"><span class="badge b-legal">Legal</span> Cotton Center Consent Agreement &amp; MUD Petition Approved (MUD-14-02 / Ord. 2014-70)</div>
+  <div class="card-body">City Council approves the original <strong>Cotton Center Consent Agreement</strong> and processes the Municipal Utility District (MUD) petition for the Cotton Center area in Caldwell County. The Consent Agreement governs water/wastewater service obligations and is tied to the City's Sewer Certificate of Convenience and Necessity (CCN No. 20116). This agreement — signed by Walton Texas LP and related entities — becomes a foundational document that persists through 2025.
+  <ul>
+    <li>MUD-14-02: Petition for MUD by Metcalfe, Wolfe, Stuart &amp; Williams (on behalf of landowners)</li>
+    <li>Ord. 2014-70: Ordinance approving the Consent Agreement and MUD proceedings</li>
+    <li>Caldwell County recording: Document No. 2014-006144</li>
+  </ul>
+  </div>
+  <div class="source">Source: San Marcos Legistar &mdash; MUD-14-02, Ord. 2014-70; MUD-14-02 - FINAL Consent Agreement 10 24 14.pdf</div>
+</div></div>
+
+<div class="event legal" data-cat="legal" data-text="2016 Cotton Center Development Agreement original development agreement parcels along Highway 80 Caldwell County">
+<div class="card">
+  <div class="card-date">December 20, 2016</div>
+  <div class="card-title"><span class="badge b-legal">Legal</span> Cotton Center Development Agreement Executed</div>
+  <div class="card-body">An earlier development agreement covering parcels along Highway 80 in Caldwell County is executed between the City of San Marcos and original landowners. This becomes a predecessor document to the SMART Terminal agreement.</div>
+  <div class="source">Source: Cotton_Center_Development_Agreement__COSM__2016_12_20_Executed.pdf</div>
+</div></div>
+
+</div><!-- /2016-2017 -->
+
+<!-- ============================================= 2018-2019 == -->
+<div class="year-group" data-year="2018">
+<div class="year-label">2018&ndash;2019 &mdash; Initial Zoning &amp; Founding Agreements</div>
+
+<div class="event council" data-cat="council" data-text="October 2018 City Council ID18-746 Smart Terminal annexation schedule development direction City Manager">
+<div class="card">
+  <div class="card-date">October 30, 2018</div>
+  <div class="card-title"><span class="badge b-council">City Council</span> City Council Discusses SMART Terminal Annexation Schedule (ID#18-746)</div>
+  <div class="card-body">City Council takes up discussion and approval of a proposed schedule for the Smart Terminal Development annexation and provides direction to the City Manager. This is the formal opening of the annexation and zoning process.
+  </div>
+  <div class="source">Source: San Marcos Legistar &mdash; ID#18-746</div>
+</div></div>
+
+<div class="event pz" data-cat="pz" data-text="November December 2018 Planning Zoning Commission ZC-18-21 failed denied 934 acres Heavy Industrial Smart Terminal initial zoning">
+<div class="card">
+  <div class="card-date">November &ndash; December 2018</div>
+  <div class="card-title"><span class="badge b-pz">P&amp;Z</span> P&amp;Z Commission Denies Initial Zoning Request ZC-18-21 (934 Acres to Heavy Industrial)</div>
+  <div class="card-body">The Planning &amp; Zoning Commission initially considers and <strong>fails to recommend</strong> zoning case ZC-18-21 &mdash; a request to rezone approximately 934 acres from ETJ to Heavy Industrial for the SMART Terminal. The denial triggers a City Council reconsideration motion.
+  </div>
+  <div class="source">Source: San Marcos Legistar &mdash; ZC-18-21 (Status: Failed)</div>
+</div></div>
+
+<div class="event council" data-cat="council" data-text="December 2018 January 2019 ID18-907 motion reconsider ZC-18-21 planning zoning denial Smart Terminal Katerra public hearing Ordinance 2019-02 HI zoning 934 acres first reading">
+<div class="card">
+  <div class="card-date">December 2018 &ndash; January 8, 2019</div>
+  <div class="card-title"><span class="badge b-council">City Council</span> Council Moves to Reconsider P&amp;Z Denial; Public Hearing &amp; First Readings (Ord. 2019-02)</div>
+  <div class="card-body">City Council takes up a motion to reconsider the P&amp;Z Commission's denial of ZC-18-21 (ID#18-907 &mdash; Final Action January 8, 2019). Simultaneously, a public hearing is held for <strong>Ordinance 2019-02</strong> (zoning map amendment designating ~934 acres as Heavy Industrial) &mdash; first of two readings. Staff also presents on Katerra Development and SMART Terminal land uses (ID#18-945).
+  <ul>
+    <li>ZC-18-21a &mdash; P&amp;Z consideration following reconsideration &mdash; passes January 8, 2019</li>
+    <li>City Council overrides prior P&amp;Z denial posture and advances both annexation and zoning</li>
+  </ul>
+  </div>
+  <div class="source">Source: San Marcos Legistar &mdash; ID#18-907, ZC-18-21a, Ord. 2019-02, ID#18-945</div>
+</div></div>
+
+<div class="event milestone" data-cat="milestone" data-text="January February 2019 Ordinance 2019-01 annexation 734.6 acres Ordinance 2019-02 Heavy Industrial zoning second reading adopted SMART Terminal Res 2019-49R Chapter 380 ETJ Development Agreement Texas Transportation Alliance">
+<div class="card">
+  <div class="card-date">January &ndash; February 2019</div>
+  <div class="card-title"><span class="badge b-milestone">Milestone</span> Annexation and Zoning Ordinances Adopted; Chapter 380 Agreement Approved (Res. 2019-49R)</div>
+  <div class="card-body">City Council approves the foundational legislative package for the SMART Terminal:
+  <ul>
+    <li><strong>Ord. 2019-01</strong> &mdash; Annexation of approximately <strong>734.6 acres</strong>; service plan approved; effective date set</li>
+    <li><strong>Ord. 2019-02</strong> &mdash; Zoning map amendment designating ~934 acres as <strong>Heavy Industrial (HI)</strong> (second reading)</li>
+    <li><strong>Res. 2019-49R</strong> &mdash; Chapter 380 Economic Development Incentive and ETJ Development Agreement with Curby D. Ohnheiser, Diane M. Deringer, Carolyn J. Scurlock, Van Lee LLC, Ohnheiser Properties, and <strong>Texas Transportation Alliance, Ltd.</strong> for an industrial rail park along Highway 80</li>
+    <li>Incentive agreement grants economic development waivers; developer obligations under Sections 4.03-4.04 stated as "personal to Developer and shall not bind Future Owners"</li>
+  </ul>
+  </div>
+  <div class="source">Source: Res_2019-049_approving_an_agreement_with_Texas.pdf; San Marcos Legistar &mdash; Ord. 2019-01(b), Ord. 2019-02(b), Res. 2019-49R</div>
+</div></div>
+
+<div class="event pz" data-cat="pz" data-text="April 2019 Katerra San Marcos Final Plat PC-19-13 81.83 acres SH-80 FM 1984 Planning Commission approved">
+<div class="card">
+  <div class="card-date">April 9, 2019</div>
+  <div class="card-title"><span class="badge b-pz">P&amp;Z</span> Katerra San Marcos Final Plat Approved &mdash; ~81.83 Acres (PC-19-13)</div>
+  <div class="card-body">Planning Commission approves the final plat for the Katerra San Marcos facility &mdash; approximately 81.83 acres off SH-80 near FM 1984. Katerra Construction, LLC is the intended anchor tenant for the SMART Terminal and the reason for the original industrial zoning push.
+  </div>
+  <div class="source">Source: San Marcos Legistar &mdash; PC-19-13_03 (Status: Passed; Final Action 4/9/2019)</div>
+</div></div>
+
+<div class="event legal" data-cat="legal" data-text="October 2019 Resolution 2019-225R Katerra Construction LLC Chapter 380 Economic Development Incentive Agreement Whisper PDD IH-35 Yarrington Road">
+<div class="card">
+  <div class="card-date">October 17, 2019</div>
+  <div class="card-title"><span class="badge b-legal">Legal</span> City Approves Chapter 380 Incentive Agreement with Katerra Construction (Res. 2019-225R)</div>
+  <div class="card-body">City Council approves <strong>Resolution 2019-225R</strong> &mdash; a Chapter 380 Economic Development Incentive Agreement specifically with <strong>Katerra Construction, LLC</strong> for the Whisper PDD facility near IH-35 and Yarrington Road. Katerra was the anchor tenant that drove the Heavy Industrial zoning of the SMART Terminal site. Katerra later declared bankruptcy in 2021, triggering the need to renegotiate the development agreement.
+  </div>
+  <div class="source">Source: San Marcos Legistar &mdash; Res. 2019-225R</div>
+</div></div>
+
+</div><!-- /2018-2019 -->
+
+<!-- ============================================= 2020-2021 == -->
+<div class="year-group" data-year="2020">
+<div class="year-label">2020&ndash;2021</div>
+
+<div class="event legal" data-cat="legal" data-text="January 2020 Resolution 2020-17R City of Martindale ETJ extra-territorial jurisdiction boundary agreement">
+<div class="card">
+  <div class="card-date">January 21, 2020</div>
+  <div class="card-title"><span class="badge b-legal">Legal</span> ETJ Boundary Agreement with City of Martindale (Res. 2020-17R)</div>
+  <div class="card-body">City Council adopts <strong>Resolution 2020-17R</strong> (second reading January 21) establishing an agreement with the City of Martindale regarding extra-territorial jurisdiction (ETJ) boundaries. This defines which municipality has planning authority over the land adjacent to the SMART Terminal site &mdash; a recurring tension given Martindale's later opposition to the project.
+  </div>
+  <div class="source">Source: San Marcos Legistar &mdash; Res. 2020-17R, Res. 2020-17R(b)</div>
+</div></div>
+
+
+<div class="event legal" data-cat="legal" data-text="2021 Assignment Assumption Development Agreement Tack Redwood Partners Franklin Mountain San Marcos I LP Walton Texas RUC Holdings 660 acres Katerra bankruptcy">
+<div class="card">
+  <div class="card-date">2021</div>
+  <div class="card-title"><span class="badge b-legal">Legal</span> Development Agreement Assigned to Franklin Mountain San Marcos I, LP</div>
+  <div class="card-body">Following Katerra's bankruptcy, the development agreement is assigned from <strong>Tack Redwood Partners</strong> (who acquired the ~660-acre tract from Walton Texas / RUC Holdings ULC, an Alberta, Canada corporation) to <strong>Franklin Mountain San Marcos I, LP</strong>.
+  <ul>
+    <li>Assignee assumes "all rights, duties and obligations" of the agreement</li>
+    <li>Creates a legal tension: the 2019 agreement said obligations would not bind future owners, but this assignment explicitly transfers them</li>
+    <li>Recorded in Caldwell County</li>
+  </ul>
+  </div>
+  <div class="source">Source: 16_Assignment_and_Assumption_of_Development_Agreement_Assig__1_.pdf</div>
+</div></div>
+
+</div><!-- /2020-2021 -->
+
+<!-- ============================================= 2022 == -->
+<div class="year-group" data-year="2022">
+<div class="year-label">2022</div>
+
+<div class="event legal" data-cat="legal" data-text="2022 land acquisitions franklin mountain san marcos I LP van lee best david matthew neumann tack redwood quail run hwy 142 FM 1984 caldwell county appraisal district deed history">
+<div class="card">
+  <div class="card-date">March &ndash; July 2022</div>
+  <div class="card-title"><span class="badge b-legal">Legal</span> Franklin Mountain Completes Land Assembly &mdash; Three Additional Acquisitions in 2022</div>
+  <div class="card-body">Beyond the October &ndash; December 2021 Texas Transportation Alliance / Walton parcels, Franklin Mountain San Marcos I, LP acquires three additional properties to complete its ~2,017-acre portfolio:
+  <ul>
+    <li><strong>Mar 31, 2022 (2022-002523):</strong> 0.95 acres at 2862 FM 1984 (Homesite parcel, A021) from <strong>Van Lee LLC</strong> (Ohnheiser-linked entity from original 2019 development agreement). Property had ~$197K in improvements at time of acquisition; structure later removed by 2024.</li>
+    <li><strong>Jun 16&ndash;17, 2022 (2022-004831/4832):</strong> 130.296 acres on Quail Run Rd, Martindale (A021) from <strong>Tack Redwood Partners</strong>, who had acquired it from James A. Neumann the same day — a same-day pass-through conveyance.</li>
+    <li><strong>Jul 7, 2022 (2022-005483):</strong> 143.444 acres at 10920 Hwy 142, Maxwell (A188 Maxwell, Thomas) from <strong>Best David Matthew</strong>. This parcel is in the Lockhart ISD / San Marcos ISD boundary area and carries an agricultural exemption.</li>
+  </ul>
+  With these acquisitions, FM-I LP's assemblage spans approximately <strong>1,983 acres</strong> across 8 CAD parcels, plus 75 acres held by FM-75 LP — total ~2,058 acres.
+  </div>
+  <div class="source">Source: Caldwell CAD Property IDs 27868, 28119, 11678 &mdash; Property Deed History</div>
+</div></div>
+
+<div class="event meeting" data-cat="meeting" data-text="May 2022 pre-development meeting I-Zone Loop 110 80 expand SMART Terminal amend development agreement Heavy Industrial Katerra annexation zoning ETJ">
+<div class="card">
+  <div class="card-date">May 24, 2022</div>
+  <div class="card-title"><span class="badge b-meeting">Meeting</span> Pre-Development Meeting &mdash; SMART Terminal Expansion Proposed</div>
+  <div class="card-body">Developer meets with City to propose expanding the SMART Terminal and amending the existing development agreement to remove references to prior tenant Katerra and address utility service capacity.
+  <ul>
+    <li>Multiple parcels identified: some within city limits (Heavy Industrial zoning), some in ETJ (unplatted)</li>
+    <li>City recommends Heavy Industrial zoning upon annexation</li>
+    <li>Development Agreement amendment process and annexation requirements outlined</li>
+  </ul>
+  </div>
+  <div class="source">Source: I-Zone_Smart_Terminal_-_Meeting_Notes.pdf</div>
+</div></div>
+
+<div class="event council" data-cat="council" data-text="July 2022 PDA-22-07 City Council authorize negotiations Franklin Mountain San Marcos I LP amend SMART Terminal Chapter 380 ETJ Development Agreement remove Katerra Cotton Center acreage Council Committee">
+<div class="card">
+  <div class="card-date">July 12, 2022</div>
+  <div class="card-title"><span class="badge b-council">City Council</span> City Council Authorizes Negotiations to Amend SMART Terminal Agreement (PDA-22-07(a))</div>
+  <div class="card-body">City Council approves authorization for staff to negotiate with <strong>Franklin Mountain San Marcos I, LP</strong> to amend the SMART Terminal Chapter 380 Economic Development Incentive and ETJ Development Agreement. Key objectives:
+  <ul>
+    <li>Remove all references to Katerra (bankrupt anchor tenant)</li>
+    <li>Include Cotton Center acreage within the amended agreement</li>
+    <li>Consider appointment of a City Council Committee to oversee negotiations</li>
+  </ul>
+  </div>
+  <div class="source">Source: San Marcos Legistar &mdash; PDA-22-07(a)</div>
+</div></div>
+
+<div class="event council" data-cat="council" data-text="August October 2022 City Council Committee SMART Terminal Development Agreement virtual meeting">
+<div class="card">
+  <div class="card-date">Aug 31 &amp; Oct 10, 2022</div>
+  <div class="card-title"><span class="badge b-council">City Council</span> City Council Committee Reviews SMART Terminal Development Agreement</div>
+  <div class="card-body">Two City Council committee meetings (held virtually) to review and discuss the proposed SMART Terminal Development Agreement. The October 10 meeting includes prepared presentation materials.</div>
+  <div class="source">Source: PDA-22-04___PDA-22-07_Agenda.pdf; SMART_Terminal_Agenda_Packet.pdf</div>
+</div></div>
+
+<div class="event council" data-cat="council" data-text="November December 2022 ID22-901 ID22-874 City Council Cotton Center ETJ Development Agreement negotiate remove acreage SMART Terminal committee appointment referral passed December 14">
+<div class="card">
+  <div class="card-date">November 14 &amp; December 14, 2022</div>
+  <div class="card-title"><span class="badge b-council">City Council</span> Council Approves Cotton Center ETJ DA Negotiations; SMART Terminal Committee Appointment (ID#22-874, ID#22-901)</div>
+  <div class="card-body">Two related City Council actions in the weeks before the Development Agreement is finalized:
+  <ul>
+    <li><strong>Nov 14 (ID#22-874):</strong> Mayor or Council Member appointed to fill vacancies on boards and committees, including the SMART Terminal oversight committee</li>
+    <li><strong>Dec 14 (ID#22-901):</strong> Council approves authorization to negotiate with Franklin Mountain San Marcos I, LP to amend the Cotton Center ETJ Development Agreement &mdash; removing acreage for inclusion in the SMART Terminal ETJ Development Agreement. Final action passed.</li>
+  </ul>
+  </div>
+  <div class="source">Source: San Marcos Legistar &mdash; ID#22-874, ID#22-901 (Status: Passed; Final Action 12/14/2022)</div>
+</div></div>
+
+<div class="event legal" data-cat="legal" data-text="November December 2022 AN-22-20 annexation legal description Kimley-Horn survey boundaries CAD file">
+<div class="card">
+  <div class="card-date">Nov &ndash; Dec, 2022</div>
+  <div class="card-title"><span class="badge b-legal">Legal</span> First Annexation Case (AN-22-20) &mdash; Legal Descriptions Prepared</div>
+  <div class="card-body">Kimley-Horn surveyors prepare legal descriptions and boundary CAD files for annexation case AN-22-20, based on November 3, 2022 City GIS data. Documents finalized December 6&ndash;7, 2022.</div>
+  <div class="source">Source: AN-22-20_Legal_Description.pdf; AN-22-20_cover_sheet_for_annexation.pdf</div>
+</div></div>
+
+</div><!-- /2022 -->
+
+<!-- ============================================= 2023 == -->
+<div class="year-group" data-year="2023">
+<div class="year-label">2023</div>
+
+<div class="event legal" data-cat="legal" data-text="January 2023 Resolution 2023-26R service agreement annexation AN-22-20 619.755 acres City Manager authorization public hearing date">
+<div class="card">
+  <div class="card-date">January 11, 2023</div>
+  <div class="card-title"><span class="badge b-legal">Legal</span> Council Approves Annexation Service Agreement for AN-22-20 &mdash; Sets Public Hearing (Res. 2023-26R)</div>
+  <div class="card-body">City Council approves <strong>Resolution 2023-26R</strong> &mdash; the service agreement for large-scale annexation case <strong>AN-22-20</strong> covering approximately <strong>619.755 acres</strong>. Authorizes the City Manager to execute the agreement and sets the date for the public hearing on the annexation ordinance. This formally opens the first large-footprint annexation attempt for the SMART Terminal project.
+  </div>
+  <div class="source">Source: San Marcos Legistar &mdash; Res. 2023-26R</div>
+</div></div>
+
+<div class="event milestone" data-cat="milestone" data-text="January 2023 Resolution 2023-020 First Amended Restated Development Agreement Franklin Mountain San Marcos 1 LP 2017 acres PDA-22-07 SMART Terminal city council approved">
+<div class="card">
+  <div class="card-date">January 17, 2023</div>
+  <div class="card-title"><span class="badge b-milestone">Milestone</span> City Council Adopts New Development Agreement &mdash; ~2,017 Acres (Res. 2023-020)</div>
+  <div class="card-body">City Council approves the <strong>First Amended and Restated Development Agreement</strong> with Franklin Mountain San Marcos 1, LP for approximately <strong>2,017 acres</strong> (Case No. PDA-22-07). This supersedes the 2019 agreement and formally defines the SMART Terminal project at its full scale.
+  <ul>
+    <li>14.13 acres of impervious cover permitted for the overall property</li>
+    <li>Infrastructure obligations (purple pipe for reclaimed water, etc.) defined in Section 1.07</li>
+    <li>Annexation and zoning contemplated in Section 1.08</li>
+    <li>Allowable uses defined in Exhibit D of the Agreement</li>
+  </ul>
+  <p>A companion agreement &mdash; <strong>Res. 2023-21R</strong> (First Amended and Restated Development Agreement for <strong>Cotton Center</strong>, ~2,358 acres, PDA-14-03(A)) &mdash; is also approved at the same public hearing, linking both properties.</p>
+  </div>
+  <div class="source">Source: Res_2023-020_approving_a_first_amended_and_restated_Development_Agreement.pdf; San Marcos Legistar &mdash; Res. 2023-20R, Res. 2023-21R</div>
+</div></div>
+
+<div class="event council" data-cat="council" data-text="February 2023 Ordinance 2023-32 annexation 619.755 acres AN-22-20 Ordinance 2023-33 zoning 588.821 acres Heavy Industrial ZC-23-01 public hearing first reading">
+<div class="card">
+  <div class="card-date">February 14, 2023</div>
+  <div class="card-title"><span class="badge b-council">City Council</span> Public Hearings &mdash; Large Annexation &amp; HI Rezoning (Ord. 2023-32, Ord. 2023-33 / AN-22-20, ZC-23-01)</div>
+  <div class="card-body">City Council holds formal public hearings on the first large annexation attempt:
+  <ul>
+    <li><strong>Ord. 2023-32</strong> &mdash; Annexation of approximately <strong>619.755 acres</strong> (Case No. AN-22-20) SMART Terminal</li>
+    <li><strong>Ord. 2023-33</strong> &mdash; Zoning Map Amendment (ZC-23-01) &mdash; Rezoning approximately <strong>588.821 acres to Heavy Industrial (HI)</strong></li>
+  </ul>
+  This public hearing night coincides with a community informational meeting at which citizens speak against the project. Both ordinances are introduced but not yet voted on.
+  </div>
+  <div class="source">Source: San Marcos Legistar &mdash; Ord. 2023-32, Ord. 2023-33, ZC-23-01</div>
+</div></div>
+
+<div class="event meeting" data-cat="meeting" data-text="February March 2023 SMART Terminal public meeting community outreach citizens speaking opposition">
+<div class="card">
+  <div class="card-date">Feb 14 &amp; Mar 16, 2023</div>
+  <div class="card-title"><span class="badge b-meeting">Meeting</span> Public Informational Meetings on SMART Terminal</div>
+  <div class="card-body">Community members speak at a February 14 public meeting. Developer responds with a structured open-house on March 16 at 413 Main St., Martindale, TX (Carlton Carl's building), held 3:00&ndash;7:00 PM. Developer sends written answers to community questions, direct letters to February 14 speakers, and publishes a public notice.
+  <ul>
+    <li>Developer representatives and Kimley-Horn consultants present</li>
+    <li>Project website and question submission link created for those who cannot attend</li>
+  </ul>
+  </div>
+  <div class="source">Source: _EXTERNAL__RE__SMART_Terminal_Public_Meeting emails</div>
+</div></div>
+
+<div class="event pz" data-cat="pz" data-text="March 2023 Planning Zoning ZC-23-01.2 zoning change 588.821 acres Future Development FD Heavy Industrial HI Smart Terminal further consideration">
+<div class="card">
+  <div class="card-date">March 2023</div>
+  <div class="card-title"><span class="badge b-pz">P&amp;Z</span> Further Consideration of Zoning Change ZC-23-01 &mdash; 588.821 Acres FD to HI</div>
+  <div class="card-body">City Council / Planning &amp; Zoning Commission take up a second consideration of zoning change request ZC-23-01 (ZC-23-01.2 in Legistar) &mdash; Franklin Mountain San Marcos I, LP's request to rezone approximately <strong>588.821 acres</strong> from Future Development (FD) to Heavy Industrial (HI). No final vote is recorded at this stage as the developer ultimately withdraws in June 2023.
+  </div>
+  <div class="source">Source: San Marcos Legistar &mdash; ZC-23-01.2</div>
+</div></div>
+
+<div class="event opposition" data-cat="opposition" data-text="April 2023 Martindale City Council resolution opposing heavy industrial zoning SMART Terminal flooding regional disaster opposition">
+<div class="card">
+  <div class="card-date">April 20, 2023</div>
+  <div class="card-title"><span class="badge b-opposition">Opposition</span> City of Martindale Formally Opposes SMART Terminal</div>
+  <div class="card-body">The Martindale City Council adopts <strong>Resolution 2023-04-20</strong> formally opposing heavy industrial zoning of the San Marcos Air, Rail, and Truck Terminal (SMART Terminal). Primary concern: flooding. The resolution cites regional flood disaster history and argues that heavy industrial development on the site would worsen flooding impacts on Martindale and surrounding communities.</div>
+  <div class="source">Source: GR1000-05_-_2023-04-20_-_Resolution_SMART_Term.pdf</div>
+</div></div>
+
+<div class="event council" data-cat="council" data-text="April May 2023 executive sessions legal advice SMART Terminal Development Agreement ID23-314 ID23-317 ID23-327 ID23-340 ID23-363 authorize negotiations Franklin Mountain amend">
+<div class="card">
+  <div class="card-date">April 21 &ndash; May 10, 2023</div>
+  <div class="card-title"><span class="badge b-council">City Council</span> Council Authorizes DA Negotiations; Multiple Executive Sessions on SMART Terminal (ID#23-314, 317, 327, 340, 363)</div>
+  <div class="card-body">Intense period of closed-session legal discussions and formal action on the SMART Terminal Development Agreement:
+  <ul>
+    <li><strong>Apr 21 (ID#23-314):</strong> Staff presentation and approval to initiate review of the SMART Terminal Development Agreement; City Council authorizes negotiations with Franklin Mountain San Marcos I, LP to amend the agreement</li>
+    <li><strong>Apr 24 (ID#23-317):</strong> Executive session &mdash; Legal advice regarding SMART Terminal Development Agreement</li>
+    <li><strong>Apr 27 (ID#23-327):</strong> Executive session &mdash; Real property discussions and legal advice</li>
+    <li><strong>May 4 (ID#23-340):</strong> Executive session &mdash; Legal advice regarding SMART Terminal Development Agreement</li>
+    <li><strong>May 10 (ID#23-363):</strong> Executive session &mdash; Legal advice regarding SMART Terminal Development Agreement</li>
+  </ul>
+  The volume of executive sessions reflects significant legal complexity around the development agreement renegotiation.
+  </div>
+  <div class="source">Source: San Marcos Legistar &mdash; ID#23-314, ID#23-317, ID#23-327, ID#23-340, ID#23-363</div>
+</div></div>
+
+<div class="event milestone" data-cat="milestone" data-text="June 2023 withdrawal annexation AN-22-20 zoning ZC-23-01 Scarborough Lane Clayton Kendall Franklin Mountain withdrawn consent">
+<div class="card">
+  <div class="card-date">June 23, 2023</div>
+  <div class="card-title"><span class="badge b-milestone">Milestone</span> Developer Withdraws First Annexation Case (AN-22-20) and Zoning Case (ZC-23-01)</div>
+  <div class="card-body">Clayton Kendall (Vice President, Scarborough Lane Development) submits formal withdrawal of consent to annexation case <strong>AN-22-20</strong> and zoning case <strong>ZC-23-01</strong>, ending the first annexation attempt. The withdrawal is acknowledged by Planning Director Amanda Hernandez the same day.
+  <ul>
+    <li>No reason for withdrawal stated publicly; withdrawal is simply "effective immediately"</li>
+    <li>The project goes back to the drawing board on annexation strategy</li>
+  </ul>
+  </div>
+  <div class="source">Source: RE___EXTERNAL__Withdrawal__AN-22-20___ZC-23-01.pdf</div>
+</div></div>
+
+<div class="event meeting" data-cat="meeting" data-text="September October 2023 AXIS infrastructure meeting Richard Reynosa utility alignment water sewer drainage water quality road section">
+<div class="card">
+  <div class="card-date">Sep 27 &amp; Oct 16, 2023</div>
+  <div class="card-title"><span class="badge b-meeting">Meeting</span> AXIS Infrastructure Meetings with City Engineering (Richard Reynosa)</div>
+  <div class="card-body">Two working meetings between Kimley-Horn and City Engineering Director Richard Reynosa to coordinate on utility and infrastructure design for the now-renamed <strong>Axis Logistics Park</strong>.
+  <ul>
+    <li><strong>Sep 27:</strong> Water and sewer alignments reviewed. City raises concern about excessive sewer depth (&gt;13 ft in locations). Reimbursement for public infrastructure unlikely to cover all improvements.</li>
+    <li><strong>Oct 16:</strong> Drainage pilot channel slope (0.3% requested vs. 0.5% minimum) &mdash; City open to administrative approval. Water quality deferred to lot-by-lot basis under discussion. City willing to work with constraints of existing site conditions.</li>
+  </ul>
+  </div>
+  <div class="source">Source: 230928_-_AXIS_-_Public_Infrastructre_Meeting.pdf; 231016_-_AXIS_-_Meeting_Notes_ATTACHMENT.pdf</div>
+</div></div>
+
+</div><!-- /2023 -->
+
+<!-- ============================================= 2024 == -->
+<div class="year-group" data-year="2024">
+<div class="year-label">2024</div>
+
+<div class="event permit" data-cat="permit" data-text="January 2024 PICP permit 2024-49692 fee paid Energy Parkway road water main application submitted">
+<div class="card">
+  <div class="card-date">January 16, 2024</div>
+  <div class="card-title"><span class="badge b-permit">Permit</span> PICP Permit 2024-49692 Fee Paid &mdash; Energy Parkway Road &amp; Water Main</div>
+  <div class="card-body">Developer pays $5,000 PICP (Public Improvement Construction Plan) permit fee for the <strong>Energy Parkway</strong> road construction and 16-inch water main (Permit No. 2024-49692). Project value: $6,000,000. This kicks off the formal city review process for the road that will serve Axis Logistics Park.</div>
+  <div class="source">Source: 2024-49692_PICP_PERMIT.pdf</div>
+</div></div>
+
+<div class="event legal" data-cat="legal" data-text="february 2024 ARWA Alliance Regional Water Authority pipeline easement Phase 1B Parcel B033 B034 B035 B036 GBRA Guadalupe-Blanco River Authority 90-foot perpetual easement water pipeline 15 acres franklin mountain">
+<div class="card">
+  <div class="card-date">February 13&ndash;16, 2024</div>
+  <div class="card-title"><span class="badge b-legal">Legal</span> ARWA Phase 1B Pipeline Easements Granted &mdash; Three Perpetual 90-ft Easements (~15.25 Acres)</div>
+  <div class="card-body">Franklin Mountain San Marcos I, LP grants three separate perpetual 90-foot-wide pipeline and ROW easements to the <strong>Alliance Regional Water Authority (ARWA)</strong> for the Phase 1B regional water transmission pipeline crossing the Axis property.
+  <ul>
+    <li><strong>Caldwell Co. 370_2024_003080</strong> &mdash; 3.768 ac (Parcel B033/34C) &mdash; Thomas Maxwell Survey Abs. 166 + William Pettus Survey Abs. 21</li>
+    <li><strong>Caldwell Co. 370_2024_003081</strong> &mdash; 4.279 ac (Parcel B035C) &mdash; William Pettus Survey Abs. 21</li>
+    <li><strong>Caldwell Co. 370_2024_003082</strong> &mdash; 7.207 ac (Parcel B036C) &mdash; William Pettus Survey Abs. 21</li>
+    <li>Total: approximately <strong>15.25 acres</strong> of permanent easement through the Axis site</li>
+    <li>Up to 3 water pipelines; first pipeline &le;48 inches diameter; buried &ge;5 feet deep</li>
+    <li>Easements are <strong>perpetual, exclusive, and assignable to GBRA</strong></li>
+    <li>Signed: Ryan Burkhardt (FM, Dallas Co., Feb 13); Graham Moore PE (ARWA Executive Director, Hays Co., Feb 16)</li>
+  </ul>
+  These easements are permanent encumbrances on the Axis site &mdash; prospective tenant site plans and lot layouts must route around the ARWA pipeline corridor.
+  </div>
+  <div class="source">Source: Caldwell County Instruments 370_2024_003080, 370_2024_003081, 370_2024_003082</div>
+</div></div>
+
+<div class="event meeting" data-cat="meeting" data-text="March 2024 meeting water wastewater plat comments Kimley-Horn Reynosa Cleary water main upsized 16 inch preliminary plat streetlights">
+<div class="card">
+  <div class="card-date">March 11, 2024</div>
+  <div class="card-title"><span class="badge b-meeting">Meeting</span> Axis Logistics Park &mdash; Water / Wastewater / Plat Coordination Meeting</div>
+  <div class="card-body">City staff (Reynosa, Cleary, Garcia) and Kimley-Horn (Paredes, Ruby, Vinal) meet to resolve outstanding design questions.
+  <ul>
+    <li>Water main upsized to <strong>16 inches</strong> for majority of alignment; 12-inch stubs for future development</li>
+    <li>Preliminary Plat PC-24-07 deemed sufficient as submitted</li>
+    <li>Streetlights required; sidewalk and streetscape deferred to building permit stage</li>
+    <li>Road and water main PICP to be built Day 1; wastewater PICP dependent on city timeline</li>
+    <li>All easements by separate instrument must be sent to City for review</li>
+  </ul>
+  </div>
+  <div class="source">Source: 240311_-_Meeting_-_Axis_Logistics_Park_PICP_Attachments.pdf</div>
+</div></div>
+
+<div class="event legal" data-cat="legal" data-text="april 2024 franklin mountain caldwell county road strip 1.255 acres quail run warranty deed 2024-002658 old 24 foot county road property 129763 CAD">
+<div class="card">
+  <div class="card-date">April 8, 2024</div>
+  <div class="card-title"><span class="badge b-legal">Legal</span> FM-I LP Acquires Abandoned County Road Strip from Caldwell County (WD 2024-002658)</div>
+  <div class="card-body">Franklin Mountain San Marcos I, LP acquires a <strong>1.255-acre</strong> strip (Caldwell CAD Property ID 129763) directly from <strong>Caldwell County</strong> via Warranty Deed (instrument 2024-002658). The legal description explicitly notes this is an <strong>"OLD 24 FOOT STRIP AS A COUNTY ROAD"</strong> adjacent to the 130.296-acre Quail Run Rd parcel (ID 28119).
+  <ul>
+    <li>The strip was an abandoned county road corridor running through the Quail Run / Martindale area of the assemblage</li>
+    <li>Acquiring road-bed fee title from the County eliminates a potential gap or encumbrance in FM's ownership along the eastern edge of the site</li>
+    <li>This is the only parcel in FM's portfolio acquired from a governmental entity rather than a private seller</li>
+    <li>CAD shows no value history before 2024 — parcel was newly created upon conveyance from the County</li>
+  </ul>
+  </div>
+  <div class="source">Source: Caldwell CAD Property ID 129763 &mdash; Property Deed History (WD 2024-002658)</div>
+</div></div>
+
+<div class="event legal" data-cat="legal" data-text="april 2024 franklin mountain san marcos 75 LP special warranty deed 72.834 acres maxwell acres company kasch william pettus survey abstract 21 minerals surface entry waived addison texas separate entity SPE">
+<div class="card">
+  <div class="card-date">April 17, 2024</div>
+  <div class="card-title"><span class="badge b-legal">Legal</span> New Entity: Franklin Mountain San Marcos 75, LP Acquires 72.834 Acres (Caldwell Co. 370_2024_003056)</div>
+  <div class="card-body">A Special Warranty Deed conveys <strong>72.834 acres</strong> (William Pettus Survey, Abstract 21) from <strong>Maxwell Acres Company</strong> and Kasch family individuals to <strong>Franklin Mountain San Marcos 75, LP</strong> &mdash; a <em>separate legal entity</em> from Franklin Mountain San Marcos I, LP, though sharing the same Addison, TX address (16380 Addison Road) and manager (Ryan Burkhardt).
+  <ul>
+    <li>Grantors reserve all mineral rights but <strong>waive surface entry</strong> (no drilling within 500 ft of boundary; no penetration less than 1,000 ft below surface)</li>
+    <li>Permitted encumbrances include a pre-existing LCRA 170-ft easement (Vol. 345, p. 451) and Central Texas Regional WSC 85-ft water line easement (Doc. 2017-002681)</li>
+    <li>Surveyed November 2023 by Cross Texas Land Services</li>
+    <li>Deed attorney: David M. Tatum, Esq., Geary Porter &amp; Donovan PC, Addison TX</li>
+  </ul>
+  The use of "FM-75 LP" as a distinct entity from "FM-I LP" suggests a parcel-specific or potentially tenant-specific special purpose vehicle within the Franklin Mountain ownership structure.
+  </div>
+  <div class="source">Source: Caldwell County Instrument 370_2024_003056</div>
+</div></div>
+
+<div class="event council" data-cat="council" data-text="April 2024 Resolution 2024-89R service agreement annexation AN-24-03 Axis Logistics 7.553 acres City Manager authorization">
+<div class="card">
+  <div class="card-date">April 2024</div>
+  <div class="card-title"><span class="badge b-council">City Council</span> Council Approves Annexation Service Agreement for AN-24-03 &mdash; 7.553 Acres (Res. 2024-89R)</div>
+  <div class="card-body">City Council approves <strong>Resolution 2024-89R</strong> &mdash; the agreement for provision of services in connection with the owner-requested annexation of <strong>7.553 acres</strong> (Case No. AN-24-03) &mdash; the Energy Parkway right-of-way parcel for Axis Logistics Park. Authorizes the City Manager to execute the agreement. This is the required precursor to the annexation ordinance considered by Council in May and July 2024.
+  </div>
+  <div class="source">Source: San Marcos Legistar &mdash; Res. 2024-89R (File Created 4/9/2024)</div>
+</div></div>
+
+<div class="event council" data-cat="council" data-text="May 2024 AN-24-03 City Council consent agenda postponed Franklin Mountain San Marcos 1 LP Clayton Kendall requested postponement July 2">
+<div class="card">
+  <div class="card-date">May 21, 2024</div>
+  <div class="card-title"><span class="badge b-council">City Council</span> AN-24-03 Annexation &mdash; Postponed at Developer's Request</div>
+  <div class="card-body">AN-24-03 (Axis Logistics ROW Annexation) is on the City Council consent agenda. At 8:30 AM, Clayton Kendall formally requests postponement on behalf of Franklin Mountain San Marcos 1, LP &mdash; requesting the item be moved to the July 2 meeting. City Council takes action to postpone.</div>
+  <div class="source">Source: RE___EXTERNAL__Postpone_Agenda_item_AN-24-03.pdf</div>
+</div></div>
+
+<div class="event legal" data-cat="legal" data-text="june 2024 second amended restated cotton center development agreement walton texas LP franklin mountain san marcos 2357 acres 45 year term section 2.04 removes franklin mountain party sub-districts 660 acres SMART DA">
+<div class="card">
+  <div class="card-date">June 26 &ndash; August 9, 2024 (effective June 7, 2024)</div>
+  <div class="card-title"><span class="badge b-legal">Legal</span> Second Amended &amp; Restated Cotton Center Development Agreement Executed (370_2025_004791)</div>
+  <div class="card-body">The <strong>Second Amended &amp; Restated Cotton Center Development Agreement</strong> is executed between the City of San Marcos, Walton Texas LP, Walton TX Martindale LP, and Walton TX Martindale LP 2 &mdash; replacing the 2016 Original DA and 2023 First Amended &amp; Restated DA. Franklin Mountain San Marcos I, LP is a signatory only to confirm its exit.
+  <ul>
+    <li><strong>§2.04 explicitly states Franklin Mountain is no longer an Owner, Primary Owner, or Party</strong> to the Cotton Center DA</li>
+    <li>FM's signature page confirms its <strong>660-acre tract</strong> was removed from the Original DA and now governs under the SMART Terminal DA (Caldwell Co. 2023-001629)</li>
+    <li>Covers approximately <strong>2,357.9 acres</strong> (Cotton Center MUD boundary; net of FM's 660 ac and 120.75-ac released tract)</li>
+    <li>5 Sub-Districts: 462.5, 462.9, 507.2, 528.6, and 396.9 acres; 45-year term; 7,530 LUE wastewater</li>
+    <li>City signed June 26, 2024; Walton entities signed June 28, 2024; FM (Ryan Burkhardt) signed August 9, 2024</li>
+    <li>Filed in Hays County as instrument 24033937 (September 3, 2024); filed in Caldwell County June 26, 2025</li>
+  </ul>
+  This document formally completes FM's legal separation from the Cotton Center governance structure.
+  </div>
+  <div class="source">Source: Caldwell County Instrument 370_2025_004791 (126 pages); Hays County 24033937</div>
+</div></div>
+
+<div class="event council" data-cat="council" data-text="July 2 2024 City Council regular meeting AN-24-03 AN-24-04 AN-24-05 annexation Tax Increment Reinvestment Zone Ordinance 2024-26 police civil service State of Texas v City of San Marcos">
+<div class="card">
+  <div class="card-date">July 2, 2024</div>
+  <div class="card-title"><span class="badge b-council">City Council</span> Regular City Council Meeting &mdash; AN-24-03 First Considered</div>
+  <div class="card-body">City Council regular meeting at 6 PM in Council Chambers. Agenda includes:
+  <ul>
+    <li><strong>AN-24-03</strong> (Axis Logistics ROW annexation) and related <strong>Ordinance 2024-26</strong> (Tax Increment Reinvestment Zone amendment)</li>
+    <li>AN-24-04 and AN-24-05 (other annexation cases)</li>
+    <li>Executive session re: State of Texas v. City of San Marcos lawsuit</li>
+    <li>Police civil service repeal petition (Chapter 143 LGC)</li>
+    <li>May 9 windstorm emergency tree removal contracts</li>
+  </ul>
+  </div>
+  <div class="source">Source: 0Attachment_7.02.2024_Regular_Meeting_Agenda.pdf</div>
+</div></div>
+
+<div class="event permit" data-cat="permit" data-text="July 19 2024 R3 comment letter PICP 2024-49692 Preliminary Plat PC-24-07 required LCRA LONO TIA pending annexation AN-24-03 pending tree survey">
+<div class="card">
+  <div class="card-date">July 19, 2024</div>
+  <div class="card-title"><span class="badge b-permit">Permit</span> City Issues R3 Comment Letter for PICP 2024-49692 &mdash; Multiple Items Still Open</div>
+  <div class="card-body">City Development Services issues the <strong>third round (R3) comment letter</strong> for the Energy Parkway PICP. Outstanding items at this stage:
+  <ul>
+    <li><strong>Preliminary Plat PC-24-07 approval still required</strong> before permit can be released</li>
+    <li>TIA (Traffic Impact Analysis) approval pending</li>
+    <li>LCRA Letters of No Objection (LONOs) for easement work not yet received</li>
+    <li>Statement of No Impact missing for potential aquatic features and endangered species</li>
+    <li>Tree survey shows trees outside construction limits &mdash; calculations need correction</li>
+    <li>Annexation case AN-24-03 still pending at this time</li>
+  </ul>
+  </div>
+  <div class="source">Source: 2024-49692_Comment_Letter_R3__002_attachment.pdf</div>
+</div></div>
+
+<div class="event council" data-cat="council" data-text="August 5 2024 City Council meeting AN-24-03 first reading public hearing ROW annexation Axis Logistics Park Energy Parkway opposition Noah Brock citizens Ordinance 2024-27">
+<div class="card">
+  <div class="card-date">August 5, 2024</div>
+  <div class="card-title"><span class="badge b-council">City Council</span> City Council &mdash; Ord. 2024-27 First Reading &amp; Public Hearing (AN-24-03)</div>
+  <div class="card-body">City Council holds a <strong>public hearing</strong> on Ordinance 2024-27 (AN-24-03), annexing approximately 7.553 acres in Caldwell County for the Energy Parkway ROW. First reading held.
+  <ul>
+    <li>Public comments received for and against</li>
+    <li>Amanda Hernandez (Director of Planning) presents for City</li>
+    <li>After the meeting: Hernandez states this was the first time she heard the County may require a MUD to build roads &mdash; developer disputes this (August 6 follow-up)</li>
+    <li>City requests executed hard copy of Annexation Service Agreement by end of week</li>
+  </ul>
+  </div>
+  <div class="source">Source: AN-24-03_Axis_Logistics_Annexation_Hearing.pdf; RE___EXTERNAL__Ordinance_2024-27 emails; San Marcos Legistar &mdash; Ord. 2024-27</div>
+</div></div>
+
+<div class="event council" data-cat="council" data-text="August 13 20 2024 executive session legal advice AXIS Logistics SMART Terminal annexation development ID24-479 ID24-480">
+<div class="card">
+  <div class="card-date">August 13 &amp; 20, 2024</div>
+  <div class="card-title"><span class="badge b-council">City Council</span> Executive Sessions &mdash; Legal Advice on Axis Logistics / SMART Terminal Annexation (ID#24-479, ID#24-480)</div>
+  <div class="card-body">City Council holds two closed executive sessions to receive legal advice regarding the SMART Terminal / Axis Logistics annexation and development:
+  <ul>
+    <li><strong>ID#24-479</strong> (File Created 8/13/2024): Passed; Final Action 8/20/2024</li>
+    <li><strong>ID#24-480</strong> (File Created 8/13/2024): Individual Consideration</li>
+  </ul>
+  These sessions follow the contentious August 5 first reading and reflect ongoing legal complexity around the ROW annexation.
+  </div>
+  <div class="source">Source: San Marcos Legistar &mdash; ID#24-479, ID#24-480</div>
+</div></div>
+
+<div class="event pz" data-cat="pz" data-text="August 9 2024 Greg Schwarz P&Z agenda WPP2 2024-49696 water quality buffer zone reclassification presentation Qualified Watershed Protection Plan">
+<div class="card">
+  <div class="card-date">August 9, 2024</div>
+  <div class="card-title"><span class="badge b-pz">P&amp;Z</span> WPP2 Scheduled for Aug 27 P&amp;Z Meeting</div>
+  <div class="card-body">City Senior Engineer Greg Schwarz emails the P&amp;Z coordinator to add the Qualified WPP2 (2024-49696, Axis Logistics Park water quality and buffer zone reclassification) to the August 27 P&amp;Z agenda. Schwarz is going on vacation and sets an August 19 deadline for his presentation to be complete.</div>
+  <div class="source">Source: Qualified_WPP2_2024-49696_Axis_Logistics_Park_for_8_27_P_Z_Agenda_a.h.pdf</div>
+</div></div>
+
+<div class="event pz" data-cat="pz" data-text="August 27 2024 Planning Zoning Commission meeting WPP2 2024-49696 Axis Logistics Park water quality buffer zone reclassification Greg Schwarz presentation culvert maintenance question">
+<div class="card">
+  <div class="card-date">August 27, 2024</div>
+  <div class="card-title"><span class="badge b-pz">P&amp;Z</span> P&amp;Z Commission Meeting &mdash; WPP2 Water Quality &amp; Buffer Zone Presented</div>
+  <div class="card-body">Planning &amp; Zoning Commission meeting at which City Senior Engineer Greg Schwarz formally presents the <strong>Qualified WPP2 (Watershed Protection Plan Phase 2)</strong> for Axis Logistics Park (Permit No. 2024-49696). This is the required P&amp;Z presentation for the water quality pond and buffer zone reclassification along Hemphill Creek.
+  <ul>
+    <li>Schwarz presents; Kimley-Horn (Ben Ruby) available for technical questions via Zoom</li>
+    <li>Commission raises question about who maintains culverts under roadways</li>
+    <li>Follow-up answer (Aug 29): City is responsible for culverts under City-maintained roads</li>
+  </ul>
+  </div>
+  <div class="source">Source: RE___EXTERNAL__RE__2024-49696__Axis_Logistics_Park_WPP2___QWPP_P_Z_meeting.GS4.pdf; Follow_Up_from_8_29_Meeting.AH.pdf</div>
+</div></div>
+
+<div class="event council" data-cat="council" data-text="September 3 2024 City Council second reading AN-24-03 Ordinance 2024-27 annexation Axis Logistics Park Energy Parkway postponed previously Noah Brock opposition Energy Parkway easement">
+<div class="card">
+  <div class="card-date">September 3, 2024</div>
+  <div class="card-title"><span class="badge b-council">City Council</span> City Council &mdash; Ord. 2024-27 Second Reading (AN-24-03)</div>
+  <div class="card-body">Second reading of Ordinance 2024-27 (AN-24-03 ROW annexation) at City Council.
+  <ul>
+    <li>4:56 PM: Citizen <strong>Noah Brock</strong> emails all City Council members with opposition &mdash; raises concerns about a defined roadway easement on the eastern side of the Energy Parkway meets-and-bounds that he believes hasn't been accounted for</li>
+    <li>City staff (Amanda Hernandez) adds speaking points to address Brock's concerns at the meeting</li>
+    <li>Developer (Clayton Kendall) is not present but has submitted a written statement included in the packet</li>
+    <li>Kendall disputes that the road alignment was ever changed, saying the current alignment matches the thoroughfare plan and was designed since 2023</li>
+    <li>Second reading proceeds at 6 PM</li>
+  </ul>
+  </div>
+  <div class="source">Source: FW___EXTERNAL__AN-24-03_Opposition.pdf; _EXTERNAL__Re__AN-24-03_Axis_Logistics_Annexation_Second_Reading.pdf; San Marcos Legistar &mdash; Ord. 2024-27(c) (Status: Passed; Final Action 9/3/2024)</div>
+</div></div>
+
+<div class="event milestone" data-cat="milestone" data-text="September 17 2024 Res 2024-195R settlement agreement Walton Texas LP 120.73 acres Cotton Center Development Agreement termination ETJ release RETJ-24-05 CCN PUC Docket 56371 sewer $50000">
+<div class="card">
+  <div class="card-date">September 17, 2024</div>
+  <div class="card-title"><span class="badge b-milestone">Milestone</span> Settlement Agreement &mdash; Walton Texas Releases 120.73 Acres from Cotton Center DA &amp; ETJ (Res. 2024-195R)</div>
+  <div class="card-body">The City of San Marcos and <strong>Walton Texas, LP</strong> sign a settlement agreement resolving a dispute over the City's Sewer Certificate of Convenience and Necessity (CCN No. 20116) for approximately <strong>120.73 acres</strong> in Caldwell County (Thomas Yates league, Abstract-313):
+  <ul>
+    <li><strong>Walton pays City $50,000</strong> as full settlement</li>
+    <li>The Cotton Center Development Agreement (Dec. 20, 2016) is <strong>partially terminated</strong> as to the 120.73-acre parcel</li>
+    <li>The Consent Agreement (Dec. 11, 2014) is <strong>partially terminated</strong> as to the same parcel</li>
+    <li>City agrees to <strong>no longer oppose decertification</strong> at PUC Docket No. 56371 (Walton's petition to exit City sewer service area)</li>
+    <li>City Council to approve within 90 days; City files required documents with Caldwell County</li>
+    <li>Map reference: <strong>RETJ-24-05</strong> &mdash; Release of Extraterritorial Jurisdiction</li>
+  </ul>
+  This is the first step in Walton's exit from the City's jurisdiction over the broader project area.
+  </div>
+  <div class="source">Source: San Marcos Legistar &mdash; Res. 2024-195R; Res. 2024-195R - SETTLEMENT AGREEMENT.pdf; Res. 2024-195R - Map.pdf</div>
+</div></div>
+
+<div class="event meeting" data-cat="meeting" data-text="September 5 2024 CLOMR meeting Hemphill Creek H&H analysis Kimley-Horn City detailed analysis tributary increase flows">
+<div class="card">
+  <div class="card-date">September 5, 2024</div>
+  <div class="card-title"><span class="badge b-meeting">Meeting</span> CLOMR Meeting &mdash; City Requests More Detailed Flood Analysis</div>
+  <div class="card-body">City and Kimley-Horn meet regarding the <strong>CLOMR</strong> (Conditional Letter of Map Revision) for the Hemphill Creek area.
+  <ul>
+    <li>Current modeling shows an increase in flows on a tributary within the site limits</li>
+    <li>City reiterates need for more detailed H&amp;H (hydrologic and hydraulic) analysis</li>
+    <li>City directs that existing conditions should be represented as current conditions, not pre-FM 1984 conditions</li>
+    <li>Kimley-Horn to perform more detailed analysis and report results</li>
+  </ul>
+  </div>
+  <div class="source">Source: 2024_09_05_Meeting_Notes_cip_attachment.pdf</div>
+</div></div>
+
+<div class="event permit" data-cat="permit" data-text="September 30 2024 PICP permit 2024-49692 ISSUED Energy Parkway road 16 inch water main $6 million Alex Damgaard Chief Building Official conditional">
+<div class="card">
+  <div class="card-date">September 30, 2024</div>
+  <div class="card-title"><span class="badge b-permit">Permit</span> PICP Permit 2024-49692 ISSUED &mdash; Energy Parkway Road &amp; Water Main</div>
+  <div class="card-body">Chief Building Official <strong>Alex Damgaard</strong> issues the PICP permit for the Energy Parkway road and 16-inch water main. Project value: <strong>$6,000,000</strong>. Permit issued as a conditional permit &mdash; several items remain outstanding at time of issuance.
+  <ul>
+    <li>Preliminary Plat PC-24-07 was still formally "required" per the R3 comment letter (July 19)</li>
+    <li>Purple pipe (reclaimed water infrastructure) sleeve to be added as a <em>post-permit revision</em></li>
+    <li>WPP2 conditional comments from Greg Schwarz also issued same day</li>
+    <li>Construction begins in the November 2024 timeframe (daily inspection reports begin)</li>
+  </ul>
+  </div>
+  <div class="source">Source: 2024-49692_PICP_PERMIT.pdf</div>
+</div></div>
+
+<div class="event council" data-cat="council" data-text="October 2024 Ordinance 2024-01 2019-01 adjustment reduce acreage 734.6 733.6 acres Smart Terminal AXIS first second reading survey replacement">
+<div class="card">
+  <div class="card-date">October 15 &amp; 16, 2024</div>
+  <div class="card-title"><span class="badge b-council">City Council</span> Council Corrects SMART Terminal Acreage &mdash; 734.6 Reduced to 733.6 Acres (Ord. 2019-01 Adjustment)</div>
+  <div class="card-body">City Council takes up a technical correction to the original 2019 annexation ordinance:
+  <ul>
+    <li><strong>Oct 15 (Ord. 2019-01(c)):</strong> First reading &mdash; Approval of adjustment to Ordinance 2019-01, replacing Exhibit A survey and reducing acreage from <strong>734.6 to 733.6 acres</strong></li>
+    <li><strong>Oct 16 (Ord. 2024-01(d)):</strong> Second reading of same adjustment</li>
+  </ul>
+  The one-acre reduction reflects a corrected boundary survey of the Smart Terminal / Axis Logistics Park annexation area.
+  </div>
+  <div class="source">Source: San Marcos Legistar &mdash; Ord. 2019-01(c) (Final Action 10/15/2024), Ord. 2024-01(d)</div>
+</div></div>
+
+<div class="event milestone" data-cat="milestone" data-text="November 6 2024 Ordinance 2024-27 AN-24-03 approved second reading 7.553 acres Caldwell County annexed Energy Parkway ROW City San Marcos">
+<div class="card">
+  <div class="card-date">November 6, 2024</div>
+  <div class="card-title"><span class="badge b-milestone">Milestone</span> Ordinance 2024-27 Adopted &mdash; 7.553 Acres Annexed (AN-24-03)</div>
+  <div class="card-body">City Council formally adopts <strong>Ordinance 2024-27</strong>, annexing approximately <strong>7.553 acres</strong> in Caldwell County into the City of San Marcos. The annexed area is the Energy Parkway right-of-way, located on the western side of FM 1984 approximately 4,600 feet northeast of the SH 80 / FM 1984 intersection.
+  <ul>
+    <li>Owner consented to annexation; Annexation Service Agreement in place</li>
+    <li>Tree city limits confirmed correct as of this date (relevant to tree credit calculations for PICP permit)</li>
+  </ul>
+  </div>
+  <div class="source">Source: 08.20.24_Internal_Annexation_Notification_attachment.pdf; 241212 Response Letter</div>
+</div></div>
+
+<div class="event meeting" data-cat="meeting" data-text="November 2024 construction underway daily inspection reports Energy Parkway conditional permit release WPP2 review outstanding">
+<div class="card">
+  <div class="card-date">November 2024</div>
+  <div class="card-title"><span class="badge b-meeting">Meeting</span> Construction Underway &mdash; Conditional Permit Release Still Pending</div>
+  <div class="card-body">Daily inspection reports for Energy Parkway (Project No. 2024-49692) show active construction. In parallel:
+  <ul>
+    <li>Nov 5: Kimley-Horn submits revised plans to MGO portal for WPP2 conditional permit release</li>
+    <li>Nov 7: Greg Schwarz (City) says he will complete review "next week"</li>
+    <li>Nov 19: Pre-Development Meeting request submitted for future industrial lot development (PDM-2024-198)</li>
+  </ul>
+  </div>
+  <div class="source">Source: 11_-_November_2024.xlsx; RE___EXTERNAL__Axis_Industrial_Phase_1_-_Request_for_Conditional_Permit_Release emails</div>
+</div></div>
+
+<div class="event meeting" data-cat="meeting" data-text="December 2024 pre-development meeting PDM-2024-198 future industrial lots final plat needed preliminary plat approved adjacent road only December 11 12">
+<div class="card">
+  <div class="card-date">December 11&ndash;12, 2024</div>
+  <div class="card-title"><span class="badge b-meeting">Meeting</span> Pre-Development Meeting &amp; Conditional Response Letters</div>
+  <div class="card-body">
+  <ul>
+    <li><strong>Dec 11:</strong> Pre-Development Meeting (PDM-2024-198) for future industrial lot development. City notes: preliminary plat approved for the adjacent roadway only; a final plat is still needed for individual lots. ETJ property must meet Caldwell County requirements. Development Agreement governs water/wastewater provisions.</li>
+    <li><strong>Dec 12:</strong> Kimley-Horn submits formal response letter for PICP 2024-49692 conditional comments. Purple pipe sleeves to be added post-permit. TIA compliance confirmed. City limits confirmed correct on November 6.</li>
+  </ul>
+  </div>
+  <div class="source">Source: PDM-2024-198_Meeting_Notes.pdf; 241212_-_Response_Letter_-_PICP_2024-49692_IFC_attachment.pdf</div>
+</div></div>
+
+</div><!-- /2024 -->
+
+<!-- ============================================= 2025 == -->
+<div class="year-group" data-year="2025">
+<div class="year-label">2025</div>
+
+<div class="event meeting" data-cat="meeting" data-text="February 2025 wastewater service meeting Axis Logistics Park regional wastewater lift station 46 195 GPM Highway 80 Lift Station 2029 four options Kimley-Horn">
+<div class="card">
+  <div class="card-date">February 11, 2025</div>
+  <div class="card-title"><span class="badge b-meeting">Meeting</span> Regional Wastewater Service Meeting &mdash; Capacity Problem Identified</div>
+  <div class="card-body">City Engineering and Kimley-Horn meet to discuss wastewater service options for Axis Logistics Park.
+  <ul>
+    <li>City Lift Station #46 has only <strong>195 GPM of available capacity</strong> &mdash; insufficient for the project's needs</li>
+    <li>City's Capital Improvement Project for a new "Highway 80 Lift Station" is in design phase and won't be operational until <strong>January 2029</strong> &mdash; too late for the development timeline</li>
+    <li>Four options presented; fastest solution (private lift station, Option 3) has an operational date of <strong>April 2026</strong></li>
+    <li>Option 4 (funding partnership for the $25.4M Highway 80 Lift Station) has no confirmed operational date</li>
+  </ul>
+  </div>
+  <div class="source">Source: 250211_-_Agenda_-_Axis_Logistics_Park_Regional_Wastewater_Service.pdf</div>
+</div></div>
+
+<div class="event legal" data-cat="legal" data-text="may 2025 second amendment consent agreement walton texas cotton center MUD 120.75 acres thomas yates league abstract 313 release master development fee 700 per acre sub-district bond proceeds 1585000 MUD No 1">
+<div class="card">
+  <div class="card-date">May 7, 2025 (effective) &mdash; filed May 22, 2025</div>
+  <div class="card-title"><span class="badge b-legal">Legal</span> Second Amendment to Consent Agreement &mdash; 120.75-Acre Tract Released; MUD Fee Reset (Caldwell Co. 370_2025_003855)</div>
+  <div class="card-body">The Second Amendment to the Consent Agreement is executed among the City of San Marcos, Walton Texas LP (Primary Owner), RUC Holdings ULC, Walton TX Martindale LP, Walton TX Martindale LP 2, <strong>Franklin Mountain San Marcos I LP</strong>, and Cotton Center MUD No. 1.
+  <ul>
+    <li>Releases the <strong>120.75-acre Thomas Yates League, Abstract 313 tract</strong> from the Consent Agreement scope (consistent with the September 2024 settlement and Res. 2024-195R)</li>
+    <li>Deletes Section 2.06 of the Consent Agreement</li>
+    <li>Replaces §2.07(c): Master Development Fee set at <strong>$700 per acre per Sub-District</strong> from Cotton Center MUD bond proceeds &mdash; approximately <strong>$1,585,000 total</strong></li>
+    <li>Signatories and dates: City (Stephanie Reyes, City Manager &mdash; Dec 10, 2024); Walton entities (Robert Nixon / Todd Woodhead &mdash; Feb 7, 2025); FM (Ryan Burkhardt &mdash; May 6, 2025); Cotton Center MUD No. 1 (Julie Casner, President &mdash; March 19, 2024)</li>
+    <li>Previously filed in Hays County as instrument 24033937 (September 3, 2024)</li>
+  </ul>
+  </div>
+  <div class="source">Source: Caldwell County Instrument 370_2025_003855; Hays County 24033937</div>
+</div></div>
+
+<div class="event violation" data-cat="violation" data-text="July 2025 EDGE Engineering WPP2 R1 comment letter 2025-55457 Edwards Aquifer Recharge Zone impervious cover 40% limit exceeded 5 sensitive features peak flow increases all storm events TCEQ WPAP required unresolved">
+<div class="card">
+  <div class="card-date">July 18, 2025</div>
+  <div class="card-title"><span class="badge b-violation">Violation</span> EDGE Engineering WPP2 R1 &mdash; Multiple Violations Flagged, Edwards Aquifer (2025-55457)</div>
+  <div class="card-body">EDGE Engineering issues the first (and as of the records, only) round of review comments for WPP2 Permit No. 2025-55457 &mdash; covering a parcel within the <strong>Edwards Aquifer Recharge Zone</strong>. <strong>No response or R2 exists in the records.</strong>
+  <ul>
+    <li><strong>Impervious cover exceeds 40% limit</strong> for sites up to 3 acres in the Recharge Zone (SMDC Table 6.4) &mdash; design must be revised</li>
+    <li><strong>TCEQ Water Protection Area Permit (WPAP) required</strong> &mdash; not yet applied for</li>
+    <li><strong>5 sensitive geological features (S-1 through S-5)</strong> on site meet City sensitivity standards &mdash; protection zones not shown on plans</li>
+    <li><strong>Post-construction peak flows increase</strong> for all regulated storm events (2-, 10-, 25-, 100-year) at Point of Analysis 2 &mdash; violates SMDC §3.9.1.1</li>
+    <li>Missing Statement of No Impact for endangered species, wetlands, and archaeological sites</li>
+    <li>Must demonstrate compliance with Development Agreement's 14.13-acre impervious cover cap for the overall property</li>
+  </ul>
+  </div>
+  <div class="source">Source: 2025-55457_Comment_Letter_R1_-_EDGE.docx</div>
+</div></div>
+
+<div class="event council" data-cat="council" data-text="August 2025 executive session ID25-559 ID25-560 development agreement dissolution economic development incentives real property legal advice">
+<div class="card">
+  <div class="card-date">August 5, 2025</div>
+  <div class="card-title"><span class="badge b-council">City Council</span> Executive Session &mdash; Development Agreement Dissolution &amp; Economic Development (ID#25-559 / ID#25-560)</div>
+  <div class="card-body">City Council holds executive session to deliberate on: economic development incentives, real property matters, <strong>legal advice on a development agreement dissolution</strong>, and personnel evaluations. Council takes action following the session (ID#25-560 &mdash; Individual Consideration). This is the first formal Council action on dissolving the Cotton Center Development Agreement.
+  </div>
+  <div class="source">Source: San Marcos Legistar &mdash; ID#25-559 (Passed 8/5/2025), ID#25-560</div>
+</div></div>
+
+<div class="event council" data-cat="council" data-text="September 2025 executive session ID25-650 ID25-651 Cotton Center Development Agreement dissolution request wastewater Project AVSM incentives">
+<div class="card">
+  <div class="card-date">September 16, 2025</div>
+  <div class="card-title"><span class="badge b-council">City Council</span> Executive Session &mdash; Cotton Center DA Dissolution &amp; Project AVSM (ID#25-650 / ID#25-651)</div>
+  <div class="card-body">City Council holds a second executive session explicitly on <strong>"a request for dissolution of the Cotton Center Development Agreement"</strong>, plus related wastewater matters and potential incentives for <strong>Project AVSM</strong> &mdash; a new unidentified prospective project not yet publicly named. Action taken on September 16.
+  <ul>
+    <li>Cotton Center DA dissolution is now explicitly named as the subject of negotiation</li>
+    <li><strong>Project AVSM</strong>: A prospective economic development project considering Axis Logistics Park &mdash; code name and identity not yet publicly disclosed</li>
+    <li>Wastewater service matters also discussed (consistent with ongoing Lift Station #46 / SH-80 capacity constraints)</li>
+  </ul>
+  </div>
+  <div class="source">Source: San Marcos Legistar &mdash; ID#25-650 (Passed 9/16/2025), ID#25-651</div>
+</div></div>
+
+<div class="event milestone" data-cat="milestone" data-text="November 5 2025 Resolution 2025-212R Cotton Center Development Agreement terminated 1786 acres Walton Texas LP Caldwell County ETJ release $280000 settlement PUC CCN sewer decertification">
+<div class="card">
+  <div class="card-date">November 5, 2025</div>
+  <div class="card-title"><span class="badge b-milestone">Milestone</span> Cotton Center Development Agreement Fully Terminated &mdash; 1,786 Acres Released from City ETJ (Res. 2025-212R)</div>
+  <div class="card-body">City Council adopts <strong>Resolution 2025-212R</strong>, approving the mutual termination of the Amended and Restated Cotton Center Development Agreement and Consent Agreement for approximately <strong>1,786.06 acres</strong> in Caldwell County. Signed by Mayor Jane Hughson.
+  <ul>
+    <li><strong>Parties:</strong> City of San Marcos; Walton Texas LP; Walton TX Martindale LP; Walton TX Martindale LP 2 (Alberta, Canada entities); David Tuckfield (attorney holding settlement funds)</li>
+    <li><strong>Walton pays City $280,000</strong> as full settlement (held in IOLTA trust)</li>
+    <li>Cotton Center Development Agreement (amended June 7, 2024) &mdash; <strong>completely terminated</strong></li>
+    <li>Consent Agreement (December 11, 2014) &mdash; <strong>completely terminated</strong></li>
+    <li>City <strong>no longer opposes</strong> PUC decertification across 11 dockets (No. 58423–58432, 58657); compensation: <strong>$0.00</strong></li>
+    <li><strong>1,786 acres released from City's ETJ</strong> &mdash; Caldwell County assumes full planning jurisdiction</li>
+    <li>City must record termination instruments in Caldwell County within 15 days</li>
+    <li>City must terminate both agreements via formal action within 60 days of Effective Date</li>
+  </ul>
+  <p><strong>Significance:</strong> The Walton entities originally owned the land that became the SMART Terminal / Axis Logistics Park project area before selling portions to Franklin Mountain San Marcos I, LP. This settlement extricates Walton from all remaining obligations and removes the Cotton Center acreage from City jurisdiction entirely. The 1,786 acres affected represents roughly the non-Axis portion of the original ~2,358-acre Cotton Center Development Agreement area.</p>
+  </div>
+  <div class="source">Source: San Marcos Legistar &mdash; Res. 2025-212R (Passed 11/5/2025); Res. 2025-212R - Settlement Agreement.pdf; Res. 2025-212R - Mutual Termination Agreement.docx; Res. 2025-212R - Resolution.docx</div>
+</div></div>
+
+</div><!-- /2025 -->
+
+</div><!-- /timeline -->
+
+<script>
+function filter() {
+  const q   = document.getElementById('search').value.toLowerCase();
+  const cat = document.getElementById('catFilter').value;
+
+  document.querySelectorAll('.event').forEach(ev => {
+    const text    = (ev.dataset.text || '') + ev.innerText.toLowerCase();
+    const evCat   = ev.dataset.cat || '';
+    const matchQ  = !q   || text.includes(q);
+    const matchC  = !cat || evCat === cat;
+    ev.classList.toggle('hidden', !(matchQ && matchC));
+  });
+
+  // hide year labels with no visible events
+  document.querySelectorAll('.year-group').forEach(yg => {
+    const visible = [...yg.querySelectorAll('.event')].some(e => !e.classList.contains('hidden'));
+    yg.classList.toggle('hidden', !visible);
+  });
+}
+</script>
+</body>
+</html>

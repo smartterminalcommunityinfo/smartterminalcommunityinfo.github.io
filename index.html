@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Citizens Against Smart Axis — CASA</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --navy:   #1e3a5f;
+  --accent: #b45309;
+  --bg:     #f1f4f8;
+  --card:   #ffffff;
+}
+
+body {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: #1a2330;
+  min-height: 100vh;
+}
+
+/* ── HEADER ── */
+header {
+  background: var(--navy);
+  color: #fff;
+  padding: 48px 24px 40px;
+  text-align: center;
+}
+
+header .org-label {
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #93c5fd;
+  margin-bottom: 10px;
+}
+
+header h1 {
+  font-size: 2rem;
+  font-weight: 900;
+  line-height: 1.2;
+  margin-bottom: 10px;
+}
+
+header h1 span {
+  color: #fbbf24;
+}
+
+header .tagline {
+  font-size: .95rem;
+  color: #cbd5e1;
+  max-width: 560px;
+  margin: 0 auto 20px;
+  line-height: 1.6;
+}
+
+header .instagram-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: .82rem;
+  color: #93c5fd;
+  text-decoration: none;
+  border: 1px solid #3b5f8a;
+  border-radius: 20px;
+  padding: 5px 14px;
+  transition: background .15s;
+}
+header .instagram-link:hover {
+  background: rgba(255,255,255,.08);
+}
+
+/* ── INTRO BAND ── */
+.intro-band {
+  background: #fef9c3;
+  border-bottom: 1px solid #fde047;
+  padding: 16px 24px;
+  text-align: center;
+  font-size: .83rem;
+  color: #713f12;
+  line-height: 1.6;
+}
+
+/* ── MAIN GRID ── */
+main {
+  max-width: 1000px;
+  margin: 40px auto 80px;
+  padding: 0 20px;
+}
+
+.section-label {
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: #94a3b8;
+  margin-bottom: 16px;
+  padding-left: 4px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 18px;
+  margin-bottom: 48px;
+}
+
+.card {
+  background: var(--card);
+  border-radius: 12px;
+  padding: 22px 22px 18px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.09);
+  text-decoration: none;
+  color: inherit;
+  border-top: 4px solid var(--navy);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: box-shadow .15s, transform .15s;
+}
+.card:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,.14);
+  transform: translateY(-2px);
+}
+
+.card.accent { border-top-color: var(--accent); }
+.card.green  { border-top-color: #166534; }
+.card.purple { border-top-color: #6d28d9; }
+.card.teal   { border-top-color: #0f6b8e; }
+.card.red    { border-top-color: #be185d; }
+
+.card-icon {
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+.card h2 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1a2330;
+  line-height: 1.3;
+}
+
+.card p {
+  font-size: .82rem;
+  color: #64748b;
+  line-height: 1.55;
+  flex: 1;
+}
+
+.card .open-label {
+  font-size: .73rem;
+  font-weight: 700;
+  color: #94a3b8;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+/* ── FOOTER ── */
+footer {
+  text-align: center;
+  font-size: .78rem;
+  color: #94a3b8;
+  padding: 28px 20px 40px;
+  border-top: 1px solid #e2e8f0;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="org-label">Citizens Against Smart Axis</div>
+  <h1>The <span>CASA</span> Research Hub</h1>
+  <p class="tagline">
+    Public records, ownership analysis, and accountability research on the
+    TriTexas Logistics Park (formerly SMART Terminal / Axis Logistics Park)
+    in San Marcos, Texas.
+  </p>
+  <a class="instagram-link" href="https://www.instagram.com/casa.smtx" target="_blank" rel="noopener">
+    &#x1F4F7; @casa.smtx on Instagram
+  </a>
+</header>
+
+<div class="intro-band">
+  All findings on this site are sourced from public records, official filings, and government databases.
+  Documents are available upon request. This site does not represent legal advice.
+</div>
+
+<main>
+
+  <p class="section-label">Research Reports</p>
+
+  <div class="grid">
+
+    <a class="card accent" href="political_influence.html">
+      <div class="card-icon">&#x1F4B0;</div>
+      <h2>Political Contributions &amp; Regulatory Influence</h2>
+      <p>Tracks campaign donations from project principals to state officials, and the regulatory bodies those officials oversee that bear on the project.</p>
+      <div class="open-label">View Report &rarr;</div>
+    </a>
+
+    <a class="card purple" href="ownership_structure.html">
+      <div class="card-icon">&#x1F3E2;</div>
+      <h2>Ownership Structure</h2>
+      <p>Corporate chain of title tracing the entities behind the project — from land ownership through development partnerships and holding companies.</p>
+      <div class="open-label">View Report &rarr;</div>
+    </a>
+
+    <a class="card red" href="compliance_report.html">
+      <div class="card-icon">&#x26A0;&#xFE0F;</div>
+      <h2>Compliance Report</h2>
+      <p>Documents regulatory compliance issues, permit violations, and procedural irregularities identified in public filings and agency records.</p>
+      <div class="open-label">View Report &rarr;</div>
+    </a>
+
+    <a class="card teal" href="projects_summary.html">
+      <div class="card-icon">&#x1F3ED;</div>
+      <h2>Prospective Projects Summary</h2>
+      <p>Overview of industrial recruitment efforts — the companies being pursued, projected investment figures, job claims, and current status of each prospect.</p>
+      <div class="open-label">View Report &rarr;</div>
+    </a>
+
+    <a class="card" href="project_timeline.html">
+      <div class="card-icon">&#x1F4C5;</div>
+      <h2>Project Timeline</h2>
+      <p>Chronological record of major project milestones, government approvals, public announcements, and key decisions from inception to present.</p>
+      <div class="open-label">View Timeline &rarr;</div>
+    </a>
+
+    <a class="card green" href="timeline.html">
+      <div class="card-icon">&#x1F4C4;</div>
+      <h2>Document Timeline</h2>
+      <p>Searchable index of public records and official documents ordered by date — city council items, PIR responses, agency filings, and more.</p>
+      <div class="open-label">View Timeline &rarr;</div>
+    </a>
+
+  </div>
+
+</main>
+
+<footer>
+  Citizens Against Smart Axis &mdash; San Marcos, Texas &mdash;
+  <a href="https://www.instagram.com/casa.smtx" target="_blank" rel="noopener" style="color:#64748b;">@casa.smtx</a>
+</footer>
+
+</body>
+</html>

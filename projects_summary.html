@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Axis Logistics Park — Prospective Projects Summary</title>
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+         background: #f0f2f5; margin: 0; padding: 20px; color: #222; }
+  h1  { font-size: 1.6rem; margin-bottom: 4px; }
+  .subtitle { color: #666; font-size: .9rem; margin-bottom: 20px; }
+
+  .filters { display: flex; gap: 10px; flex-wrap: wrap; background: #fff;
+             padding: 12px 16px; border-radius: 8px; margin-bottom: 20px;
+             box-shadow: 0 1px 4px rgba(0,0,0,.1); }
+  .filters input  { flex: 1; min-width: 200px; padding: 6px 10px;
+                    border: 1px solid #ccc; border-radius: 4px; font-size: .9rem; }
+  .filters select { padding: 6px 10px; border: 1px solid #ccc; border-radius: 4px; font-size: .9rem; }
+  label { font-size: .85rem; color: #555; display: flex; align-items: center; gap: 6px; }
+
+  /* stat bar */
+  .stats { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
+  .stat-box { background: #fff; border-radius: 8px; padding: 12px 18px;
+              box-shadow: 0 1px 3px rgba(0,0,0,.1); flex: 1; min-width: 140px; text-align: center; }
+  .stat-box .num { font-size: 1.8rem; font-weight: 700; }
+  .stat-box .lbl { font-size: .78rem; color: #888; margin-top: 2px; }
+  .stat-box.s-sub   .num { color: #2980b9; }
+  .stat-box.s-short .num { color: #16a085; }
+  .stat-box.s-pass  .num { color: #e67e22; }
+  .stat-box.s-nosub .num { color: #c0392b; }
+  .stat-box.s-active .num { color: #8e44ad; }
+  .stat-box.s-jobs  .num { color: #1a3a5c; }
+
+  /* project card */
+  .project { background: #fff; border-radius: 10px; padding: 16px 20px;
+             box-shadow: 0 1px 4px rgba(0,0,0,.09); margin-bottom: 16px;
+             border-left: 5px solid #ccc; transition: box-shadow .15s; }
+  .project:hover { box-shadow: 0 3px 10px rgba(0,0,0,.14); }
+
+  /* status colors */
+  .project.submitted    { border-left-color: #2980b9; }
+  .project.shortlisted  { border-left-color: #16a085; }
+  .project.active       { border-left-color: #8e44ad; }
+  .project.passed       { border-left-color: #e67e22; }
+  .project.no-submission{ border-left-color: #c0392b; }
+
+  .project-header { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; }
+  .code-name { font-size: 1.1rem; font-weight: 700; }
+  .industry  { font-size: .85rem; color: #555; }
+  .badge { display: inline-block; border-radius: 4px; padding: 2px 9px;
+           font-size: .72rem; font-weight: 700; vertical-align: middle; }
+  .b-submitted    { background: #2980b9; color: #fff; }
+  .b-shortlisted  { background: #16a085; color: #fff; }
+  .b-active       { background: #8e44ad; color: #fff; }
+  .b-passed       { background: #e67e22; color: #fff; }
+  .b-no-submission{ background: #c0392b; color: #fff; }
+
+  .meta-row { display: flex; flex-wrap: wrap; gap: 6px 20px;
+              font-size: .83rem; color: #555; margin-bottom: 10px; }
+  .meta-item { display: flex; align-items: center; gap: 4px; }
+  .meta-item strong { color: #333; }
+
+  .detail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+                 gap: 10px; margin-bottom: 10px; }
+  .detail-box { background: #f7f8fa; border-radius: 6px; padding: 8px 12px; }
+  .detail-box h4 { font-size: .74rem; text-transform: uppercase; letter-spacing: .05em;
+                   color: #888; margin: 0 0 4px; }
+  .detail-box p  { margin: 0; font-size: .85rem; line-height: 1.5; }
+
+  .city-response { background: #fffbf0; border: 1px solid #f0d060; border-radius: 6px;
+                   padding: 8px 12px; font-size: .85rem; line-height: 1.5; }
+  .city-response h4 { font-size: .74rem; text-transform: uppercase; letter-spacing: .05em;
+                      color: #b88000; margin: 0 0 4px; }
+
+  .notes-section { margin-top: 8px; font-size: .83rem; color: #555; line-height: 1.55; }
+  .notes-section ul { margin: 4px 0 0; padding-left: 18px; }
+  .notes-section li { margin-bottom: 2px; }
+
+  .source { font-size: .73rem; color: #aaa; margin-top: 8px; font-style: italic; }
+
+  .hidden { display: none !important; }
+
+  /* legend */
+  .legend { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; font-size: .82rem; }
+  .legend-item { display: flex; align-items: center; gap: 5px; }
+  .legend-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+  .ld-submitted    { background: #2980b9; }
+  .ld-shortlisted  { background: #16a085; }
+  .ld-active       { background: #8e44ad; }
+  .ld-passed       { background: #e67e22; }
+  .ld-no-submission{ background: #c0392b; }
+
+  .count-display { font-size: .82rem; color: #888; margin-left: auto; align-self: center; }
+</style>
+</head>
+<body>
+
+<h1>Axis Logistics Park &mdash; Prospective Projects</h1>
+<p class="subtitle">13 companies that responded to Texas Governor's Office RFIs for the SMART Terminal / Axis Logistics Park site in San Marcos, TX &mdash; compiled from City of San Marcos public information request documents and 32 Caldwell County deed/easement/agreement records.</p>
+
+<!-- Summary stats -->
+<div class="stats">
+  <div class="stat-box s-sub">
+    <div class="num" id="cnt-submitted">2</div>
+    <div class="lbl">Submitted/Shortlisted</div>
+  </div>
+  <div class="stat-box s-active">
+    <div class="num" id="cnt-active">5</div>
+    <div class="lbl">Active / In Discussion</div>
+  </div>
+  <div class="stat-box s-pass">
+    <div class="num" id="cnt-passed">3</div>
+    <div class="lbl">Passed / Declined</div>
+  </div>
+  <div class="stat-box s-nosub">
+    <div class="num" id="cnt-nosub">3</div>
+    <div class="lbl">No Submission / Infeasible</div>
+  </div>
+  <div class="stat-box s-jobs">
+    <div class="num">6,600+</div>
+    <div class="lbl">Total Jobs (all projects)</div>
+  </div>
+  <div class="stat-box s-jobs" style="color:#1a3a5c">
+    <div class="num" style="color:#1a3a5c">$8B+</div>
+    <div class="lbl">Total Investment (all projects)</div>
+  </div>
+</div>
+
+<!-- Legend -->
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot ld-submitted"></div> Submitted / Shortlisted</div>
+  <div class="legend-item"><div class="legend-dot ld-active"></div> Active / In Discussion</div>
+  <div class="legend-item"><div class="legend-dot ld-passed"></div> Passed or Declined</div>
+  <div class="legend-item"><div class="legend-dot ld-no-submission"></div> No Submission / Infeasible</div>
+</div>
+
+<!-- Filters -->
+<div class="filters">
+  <input id="search-box" type="text" placeholder="Search by project name, industry, or keyword..." oninput="applyFilters()">
+  <label>Status:
+    <select id="status-filter" onchange="applyFilters()">
+      <option value="">All</option>
+      <option value="submitted">Submitted / Shortlisted</option>
+      <option value="active">Active / In Discussion</option>
+      <option value="passed">Passed</option>
+      <option value="no-submission">No Submission</option>
+    </select>
+  </label>
+  <label>Industry:
+    <select id="industry-filter" onchange="applyFilters()">
+      <option value="">All Industries</option>
+      <option value="pharmaceutical">Pharmaceutical</option>
+      <option value="energy">Energy / Battery</option>
+      <option value="manufacturing">Manufacturing</option>
+      <option value="steel">Steel / Metals</option>
+      <option value="solar">Solar / Semiconductor</option>
+      <option value="tire">Tire / Automotive</option>
+      <option value="magnetics">Magnetics</option>
+      <option value="electronics">Electronics</option>
+    </select>
+  </label>
+  <span class="count-display" id="count-display">Showing 13 of 13</span>
+</div>
+
+<!-- ===== PROJECT CARDS ===== -->
+
+<!-- 1. Project Savannah -->
+<div class="project shortlisted" data-status="shortlisted" data-industry="pharmaceutical"
+     data-text="savannah pharmaceutical drug manufacturer monoclonal antibody api chemical synthesis">
+  <div class="project-header">
+    <span class="code-name">Project Savannah</span>
+    <span class="badge b-shortlisted">Shortlisted</span>
+    <span class="industry">Pharmaceutical / Drug Manufacturing</span>
+  </div>
+  <div class="meta-row">
+    <div class="meta-item"><strong>RFI Date:</strong> August 2024</div>
+    <div class="meta-item"><strong>Source:</strong> Texas Governor's Office EDT</div>
+    <div class="meta-item"><strong>Site:</strong> ~200 acres / 1M sf at Axis Logistics Park</div>
+    <div class="meta-item"><strong>Investment:</strong> Not disclosed</div>
+    <div class="meta-item"><strong>Jobs:</strong> Not disclosed</div>
+  </div>
+  <div class="detail-grid">
+    <div class="detail-box">
+      <h4>Operations</h4>
+      <p>API (active pharmaceutical ingredient) chemical synthesis and monoclonal antibody (mAb) production. Major biopharmaceutical manufacturing facility.</p>
+    </div>
+    <div class="detail-box">
+      <h4>Water / Wastewater</h4>
+      <p>350,000 GPD water demand (Phase 1). Wastewater discharge characteristics not fully specified; wastewater pretreatment would be required by city.</p>
+    </div>
+    <div class="detail-box">
+      <h4>Infrastructure Needs</h4>
+      <p>Large water and wastewater capacity. City indicated water/wastewater improvements were planned and could meet project timeline, conditioned on pretreatment.</p>
+    </div>
+  </div>
+  <div class="city-response">
+    <h4>City of San Marcos Response</h4>
+    <p>City confirmed that water and wastewater improvements were planned and could meet the project timeline. However, wastewater from pharmaceutical manufacturing would require pretreatment before discharge to city sewer.</p>
+  </div>
+  <div class="source">Source: Governor's Office RFI documents, August 2024</div>
+</div>
+
+<!-- 2. Project Vortex Wind -->
+<div class="project submitted" data-status="submitted" data-industry="energy"
+     data-text="vortex wind energy storage automotive battery cell pack assembly naics 335911 2.3 billion 2000 jobs">
+  <div class="project-header">
+    <span class="code-name">Project Vortex Wind</span>
+    <span class="badge b-submitted">Submitted</span>
+    <span class="industry">Energy Storage / Automotive Battery Manufacturing</span>
+  </div>
+  <div class="meta-row">
+    <div class="meta-item"><strong>RFI Date:</strong> April 2025</div>
+    <div class="meta-item"><strong>Source:</strong> Texas Governor's Office EDT</div>
+    <div class="meta-item"><strong>Site Need:</strong> 100&ndash;150 acres greenfield OR 2.2M RSF existing building</div>
+    <div class="meta-item"><strong>Investment:</strong> $2.3 billion</div>
+    <div class="meta-item"><strong>Jobs:</strong> 2,000</div>
+    <div class="meta-item"><strong>NAICS:</strong> 335911</div>
+  </div>
+  <div class="detail-grid">
+    <div class="detail-box">
+      <h4>Operations</h4>
+      <p>Energy storage systems and automotive battery cell and pack assembly. One of the largest projects by investment dollar amount.</p>
+    </div>
+    <div class="detail-box">
+      <h4>Water / Wastewater</h4>
+      <p>Water demand not specified in documents reviewed. Wastewater service was <strong>NOT available</strong> at the Axis site at time of RFI.</p>
+    </div>
+    <div class="detail-box">
+      <h4>Infrastructure Needs</h4>
+      <p>City confirmed 12-inch water main available. Wastewater service does not currently extend to site &mdash; significant infrastructure gap identified.</p>
+    </div>
+  </div>
+  <div class="city-response">
+    <h4>City of San Marcos Response</h4>
+    <p>City confirmed a 12-inch water main is available near the site. However, wastewater service is <strong>NOT at the site</strong> &mdash; a critical infrastructure gap. City did not indicate when wastewater would be extended.</p>
+  </div>
+  <div class="notes-section">
+    <ul>
+      <li>$2.3B investment makes this one of the highest-value prospects in the pipeline.</li>
+      <li>2,000 jobs would be significant for San Marcos / Hays County.</li>
+      <li>Wastewater gap is a major feasibility concern.</li>
+    </ul>
+  </div>
+  <div class="source">Source: Governor's Office RFI documents, April 2025</div>
+</div>
+
+<!-- 3. Project Frontier -->
+<div class="project active" data-status="active" data-industry="manufacturing"
+     data-text="frontier architectural products manufacturing 60 80 acres 178 million 104 176 jobs voc air permit rail">
+  <div class="project-header">
+    <span class="code-name">Project Frontier</span>
+    <span class="badge b-active">Active</span>
+    <span class="industry">Architectural Products Manufacturing</span>
+  </div>
+  <div class="meta-row">
+    <div class="meta-item"><strong>RFI Date:</strong> May 2025</div>
+    <div class="meta-item"><strong>Source:</strong> Texas Governor's Office EDT</div>
+    <div class="meta-item"><strong>Site Need:</strong> 60&ndash;80 acres greenfield</div>
+    <div class="meta-item"><strong>Investment:</strong> $178 million</div>
+    <div class="meta-item"><strong>Jobs:</strong> 104&ndash;176</div>
+  </div>
+  <div class="detail-grid">
+    <div class="detail-box">
+      <h4>Operations</h4>
+      <p>Architectural products manufacturing. Major air permit required &mdash; VOC emissions of 78.46 tons/year. Rail access preferred.</p>
+    </div>
+    <div class="detail-box">
+      <h4>Water / Wastewater</h4>
+      <p>216,300 GPD water demand. 173,040 GPD wastewater. Standard industrial profile without noted pretreatment concerns.</p>
+    </div>
+    <div class="detail-box">
+      <h4>Infrastructure Needs</h4>
+      <p>Rail access preferred. Major air quality permit needed from TCEQ. City confirmed Axis site can accommodate usage.</p>
+    </div>
+  </div>
+  <div class="city-response">
+    <h4>City of San Marcos Response</h4>
+    <p>City confirmed the Axis site can accommodate the water and wastewater usage requested. No major infrastructure concerns identified by city staff.</p>
+  </div>
+  <div class="notes-section">
+    <ul>
+      <li>VOC emissions of 78.46 tons/year will require a major TCEQ air quality permit &mdash; potentially a significant hurdle.</li>
+      <li>Rail preference aligns with Axis site's proximity to Union Pacific line.</li>
+    </ul>
+  </div>
+  <div class="source">Source: Governor's Office RFI documents, May 2025</div>
+</div>
+
+<!-- 4. Project Matcha Latte -->
+<div class="project active" data-status="active" data-industry="manufacturing"
+     data-text="matcha latte italian company outdoor porcelain pavers dry mix ceramic slurry pretreatment 34.5 million 50 jobs">
+  <div class="project-header">
+    <span class="code-name">Project Matcha Latte</span>
+    <span class="badge b-active">Active</span>
+    <span class="industry">Ceramic / Building Materials Manufacturing (Italian company)</span>
+  </div>
+  <div class="meta-row">
+    <div class="meta-item"><strong>RFI Date:</strong> May 2025</div>
+    <div class="meta-item"><strong>Source:</strong> Texas Governor's Office EDT</div>
+    <div class="meta-item"><strong>Site Need:</strong> 275,000 sf on 100 acres</div>
+    <div class="meta-item"><strong>Investment:</strong> $34.5 million</div>
+    <div class="meta-item"><strong>Jobs:</strong> 50</div>
+    <div class="meta-item"><strong>NAICS:</strong> 32530201</div>
+  </div>
+  <div class="detail-grid">
+    <div class="detail-box">
+      <h4>Operations</h4>
+      <p>Outdoor porcelain pavers and dry mix base materials. Italian company. NAICS 32530201 (ceramic tile / stone products).</p>
+    </div>
+    <div class="detail-box">
+      <h4>Water / Wastewater</h4>
+      <p>50,000 GPD water. 40,000 GPD wastewater containing <strong>ceramic slurry</strong> &mdash; requires pretreatment before city sewer discharge.</p>
+    </div>
+    <div class="detail-box">
+      <h4>Financing Status</h4>
+      <p>Financing is <strong>NOT finalized</strong> &mdash; noted explicitly in RFI documents. Project feasibility contingent on securing funding.</p>
+    </div>
+  </div>
+  <div class="city-response">
+    <h4>City of San Marcos Response</h4>
+    <p>Ceramic slurry in wastewater would require pretreatment. City reviewed water and wastewater capacity; no major capacity objection but pretreatment requirement is a condition.</p>
+  </div>
+  <div class="notes-section">
+    <ul>
+      <li>Financing not finalized is a significant risk factor at this stage.</li>
+      <li>Smallest investment of any active project ($34.5M).</li>
+      <li>Ceramic slurry wastewater pretreatment adds cost and complexity.</li>
+    </ul>
+  </div>
+  <div class="source">Source: Governor's Office RFI documents, May 2025</div>
+</div>
+
+<!-- 5. Project America Flag -->
+<div class="project shortlisted" data-status="shortlisted" data-industry="tire"
+     data-text="america flag UK tire manufacturer US global HQ naics 326211 shortlisted closed-loop gray water recycling">
+  <div class="project-header">
+    <span class="code-name">Project America Flag</span>
+    <span class="badge b-shortlisted">Shortlisted</span>
+    <span class="industry">Tire Manufacturing (UK company seeking US HQ)</span>
+  </div>
+  <div class="meta-row">
+    <div class="meta-item"><strong>RFI Date:</strong> June&ndash;July 2025</div>
+    <div class="meta-item"><strong>Source:</strong> Texas Governor's Office EDT</div>
+    <div class="meta-item"><strong>Site:</strong> Axis Logistics Park <strong>shortlisted</strong></div>
+    <div class="meta-item"><strong>Investment:</strong> Not disclosed</div>
+    <div class="meta-item"><strong>Jobs:</strong> Not disclosed</div>
+    <div class="meta-item"><strong>NAICS:</strong> 326211 (Tire Manufacturing)</div>
+  </div>
+  <div class="detail-grid">
+    <div class="detail-box">
+      <h4>Operations</h4>
+      <p>UK-headquartered tire manufacturer establishing US global headquarters. NAICS 326211. Seeking US manufacturing footprint.</p>
+    </div>
+    <div class="detail-box">
+      <h4>Water / Wastewater</h4>
+      <p>189,271 m&sup3;/year water consumption (consumptive use, minimal discharge). Closed-loop gray water recycling system &mdash; low wastewater impact.</p>
+    </div>
+    <div class="detail-box">
+      <h4>Infrastructure Needs</h4>
+      <p>Primarily water supply. Closed-loop system reduces wastewater demands significantly compared to similar-scale manufacturers.</p>
+    </div>
+  </div>
+  <div class="city-response">
+    <h4>City of San Marcos Response</h4>
+    <p>Axis site was shortlisted by the company. City response details not fully documented in available records. The closed-loop gray water recycling design is favorable for city infrastructure.</p>
+  </div>
+  <div class="notes-section">
+    <ul>
+      <li>Formally shortlisted &mdash; one of two projects with confirmed shortlist status alongside Project Savannah.</li>
+      <li>189,271 m&sup3;/year = approximately 137,000 GPD &mdash; moderate water demand.</li>
+      <li>UK company establishing US global HQ suggests long-term investment commitment.</li>
+    </ul>
+  </div>
+  <div class="source">Source: Governor's Office RFI documents, June&ndash;July 2025</div>
+</div>
+
+<!-- 6. Project Thomas Train -->
+<div class="project active" data-status="active" data-industry="energy"
+     data-text="thomas train fortune 100 energy company combined cycle gas turbine CCGT dedicated data center power 2000 acres 870000 gpd">
+  <div class="project-header">
+    <span class="code-name">Project Thomas Train</span>
+    <span class="badge b-active">Active</span>
+    <span class="industry">Energy / Power Generation (Fortune 100 Company)</span>
+  </div>
+  <div class="meta-row">
+    <div class="meta-item"><strong>RFI Date:</strong> July 2025</div>
+    <div class="meta-item"><strong>Source:</strong> Texas Governor's Office EDT</div>
+    <div class="meta-item"><strong>Site Need:</strong> 2,000 acres</div>
+    <div class="meta-item"><strong>Investment:</strong> Not disclosed</div>
+    <div class="meta-item"><strong>Jobs:</strong> Not disclosed</div>
+  </div>
+  <div class="detail-grid">
+    <div class="detail-box">
+      <h4>Operations</h4>
+      <p>Combined cycle gas turbines (CCGT) dedicated to powering data centers. Fortune 100 energy company. Requires 2,000 acres &mdash; the largest land footprint of any prospect.</p>
+    </div>
+    <div class="detail-box">
+      <h4>Water / Wastewater</h4>
+      <p>870,000 GPD water demand. 480,000 GPD wastewater. Among the highest water demands in the project pipeline.</p>
+    </div>
+    <div class="detail-box">
+      <h4>Infrastructure Concerns</h4>
+      <p>City: water available for the portion of site within city service territory. Wastewater collection infrastructure does not exist at site but improvements are possible.</p>
+    </div>
+  </div>
+  <div class="city-response">
+    <h4>City of San Marcos Response</h4>
+    <p>City confirmed water is available for the portion of the site within the city's service territory. Wastewater collection infrastructure does <strong>not currently exist</strong> at the site, but improvements are possible. The 2,000-acre requirement raises feasibility questions about whether the full site can be served.</p>
+  </div>
+  <div class="notes-section">
+    <ul>
+      <li>At 2,000 acres, this project would require nearly the entire Axis Logistics Park footprint.</li>
+      <li>Fortune 100 company &mdash; significant economic weight but extraordinary infrastructure demands.</li>
+      <li>CCGT power generation for data centers is a growing sector with long-term demand.</li>
+    </ul>
+  </div>
+  <div class="source">Source: Governor's Office RFI documents, July 2025</div>
+</div>
+
+<!-- 7. Project Golden Eagle Sun -->
+<div class="project no-submission" data-status="no-submission" data-industry="solar"
+     data-text="golden eagle sun solar manufacturing 300000 sf existing building 15 MW 1 million GPD march 2026 deadline greenfield infeasible">
+  <div class="project-header">
+    <span class="code-name">Project Golden Eagle Sun</span>
+    <span class="badge b-no-submission">Infeasible &mdash; No Submission</span>
+    <span class="industry">Solar Manufacturing</span>
+  </div>
+  <div class="meta-row">
+    <div class="meta-item"><strong>RFI Date:</strong> December 2025 / January 2026</div>
+    <div class="meta-item"><strong>Source:</strong> Texas Governor's Office EDT</div>
+    <div class="meta-item"><strong>Site Need:</strong> 300,000+ sf <em>existing building</em></div>
+    <div class="meta-item"><strong>Investment:</strong> Not disclosed</div>
+    <div class="meta-item"><strong>Jobs:</strong> Not disclosed</div>
+    <div class="meta-item"><strong>Required Power:</strong> 15+ MW</div>
+  </div>
+  <div class="detail-grid">
+    <div class="detail-box">
+      <h4>Operations</h4>
+      <p>Solar panel manufacturing. Required an <strong>existing building</strong> of 300,000+ sf. Axis Logistics Park is a greenfield site with no existing structures.</p>
+    </div>
+    <div class="detail-box">
+      <h4>Water / Wastewater</h4>
+      <p>1,000,000 GPD water by March 2026. City confirmed water capacity available in principle.</p>
+    </div>
+    <div class="detail-box">
+      <h4>Decision Timeline</h4>
+      <p>Required operational facility by <strong>March 2026</strong>. Greenfield development at Axis requires 12&ndash;18 months from permitting &mdash; physically impossible to meet deadline.</p>
+    </div>
+  </div>
+  <div class="city-response">
+    <h4>City of San Marcos Response</h4>
+    <p>City confirmed water capacity was available but noted that Axis is a greenfield site. A new facility would require 12&ndash;18 months from permitting to completion &mdash; the March 2026 deadline was <strong>not feasible</strong>. No submission made for this project.</p>
+  </div>
+  <div class="notes-section">
+    <ul>
+      <li>Eliminated due to timeline mismatch, not infrastructure capacity.</li>
+      <li>Needed existing building; Axis has none.</li>
+    </ul>
+  </div>
+  <div class="source">Source: Governor's Office RFI documents, December 2025 / January 2026</div>
+</div>
+
+<!-- 8. Project Lassen -->
+<div class="project active" data-status="active" data-industry="manufacturing"
+     data-text="lassen scout cities site selector shortlisted industrial wastewater nonhazardous high salt NaCl 150000 GPD san marcos business park">
+  <div class="project-header">
+    <span class="code-name">Project Lassen</span>
+    <span class="badge b-active">Active / Under Evaluation</span>
+    <span class="industry">Industrial Manufacturing (high-salinity wastewater)</span>
+  </div>
+  <div class="meta-row">
+    <div class="meta-item"><strong>RFI Date:</strong> December 2025</div>
+    <div class="meta-item"><strong>Source:</strong> Site Selector (Scout Cities)</div>
+    <div class="meta-item"><strong>Sites Shortlisted:</strong> Axis Logistics Park AND San Marcos Business Park</div>
+    <div class="meta-item"><strong>Investment:</strong> Not disclosed</div>
+    <div class="meta-item"><strong>Jobs:</strong> Not disclosed</div>
+  </div>
+  <div class="detail-grid">
+    <div class="detail-box">
+      <h4>Operations</h4>
+      <p>Industrial manufacturing generating high-salinity (NaCl) industrial wastewater. Nonhazardous. Industry type not specified beyond wastewater characteristics.</p>
+    </div>
+    <div class="detail-box">
+      <h4>Water / Wastewater</h4>
+      <p>150,000 GPD industrial wastewater (nonhazardous, high salt/NaCl content). Wastewater characteristics may require pretreatment for city sewer.</p>
+    </div>
+    <div class="detail-box">
+      <h4>Site Competition</h4>
+      <p>Both Axis Logistics Park and San Marcos Business Park shortlisted. Competing internally within San Marcos for the project.</p>
+    </div>
+  </div>
+  <div class="city-response">
+    <h4>City of San Marcos Response</h4>
+    <p>City staff noted 150,000 GPD is not unusually high and indicated they would double-check capacity. High-salinity wastewater (NaCl) would likely require evaluation of impacts on wastewater treatment plant operations.</p>
+  </div>
+  <div class="notes-section">
+    <ul>
+      <li>Notable: two San Marcos sites competing for same project &mdash; Axis vs. Business Park.</li>
+      <li>Site selector firm Scout Cities involved, suggesting company identity is being shielded at this stage.</li>
+    </ul>
+  </div>
+  <div class="source">Source: Governor's Office RFI / Scout Cities documents, December 2025</div>
+</div>
+
+<!-- 9. Project Horizon Mill B -->
+<div class="project no-submission" data-status="no-submission" data-industry="steel"
+     data-text="horizon mill B US steel company steel mill DRI direct reduced iron 900 acres 9 million GPD water infeasible no submission">
+  <div class="project-header">
+    <span class="code-name">Project Horizon Mill B</span>
+    <span class="badge b-no-submission">No Submission &mdash; City Could Not Support</span>
+    <span class="industry">Steel Manufacturing / Direct Reduced Iron (DRI)</span>
+  </div>
+  <div class="meta-row">
+    <div class="meta-item"><strong>RFI Date:</strong> January 2026</div>
+    <div class="meta-item"><strong>Source:</strong> Texas Governor's Office EDT</div>
+    <div class="meta-item"><strong>Site Need:</strong> 900 acres</div>
+    <div class="meta-item"><strong>Investment:</strong> Not disclosed</div>
+    <div class="meta-item"><strong>Jobs:</strong> Not disclosed</div>
+    <div class="meta-item"><strong>NAICS:</strong> 3311 (Iron and Steel Mills)</div>
+  </div>
+  <div class="detail-grid">
+    <div class="detail-box">
+      <h4>Operations</h4>
+      <p>U.S. steel company. Integrated steel mill + DRI (direct reduced iron) facility. NAICS 3311. Requires 900 acres.</p>
+    </div>
+    <div class="detail-box">
+      <h4>Water / Wastewater</h4>
+      <p><strong>9,000,000 GPD (9 MGD) water demand.</strong> 1,300,000 GPD (1.3 MGD) wastewater. City's total water usage is approximately 18 MGD &mdash; this project alone would require ~50% of city supply.</p>
+    </div>
+    <div class="detail-box">
+      <h4>City Decision</h4>
+      <p>Moved to <strong>No Submission</strong>. Water demand is physically impossible to meet without massive regional infrastructure investment.</p>
+    </div>
+  </div>
+  <div class="city-response">
+    <h4>City of San Marcos Response</h4>
+    <p>City determined it could not support this project. 9 MGD water demand equals approximately half of the city's <em>total</em> water usage. No submission was made.</p>
+  </div>
+  <div class="notes-section">
+    <ul>
+      <li>The most water-intensive prospect in the pipeline by a wide margin.</li>
+      <li>City correctly identified this as infeasible without major regional water supply expansion.</li>
+    </ul>
+  </div>
+  <div class="source">Source: Governor's Office RFI documents, January 2026</div>
+</div>
+
+<!-- 10. Project Star -->
+<div class="project no-submission" data-status="no-submission" data-industry="solar"
+     data-text="star high-tech solar semiconductor manufacturing metallization PECVD PVD laser cutting 2 billion 700 acres 675 jobs 2500 jobs city cannot support">
+  <div class="project-header">
+    <span class="code-name">Project Star</span>
+    <span class="badge b-no-submission">No Submission &mdash; City Could Not Support</span>
+    <span class="industry">High-Tech Manufacturing (Solar / Semiconductor)</span>
+  </div>
+  <div class="meta-row">
+    <div class="meta-item"><strong>RFI Date:</strong> February 2026</div>
+    <div class="meta-item"><strong>Source:</strong> Texas Governor's Office EDT</div>
+    <div class="meta-item"><strong>Site Need:</strong> 700+ acres</div>
+    <div class="meta-item"><strong>Investment:</strong> $2 billion</div>
+    <div class="meta-item"><strong>Jobs:</strong> 675 Year 1 / 2,500 within 3&ndash;5 years</div>
+    <div class="meta-item"><strong>Decision Date:</strong> March 31, 2026</div>
+    <div class="meta-item"><strong>Target Production Start:</strong> March 1, 2027</div>
+  </div>
+  <div class="detail-grid">
+    <div class="detail-box">
+      <h4>Operations</h4>
+      <p>High-tech manufacturing. Job types include metallization, PECVD, PVD (physical vapor deposition), and laser cutting &mdash; consistent with solar panel or semiconductor manufacturing.</p>
+    </div>
+    <div class="detail-box">
+      <h4>Water / Wastewater</h4>
+      <p>Large water demand (exact figure not specified in summary). City Utilities Director explicitly stated the city cannot support the requested water usage on a one-year timeline.</p>
+    </div>
+    <div class="detail-box">
+      <h4>City Decision</h4>
+      <p>Utilities Director: <em>"We cannot support with that much water usage just a year from now. Have to pass."</em></p>
+    </div>
+  </div>
+  <div class="city-response">
+    <h4>City of San Marcos Response</h4>
+    <p>City Utilities Director determined the city <strong>cannot support</strong> the project's water demands within the one-year timeline to production start. No submission made. Decision was driven by infrastructure timeline, not permanent capacity limitations.</p>
+  </div>
+  <div class="notes-section">
+    <ul>
+      <li>$2B investment and 2,500 jobs would have been transformative for Hays County.</li>
+      <li>March 2027 production start was likely the fatal constraint &mdash; insufficient time to build out water infrastructure.</li>
+      <li>PECVD/PVD job types strongly suggest solar panel or semiconductor chip manufacturing.</li>
+    </ul>
+  </div>
+  <div class="source">Source: Governor's Office RFI documents, February 2026</div>
+</div>
+
+<!-- 11. Project Mount Fuji -->
+<div class="project active" data-status="active" data-industry="manufacturing"
+     data-text="mount fuji japanese company high purity magnesium oxide site tour march 2026 47560 GPD 3700 GPD sewage">
+  <div class="project-header">
+    <span class="code-name">Project Mount Fuji</span>
+    <span class="badge b-active">Active &mdash; Site Tour Completed</span>
+    <span class="industry">Chemical Manufacturing &mdash; High Purity Magnesium Oxide (Japanese company)</span>
+  </div>
+  <div class="meta-row">
+    <div class="meta-item"><strong>RFI Date:</strong> December 2025 / March 2026</div>
+    <div class="meta-item"><strong>Source:</strong> Texas Governor's Office EDT</div>
+    <div class="meta-item"><strong>Site:</strong> Axis Logistics Park shortlisted; site tour March 17, 2026</div>
+    <div class="meta-item"><strong>Investment:</strong> Not disclosed</div>
+    <div class="meta-item"><strong>Jobs:</strong> Not disclosed</div>
+  </div>
+  <div class="detail-grid">
+    <div class="detail-box">
+      <h4>Operations</h4>
+      <p>Japanese company. Produces high-purity magnesium oxide (MgO). Specialty chemical manufacturing with industrial and electronics applications.</p>
+    </div>
+    <div class="detail-box">
+      <h4>Water / Wastewater</h4>
+      <p>47,560 GPD water. 3,700 GPD sewage. Among the smallest water/wastewater footprints in the pipeline &mdash; well within city capacity.</p>
+    </div>
+    <div class="detail-box">
+      <h4>Infrastructure Notes</h4>
+      <p>City: 12-inch waterline should be sufficient for their needs but only serves <em>a portion</em> of the site &mdash; extension may be needed depending on building location.</p>
+    </div>
+  </div>
+  <div class="city-response">
+    <h4>City of San Marcos Response</h4>
+    <p>City confirmed the 12-inch waterline near the site should be sufficient for the project's water demand. Caveat: the line only serves part of the site; infrastructure extension may be needed. Wastewater demand (3,700 GPD) is minimal.</p>
+  </div>
+  <div class="notes-section">
+    <ul>
+      <li>Site tour on March 17, 2026 indicates serious interest and active evaluation.</li>
+      <li>Very low water and wastewater demand &mdash; no infrastructure capacity concerns.</li>
+      <li>Japanese company entry suggests international manufacturing diversification interest in Central Texas.</li>
+    </ul>
+  </div>
+  <div class="source">Source: Governor's Office RFI / site tour documents, December 2025 &ndash; March 2026</div>
+</div>
+
+<!-- 12. Project North Star -->
+<div class="project active" data-status="active" data-industry="magnetics"
+     data-text="north star US magnetics company rare earth free permanent magnets NAICS 3346 1.8 billion 700 jobs 1.4 million GPD wastewater site visit april may 2026 decision july august 2026 production Q2 2029">
+  <div class="project-header">
+    <span class="code-name">Project North Star</span>
+    <span class="badge b-active">Active &mdash; Decision July/August 2026</span>
+    <span class="industry">Advanced Magnetics Manufacturing (U.S. company)</span>
+  </div>
+  <div class="meta-row">
+    <div class="meta-item"><strong>RFI Date:</strong> March 2026</div>
+    <div class="meta-item"><strong>Source:</strong> Texas Governor's Office EDT</div>
+    <div class="meta-item"><strong>Site Need:</strong> Not specified (10,000 MT annual capacity)</div>
+    <div class="meta-item"><strong>Investment:</strong> $1.8 billion</div>
+    <div class="meta-item"><strong>Jobs:</strong> 700 (197 within 2&ndash;3 years)</div>
+    <div class="meta-item"><strong>NAICS:</strong> 3346 (Magnetic &amp; Optical Media Mfg.)</div>
+    <div class="meta-item"><strong>Decision Date:</strong> July / August 2026</div>
+    <div class="meta-item"><strong>Production Start:</strong> Q2 2029</div>
+  </div>
+  <div class="detail-grid">
+    <div class="detail-box">
+      <h4>Operations</h4>
+      <p>U.S. magnetics company producing <em>"world's first high-performance rare-earth-free permanent magnets."</em> 10,000 metric tons annual capacity. Strategically important for defense and EV supply chain.</p>
+    </div>
+    <div class="detail-box">
+      <h4>Water / Wastewater</h4>
+      <p>1,400,000 GPD (1.4 MGD) water. 800,000 GPD (0.8 MGD) wastewater. City notes water is "high but manageable" and encourages water reuse. Wastewater deemed acceptable.</p>
+    </div>
+    <div class="detail-box">
+      <h4>Critical Infrastructure Note</h4>
+      <p>SH 80 Lift Station (wastewater) completion updated to <strong>Summer 2028</strong> per city email &mdash; aligns with Q2 2029 production start. Previously estimated 2029; now accelerated.</p>
+    </div>
+  </div>
+  <div class="city-response">
+    <h4>City of San Marcos Response</h4>
+    <p>City finds water demand "high but manageable" and encourages water reuse strategies. Wastewater is acceptable. SH 80 Lift Station CIP completion updated to Summer 2028, which supports the Q2 2029 production start timeline. Site visit expected April/May 2026.</p>
+  </div>
+  <div class="notes-section">
+    <ul>
+      <li>Most strategically significant project in pipeline: rare-earth-free magnets are critical for EV motors, wind turbines, and defense applications &mdash; currently dominated by Chinese supply chain.</li>
+      <li>Q2 2029 production start provides more realistic infrastructure runway than most other projects.</li>
+      <li>$1.8B investment and 700 jobs &mdash; second largest by investment in the active pipeline.</li>
+      <li>Site visit expected April/May 2026; final decision July/August 2026.</li>
+    </ul>
+  </div>
+  <div class="source">Source: Governor's Office RFI / North Star emails, March 2026</div>
+</div>
+
+<!-- 13. Project Vista Prism -->
+<div class="project active" data-status="active" data-industry="electronics"
+     data-text="vista prism international electronics sony panasonic sharp 500 acres 2.9 million sf 153 MW electricity 576700 gallon per hour water massive">
+  <div class="project-header">
+    <span class="code-name">Project Vista Prism</span>
+    <span class="badge b-active">Active &mdash; In Discussion</span>
+    <span class="industry">Electronics Manufacturing (international company &mdash; possibly Sony, Panasonic, or Sharp)</span>
+  </div>
+  <div class="meta-row">
+    <div class="meta-item"><strong>RFI Date:</strong> March 2026</div>
+    <div class="meta-item"><strong>Source:</strong> Texas Governor's Office EDT</div>
+    <div class="meta-item"><strong>Site Need:</strong> 500+ acres greenfield; 2.9M sf per building (2 buildings)</div>
+    <div class="meta-item"><strong>Investment:</strong> Not disclosed</div>
+    <div class="meta-item"><strong>Jobs:</strong> Not disclosed</div>
+    <div class="meta-item"><strong>Power Demand:</strong> 153.1 MW electricity</div>
+  </div>
+  <div class="detail-grid">
+    <div class="detail-box">
+      <h4>Operations</h4>
+      <p>International electronics company. Potentially Sony, Panasonic, or Sharp based on company profile. Two buildings of ~2.9M sf each &mdash; massive manufacturing campus.</p>
+    </div>
+    <div class="detail-box">
+      <h4>Water / Wastewater</h4>
+      <p>576,700 gallons/hour in Phases 2 &amp; 3 (~<strong>13.8 MGD</strong> at peak). This approaches Project Horizon Mill B levels and represents a very large fraction of city water supply.</p>
+    </div>
+    <div class="detail-box">
+      <h4>Power Demand</h4>
+      <p>153.1 MW electricity demand &mdash; an extraordinary power requirement that would need direct coordination with ERCOT/utility provider. Larger than many small cities' entire power consumption.</p>
+    </div>
+  </div>
+  <div class="city-response">
+    <h4>City of San Marcos Response</h4>
+    <p>Still in discussion as of March 2026. The massive water demand (potentially 13+ MGD at peak) and 153 MW power requirement would present extraordinary infrastructure challenges. No formal city determination documented yet.</p>
+  </div>
+  <div class="notes-section">
+    <ul>
+      <li>If the 576,700 gal/hour figure is peak usage across phases, it equals ~13.8 MGD &mdash; roughly 75% of the city's total water supply capacity.</li>
+      <li>153 MW power demand would require dedicated transmission infrastructure.</li>
+      <li>Two buildings of 2.9M sf each = ~5.8M total sf &mdash; by far the largest footprint in the pipeline.</li>
+      <li>Still in early discussion; no city feasibility determination yet.</li>
+    </ul>
+  </div>
+  <div class="source">Source: Governor's Office RFI documents, March 2026</div>
+</div>
+
+<!-- ===== FOOTER / INTERMEDIARIES ===== -->
+<div style="background:#fff;border-radius:8px;padding:16px 20px;margin-top:24px;box-shadow:0 1px 3px rgba(0,0,0,.09);font-size:.87rem;line-height:1.6;">
+  <strong>Site &amp; Property Context (from Caldwell County Records &amp; Caldwell CAD)</strong><br><br>
+  <b>Developer:</b> Franklin Mountain San Marcos I, LP (GP: Scarborough San Marcos GP LLC; Manager: Ryan Burkhardt; 16380 Addison Road, Addison TX 75001; Tax contacts: James Feagin &amp; Bruce Browne). A separate entity &mdash; <b>Franklin Mountain San Marcos 75, LP</b> (Owner ID 242650) &mdash; holds ~75 acres (William Pettus Survey, Abs. 21) acquired April 17, 2024. Same address and manager; may be a parcel-specific or tenant-specific SPE.<br><br>
+  <b>Lender:</b> AgTrust, ACA (formerly Lone Star, ACA) &mdash; two loans totaling approximately $52.8M secured against the ~2,017-acre site.<br><br>
+  <b>ARWA Pipeline Corridor:</b> Three perpetual 90-ft-wide pipeline easements (recorded Feb 2024) run through the Axis property for the Alliance Regional Water Authority Phase 1B regional water transmission project &mdash; totaling approximately <b>15.25 acres</b> of permanent encumbrance. Easements are assignable to the Guadalupe-Blanco River Authority (GBRA). All tenant site plans and lot layouts must route around this pipeline corridor.<br><br>
+  <b>Governing Development Agreement:</b> First Amended &amp; Restated SMART Terminal DA (Caldwell Co. 2023-001629, adopted Jan 17, 2023) governs FM&rsquo;s ~2,017 acres. Franklin Mountain is no longer a party to the Cotton Center Development Agreement (formally removed per §2.04 of the Second Amended &amp; Restated Cotton Center DA, executed Jun&ndash;Aug 2024).<br><br>
+  <b>CAD Parcel Inventory (2026 Tax Year &mdash; Caldwell County Appraisal District)</b><br>
+  Combined market value: ~$24.3M across 9 parcels (~2,058 ac total). All parcels carry agricultural exemptions; taxable values are a small fraction of market values.
+  <table style="width:100%;border-collapse:collapse;margin-top:8px;font-size:.82rem;">
+    <thead>
+      <tr style="background:#f0f4f8;text-align:left;">
+        <th style="padding:5px 8px;border:1px solid #dde;">CAD ID</th>
+        <th style="padding:5px 8px;border:1px solid #dde;">Acres</th>
+        <th style="padding:5px 8px;border:1px solid #dde;">Address / Location</th>
+        <th style="padding:5px 8px;border:1px solid #dde;">Market Value</th>
+        <th style="padding:5px 8px;border:1px solid #dde;">Owner Entity</th>
+        <th style="padding:5px 8px;border:1px solid #dde;">Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td style="padding:4px 8px;border:1px solid #dde;">28002</td><td style="padding:4px 8px;border:1px solid #dde;">762.583</td><td style="padding:4px 8px;border:1px solid #dde;">FM 1984, Maxwell</td><td style="padding:4px 8px;border:1px solid #dde;">$9,761,340</td><td style="padding:4px 8px;border:1px solid #dde;">FM-I LP</td><td style="padding:4px 8px;border:1px solid #dde;">Largest parcel; CMA-S (Martindale ETJ Release) taxing entity at $0</td></tr>
+      <tr style="background:#fafbfc;"><td style="padding:4px 8px;border:1px solid #dde;">28280</td><td style="padding:4px 8px;border:1px solid #dde;">660.503</td><td style="padding:4px 8px;border:1px solid #dde;">Valley Way Dr, Maxwell</td><td style="padding:4px 8px;border:1px solid #dde;">$5,844,280</td><td style="padding:4px 8px;border:1px solid #dde;">FM-I LP</td><td style="padding:4px 8px;border:1px solid #dde;">Core SMART Terminal parcel; Cotton Center MUD No. 1 (MCO1) at $0; straddles Lockhart ISD / San Marcos ISD</td></tr>
+      <tr><td style="padding:4px 8px;border:1px solid #dde;">27809</td><td style="padding:4px 8px;border:1px solid #dde;">213.680</td><td style="padding:4px 8px;border:1px solid #dde;">FM 1984, Maxwell</td><td style="padding:4px 8px;border:1px solid #dde;">$2,467,180</td><td style="padding:4px 8px;border:1px solid #dde;">FM-I LP</td><td style="padding:4px 8px;border:1px solid #dde;">City of San Marcos taxing entity (confirms annexation)</td></tr>
+      <tr style="background:#fafbfc;"><td style="padding:4px 8px;border:1px solid #dde;">11678</td><td style="padding:4px 8px;border:1px solid #dde;">143.444</td><td style="padding:4px 8px;border:1px solid #dde;">10920 Hwy 142, Maxwell</td><td style="padding:4px 8px;border:1px solid #dde;">$2,059,850</td><td style="padding:4px 8px;border:1px solid #dde;">FM-I LP</td><td style="padding:4px 8px;border:1px solid #dde;">A188 Maxwell, Thomas survey; acquired from Best David Matthew Jul 2022</td></tr>
+      <tr><td style="padding:4px 8px;border:1px solid #dde;">28052</td><td style="padding:4px 8px;border:1px solid #dde;">75.000</td><td style="padding:4px 8px;border:1px solid #dde;">FM 1984, Maxwell</td><td style="padding:4px 8px;border:1px solid #dde;">$1,202,440</td><td style="padding:4px 8px;border:1px solid #dde;"><b>FM-75 LP</b></td><td style="padding:4px 8px;border:1px solid #dde;">Held by separate entity (Owner ID 242650); acquired from Maxwell Acres Co. &amp; Kasch Apr 2024</td></tr>
+      <tr style="background:#fafbfc;"><td style="padding:4px 8px;border:1px solid #dde;">28119</td><td style="padding:4px 8px;border:1px solid #dde;">130.296</td><td style="padding:4px 8px;border:1px solid #dde;">Quail Run Rd, Martindale</td><td style="padding:4px 8px;border:1px solid #dde;">$1,580,890</td><td style="padding:4px 8px;border:1px solid #dde;">FM-I LP</td><td style="padding:4px 8px;border:1px solid #dde;">Barns/sheds on site; acquired from Tack Redwood Partners Jun 2022</td></tr>
+      <tr><td style="padding:4px 8px;border:1px solid #dde;">27881</td><td style="padding:4px 8px;border:1px solid #dde;">70.046</td><td style="padding:4px 8px;border:1px solid #dde;">19780 San Marcos Hwy</td><td style="padding:4px 8px;border:1px solid #dde;">$1,147,610</td><td style="padding:4px 8px;border:1px solid #dde;">FM-I LP</td><td style="padding:4px 8px;border:1px solid #dde;">CMA-S (Martindale ETJ Release) at $0; confirms former Martindale ETJ boundary</td></tr>
+      <tr style="background:#fafbfc;"><td style="padding:4px 8px;border:1px solid #dde;">27868</td><td style="padding:4px 8px;border:1px solid #dde;">0.950</td><td style="padding:4px 8px;border:1px solid #dde;">2862 FM 1984</td><td style="padding:4px 8px;border:1px solid #dde;">$114,090</td><td style="padding:4px 8px;border:1px solid #dde;">FM-I LP</td><td style="padding:4px 8px;border:1px solid #dde;">Former homesite; $216K improvements removed by 2024; acquired from Van Lee LLC Mar 2022</td></tr>
+      <tr><td style="padding:4px 8px;border:1px solid #dde;">129763</td><td style="padding:4px 8px;border:1px solid #dde;">1.255</td><td style="padding:4px 8px;border:1px solid #dde;">Quail Run, Martindale</td><td style="padding:4px 8px;border:1px solid #dde;">$121,790</td><td style="padding:4px 8px;border:1px solid #dde;">FM-I LP</td><td style="padding:4px 8px;border:1px solid #dde;">"Old 24-ft county road strip"; acquired directly from Caldwell County Apr 2024 (WD 2024-002658)</td></tr>
+      <tr style="background:#f0f4f8;font-weight:bold;"><td style="padding:5px 8px;border:1px solid #dde;">Total</td><td style="padding:5px 8px;border:1px solid #dde;">2,057.757</td><td style="padding:5px 8px;border:1px solid #dde;"></td><td style="padding:5px 8px;border:1px solid #dde;">$24,299,470</td><td style="padding:5px 8px;border:1px solid #dde;">FM-I LP (8) + FM-75 LP (1)</td><td style="padding:5px 8px;border:1px solid #dde;">All ag-exempt; taxable values well below market</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div style="background:#fff;border-radius:8px;padding:16px 20px;margin-top:16px;box-shadow:0 1px 3px rgba(0,0,0,.09);font-size:.87rem;line-height:1.6;">
+  <strong>Key Intermediaries</strong><br>
+  <b>Hays-Caldwell Economic Development Partnership:</b> Sarah Martin and Emily Mathes served as local contacts coordinating with the Governor's Office on all RFIs.<br>
+  <b>Texas Governor's Office EDT Staff:</b> Philip Rocha, Lauren Slusher, Jennifer Kolbe distributed and managed RFIs.<br>
+  <b>RFI Process:</b> Companies respond to Texas Governor's Office Requests for Information (RFIs) specifying site requirements. The Governor's Office forwards these to local EDPs who gather city utility confirmations and submit formal responses.
+</div>
+
+<div style="margin-top:16px;font-size:.75rem;color:#aaa;text-align:center;">
+  Compiled from City of San Marcos public information request documents &mdash; Axis Logistics Park / SMART Terminal project.<br>
+  All information derived from records obtained through public information requests. Investment, jobs, and water figures are as stated in RFI documents.
+</div>
+
+<!-- ===== FILTER SCRIPT ===== -->
+<script>
+function applyFilters() {
+  const q = document.getElementById('search-box').value.toLowerCase().trim();
+  const statusF = document.getElementById('status-filter').value;
+  const industryF = document.getElementById('industry-filter').value;
+
+  const cards = document.querySelectorAll('.project');
+  let visible = 0;
+
+  cards.forEach(card => {
+    const text = (card.dataset.text + ' ' + card.innerText).toLowerCase();
+    const status = card.dataset.status;
+    const industry = card.dataset.industry;
+
+    const matchQ = !q || text.includes(q);
+    const matchS = !statusF || status === statusF;
+    const matchI = !industryF || industry === industryF;
+
+    if (matchQ && matchS && matchI) {
+      card.classList.remove('hidden');
+      visible++;
+    } else {
+      card.classList.add('hidden');
+    }
+  });
+
+  document.getElementById('count-display').textContent =
+    'Showing ' + visible + ' of ' + cards.length;
+}
+</script>
+
+</body>
+</html>

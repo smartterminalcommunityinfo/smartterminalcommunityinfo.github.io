@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Axis Logistics Park — Ownership Structure</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: #f1f4f8;
+    color: #1a2330;
+    min-height: 100vh;
+    padding: 32px 20px 60px;
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1a2330;
+    margin-bottom: 4px;
+  }
+  .subtitle {
+    text-align: center;
+    font-size: .85rem;
+    color: #64748b;
+    margin-bottom: 36px;
+  }
+
+  /* ── TREE LAYOUT ─────────────────────────────── */
+  .tree {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  .tier {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 16px;
+    width: 100%;
+    position: relative;
+  }
+
+  /* vertical connector coming down from parent */
+  .connector-down {
+    width: 2px;
+    background: #94a3b8;
+    margin: 0 auto;
+  }
+
+  /* horizontal bar connecting siblings */
+  .h-bar-wrap {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    position: relative;
+  }
+
+  .h-bar {
+    position: absolute;
+    top: 0;
+    height: 2px;
+    background: #94a3b8;
+  }
+
+  .branch {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .branch-connector {
+    width: 2px;
+    background: #94a3b8;
+  }
+
+  /* ── CARDS ───────────────────────────────────── */
+  .card {
+    border-radius: 10px;
+    padding: 14px 16px;
+    width: 220px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.10);
+    position: relative;
+    cursor: default;
+    transition: box-shadow .15s, transform .15s;
+  }
+  .card:hover {
+    box-shadow: 0 6px 20px rgba(0,0,0,.16);
+    transform: translateY(-2px);
+  }
+
+  .card-label {
+    font-size: .65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    margin-bottom: 5px;
+    opacity: .75;
+  }
+  .card-name {
+    font-size: .88rem;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 6px;
+  }
+  .card-detail {
+    font-size: .74rem;
+    line-height: 1.5;
+    color: #334155;
+  }
+  .card-detail strong { color: #1a2330; }
+  .card-detail .pill {
+    display: inline-block;
+    background: rgba(0,0,0,.08);
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-size: .68rem;
+    margin-top: 4px;
+    margin-right: 2px;
+  }
+
+  /* ── COLOUR THEMES ───────────────────────────── */
+  .c-person   { background: #1e3a5f; color: #fff; }
+  .c-person .card-detail { color: #cbd5e1; }
+  .c-person .card-detail strong { color: #fff; }
+  .c-person .card-detail .pill { background: rgba(255,255,255,.15); color: #e2e8f0; }
+
+  .c-holding  { background: #1d4e89; color: #fff; }
+  .c-holding .card-detail { color: #bfdbfe; }
+  .c-holding .card-detail strong { color: #fff; }
+  .c-holding .card-detail .pill { background: rgba(255,255,255,.15); color: #dbeafe; }
+
+  .c-lp       { background: #0f6b8e; color: #fff; }
+  .c-lp .card-detail { color: #bae6fd; }
+  .c-lp .card-detail strong { color: #fff; }
+  .c-lp .card-detail .pill { background: rgba(255,255,255,.15); color: #e0f2fe; }
+
+  .c-gp       { background: #166534; color: #fff; }
+  .c-gp .card-detail { color: #bbf7d0; }
+  .c-gp .card-detail strong { color: #fff; }
+  .c-gp .card-detail .pill { background: rgba(255,255,255,.15); color: #d1fae5; }
+
+  .c-operator { background: #15803d; color: #fff; }
+  .c-operator .card-detail { color: #bbf7d0; }
+  .c-operator .card-detail strong { color: #fff; }
+  .c-operator .card-detail .pill { background: rgba(255,255,255,.15); color: #d1fae5; }
+
+  .c-brokerage { background: #6d28d9; color: #fff; }
+  .c-brokerage .card-detail { color: #ddd6fe; }
+  .c-brokerage .card-detail strong { color: #fff; }
+  .c-brokerage .card-detail .pill { background: rgba(255,255,255,.15); color: #ede9fe; }
+
+  .c-site     { background: #b45309; color: #fff; }
+  .c-site .card-detail { color: #fde68a; }
+  .c-site .card-detail strong { color: #fff; }
+  .c-site .card-detail .pill { background: rgba(255,255,255,.15); color: #fef3c7; }
+
+  .c-agent    { background: #be185d; color: #fff; }
+  .c-agent .card-detail { color: #fbcfe8; }
+  .c-agent .card-detail strong { color: #fff; }
+  .c-agent .card-detail .pill { background: rgba(255,255,255,.15); color: #fce7f3; }
+
+  /* ── PERSONNEL SIDEBAR ───────────────────────── */
+  .people-section {
+    max-width: 980px;
+    margin: 40px auto 0;
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px 28px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.09);
+  }
+  .people-section h2 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: #1a2330;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 8px;
+  }
+  .people-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+  }
+  .person-card {
+    background: #f8fafc;
+    border-radius: 8px;
+    padding: 12px 14px;
+    border-left: 4px solid #94a3b8;
+    font-size: .82rem;
+    line-height: 1.6;
+  }
+  .person-card.burkhardt { border-color: #15803d; }
+  .person-card.feagin    { border-color: #6d28d9; }
+  .person-card.browne    { border-color: #6d28d9; }
+  .person-card.kendall   { border-color: #0f6b8e; }
+  .person-name {
+    font-weight: 700;
+    font-size: .9rem;
+    color: #1a2330;
+    margin-bottom: 3px;
+  }
+  .person-role { color: #475569; }
+
+  /* ── LEGEND ───────────────────────────────────── */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin: 28px auto 0;
+    max-width: 900px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: .76rem;
+    color: #475569;
+  }
+  .legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  /* ── STRUCTURAL NOTES ─────────────────────────── */
+  .notes-section {
+    max-width: 980px;
+    margin: 24px auto 0;
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px 28px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.09);
+    font-size: .82rem;
+    line-height: 1.7;
+    color: #334155;
+  }
+  .notes-section h2 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: #1a2330;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 8px;
+  }
+  .notes-section ul { padding-left: 18px; }
+  .notes-section li { margin-bottom: 6px; }
+  .notes-section strong { color: #1a2330; }
+
+  /* tooltip */
+  [data-tip] { position: relative; }
+  [data-tip]:hover::after {
+    content: attr(data-tip);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1a2330;
+    color: #fff;
+    font-size: .72rem;
+    padding: 6px 10px;
+    border-radius: 6px;
+    white-space: pre-line;
+    max-width: 240px;
+    text-align: left;
+    z-index: 100;
+    line-height: 1.5;
+    pointer-events: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,.3);
+  }
+</style>
+</head>
+<body>
+
+<h1>Axis Logistics Park — Corporate Ownership Structure</h1>
+<p class="subtitle">Source: Texas Secretary of State records, Caldwell County deed records, Franklin Mountain Investments website (wnr.com), public corporate databases</p>
+
+<!-- ═══════════════════════════════════════════ LEGEND -->
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:#1e3a5f"></div> Individual</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#1d4e89"></div> Holding Company</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#0f6b8e"></div> LP (Land-holding)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#166534"></div> General Partner Entity</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#15803d"></div> Operating Developer</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#6d28d9"></div> Brokerage / Property Mgmt</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#b45309"></div> Project Site</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#be185d"></div> Marketing Agent</div>
+</div>
+
+<!-- ═══════════════════════════════════════════ TREE -->
+<div style="overflow-x:auto; margin-top:32px;">
+<div style="min-width:860px;">
+
+<!-- TIER 1: Paul Foster -->
+<div style="display:flex;flex-direction:column;align-items:center;">
+  <div class="card c-person" data-tip="El Paso, TX billionaire&#10;Founded Western Refining (sold to Tesoro 2017, ~$4.1B)&#10;Net worth est. ~$3B&#10;Franklin Mountain = named after El Paso's Franklin Mountains">
+    <div class="card-label">Individual / Ultimate Owner</div>
+    <div class="card-name">Paul L. Foster</div>
+    <div class="card-detail">
+      El Paso, TX &bull; ~$3B est. net worth<br>
+      Founder, Western Refining (sold 2017 ~$4.1B)<br>
+      <span class="pill">Million Air</span>
+      <span class="pill">El Paso Chihuahuas</span>
+      <span class="pill">Locomotive FC</span>
+    </div>
+  </div>
+  <div class="connector-down" style="height:28px;"></div>
+
+  <!-- TIER 2: Franklin Mountain Investments -->
+  <div class="card c-holding" data-tip="El Paso, TX&#10;wnr.com — explicitly lists Axis Logistics Park in portfolio&#10;Umbrella for all Foster real estate, energy, sports, aviation ventures">
+    <div class="card-label">Master Holding Company</div>
+    <div class="card-name">Franklin Mountain Investments, LLC</div>
+    <div class="card-detail">
+      El Paso, TX &bull; wnr.com<br>
+      Lists <strong>Axis Logistics Park</strong> in portfolio<br>
+      <span class="pill">FM Communities</span>
+      <span class="pill">FM Industrial</span>
+      <span class="pill">FM Capital</span>
+      <span class="pill">FM Energy (sold 2024)</span>
+    </div>
+  </div>
+  <div class="connector-down" style="height:28px;"></div>
+
+  <!-- TIER 3: Three LPs — horizontal spread -->
+  <!-- horizontal bar -->
+  <div style="position:relative;width:760px;height:28px;">
+    <div style="position:absolute;top:0;left:50%;width:2px;height:28px;background:#94a3b8;transform:translateX(-50%);"></div>
+    <div style="position:absolute;top:27px;left:50px;right:50px;height:2px;background:#94a3b8;"></div>
+    <div style="position:absolute;top:27px;left:50px;width:2px;height:20px;background:#94a3b8;"></div>
+    <div style="position:absolute;top:27px;left:50%;width:2px;height:20px;background:#94a3b8;transform:translateX(-50%);"></div>
+    <div style="position:absolute;top:27px;right:50px;width:2px;height:20px;background:#94a3b8;"></div>
+  </div>
+  <div style="display:flex;flex-direction:row;gap:16px;width:760px;justify-content:space-between;">
+    <div class="card c-lp" style="width:228px;" data-tip="TX SOS #32080846176&#10;Formed Aug 31, 2021&#10;Primary land-holding vehicle for the ~1,983-ac assemblage&#10;All 8 FM-I parcels held here (Owner ID 234440 at Caldwell CAD)">
+      <div class="card-label">Limited Partnership (Primary)</div>
+      <div class="card-name">Franklin Mountain San Marcos I, LP</div>
+      <div class="card-detail">
+        TX #32080846176 &bull; Formed Aug 2021<br>
+        Holds <strong>8 parcels, ~1,983 ac</strong><br>
+        Caldwell CAD Owner ID <strong>234440</strong><br>
+        <span class="pill">Land holder</span>
+      </div>
+    </div>
+    <div class="card c-lp" style="width:228px;" data-tip="TX SOS #32081356514&#10;Formed Oct 6, 2021 (6 weeks after FM-I LP)&#10;Likely pools co-investors / limited partners alongside Foster's primary capital&#10;Registered at 16380 Addison Rd (same as Scarborough Lane)">
+      <div class="card-label">Limited Partnership (Fund Vehicle)</div>
+      <div class="card-name">Franklin Mountain San Marcos Fund, LP</div>
+      <div class="card-detail">
+        TX #32081356514 &bull; Formed Oct 2021<br>
+        Co-investor / fund vehicle<br>
+        16380 Addison Rd, Addison TX<br>
+        <span class="pill">Investor LP</span>
+      </div>
+    </div>
+    <div class="card c-lp" style="width:228px;" data-tip="Formed ~Apr 2024 (contemporaneous with parcel acquisition)&#10;Holds 75-ac Pettus Survey tract (Caldwell CAD ID 28052)&#10;Owner ID 242650 — distinct from FM-I LP's 234440&#10;Possibly tenant-specific SPE or second-tranche vehicle">
+      <div class="card-label">Limited Partnership (Parcel-Specific)</div>
+      <div class="card-name">Franklin Mountain San Marcos 75, LP</div>
+      <div class="card-detail">
+        Formed ~Apr 2024<br>
+        Holds <strong>CAD ID 28052</strong> (~75 ac)<br>
+        Caldwell CAD Owner ID <strong>242650</strong><br>
+        <span class="pill">Parcel SPE</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- converging line back to GP -->
+  <div style="position:relative;width:760px;height:32px;">
+    <div style="position:absolute;top:0;left:50px;width:2px;height:32px;background:#94a3b8;"></div>
+    <div style="position:absolute;top:0;left:50%;width:2px;height:32px;background:#94a3b8;transform:translateX(-50%);"></div>
+    <div style="position:absolute;top:0;right:50px;width:2px;height:32px;background:#94a3b8;"></div>
+    <div style="position:absolute;top:31px;left:50px;right:50px;height:2px;background:#94a3b8;"></div>
+    <div style="position:absolute;top:31px;left:50%;width:2px;height:0;background:#94a3b8;transform:translateX(-50%);"></div>
+  </div>
+  <div class="connector-down" style="height:0;"></div>
+
+  <!-- GP label line -->
+  <div style="position:relative;display:flex;align-items:center;justify-content:center;margin:0;width:760px;">
+    <div style="position:absolute;left:50%;top:0;width:2px;height:100%;background:#94a3b8;transform:translateX(-50%);"></div>
+    <span style="background:#e2e8f0;border-radius:4px;padding:2px 10px;font-size:.7rem;color:#64748b;position:relative;z-index:1;white-space:nowrap;">General Partner for all three LPs</span>
+  </div>
+  <div class="connector-down" style="height:20px;"></div>
+
+  <!-- TIER 4: GP Entity -->
+  <div class="card c-gp" data-tip="The formal GP entity for all three FM San Marcos LPs&#10;No independent public web record — only appears in Caldwell County deed records and Caldwell CAD&#10;Controlled through Scarborough Lane Development">
+    <div class="card-label">General Partner Entity</div>
+    <div class="card-name">Scarborough San Marcos GP LLC</div>
+    <div class="card-detail">
+      16380 Addison Rd, Addison TX 75001<br>
+      GP for all 3 FM San Marcos LPs<br>
+      Controlled by <strong>Scarborough Lane Development</strong><br>
+      <span class="pill">Operational control</span>
+    </div>
+  </div>
+  <div class="connector-down" style="height:28px;"></div>
+
+  <!-- TIER 5: Scarborough Lane Development -->
+  <div class="card c-operator" style="width:280px;" data-tip="TX SOS #0156479500&#10;16380 Addison Rd, Addison TX 75001&#10;Phone: (972) 380-5900&#10;30+ year old Texas master-planned community developer&#10;Scarborough Lane = a street in Addison, TX near the office&#10;President: Ryan Burkhardt; Founder: James Feagin">
+    <div class="card-label">Operating Developer / GP Manager</div>
+    <div class="card-name">Scarborough Lane Development, Inc.</div>
+    <div class="card-detail">
+      TX SOS #0156479500 &bull; 30+ yr operating history<br>
+      16380 Addison Rd, Addison TX 75001<br>
+      <strong>President:</strong> Ryan Burkhardt<br>
+      <strong>Founder:</strong> James Feagin<br>
+      <strong>EVP Industrial:</strong> Clayton Kendall<br>
+      <span class="pill">Day-to-day development</span>
+      <span class="pill">Regulatory interface</span>
+    </div>
+  </div>
+
+  <!-- Scarborough Lane branches: Landmark Interests + Partners RE -->
+  <div style="position:relative;width:620px;height:28px;">
+    <div style="position:absolute;top:0;left:50%;width:2px;height:28px;background:#94a3b8;transform:translateX(-50%);"></div>
+    <div style="position:absolute;top:27px;left:120px;right:120px;height:2px;background:#94a3b8;"></div>
+    <div style="position:absolute;top:27px;left:120px;width:2px;height:20px;background:#94a3b8;"></div>
+    <div style="position:absolute;top:27px;right:120px;width:2px;height:20px;background:#94a3b8;"></div>
+  </div>
+  <div style="display:flex;flex-direction:row;gap:16px;width:620px;justify-content:space-between;">
+    <div class="card c-brokerage" style="width:260px;" data-tip="Same address: 16380 Addison Rd, Addison TX 75001&#10;Website redirects to scarboroughlanedevelopment.com&#10;Brokered 42,000+ ac valued at $1B+ in TX&#10;James Feagin (President) and Bruce Browne (VP) appear as tax contacts on Caldwell CAD property records for all FM-I LP parcels">
+      <div class="card-label">Brokerage / Property Management Arm</div>
+      <div class="card-name">Landmark Interests</div>
+      <div class="card-detail">
+        16380 Addison Rd, Addison TX 75001<br>
+        <strong>President:</strong> James Feagin<br>
+        <strong>VP:</strong> Bruce Browne<br>
+        Handles tax filings &amp; property mgmt for FM LPs<br>
+        42,000+ ac / $1B+ in TX brokerage<br>
+        <span class="pill">Tax contact on Caldwell CAD</span>
+      </div>
+    </div>
+    <div class="card c-agent" style="width:260px;" data-tip="Named in PR Newswire press release as co-developer and exclusive leasing/marketing agent&#10;Houston-based commercial real estate firm&#10;Markets the project to industrial tenants">
+      <div class="card-label">Exclusive Marketing / Leasing Agent</div>
+      <div class="card-name">Partners Real Estate</div>
+      <div class="card-detail">
+        Houston, TX<br>
+        Exclusive leasing &amp; marketing agent<br>
+        Named co-developer in press releases<br>
+        <span class="pill">Tenant outreach</span>
+        <span class="pill">Site marketing</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Project site at bottom -->
+  <div style="position:relative;width:620px;height:40px;">
+    <div style="position:absolute;top:0;left:50%;width:2px;height:40px;background:#94a3b8;transform:translateX(-50%);"></div>
+  </div>
+  <div class="card c-site" style="width:440px;" data-tip="Caldwell County + City of San Marcos, TX&#10;9 Caldwell CAD parcels (8 FM-I LP + 1 FM-75 LP)&#10;~2,058 acres total; $24.3M combined market value (ag-exempt)&#10;ARWA Phase 1B pipeline easements: 15.25 ac permanent corridor&#10;Governing DA: First Amended & Restated SMART Terminal DA (2023-001629)">
+    <div class="card-label">Project Site</div>
+    <div class="card-name">Axis Logistics Park / SMART Terminal</div>
+    <div class="card-detail">
+      Caldwell County + City of San Marcos, TX<br>
+      <strong>~2,058 acres</strong> across 9 Caldwell CAD parcels &bull; $24.3M combined market value<br>
+      Energy Parkway (PICP 2024-49692) under construction<br>
+      ARWA pipeline easements: <strong>15.25 ac</strong> permanent corridor<br>
+      Lender: <strong>AgTrust, ACA</strong> — two loans ~$52.8M<br>
+      <span class="pill">FM-I LP: 8 parcels ~1,983 ac</span>
+      <span class="pill">FM-75 LP: 1 parcel ~75 ac</span>
+    </div>
+  </div>
+
+</div><!-- /flex column -->
+</div><!-- /min-width -->
+</div><!-- /overflow -->
+
+<!-- ═══════════════════════════════════════════ PEOPLE -->
+<div class="people-section">
+  <h2>Key Personnel</h2>
+  <div class="people-grid">
+    <div class="person-card burkhardt">
+      <div class="person-name">Ryan Burkhardt</div>
+      <div class="person-role">
+        <strong>President</strong> — Scarborough Lane Development<br>
+        <strong>President</strong> — Franklin Mountain Communities (Foster's El Paso residential arm)<br>
+        MS Accounting, Texas Tech; prior Ernst &amp; Young (real estate group)<br>
+        Signs all deeds and regulatory filings on behalf of the FM San Marcos LPs. Dual presidency is the clearest proof of the Foster–Scarborough Lane relationship.
+      </div>
+    </div>
+    <div class="person-card feagin">
+      <div class="person-name">James Feagin</div>
+      <div class="person-role">
+        <strong>Founder / President</strong> — Landmark Interests<br>
+        Founder-emeritus — Scarborough Lane Development<br>
+        BBA Real Estate Finance, Texas Tech; 40+ yrs Texas real estate<br>
+        Listed as tax/property contact on all FM-I LP Caldwell CAD records. Also President of Tornillo Interests GP, LLC (another Foster-adjacent El Paso County venture).
+      </div>
+    </div>
+    <div class="person-card browne">
+      <div class="person-name">Bruce Browne</div>
+      <div class="person-role">
+        <strong>Vice President</strong> — Landmark Interests<br>
+        Co-listed as tax/property contact on FM-I LP Caldwell CAD records alongside Feagin. Handles property tax management and brokerage for FM LP parcels.
+      </div>
+    </div>
+    <div class="person-card kendall">
+      <div class="person-name">Clayton Kendall</div>
+      <div class="person-role">
+        <strong>Executive Vice President, Industrial Division</strong> — Scarborough Lane Development<br>
+        Primary city/regulatory interface for the Axis project. Signed May 2023 letter to San Marcos City Council. Described in documents as VP of Scarborough Lane Development.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ NOTES -->
+<div class="notes-section">
+  <h2>Structural Notes</h2>
+  <ul>
+    <li><strong>Why "Franklin Mountain"?</strong> Paul Foster named his entire investment empire after the Franklin Mountains in El Paso, TX — the same brand is used across energy, real estate, aviation, sports, and packaging ventures.</li>
+    <li><strong>Why two separate LPs (I and Fund)?</strong> "FM San Marcos I, LP" (Aug 2021) is the primary land-holding vehicle. "FM San Marcos Fund, LP" (Oct 2021, formed 6 weeks later) is the investor/co-investor vehicle — a common Texas structure where the Fund LP holds LP interests in the operating "I" LP.</li>
+    <li><strong>Why a separate "75" LP?</strong> The ~75-acre Pettus Survey parcel (Caldwell CAD ID 28052) was acquired in Apr 2024 by a distinct entity with its own CAD Owner ID (242650 vs. 234440). Likely a parcel-specific SPE — possibly structured for a specific tenant lease or separate financing tranche.</li>
+    <li><strong>Scarborough San Marcos GP LLC</strong> is the formal GP entity in all three LPs. It does not appear in searchable web corporate databases — only in Caldwell County deed records and Caldwell CAD property records. It is the vehicle through which Scarborough Lane exercises operational control.</li>
+    <li><strong>Landmark Interests vs. Scarborough Lane:</strong> They share the same address and phone number (16380 Addison Rd; 972-380-5900); Landmark's website redirects to scarboroughlanedevelopment.com. Landmark handles the brokerage, land acquisition, and property tax side; Scarborough Lane handles development and GP management.</li>
+    <li><strong>AgTrust, ACA</strong> (formerly Lone Star, ACA) holds ~$52.8M in financing secured against the site. This represents the developer's debt posture and is relevant to understanding any future land sales or lease financing.</li>
+    <li><strong>Partners Real Estate</strong> (Houston) is named as "co-developer" in public press releases but plays the marketing/leasing role, not a capital or ownership role.</li>
+  </ul>
+</div>
+
+<div style="text-align:center;margin-top:24px;font-size:.74rem;color:#94a3b8;">
+  Compiled from: Texas SOS filings &bull; Caldwell County deed records (instruments 370_2021_007621–370_2025_004791) &bull; Caldwell CAD 2026 property records &bull; Franklin Mountain Investments (wnr.com) &bull; Public corporate databases &bull; Press releases
+</div>
+
+</body>
+</html>

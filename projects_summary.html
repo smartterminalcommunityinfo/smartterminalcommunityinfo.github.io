@@ -32,6 +32,16 @@
   .stat-box.s-active .num { color: #8e44ad; }
   .stat-box.s-jobs  .num { color: #1a3a5c; }
 
+  /* clickable stat filters */
+  .stat-box.filterable { cursor: pointer; user-select: none;
+                         transition: box-shadow .15s, transform .12s; }
+  .stat-box.filterable:hover { box-shadow: 0 3px 10px rgba(0,0,0,.15); transform: translateY(-2px); }
+  .stat-box.filterable .lbl::after { content: ' ▾'; font-size: .65rem; opacity: .5; }
+  .stat-box.s-sub.active   { background: #ebf5fb; outline: 2px solid #2980b9; outline-offset: 2px; }
+  .stat-box.s-active.active { background: #f5eef8; outline: 2px solid #8e44ad; outline-offset: 2px; }
+  .stat-box.s-pass.active  { background: #fdf2e9; outline: 2px solid #e67e22; outline-offset: 2px; }
+  .stat-box.s-nosub.active { background: #fdedec; outline: 2px solid #c0392b; outline-offset: 2px; }
+
   /* project card */
   .project { background: #fff; border-radius: 10px; padding: 16px 20px;
              box-shadow: 0 1px 4px rgba(0,0,0,.09); margin-bottom: 16px;
@@ -130,19 +140,19 @@
 
 <!-- Summary stats -->
 <div class="stats">
-  <div class="stat-box s-sub">
+  <div class="stat-box s-sub filterable" onclick="filterByStat(this, ['submitted','shortlisted'])">
     <div class="num" id="cnt-submitted">2</div>
     <div class="lbl">Submitted/Shortlisted</div>
   </div>
-  <div class="stat-box s-active">
+  <div class="stat-box s-active filterable" onclick="filterByStat(this, ['active'])">
     <div class="num" id="cnt-active">5</div>
     <div class="lbl">Active / In Discussion</div>
   </div>
-  <div class="stat-box s-pass">
+  <div class="stat-box s-pass filterable" onclick="filterByStat(this, ['passed'])">
     <div class="num" id="cnt-passed">3</div>
     <div class="lbl">Passed / Declined</div>
   </div>
-  <div class="stat-box s-nosub">
+  <div class="stat-box s-nosub filterable" onclick="filterByStat(this, ['no-submission'])">
     <div class="num" id="cnt-nosub">3</div>
     <div class="lbl">No Submission / Infeasible</div>
   </div>
@@ -168,7 +178,7 @@
 <div class="filters">
   <input id="search-box" type="text" placeholder="Search by project name, industry, or keyword..." oninput="applyFilters()">
   <label>Status:
-    <select id="status-filter" onchange="applyFilters()">
+    <select id="status-filter" onchange="clearStatFilter(); applyFilters()">
       <option value="">All</option>
       <option value="submitted">Submitted / Shortlisted</option>
       <option value="active">Active / In Discussion</option>
@@ -804,6 +814,27 @@
 
 <!-- ===== FILTER SCRIPT ===== -->
 <script>
+let activeStatStatuses = null;
+
+function filterByStat(box, statuses) {
+  const wasActive = box.classList.contains('active');
+  document.querySelectorAll('.stat-box.filterable').forEach(b => b.classList.remove('active'));
+
+  if (wasActive) {
+    activeStatStatuses = null;
+  } else {
+    box.classList.add('active');
+    activeStatStatuses = statuses;
+    document.getElementById('status-filter').value = '';
+  }
+  applyFilters();
+}
+
+function clearStatFilter() {
+  document.querySelectorAll('.stat-box.filterable').forEach(b => b.classList.remove('active'));
+  activeStatStatuses = null;
+}
+
 function applyFilters() {
   const q = document.getElementById('search-box').value.toLowerCase().trim();
   const statusF = document.getElementById('status-filter').value;
@@ -818,7 +849,9 @@ function applyFilters() {
     const industry = card.dataset.industry;
 
     const matchQ = !q || text.includes(q);
-    const matchS = !statusF || status === statusF;
+    const matchS = activeStatStatuses
+      ? activeStatStatuses.includes(status)
+      : (!statusF || status === statusF);
     const matchI = !industryF || industry === industryF;
 
     if (matchQ && matchS && matchI) {

@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SMART Terminal / Axis Logistics Park — Project Timeline</title>
 <style>
   * { box-sizing: border-box; }
@@ -79,6 +80,15 @@
             font-size: .82rem; }
   .legend-item { display: flex; align-items: center; gap: 5px; }
   .dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+
+  @media (max-width: 600px) {
+    body { padding: 12px 12px 40px; }
+    .timeline { padding-left: 28px; }
+    .timeline::before { left: 8px; }
+    .event::before { left: -26px; }
+    .year-label { margin-left: -20px; }
+    h1 { font-size: 1.25rem; }
+  }
 </style>
 
 <style>

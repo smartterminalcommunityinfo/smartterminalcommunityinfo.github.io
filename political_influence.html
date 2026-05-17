@@ -222,6 +222,28 @@ table.matrix {
 .callout strong { color: inherit; }
 
 footer { text-align: center; font-size: .72rem; color: #94a3b8; margin-top: 20px; max-width: 980px; margin-left: auto; margin-right: auto; }
+
+/* ── SCROLL WRAPPER for wide grids on mobile ── */
+.scroll-x {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.scroll-x .flow-grid,
+.scroll-x .tl-header,
+.scroll-x .tl-row {
+  min-width: 640px;
+}
+.scroll-x table.matrix {
+  min-width: 560px;
+}
+
+@media (max-width: 640px) {
+  body { padding: 16px 12px 60px; }
+  .flow-wrap, .timeline-wrap, .matrix-wrap { padding: 16px 12px 14px; border-radius: 8px; }
+  .amounts-grid { grid-template-columns: 1fr; }
+  .callout { padding: 12px 14px; }
+  .tl-legend { gap: 8px; }
+}
 </style>
 
 <style>
@@ -320,7 +342,7 @@ footer { text-align: center; font-size: .72rem; color: #94a3b8; margin-top: 20px
 <div class="flow-wrap">
   <div class="section-title" style="border-color:var(--money)">How the Relationships Connect</div>
 
-  <div class="flow-grid">
+  <div class="scroll-x"><div class="flow-grid">
     <!-- Col 1: Foster -->
     <div class="flow-node fn-foster">
       <div class="fn-label">Ultimate Owner</div>
@@ -417,7 +439,7 @@ footer { text-align: center; font-size: .72rem; color: #94a3b8; margin-top: 20px
         (Foster co-owns; direct financial interest)
       </div>
     </div>
-  </div>
+  </div></div>
 
   <div class="callout amber" style="margin:12px 0 0;">
     <strong>Two-phase ERCOT role:</strong> Foster donated to Abbott, Patrick, and Phelan — the three officials whose designees formed the ERCOT Board Selection Committee. That committee chose Foster as the inaugural ERCOT Board Chair (Oct 2021). He chaired the board for ~3 years, overseeing transmission planning and large-load policy. After stepping down in Jun 2024, Abbott then directly appointed Foster <em>to</em> the Selection Committee itself — so he now helps choose future ERCOT board members. Abbott also separately and directly appointed Foster to TPWD (2021), where he now serves as Chair. At no point during either ERCOT role or the TPWD role is there a public recusal record. ERCOT is exempt from Texas open meeting laws.
@@ -436,7 +458,7 @@ footer { text-align: center; font-size: .72rem; color: #94a3b8; margin-top: 20px
     <div class="tl-leg-item"><div class="tl-dot" style="background:var(--project)"></div> Project Milestone</div>
   </div>
 
-  <div class="tl-header">
+  <div class="scroll-x"><div class="tl-header">
     <div></div>
     <div class="tl-col-head th-money">Contributions</div>
     <div class="tl-col-head th-appt">Appointments</div>
@@ -608,13 +630,13 @@ footer { text-align: center; font-size: .72rem; color: #94a3b8; margin-top: 20px
     </div>
   </div>
 
-</div>
+</div></div>
 
 <!-- ══════════════════════════════════════════ CONFLICT MATRIX -->
 <div class="matrix-wrap">
   <div class="section-title" style="border-color:var(--body)">Foster's Roles — Direct Connections to Axis Logistics Park</div>
 
-  <table class="matrix">
+  <div class="scroll-x"><table class="matrix">
     <thead>
       <tr>
         <th style="width:22%">Role / Action</th>
@@ -691,7 +713,7 @@ footer { text-align: center; font-size: .72rem; color: #94a3b8; margin-top: 20px
         <td>No construction contracts at Axis identified yet in public record</td>
       </tr>
     </tbody>
-  </table>
+  </table></div>
 </div>
 
 <!-- ══════════════════════════════════════════ CALLOUTS -->

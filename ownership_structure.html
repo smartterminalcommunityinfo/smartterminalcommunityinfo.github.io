@@ -278,6 +278,22 @@
     pointer-events: none;
     box-shadow: 0 4px 12px rgba(0,0,0,.3);
   }
+
+  /* ── MOBILE ── */
+  .tree-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .tree-scroll > .tree {
+    min-width: 700px;
+  }
+
+  @media (max-width: 640px) {
+    body { padding: 16px 12px 48px; }
+    .people-section { padding: 16px 14px; border-radius: 8px; }
+    .people-grid { grid-template-columns: 1fr; }
+    .notes-section { padding: 14px 14px; border-radius: 8px; }
+  }
 </style>
 
 <style>

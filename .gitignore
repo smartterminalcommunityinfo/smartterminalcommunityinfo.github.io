@@ -4,6 +4,9 @@
 # Allow HTML files
 !*.html
 
+# Keep compliance report local only
+compliance_report.html
+
 # Allow this file
 !.gitignore
 

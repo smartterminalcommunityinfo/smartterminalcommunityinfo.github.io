@@ -16,3 +16,7 @@ compliance_report.html
 !maps/*.jpeg
 !maps/*.png
 !maps/*.webp
+
+# Allow PDFs in the docs folder
+!docs/
+!docs/*.pdf

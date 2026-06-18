@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Permitted & Prohibited Uses — Development Agreement Exhibit D</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --navy:   #1e3a5f;
+  --accent: #b45309;
+  --bg:     #f1f4f8;
+  --card:   #ffffff;
+  --green:  #166534;
+  --red:    #be185d;
+}
+
+body {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: #1a2330;
+  min-height: 100vh;
+}
+
+header {
+  background: var(--navy);
+  color: #fff;
+  padding: 36px 24px 32px;
+  text-align: center;
+}
+header h1 {
+  font-size: 1.7rem;
+  font-weight: 900;
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+header .sub {
+  font-size: .88rem;
+  color: #93c5fd;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+header a.back {
+  display: inline-block;
+  margin-bottom: 18px;
+  font-size: .78rem;
+  color: #93c5fd;
+  text-decoration: none;
+  letter-spacing: .04em;
+}
+header a.back:hover { text-decoration: underline; }
+
+.intro-band {
+  background: #fef9c3;
+  border-bottom: 1px solid #fde047;
+  padding: 14px 24px;
+  text-align: center;
+  font-size: .82rem;
+  color: #713f12;
+  line-height: 1.6;
+}
+
+main {
+  max-width: 900px;
+  margin: 36px auto 80px;
+  padding: 0 20px;
+}
+
+.context-box {
+  background: var(--card);
+  border-radius: 12px;
+  padding: 22px 24px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.09);
+  margin-bottom: 28px;
+  font-size: .85rem;
+  color: #374151;
+  line-height: 1.7;
+  border-left: 5px solid var(--navy);
+}
+.context-box strong { color: #1a2330; }
+.context-box .source {
+  margin-top: 10px;
+  font-size: .76rem;
+  color: #94a3b8;
+  font-style: italic;
+}
+
+.alert-box {
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  border-left: 5px solid #ea580c;
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin-bottom: 28px;
+  font-size: .84rem;
+  color: #431407;
+  line-height: 1.7;
+}
+.alert-box .alert-title {
+  font-weight: 700;
+  font-size: .88rem;
+  margin-bottom: 6px;
+  color: #c2410c;
+}
+
+.section-label {
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: #94a3b8;
+  margin-bottom: 14px;
+  padding-left: 2px;
+}
+
+.uses-card {
+  background: var(--card);
+  border-radius: 12px;
+  padding: 24px 26px 20px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.09);
+  margin-bottom: 28px;
+}
+
+.uses-card h2 {
+  font-size: 1rem;
+  font-weight: 800;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.badge {
+  display: inline-block;
+  border-radius: 4px;
+  padding: 2px 9px;
+  font-size: .72rem;
+  font-weight: 700;
+  vertical-align: middle;
+}
+.badge.permitted { background: #dcfce7; color: #15803d; }
+.badge.prohibited { background: #fee2e2; color: #b91c1c; }
+.badge.conditional { background: #fef9c3; color: #92400e; }
+
+.uses-card .card-note {
+  font-size: .8rem;
+  color: #64748b;
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+.uses-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 6px 12px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.uses-list li {
+  font-size: .82rem;
+  color: #374151;
+  padding: 5px 8px 5px 28px;
+  border-radius: 5px;
+  position: relative;
+  line-height: 1.45;
+}
+.uses-list li::before {
+  content: '';
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+.permitted-list li::before { background: #16a34a; }
+.prohibited-list li::before { background: #dc2626; }
+
+.uses-list li:hover { background: #f8fafc; }
+
+.uses-list li .note {
+  display: block;
+  font-size: .75rem;
+  color: #94a3b8;
+  margin-top: 1px;
+}
+
+.footnote-box {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin-top: 16px;
+  font-size: .79rem;
+  color: #475569;
+  line-height: 1.65;
+}
+.footnote-box strong { color: #1e3a5f; }
+
+.divider {
+  border: none;
+  border-top: 1px solid #e2e8f0;
+  margin: 28px 0;
+}
+
+footer {
+  text-align: center;
+  font-size: .78rem;
+  color: #94a3b8;
+  padding: 28px 20px 40px;
+  border-top: 1px solid #e2e8f0;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a class="back" href="index.html">&larr; Back to CASA Home</a>
+  <h1>Permitted &amp; Prohibited Uses</h1>
+  <p class="sub">Development Agreement Exhibit D — Land Use Matrix<br>
+  First Amended &amp; Restated SMART Terminal DA (2023)</p>
+</header>
+
+<div class="intro-band">
+  Source: Res. 2023-20R / PDA-22-07, Exhibit D. Uses are defined by Subpart B of the San Marcos Development Code unless the agreement provides its own definition.
+</div>
+
+<main>
+
+  <div class="context-box">
+    <strong>Section 3 of the Development Agreement</strong> states: <em>"Notwithstanding any restrictions, rights or privileges under applicable laws or the City's Development Code and other ordinances, the Permitted Uses shall be allowed on the Property and the Prohibited Uses are expressly prohibited on the Property."</em>
+    <br><br>
+    The agreement also provides (§1.04.A): <em>"In the event of a conflict between this Agreement and the SMDC or the City's Codes and Ordinances, <strong>this Agreement shall control.</strong>"</em> The initial term runs 45 years from January 2023, with options to extend through 2083.
+    <div class="source">Source: Res. 2023-20R — PDA-22-07 Final Draft Agreement, §§1.04, 3; Exhibit D.</div>
+  </div>
+
+  <div class="alert-box">
+    <div class="alert-title">Note — Data Centers &amp; the June 16, 2026 City Ordinance</div>
+    On June 16, 2026, the City of San Marcos passed an ordinance restricting data centers within city limits. Because data centers are an explicitly named Permitted Use in Exhibit D (item 45) — and because the development agreement constitutes a vested-rights permit under Texas Local Government Code Chapter 245 and controls over subsequent city ordinances — the owner would have a strong legal argument that traditional data centers remain permitted on this property notwithstanding the new ordinance.
+    <br><br>
+    However, the SMDC's updated data center definition (§5.1.7.10, effective 2025) explicitly includes <strong>cryptocurrency mining</strong>, while the development agreement's custom definition does not. The status of crypto mining facilities on this site is legally ambiguous.
+  </div>
+
+  <p class="section-label">Permitted Uses — Entire Property (51 uses)</p>
+
+  <div class="uses-card">
+    <h2><span class="badge permitted">Permitted</span> All parcels — property-wide</h2>
+    <p class="card-note">The following uses are permitted by right under Exhibit D across the entire ~2,017-acre site, regardless of any subsequent city ordinance changes during the agreement term.</p>
+
+    <ul class="uses-list permitted-list">
+      <li>Office (Health Services)</li>
+      <li>Offices (Medical Office)</li>
+      <li>Offices (Professional)</li>
+      <li>Call Service Center</li>
+      <li>Communication Equipment Installation/Repair<span class="note">No outdoor sales or storage</span></li>
+      <li>Medical Supplies and Equipment</li>
+      <li>Cabinet Shop (manufacturing)</li>
+      <li>Retail Store (misc.) w/ drive thru</li>
+      <li>Retail Store (misc.) w/o drive thru<span class="note">Under 100,000 sq.ft. building</span></li>
+      <li>Security Systems Installation Company</li>
+      <li>Upholstery Shop (non-auto)</li>
+      <li>Woodworking Shop (ornamental)</li>
+      <li>Electrical Substation</li>
+      <li>Governmental Building or Use<span class="note">Municipal, state or federal</span></li>
+      <li>Philanthropic Organization</li>
+      <li>Auction Sales (non-vehicle)</li>
+      <li>Bio-Medical Facilities</li>
+      <li>Caterer</li>
+      <li>Extermination Service</li>
+      <li>Furniture Manufacture</li>
+      <li>Urban Farm</li>
+      <li>Maintenance/Janitorial Service</li>
+      <li>Metal Fabrication Shop</li>
+      <li>Moving Storage Company</li>
+      <li>Warehouse/Office and Storage</li>
+      <li>Welding Shop</li>
+      <li>Manufacturing</li>
+      <li>Airport Support and Related Services</li>
+      <li>Distribution Center</li>
+      <li>Electronic Assembly/High Tech Manufacturing</li>
+      <li>Engine Repair/Motor Re-Manufacturing and/or Repair</li>
+      <li>Food Processing<span class="note">No outside public consumption</span></li>
+      <li>Laboratory Equipment Manufacturing</li>
+      <li>Machine Shop</li>
+      <li>Manufacturing Processes not Listed</li>
+      <li>Micro-Brewery<span class="note">Onsite manufacturing and sales</span></li>
+      <li>Plastic Products Molding/Reshaping</li>
+      <li>Research Lab (non-hazardous)</li>
+      <li>Sign Manufacturing</li>
+      <li>Stone/Clay/Glass Manufacturing</li>
+      <li>Hotel or Motel</li>
+      <li>Vehicle Repair (Train maintenance)</li>
+      <li>Building Material Sales</li>
+      <li>Day Care Services</li>
+      <li>Data Center *</li>
+      <li>Distribution and processing of construction materials</li>
+      <li>Railroad freight or classification yard</li>
+      <li>Railroad roundhouse or RR car repair shop</li>
+      <li>Railroad tracks; team, spur, loading or storage</li>
+      <li>Terminal, truck, freight or rail</li>
+      <li>All Heavy Industrial Uses authorized by the COSM Zoning Code<span class="note">Not specifically prohibited by Exhibit D Subsection (B)</span></li>
+    </ul>
+
+    <div class="footnote-box">
+      <strong>* Data Center — custom definition in the agreement:</strong> "A facility of networked computer systems and associated components, such as telecommunications and storage systems, that businesses or other organizations use to organize, process, store and disseminate large amounts of data." This definition was added because the term was not defined in the SMDC at the time of execution. The SMDC's subsequently adopted definition (§5.1.7.10) is broader and explicitly includes cryptocurrency mining; the agreement's narrower definition controls on this property.
+    </div>
+  </div>
+
+  <p class="section-label">Additional Permitted Uses — West of Loop 110 Only</p>
+
+  <div class="uses-card">
+    <h2><span class="badge conditional">Geographic Restriction</span> Parcels west of Loop 110 only</h2>
+    <p class="card-note">These service and retail uses are permitted only on portions of the property located west of Loop 110.</p>
+
+    <ul class="uses-list permitted-list">
+      <li>Bank or Savings and Loan (w/o drive-thru)</li>
+      <li>Convenience Store (w/o Gas Sales)</li>
+      <li>Restaurant/Prepared Food Sales</li>
+      <li>Restaurant/Prepared Food Sales<span class="note">With beer/wine off-premises consumption</span></li>
+      <li>Retail Store (100,000 sq.ft. or more building)</li>
+      <li>Retail Store (over 100,000 sq.ft.) outside sales</li>
+      <li>Retail Store (under 100,000 sq.ft.) outside sales</li>
+      <li>Retail Store (under 100,000 sq.ft.) no outside sales</li>
+    </ul>
+  </div>
+
+  <p class="section-label">Prohibited Uses</p>
+
+  <div class="uses-card">
+    <h2><span class="badge prohibited">Prohibited</span> Expressly forbidden — entire property</h2>
+    <p class="card-note">The following uses are expressly prohibited on the property regardless of what would otherwise be permitted under the SMDC or city zoning.</p>
+
+    <ul class="uses-list prohibited-list">
+      <li>Acid manufacturing</li>
+      <li>Gas manufacturing</li>
+      <li>Vehicle wrecking yard</li>
+      <li>Junk yard<span class="note">Including storage, sorting, bailing or processing of rags</span></li>
+      <li>Manufacturing or storage of hazardous materials or explosives<span class="note">Except fuels contained in vehicles, locomotives, or railcars</span></li>
+      <li>Manufacturing or storage of fertilizer</li>
+      <li>Manufacturing of carbon batteries</li>
+      <li>Manufacturing of paint, lacquer, oil, turpentine, varnish, enamel and similar products</li>
+      <li>Manufacturing of rubber, glucose, or dextrin</li>
+      <li>Manufacturing of paper or pulp</li>
+      <li>Manufacturing or distillation of tar</li>
+      <li>Monument or marble works</li>
+      <li>Oil compounding and barreling plant</li>
+      <li>Disposal, storage, reduction or incineration of solid or hazardous waste<span class="note">Including garbage, refuse, trash, sewage, offal, dead animals</span></li>
+      <li>Extraction or refining of petroleum or its products</li>
+      <li>Distillation of bones</li>
+      <li>Smelting of iron, tin, zinc, copper or other ores</li>
+      <li>Fat rendering</li>
+      <li>Stockyards or slaughter of animals</li>
+      <li>Cemeteries</li>
+      <li>Labor camps</li>
+      <li>Jails or honor farms</li>
+      <li>Refining or retail sale or bulk storage of fuel, liquified petroleum and flammable liquids</li>
+      <li>Manufacturing of cement, lime, and gypsum plaster</li>
+      <li>Rock crushers</li>
+      <li>Sugar refining</li>
+    </ul>
+  </div>
+
+</main>
+
+<footer>
+  Citizens Against Smart Axis (CASA) &mdash; All data from public records and official filings. This page does not constitute legal advice.
+</footer>
+
+</body>
+</html>

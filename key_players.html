@@ -96,7 +96,6 @@ main {
   font-size: .86rem;
   color: #475569;
   line-height: 1.7;
-  max-width: 820px;
   margin-bottom: 20px;
   padding-left: 4px;
 }
@@ -123,6 +122,36 @@ main {
 .card.teal    { border-top-color: #0f6b8e; }
 .card.green   { border-top-color: #166534; }
 .card.purple  { border-top-color: #6d28d9; }
+.card.red     { border-top-color: #991b1b; }
+
+.card .person-term {
+  font-size: .74rem;
+  font-weight: 700;
+  color: #991b1b;
+  margin-top: 1px;
+}
+.card .vote-list {
+  list-style: none;
+  font-size: .78rem;
+  color: #374151;
+  line-height: 1.55;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.card .vote-list li { padding-left: 12px; position: relative; }
+.card .vote-list li::before {
+  content: "\2022";
+  position: absolute;
+  left: 0;
+  color: #94a3b8;
+}
+.card .vote-list b { color: #1a2330; }
+.vote-for   { color: #166534; font-weight: 700; }
+.vote-against { color: #991b1b; font-weight: 700; }
+.vote-unrecorded { color: #94a3b8; font-style: italic; }
+.legistar-link { color: inherit; text-decoration: none; border-bottom: 1px dotted currentColor; }
+.legistar-link:hover { border-bottom-style: solid; }
 
 .card .person-name {
   font-size: 1.05rem;
@@ -272,28 +301,311 @@ footer {
 
   </div>
 
+  <!-- ── SAN MARCOS CITY COUNCIL ── -->
+  <p class="section-label">San Marcos City Council</p>
+  <p class="section-intro">
+    The Mayor and six Council Members are elected at-large to staggered terms and hold final
+    authority over annexation ordinances, development agreement amendments, and zoning changes
+    tied to the project. Below is every identified piece of City Council legislation touching
+    the project (2019&ndash;2025) with each then-serving member's vote where it is individually
+    recorded. <strong>No finalized City Council meeting minutes have been published since
+    roughly mid-2022</strong> — for every item after that point, the aggregate outcome is known
+    but individual roll-call votes are not published anywhere in the public record found to
+    date. That gap is marked explicitly rather than guessed at. 2026 is an election year:
+    Mayor Hughson is not seeking re-election as Mayor and is instead running against incumbent
+    Alyssa Garza for Place 3; Amanda Rodriguez has announced a run for Mayor.
+  </p>
+  <div class="grid">
+
+    <div class="card red">
+      <div class="person-name">Jane Hughson</div>
+      <div class="person-org">City of San Marcos</div>
+      <div class="person-title">Mayor</div>
+      <div class="person-term">Elected Nov. 2018 &middot; re-elected 2020, 2022, 2024 &middot; NOT seeking re-election as Mayor in 2026 &mdash; running for Place 3 against incumbent Alyssa Garza</div>
+      <div class="divider"></div>
+      <p class="person-desc">
+        Served on the Council's SMART Terminal oversight committee alongside Mark Gleason and
+        Maxfield Baker. At the August 20, 2024 regular meeting, posed written questions about
+        the alignment of the annexed Energy Parkway road, specifically whether it was
+        positioned to run behind existing residential properties.
+      </p>
+      <ul class="vote-list">
+        <li>Jan. 15, 2019 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3831652&GUID=D86EE462-494D-45EC-B690-35FF013D7A5A" target="_blank" rel="noopener" class="legistar-link">Ord. 2019-01</a>, annexation (~934 ac), 1st reading: <span class="vote-for">FOR</span> (6&ndash;1)</li>
+        <li>Jan. 15, 2019 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3831658&GUID=3109F41F-4E11-4277-BD0E-D3AF8271633E" target="_blank" rel="noopener" class="legistar-link">Ord. 2019-02</a>, Heavy Industrial zoning, 1st reading: <span class="vote-for">FOR</span> (5&ndash;2)</li>
+        <li>Jan.&ndash;Feb. 2019 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3890166&GUID=966F08A7-5FE7-466A-94D8-0AEC013184FD" target="_blank" rel="noopener" class="legistar-link">Ord. 2019-01(b)</a>/<a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3890167&GUID=8A5D80F5-C1CE-4C38-86A6-E063BDA1DF27" target="_blank" rel="noopener" class="legistar-link">2019-02(b)</a> 2nd readings (734.6 ac) &amp; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3890165&GUID=CA0F3C4A-0CEF-426F-8084-0288EDEC918C" target="_blank" rel="noopener" class="legistar-link">Res. 2019-49R</a> (Ch. 380/ETJ Dev. Agreement): <span class="vote-unrecorded">individual vote not recorded</span></li>
+        <li>Oct. 17, 2019 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=4210424&GUID=72F8EA74-3318-42EE-8B9E-2DACCE22E18D" target="_blank" rel="noopener" class="legistar-link">Res. 2019-225R</a> (Katerra Ch. 380 incentive): <span class="vote-unrecorded">individual vote not recorded</span></li>
+        <li>Jan. 21, 2020 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=4304812&GUID=2B3C36CA-D881-4A9D-B8BC-A9013DACC8BF" target="_blank" rel="noopener" class="legistar-link">Res. 2020-17R</a> (Martindale ETJ agreement): <span class="vote-for">FOR postponement</span> (7&ndash;0, unanimous)</li>
+        <li>Jul. 2022 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5741776&GUID=3211A692-6361-424E-884C-A6E2E2A97071" target="_blank" rel="noopener" class="legistar-link">PDA-22-07(a)</a>, authorize DA renegotiation: <span class="vote-unrecorded">individual vote not recorded</span></li>
+        <li>Dec. 14, 2022 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5949657&GUID=DDEF5211-39AE-4FB5-BC8E-0035C2300965" target="_blank" rel="noopener" class="legistar-link">ID22-874</a>/<a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5961707&GUID=9B92DA09-F1BA-43A5-9CC5-806F4D994E92" target="_blank" rel="noopener" class="legistar-link">ID22-901</a>, Cotton Center DA negotiation &amp; committee appointment: <span class="vote-unrecorded">individual vote not recorded</span></li>
+        <li>Jan. 2023 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5992444&GUID=6531CEE6-087C-4281-969F-7D41FC50252E" target="_blank" rel="noopener" class="legistar-link">Res. 2023-20R</a>, First Amended &amp; Restated Development Agreement (~2,017 ac): <span class="vote-unrecorded">individual vote not recorded</span></li>
+        <li>Apr. 9, 2024 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6695341&GUID=73B2B156-AB4A-48A2-80A3-F7581EF8FEBA" target="_blank" rel="noopener" class="legistar-link">Res. 2024-89R</a>, AN-24-03 annexation service agreement: <span class="vote-unrecorded">individual vote not recorded</span></li>
+        <li>Aug. 5, 2024 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6808693&GUID=5FD09DB4-46E3-4B94-AE48-DFDCBD595B59" target="_blank" rel="noopener" class="legistar-link">Ord. 2024-27</a>, 1st reading (Energy Parkway ROW): <span class="vote-unrecorded">individual vote not recorded</span></li>
+        <li>Sept. 3, 2024 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6844511&GUID=0A70EDD0-B654-4098-85CB-C93D40B6FA2E" target="_blank" rel="noopener" class="legistar-link">Ord. 2024-27, 2nd reading</a>: <span class="vote-unrecorded">individual vote not recorded</span> &mdash; secondary sources conflict on the aggregate tally (San Marxist: 6&ndash;1; San Marcos Record coverage suggests 4&ndash;3)</li>
+        <li>Sept. 17, 2024 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6877042&GUID=87F0799A-ABC5-437D-B175-3FEA7C122556" target="_blank" rel="noopener" class="legistar-link">Res. 2024-195R</a>, Cotton Center partial release ($50K): <span class="vote-unrecorded">individual vote not recorded</span></li>
+        <li>Nov. 6, 2024 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6808693&GUID=5FD09DB4-46E3-4B94-AE48-DFDCBD595B59" target="_blank" rel="noopener" class="legistar-link">Ord. 2024-27</a>, final adoption (7.553 ac annexed): <span class="vote-unrecorded">individual vote not recorded</span></li>
+        <li>Nov. 5, 2025 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=7719892&GUID=7B7D5E74-2EF6-44C2-B91B-ED57D449CD0E" target="_blank" rel="noopener" class="legistar-link">Res. 2025-212R</a>, Cotton Center full termination ($280K): <span class="vote-unrecorded">individual vote not recorded</span></li>
+      </ul>
+    </div>
+
+    <div class="card red">
+      <div class="person-name">Matthew Mendoza</div>
+      <div class="person-org">City of San Marcos — Place 1</div>
+      <div class="person-title">Council Member</div>
+      <div class="person-term">Elected Nov. 2022 (defeated incumbent Maxfield Baker) &middot; re-elected 2025, term through 2027</div>
+      <div class="divider"></div>
+      <ul class="vote-list">
+        <li>Jul. 2022 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5741776&GUID=3211A692-6361-424E-884C-A6E2E2A97071" target="_blank" rel="noopener" class="legistar-link">PDA-22-07(a)</a>: <span class="vote-unrecorded">individual vote not recorded</span> (took office Dec. 2022 &mdash; may postdate this action)</li>
+        <li>Dec. 14, 2022 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5949657&GUID=DDEF5211-39AE-4FB5-BC8E-0035C2300965" target="_blank" rel="noopener" class="legistar-link">ID22-874</a>/<a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5961707&GUID=9B92DA09-F1BA-43A5-9CC5-806F4D994E92" target="_blank" rel="noopener" class="legistar-link">ID22-901</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
+        <li>Jan. 2023 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5992444&GUID=6531CEE6-087C-4281-969F-7D41FC50252E" target="_blank" rel="noopener" class="legistar-link">Res. 2023-20R</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
+        <li>Apr. 9, 2024 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6695341&GUID=73B2B156-AB4A-48A2-80A3-F7581EF8FEBA" target="_blank" rel="noopener" class="legistar-link">Res. 2024-89R</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
+        <li>Aug. 5 &ndash; Nov. 6, 2024 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6808693&GUID=5FD09DB4-46E3-4B94-AE48-DFDCBD595B59" target="_blank" rel="noopener" class="legistar-link">Ord. 2024-27</a>, all readings &amp; adoption: <span class="vote-unrecorded">individual vote not recorded</span></li>
+        <li>Sept. 17, 2024 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6877042&GUID=87F0799A-ABC5-437D-B175-3FEA7C122556" target="_blank" rel="noopener" class="legistar-link">Res. 2024-195R</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
+        <li>Nov. 5, 2025 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=7719892&GUID=7B7D5E74-2EF6-44C2-B91B-ED57D449CD0E" target="_blank" rel="noopener" class="legistar-link">Res. 2025-212R</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
+      </ul>
+    </div>
+
+    <div class="card red">
+      <div class="person-name">Josh Paselk</div>
+      <div class="person-org">City of San Marcos — Place 2</div>
+      <div class="person-title">Council Member</div>
+      <div class="person-term">Elected Dec. 2025 runoff (defeated incumbent Saul Gonzales) &middot; term 2025&ndash;2028</div>
+      <div class="divider"></div>
+      <p class="person-desc">
+        First term. Took office after every project-related item identified to date, so has no
+        vote on record for the project. Predecessor Saul Gonzales held Place 2 through the
+        entire 2019&ndash;2025 span.
+      </p>
+    </div>
+
+    <div class="card red">
+      <div class="person-name">Alyssa Garza</div>
+      <div class="person-org">City of San Marcos — Place 3</div>
+      <div class="person-title">Council Member</div>
+      <div class="person-term">Elected Nov. 2020 &middot; re-elected unopposed 2023, term through 2026 &middot; running for re-election in 2026 against Mayor Jane Hughson</div>
+      <div class="divider"></div>
+      <ul class="vote-list">
+        <li>Jul. 2022 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5741776&GUID=3211A692-6361-424E-884C-A6E2E2A97071" target="_blank" rel="noopener" class="legistar-link">PDA-22-07(a)</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
+        <li>Dec. 14, 2022 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5949657&GUID=DDEF5211-39AE-4FB5-BC8E-0035C2300965" target="_blank" rel="noopener" class="legistar-link">ID22-874</a>/<a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5961707&GUID=9B92DA09-F1BA-43A5-9CC5-806F4D994E92" target="_blank" rel="noopener" class="legistar-link">ID22-901</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
+        <li>Jan. 2023 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5992444&GUID=6531CEE6-087C-4281-969F-7D41FC50252E" target="_blank" rel="noopener" class="legistar-link">Res. 2023-20R</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
+        <li>Apr. 9, 2024 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6695341&GUID=73B2B156-AB4A-48A2-80A3-F7581EF8FEBA" target="_blank" rel="noopener" class="legistar-link">Res. 2024-89R</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
+        <li>Aug. 5 &ndash; Nov. 6, 2024 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6808693&GUID=5FD09DB4-46E3-4B94-AE48-DFDCBD595B59" target="_blank" rel="noopener" class="legistar-link">Ord. 2024-27</a>, all readings &amp; adoption: <span class="vote-unrecorded">individual vote not recorded</span></li>
+        <li>Sept. 17, 2024 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6877042&GUID=87F0799A-ABC5-437D-B175-3FEA7C122556" target="_blank" rel="noopener" class="legistar-link">Res. 2024-195R</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
+        <li>Nov. 5, 2025 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=7719892&GUID=7B7D5E74-2EF6-44C2-B91B-ED57D449CD0E" target="_blank" rel="noopener" class="legistar-link">Res. 2025-212R</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
+      </ul>
+    </div>
+
+    <div class="card red">
+      <div class="person-name">Shane Scott</div>
+      <div class="person-org">City of San Marcos — Place 4</div>
+      <div class="person-title">Council Member</div>
+      <div class="person-term">Previously Place 2, 2010&ndash;2015 &middot; returned as Place 4, Nov. 2020 (defeated incumbent Mark Rockeymoore) &middot; re-elected 2023, term through 2026</div>
+      <div class="divider"></div>
+      <ul class="vote-list">
+        <li>Jul. 2022 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5741776&GUID=3211A692-6361-424E-884C-A6E2E2A97071" target="_blank" rel="noopener" class="legistar-link">PDA-22-07(a)</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
+        <li>Dec. 14, 2022 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5949657&GUID=DDEF5211-39AE-4FB5-BC8E-0035C2300965" target="_blank" rel="noopener" class="legistar-link">ID22-874</a>/<a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5961707&GUID=9B92DA09-F1BA-43A5-9CC5-806F4D994E92" target="_blank" rel="noopener" class="legistar-link">ID22-901</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
+        <li>Jan. 2023 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5992444&GUID=6531CEE6-087C-4281-969F-7D41FC50252E" target="_blank" rel="noopener" class="legistar-link">Res. 2023-20R</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
+        <li>Apr. 9, 2024 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6695341&GUID=73B2B156-AB4A-48A2-80A3-F7581EF8FEBA" target="_blank" rel="noopener" class="legistar-link">Res. 2024-89R</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
+        <li>Aug. 5 &ndash; Nov. 6, 2024 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6808693&GUID=5FD09DB4-46E3-4B94-AE48-DFDCBD595B59" target="_blank" rel="noopener" class="legistar-link">Ord. 2024-27</a>, all readings &amp; adoption: <span class="vote-unrecorded">individual vote not recorded</span></li>
+        <li>Sept. 17, 2024 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6877042&GUID=87F0799A-ABC5-437D-B175-3FEA7C122556" target="_blank" rel="noopener" class="legistar-link">Res. 2024-195R</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
+        <li>Nov. 5, 2025 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=7719892&GUID=7B7D5E74-2EF6-44C2-B91B-ED57D449CD0E" target="_blank" rel="noopener" class="legistar-link">Res. 2025-212R</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
+      </ul>
+    </div>
+
+    <div class="card red">
+      <div class="person-name">Lorenzo Gonzalez</div>
+      <div class="person-org">City of San Marcos — Place 5</div>
+      <div class="person-title">Council Member</div>
+      <div class="person-term">Elected Dec. 2024 runoff by 12 votes over Roland Saucedo &middot; sworn in Dec. 23, 2024 &middot; term through 2027</div>
+      <div class="divider"></div>
+      <ul class="vote-list">
+        <li>Nov. 6, 2024 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6808693&GUID=5FD09DB4-46E3-4B94-AE48-DFDCBD595B59" target="_blank" rel="noopener" class="legistar-link">Ord. 2024-27</a>, final adoption: <span class="vote-unrecorded">not on council yet</span> (sworn in Dec. 23, 2024 &mdash; predecessor Mark Gleason held the seat)</li>
+        <li>Nov. 5, 2025 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=7719892&GUID=7B7D5E74-2EF6-44C2-B91B-ED57D449CD0E" target="_blank" rel="noopener" class="legistar-link">Res. 2025-212R</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
+      </ul>
+    </div>
+
+    <div class="card red">
+      <div class="person-name">Amanda Rodriguez</div>
+      <div class="person-org">City of San Marcos — Place 6</div>
+      <div class="person-title">Council Member</div>
+      <div class="person-term">Elected Nov. 5, 2024 &middot; term through 2027 &middot; announced run for Mayor in 2026</div>
+      <div class="divider"></div>
+      <ul class="vote-list">
+        <li>Nov. 6, 2024 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6808693&GUID=5FD09DB4-46E3-4B94-AE48-DFDCBD595B59" target="_blank" rel="noopener" class="legistar-link">Ord. 2024-27</a>, final adoption: <span class="vote-unrecorded">not yet sworn in</span> (predecessor Jude Prather held the seat)</li>
+        <li>Nov. 5, 2025 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=7719892&GUID=7B7D5E74-2EF6-44C2-B91B-ED57D449CD0E" target="_blank" rel="noopener" class="legistar-link">Res. 2025-212R</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- ── FORMER CITY COUNCIL MEMBERS ── -->
+  <p class="section-label">Former San Marcos City Council Members</p>
+  <p class="section-intro">
+    These members were on council for some portion of the project's 2019&ndash;2025 legislative
+    history but are no longer serving. Vote attribution follows the same sourcing standard as
+    current members above.
+  </p>
+  <div class="grid">
+
+    <div class="card red">
+      <div class="person-name">Lisa Prewitt</div>
+      <div class="person-org">City of San Marcos — Place 1</div>
+      <div class="person-title">Former Council Member</div>
+      <div class="person-term">Two terms: 2013&ndash;16, 2016&ndash;19 &middot; did not seek re-election, succeeded by Maxfield Baker</div>
+      <div class="divider"></div>
+      <ul class="vote-list">
+        <li>Jan. 15, 2019 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3831652&GUID=D86EE462-494D-45EC-B690-35FF013D7A5A" target="_blank" rel="noopener" class="legistar-link">Ord. 2019-01</a>, annexation, 1st reading: <span class="vote-for">FOR</span> (6&ndash;1)</li>
+        <li>Jan. 15, 2019 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3831658&GUID=3109F41F-4E11-4277-BD0E-D3AF8271633E" target="_blank" rel="noopener" class="legistar-link">Ord. 2019-02</a>, HI zoning, 1st reading: <span class="vote-for">FOR</span> (5&ndash;2)</li>
+      </ul>
+    </div>
+
+    <div class="card red">
+      <div class="person-name">Maxfield Baker</div>
+      <div class="person-org">City of San Marcos — Place 1</div>
+      <div class="person-title">Former Council Member</div>
+      <div class="person-term">2019&ndash;2022 &middot; defeated by Matthew Mendoza, Nov. 2022</div>
+      <div class="divider"></div>
+      <p class="person-desc">
+        Before joining Council, Baker sat on the Planning &amp; Zoning Commission and cast the
+        lone dissenting vote against the SMART Terminal zoning reconsideration (ZC-18-21a,
+        Jan. 8, 2019, carried 7&ndash;1). Later served on the Council's SMART Terminal oversight
+        committee with Mayor Hughson and Mark Gleason; when Baker left Council in Dec. 2022,
+        Jude Prather took over his seat on that committee.
+      </p>
+      <ul class="vote-list">
+        <li>Jan. 21, 2020 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=4304812&GUID=2B3C36CA-D881-4A9D-B8BC-A9013DACC8BF" target="_blank" rel="noopener" class="legistar-link">Res. 2020-17R</a> (Martindale ETJ): <span class="vote-for">FOR postponement</span> (7&ndash;0, unanimous)</li>
+        <li>Jul. 2022 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5741776&GUID=3211A692-6361-424E-884C-A6E2E2A97071" target="_blank" rel="noopener" class="legistar-link">PDA-22-07(a)</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
+      </ul>
+    </div>
+
+    <div class="card red">
+      <div class="person-name">Saul Gonzales</div>
+      <div class="person-org">City of San Marcos — Place 2</div>
+      <div class="person-title">Former Council Member</div>
+      <div class="person-term">On council through the entire 2019&ndash;2025 project span &middot; defeated by Josh Paselk, Dec. 2025 runoff</div>
+      <div class="divider"></div>
+      <p class="person-desc">
+        Longest-serving member during the project's legislative history — in office for every
+        identified vote from the original 2019 annexation through the 2025 Cotton Center DA
+        termination.
+      </p>
+      <ul class="vote-list">
+        <li>Jan. 15, 2019 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3831652&GUID=D86EE462-494D-45EC-B690-35FF013D7A5A" target="_blank" rel="noopener" class="legistar-link">Ord. 2019-01</a>, annexation, 1st reading: <span class="vote-for">FOR</span> (6&ndash;1)</li>
+        <li>Jan. 15, 2019 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3831658&GUID=3109F41F-4E11-4277-BD0E-D3AF8271633E" target="_blank" rel="noopener" class="legistar-link">Ord. 2019-02</a>, HI zoning, 1st reading: <span class="vote-for">FOR</span> (5&ndash;2)</li>
+        <li>Jan. 21, 2020 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=4304812&GUID=2B3C36CA-D881-4A9D-B8BC-A9013DACC8BF" target="_blank" rel="noopener" class="legistar-link">Res. 2020-17R</a>: <span class="vote-for">FOR postponement</span> (7&ndash;0, unanimous)</li>
+        <li>Jul. 2022 &ndash; Nov. 2025 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5741776&GUID=3211A692-6361-424E-884C-A6E2E2A97071" target="_blank" rel="noopener" class="legistar-link">PDA-22-07(a)</a>, <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5949657&GUID=DDEF5211-39AE-4FB5-BC8E-0035C2300965" target="_blank" rel="noopener" class="legistar-link">ID22-874</a>/<a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5961707&GUID=9B92DA09-F1BA-43A5-9CC5-806F4D994E92" target="_blank" rel="noopener" class="legistar-link">ID22-901</a>, <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5992444&GUID=6531CEE6-087C-4281-969F-7D41FC50252E" target="_blank" rel="noopener" class="legistar-link">Res. 2023-20R</a>, <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6695341&GUID=73B2B156-AB4A-48A2-80A3-F7581EF8FEBA" target="_blank" rel="noopener" class="legistar-link">Res. 2024-89R</a>, <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6808693&GUID=5FD09DB4-46E3-4B94-AE48-DFDCBD595B59" target="_blank" rel="noopener" class="legistar-link">Ord. 2024-27</a> (all readings), <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6877042&GUID=87F0799A-ABC5-437D-B175-3FEA7C122556" target="_blank" rel="noopener" class="legistar-link">Res. 2024-195R</a>, <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=7719892&GUID=7B7D5E74-2EF6-44C2-B91B-ED57D449CD0E" target="_blank" rel="noopener" class="legistar-link">Res. 2025-212R</a>: <span class="vote-unrecorded">individual vote not recorded for any item</span></li>
+      </ul>
+    </div>
+
+    <div class="card red">
+      <div class="person-name">Ed Mihalkanin</div>
+      <div class="person-org">City of San Marcos — Place 3</div>
+      <div class="person-title">Former Council Member</div>
+      <div class="person-term">Three non-consecutive terms: 1996&ndash;2000, 2001&ndash;06, 2016&ndash;20 &middot; defeated by Alyssa Garza, Nov. 2020</div>
+      <div class="divider"></div>
+      <ul class="vote-list">
+        <li>Jan. 15, 2019 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3831652&GUID=D86EE462-494D-45EC-B690-35FF013D7A5A" target="_blank" rel="noopener" class="legistar-link">Ord. 2019-01</a>, annexation, 1st reading: <span class="vote-for">FOR</span> (6&ndash;1)</li>
+        <li>Jan. 15, 2019 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3831658&GUID=3109F41F-4E11-4277-BD0E-D3AF8271633E" target="_blank" rel="noopener" class="legistar-link">Ord. 2019-02</a>, HI zoning, 1st reading: <span class="vote-for">FOR</span> (5&ndash;2)</li>
+        <li>Jan. 21, 2020 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=4304812&GUID=2B3C36CA-D881-4A9D-B8BC-A9013DACC8BF" target="_blank" rel="noopener" class="legistar-link">Res. 2020-17R</a>: <span class="vote-for">FOR postponement</span> (7&ndash;0, unanimous) &mdash; moved the initial motion to table pending executive session</li>
+      </ul>
+    </div>
+
+    <div class="card red">
+      <div class="person-name">Mark Rockeymoore</div>
+      <div class="person-org">City of San Marcos — Place 4</div>
+      <div class="person-title">Former Council Member</div>
+      <div class="person-term">2018&ndash;2020 &middot; defeated by Shane Scott, Nov. 2020</div>
+      <div class="divider"></div>
+      <ul class="vote-list">
+        <li>Jan. 15, 2019 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3831652&GUID=D86EE462-494D-45EC-B690-35FF013D7A5A" target="_blank" rel="noopener" class="legistar-link">Ord. 2019-01</a>, annexation, 1st reading: <span class="vote-for">FOR</span> (6&ndash;1)</li>
+        <li>Jan. 15, 2019 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3831658&GUID=3109F41F-4E11-4277-BD0E-D3AF8271633E" target="_blank" rel="noopener" class="legistar-link">Ord. 2019-02</a>, HI zoning, 1st reading: <span class="vote-against">AGAINST</span> (5&ndash;2)</li>
+        <li>Jan. 21, 2020 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=4304812&GUID=2B3C36CA-D881-4A9D-B8BC-A9013DACC8BF" target="_blank" rel="noopener" class="legistar-link">Res. 2020-17R</a>: <span class="vote-for">FOR postponement</span> (7&ndash;0, unanimous) &mdash; seconded the motion to remove from the table after executive session</li>
+      </ul>
+    </div>
+
+    <div class="card red">
+      <div class="person-name">Joca Marquez</div>
+      <div class="person-org">City of San Marcos — Place 5</div>
+      <div class="person-title">Former Council Member</div>
+      <div class="person-term">2018&ndash;2020 &middot; defeated/succeeded by Mark Gleason, Dec. 2020</div>
+      <div class="divider"></div>
+      <p class="person-desc">
+        The sole dissenting vote on both first-reading items in January 2019 — the project's
+        earliest recorded opposition on Council.
+      </p>
+      <ul class="vote-list">
+        <li>Jan. 15, 2019 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3831652&GUID=D86EE462-494D-45EC-B690-35FF013D7A5A" target="_blank" rel="noopener" class="legistar-link">Ord. 2019-01</a>, annexation, 1st reading: <span class="vote-against">AGAINST</span> (6&ndash;1, sole dissent)</li>
+        <li>Jan. 15, 2019 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3831658&GUID=3109F41F-4E11-4277-BD0E-D3AF8271633E" target="_blank" rel="noopener" class="legistar-link">Ord. 2019-02</a>, HI zoning, 1st reading: <span class="vote-against">AGAINST</span> (5&ndash;2)</li>
+        <li>Jan. 21, 2020 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=4304812&GUID=2B3C36CA-D881-4A9D-B8BC-A9013DACC8BF" target="_blank" rel="noopener" class="legistar-link">Res. 2020-17R</a>: <span class="vote-for">FOR postponement</span> (7&ndash;0, unanimous)</li>
+      </ul>
+    </div>
+
+    <div class="card red">
+      <div class="person-name">Mark Gleason</div>
+      <div class="person-org">City of San Marcos — Place 5</div>
+      <div class="person-title">Former Council Member</div>
+      <div class="person-term">Elected Dec. 2020 runoff &middot; re-elected 2021 &middot; did not seek re-election in 2024 &middot; succeeded by Lorenzo Gonzalez</div>
+      <div class="divider"></div>
+      <p class="person-desc">
+        Previously vice-chair of the Planning &amp; Zoning Commission, where he voted on the
+        original SMART Terminal zoning case (ZC-18-21) before joining Council: against the
+        initial Dec. 11, 2018 denial motion, then for approval on Jan. 8, 2019 reconsideration
+        (carried 7&ndash;1). Served on the Council's SMART Terminal oversight committee with
+        Mayor Hughson and Maxfield Baker.
+      </p>
+      <ul class="vote-list">
+        <li>Jul. 2022 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5741776&GUID=3211A692-6361-424E-884C-A6E2E2A97071" target="_blank" rel="noopener" class="legistar-link">PDA-22-07(a)</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
+        <li>Dec. 14, 2022 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5949657&GUID=DDEF5211-39AE-4FB5-BC8E-0035C2300965" target="_blank" rel="noopener" class="legistar-link">ID22-874</a>/<a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5961707&GUID=9B92DA09-F1BA-43A5-9CC5-806F4D994E92" target="_blank" rel="noopener" class="legistar-link">ID22-901</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
+        <li>Jan. 2023 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5992444&GUID=6531CEE6-087C-4281-969F-7D41FC50252E" target="_blank" rel="noopener" class="legistar-link">Res. 2023-20R</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
+        <li>Apr. 9, 2024 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6695341&GUID=73B2B156-AB4A-48A2-80A3-F7581EF8FEBA" target="_blank" rel="noopener" class="legistar-link">Res. 2024-89R</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
+        <li>Aug. 5 &ndash; Nov. 6, 2024 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6808693&GUID=5FD09DB4-46E3-4B94-AE48-DFDCBD595B59" target="_blank" rel="noopener" class="legistar-link">Ord. 2024-27</a>, all readings &amp; final adoption: <span class="vote-unrecorded">individual vote not recorded</span> (last Place 5 vote before leaving council)</li>
+        <li>Sept. 17, 2024 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6877042&GUID=87F0799A-ABC5-437D-B175-3FEA7C122556" target="_blank" rel="noopener" class="legistar-link">Res. 2024-195R</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
+      </ul>
+    </div>
+
+    <div class="card red">
+      <div class="person-name">Melissa Derrick</div>
+      <div class="person-org">City of San Marcos — Place 6</div>
+      <div class="person-title">Former Council Member</div>
+      <div class="person-term">Two terms: 2016&ndash;19, 2019&ndash;21 &middot; succeeded by Jude Prather</div>
+      <div class="divider"></div>
+      <ul class="vote-list">
+        <li>Jan. 15, 2019 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3831652&GUID=D86EE462-494D-45EC-B690-35FF013D7A5A" target="_blank" rel="noopener" class="legistar-link">Ord. 2019-01</a>, annexation, 1st reading: <span class="vote-for">FOR</span> (6&ndash;1)</li>
+        <li>Jan. 15, 2019 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3831658&GUID=3109F41F-4E11-4277-BD0E-D3AF8271633E" target="_blank" rel="noopener" class="legistar-link">Ord. 2019-02</a>, HI zoning, 1st reading: <span class="vote-for">FOR</span> (5&ndash;2)</li>
+        <li>Jan. 21, 2020 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=4304812&GUID=2B3C36CA-D881-4A9D-B8BC-A9013DACC8BF" target="_blank" rel="noopener" class="legistar-link">Res. 2020-17R</a>: <span class="vote-for">FOR postponement</span> (7&ndash;0, unanimous) &mdash; moved the motion to postpone after executive session</li>
+      </ul>
+    </div>
+
+    <div class="card red">
+      <div class="person-name">Jude Prather</div>
+      <div class="person-org">City of San Marcos — Place 6</div>
+      <div class="person-title">Former Council Member</div>
+      <div class="person-term">Three terms: 2010&ndash;13, 2013&ndash;16 (consecutive), then 2021&ndash;24 after a five-year gap &middot; did not seek re-election in 2024 &middot; succeeded by Amanda Rodriguez</div>
+      <div class="divider"></div>
+      <p class="person-desc">
+        Took over Maxfield Baker's seat on the Council's SMART Terminal oversight committee
+        after Baker left Council in Dec. 2022.
+      </p>
+      <ul class="vote-list">
+        <li>Jul. 2022 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5741776&GUID=3211A692-6361-424E-884C-A6E2E2A97071" target="_blank" rel="noopener" class="legistar-link">PDA-22-07(a)</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
+        <li>Dec. 14, 2022 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5949657&GUID=DDEF5211-39AE-4FB5-BC8E-0035C2300965" target="_blank" rel="noopener" class="legistar-link">ID22-874</a>/<a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5961707&GUID=9B92DA09-F1BA-43A5-9CC5-806F4D994E92" target="_blank" rel="noopener" class="legistar-link">ID22-901</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
+        <li>Jan. 2023 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5992444&GUID=6531CEE6-087C-4281-969F-7D41FC50252E" target="_blank" rel="noopener" class="legistar-link">Res. 2023-20R</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
+        <li>Apr. 9, 2024 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6695341&GUID=73B2B156-AB4A-48A2-80A3-F7581EF8FEBA" target="_blank" rel="noopener" class="legistar-link">Res. 2024-89R</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
+        <li>Aug. 5 &ndash; Nov. 6, 2024 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6808693&GUID=5FD09DB4-46E3-4B94-AE48-DFDCBD595B59" target="_blank" rel="noopener" class="legistar-link">Ord. 2024-27</a>, all readings &amp; final adoption: <span class="vote-unrecorded">individual vote not recorded</span> (last Place 6 vote before leaving council)</li>
+        <li>Sept. 17, 2024 &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6877042&GUID=87F0799A-ABC5-437D-B175-3FEA7C122556" target="_blank" rel="noopener" class="legistar-link">Res. 2024-195R</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
+      </ul>
+    </div>
+
+  </div>
+
   <!-- ── CITY OF SAN MARCOS ── -->
   <p class="section-label">City of San Marcos</p>
   <p class="section-intro">
     Although the project site sits primarily in Caldwell County, the City of San Marcos has jurisdiction
     over the property through its Extraterritorial Jurisdiction (ETJ), utility service agreements,
-    annexation proceedings, and a 2023 Development Agreement. The following city officials
+    annexation proceedings, and a 2023 Development Agreement. The following city staff members
     reviewed, approved, and coordinated on those matters.
   </p>
   <div class="grid">
-
-    <div class="card teal">
-      <div class="person-name">Jane Hughson</div>
-      <div class="person-org">City of San Marcos</div>
-      <div class="person-title">Mayor</div>
-      <div class="divider"></div>
-      <p class="person-desc">
-        Mayor Hughson was kept informed of annexation proceedings related to the project and
-        raised questions through the city's Council Forum about the alignment of a planned road
-        through the development — specifically whether it was positioned to run behind
-        existing residential properties.
-      </p>
-    </div>
 
     <div class="card teal">
       <div class="person-name">Joe Pantalion</div>
@@ -337,14 +649,15 @@ footer {
     <div class="card teal">
       <div class="person-name">Tyler Hjorth</div>
       <div class="person-org">City of San Marcos — Utilities</div>
-      <div class="person-title">Director of Utilities</div>
+      <div class="person-title">Former Director of Utilities (retired late April 2026)</div>
       <div class="divider"></div>
       <p class="person-desc">
         Hjorth attended the 2022 pre-development meeting as the city's utilities authority and
         was a key contact for discussions about water, wastewater, and electric service to the
         development. He was later included in correspondence about a proposed regional sewer
         infrastructure plan along Highway 80 East, which would affect the project's ability
-        to obtain wastewater service.
+        to obtain wastewater service. Succeeded by Paul Kite on electric utility matters near
+        the airport following his retirement.
       </p>
     </div>
 

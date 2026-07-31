@@ -194,8 +194,14 @@ main {
 
 .facts-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: 14px;
+}
+@media (max-width: 900px) {
+  .facts-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .facts-grid { grid-template-columns: 1fr; }
 }
 
 .fact {
@@ -333,6 +339,16 @@ footer {
         <div class="fact-value">85 / 75 dB(A)</div>
         <div class="fact-label">Max noise day / night (SMDC §7.4.2.1) — measured at public ROW</div>
       </div>
+    </div>
+
+    <div style="background:#fdf2f8;border-left:3px solid #be185d;border-radius:8px;padding:12px 16px;margin-top:14px;font-size:.82rem;line-height:1.6;color:#374151;">
+      <strong>What "70% max impervious cover" actually allows:</strong> DA §2.03 sets the 70% cap against the
+      <em>entire gross acreage</em> of the property, and explicitly counts floodplain acreage toward the required
+      30% "pervious" share &mdash; alongside utility corridors and detention/stormwater facilities. Since roughly
+      325 of the property's 2,017 acres are floodplain (undevelopable regardless), that acreage does most of the
+      work of satisfying the 30% pervious requirement for free. The practical result: on the ~1,692 acres of
+      actually developable land, up to <strong>~83.5%</strong> could be paved or built over while the project still
+      technically satisfies the nominal "70%" site-wide standard.
     </div>
   </div>
 

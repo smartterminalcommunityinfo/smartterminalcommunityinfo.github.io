@@ -77,10 +77,17 @@
 
   .hidden { display: none !important; }
 
-  /* legend */
+  /* legend / category filter buttons */
   .legend { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px;
             font-size: .82rem; }
-  .legend-item { display: flex; align-items: center; gap: 5px; }
+  .legend-item { display: flex; align-items: center; gap: 5px;
+                 font-family: inherit; color: #222; background: #fff;
+                 border: 2px solid transparent; border-radius: 6px;
+                 padding: 5px 10px; cursor: pointer;
+                 box-shadow: 0 1px 3px rgba(0,0,0,.08);
+                 transition: border-color .15s, background .15s; }
+  .legend-item:hover { background: #f5f6f8; }
+  .legend-item.active { border-color: var(--dot, #1a3a5c); background: rgba(0,0,0,.045); font-weight: 700; }
   .dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
 
   @media (max-width: 600px) {
@@ -122,30 +129,20 @@
 <p class="subtitle">Synthesized from 836 public information request documents, City of San Marcos Legistar legislative records, and 32 Caldwell County deed/easement/agreement records &mdash;
 San Marcos, Texas &mdash; Updated May 2026</p>
 
-<div class="legend">
-  <div class="legend-item"><div class="dot" style="background:#c0392b"></div> Milestone</div>
-  <div class="legend-item"><div class="dot" style="background:#1a3a5c"></div> City Council</div>
-  <div class="legend-item"><div class="dot" style="background:#16a085"></div> P&amp;Z Meeting</div>
-  <div class="legend-item"><div class="dot" style="background:#8e44ad"></div> Permit</div>
-  <div class="legend-item"><div class="dot" style="background:#e74c3c"></div> Violation / Flag</div>
-  <div class="legend-item"><div class="dot" style="background:#e67e22"></div> Opposition</div>
-  <div class="legend-item"><div class="dot" style="background:#2980b9"></div> Staff Meeting</div>
-  <div class="legend-item"><div class="dot" style="background:#7f8c8d"></div> Legal / Agreement</div>
+<div class="legend" id="catButtons">
+  <button type="button" class="legend-item active" data-cat="" style="--dot:#555" onclick="toggleCategory('', this)"><div class="dot" style="background:#555"></div> All</button>
+  <button type="button" class="legend-item" data-cat="milestone" style="--dot:#c0392b" onclick="toggleCategory('milestone', this)"><div class="dot" style="background:#c0392b"></div> Milestone</button>
+  <button type="button" class="legend-item" data-cat="council" style="--dot:#1a3a5c" onclick="toggleCategory('council', this)"><div class="dot" style="background:#1a3a5c"></div> City Council</button>
+  <button type="button" class="legend-item" data-cat="pz" style="--dot:#16a085" onclick="toggleCategory('pz', this)"><div class="dot" style="background:#16a085"></div> P&amp;Z Meeting</button>
+  <button type="button" class="legend-item" data-cat="permit" style="--dot:#8e44ad" onclick="toggleCategory('permit', this)"><div class="dot" style="background:#8e44ad"></div> Permit</button>
+  <button type="button" class="legend-item" data-cat="violation" style="--dot:#e74c3c" onclick="toggleCategory('violation', this)"><div class="dot" style="background:#e74c3c"></div> Violation / Flag</button>
+  <button type="button" class="legend-item" data-cat="opposition" style="--dot:#e67e22" onclick="toggleCategory('opposition', this)"><div class="dot" style="background:#e67e22"></div> Opposition</button>
+  <button type="button" class="legend-item" data-cat="meeting" style="--dot:#2980b9" onclick="toggleCategory('meeting', this)"><div class="dot" style="background:#2980b9"></div> Staff Meeting</button>
+  <button type="button" class="legend-item" data-cat="legal" style="--dot:#7f8c8d" onclick="toggleCategory('legal', this)"><div class="dot" style="background:#7f8c8d"></div> Legal / Agreement</button>
 </div>
 
 <div class="filters">
   <input id="search" type="text" placeholder="Search events..." oninput="filter()">
-  <select id="catFilter" onchange="filter()">
-    <option value="">All Categories</option>
-    <option value="milestone">Milestone</option>
-    <option value="council">City Council</option>
-    <option value="pz">P&amp;Z</option>
-    <option value="permit">Permit</option>
-    <option value="violation">Violation / Flag</option>
-    <option value="opposition">Opposition</option>
-    <option value="meeting">Staff Meeting</option>
-    <option value="legal">Legal / Agreement</option>
-  </select>
 </div>
 
 <div class="timeline" id="timeline">
@@ -506,6 +503,19 @@ San Marcos, Texas &mdash; Updated May 2026</p>
   <div class="source">Source: San Marcos Legistar &mdash; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6189032&GUID=9CD355A7-2F2B-445B-AC8F-0D29988A0E49" target="_blank" rel="noopener" class="legistar-link">ID#23-314</a>, <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6189016&GUID=0596E383-3D5C-4528-9593-A6410A2D6668" target="_blank" rel="noopener" class="legistar-link">ID#23-317</a>, <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6189017&GUID=F5EFED80-DABC-4030-B55E-E6B26B6FE8ED" target="_blank" rel="noopener" class="legistar-link">ID#23-327</a>, <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6201456&GUID=183DAF75-A425-4554-906D-2A78A1D11A03" target="_blank" rel="noopener" class="legistar-link">ID#23-340</a>, <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6204350&GUID=26F2F33D-F331-4329-9FEE-471FC5135D60" target="_blank" rel="noopener" class="legistar-link">ID#23-363</a>; City Council Message Board &mdash; 05/02/23 Regular Agenda, Item 14</div>
 </div></div>
 
+<div class="event milestone" data-cat="milestone" data-text="May 2023 project renamed SMART Terminal becomes Axis Logistics Park rebrand name change press release Scarborough Lane Partners Real Estate Clayton Kendall">
+<div class="card">
+  <div class="card-date">May 11, 2023</div>
+  <div class="card-title"><span class="badge b-milestone">Milestone</span> Project Publicly Renamed &mdash; "SMART Terminal" Becomes "AXIS Logistics Park"</div>
+  <div class="card-body">Co-developers <strong>Scarborough Lane Development</strong> and <strong>Partners Real Estate</strong> issue a joint press release announcing the project &mdash; previously called SMART Terminal &mdash; is now <strong>AXIS Logistics Park</strong>, a master-planned industrial park spanning approximately 2,000 acres, with roughly 735 acres then zoned for industrial use. The release touts direct access to Loop 110 and proximity to IH-35, I-10, and SH-130, plus adjacency to Union Pacific Railway, BNSF Railway, and San Marcos Regional Airport. Notably, this announcement comes just one day after the City's own executive sessions (May 10, above) were still referring to the project internally as the "SMART Terminal Development Agreement" &mdash; City usage lagged the public rebrand by months.
+  <ul>
+    <li>Clayton Kendall (Scarborough Lane EVP, Industrial Division): "AXIS Logistics Park is open for business and will be the first industrial park of its scale in Central Texas"</li>
+    <li>John Colglazier (Partners Real Estate): calls the site "the obvious choice for logistics and shipping by national and international manufacturers"</li>
+  </ul>
+  </div>
+  <div class="source">Source: PR Newswire, May 11, 2023 &mdash; "Co-Developers Scarborough Lane Development and Partners Real Estate Announce San Marcos Mega Industrial Project AXIS Logistics Park" (prnewswire.com/news-releases/co-developers-scarborough-lane-development-and-partners-real-estate-announce-san-marcos-mega-industrial-project-axis-logistics-park-301821477.html)</div>
+</div></div>
+
 <div class="event milestone" data-cat="milestone" data-text="June 2023 withdrawal annexation AN-22-20 zoning ZC-23-01 Scarborough Lane Clayton Kendall Franklin Mountain withdrawn consent">
 <div class="card">
   <div class="card-date">June 23, 2023</div>
@@ -523,7 +533,7 @@ San Marcos, Texas &mdash; Updated May 2026</p>
 <div class="card">
   <div class="card-date">Sep 27 &amp; Oct 16, 2023</div>
   <div class="card-title"><span class="badge b-meeting">Meeting</span> AXIS Infrastructure Meetings with City Engineering (Richard Reynosa)</div>
-  <div class="card-body">Two working meetings between Kimley-Horn and City Engineering Director Richard Reynosa to coordinate on utility and infrastructure design for the now-renamed <strong>TriTexas Logistics Park</strong>.
+  <div class="card-body">Two working meetings between Kimley-Horn and City Engineering Director Richard Reynosa to coordinate on utility and infrastructure design for the newly-renamed <strong>Axis Logistics Park</strong>.
   <ul>
     <li><strong>Sep 27:</strong> Water and sewer alignments reviewed. City raises concern about excessive sewer depth (&gt;13 ft in locations). Reimbursement for public infrastructure unlikely to cover all improvements.</li>
     <li><strong>Oct 16:</strong> Drainage pilot channel slope (0.3% requested vs. 0.5% minimum) &mdash; City open to administrative approval. Water quality deferred to lot-by-lot basis under discussion. City willing to work with constraints of existing site conditions.</li>
@@ -734,11 +744,11 @@ San Marcos, Texas &mdash; Updated May 2026</p>
   <div class="source">Source: City Council Message Board &mdash; 08/20/24 Regular Agenda, Item 01 (thread 4672)</div>
 </div></div>
 
-<div class="event pz" data-cat="pz" data-text="August 27 2024 Planning Zoning Commission meeting WPP2 2024-49696 TriTexas Logistics Park water quality buffer zone reclassification Greg Schwarz presentation culvert maintenance question">
+<div class="event pz" data-cat="pz" data-text="August 27 2024 Planning Zoning Commission meeting WPP2 2024-49696 Axis Logistics Park water quality buffer zone reclassification Greg Schwarz presentation culvert maintenance question">
 <div class="card">
   <div class="card-date">August 27, 2024</div>
   <div class="card-title"><span class="badge b-pz">P&amp;Z</span> P&amp;Z Commission &mdash; WPP2 Presentation Only, No Vote (Permit #<a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6838123&GUID=9AEC4CE6-F1D9-4735-B475-874F982CD50F" target="_blank" rel="noopener" class="legistar-link">2024-49696</a>)</div>
-  <div class="card-body">Planning &amp; Zoning Commission meeting at which City Senior Engineer Greg Schwarz presents the <strong>Qualified WPP2 (Watershed Protection Plan Phase 2)</strong> for TriTexas Logistics Park (Permit No. <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6838123&GUID=9AEC4CE6-F1D9-4735-B475-874F982CD50F" target="_blank" rel="noopener" class="legistar-link">2024-49696</a>). First use of "TriTexas Logistics Park" name in the minutes record.
+  <div class="card-body">Planning &amp; Zoning Commission meeting at which City Senior Engineer Greg Schwarz presents the <strong>Qualified WPP2 (Watershed Protection Plan Phase 2)</strong> for Axis Logistics Park (Permit No. <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6838123&GUID=9AEC4CE6-F1D9-4735-B475-874F982CD50F" target="_blank" rel="noopener" class="legistar-link">2024-49696</a>).
   <ul>
     <li>Members present (8): Chair David Case, Vice-Chair Griffin Spell, Agnew, Costilla, Burleson, Meeks, Garber, Dunn; Kelsey absent</li>
     <li>Schwarz presents; Kimley-Horn (Ben Ruby) available for technical questions via Zoom</li>
@@ -985,6 +995,19 @@ San Marcos, Texas &mdash; Updated May 2026</p>
   <div class="source">Source: Re___EXTERNAL__RE___EXTERNAL__Re___EXTERNAL__RE___EXTERNAL__Re___EXTERNAL__Project_Apex_Graphite_-_Site_Tour_4_7_follow-ups.pdf</div>
 </div></div>
 
+<div class="event milestone" data-cat="milestone" data-text="May 2026 project renamed again Axis Logistics Park becomes TriTexas Logistics Park rebrand name change press release Partners Real Estate Scarborough Lane James Feagin John Simons">
+<div class="card">
+  <div class="card-date">May 5, 2026</div>
+  <div class="card-title"><span class="badge b-milestone">Milestone</span> Project Publicly Renamed Again &mdash; "AXIS Logistics Park" Becomes "TriTexas Logistics Park"</div>
+  <div class="card-body">Partners Real Estate and Scarborough Lane Development issue a joint press release announcing the rebrand of AXIS Logistics Park to <strong>TriTexas Logistics Park</strong>, repositioning the ~2,000-acre master-planned development as a logistics/distribution hub within the "Texas Triangle" (Austin, San Antonio, Dallas-Fort Worth, Houston). Phase I covers ~736 acres within city limits, fully entitled for heavy industrial use. City staff became aware the day before: Director of Economic &amp; Local Business Development <strong>Helen Ramirez</strong> circulated an Austin Business Journal article on the rename to City leadership on May 4.
+  <ul>
+    <li>James R. Feagin (Chairman &amp; CEO, Scarborough Lane Development): "TriTexas Logistics Park reflects what we've always believed this project to be &mdash; a once-in-a-generation opportunity"</li>
+    <li>John Simons (Partner, Partners Real Estate): "TriTexas Logistics Park represents a generational industrial opportunity in one of the fastest-growing regions in the country"</li>
+  </ul>
+  </div>
+  <div class="source">Source: Partners Real Estate press release, May 5, 2026, "Scarborough Lane Development's AXIS Logistics Park Has Been Rebranded as TriTexas Logistics Park" (partnersrealestate.com/media-center/press-releases); New_Name__TriTexas.pdf (Helen Ramirez email, May 4, 2026, forwarding Austin Business Journal coverage)</div>
+</div></div>
+
 <div class="event violation" data-cat="violation" data-text="April 27 May 8 2026 Project Apex Graphite carbon battery covenant rejection Exhibit D prohibited use first enforcement Development Agreement graphite anode Helen Ramirez">
 <div class="card">
   <div class="card-date">April 27 &ndash; May 8, 2026</div>
@@ -1033,15 +1056,34 @@ San Marcos, Texas &mdash; Updated May 2026</p>
 </div><!-- /timeline -->
 
 <script>
+let activeCats = new Set();
+
+function toggleCategory(cat, btn) {
+  if (cat === '') {
+    activeCats.clear();
+  } else if (activeCats.has(cat)) {
+    activeCats.delete(cat);
+  } else {
+    activeCats.add(cat);
+  }
+
+  document.querySelectorAll('#catButtons .legend-item').forEach(b => {
+    const c = b.dataset.cat;
+    const isActive = c === '' ? activeCats.size === 0 : activeCats.has(c);
+    b.classList.toggle('active', isActive);
+  });
+
+  filter();
+}
+
 function filter() {
-  const q   = document.getElementById('search').value.toLowerCase();
-  const cat = document.getElementById('catFilter').value;
+  const q = document.getElementById('search').value.toLowerCase();
 
   document.querySelectorAll('.event').forEach(ev => {
     const text    = (ev.dataset.text || '') + ev.innerText.toLowerCase();
     const evCat   = ev.dataset.cat || '';
-    const matchQ  = !q   || text.includes(q);
-    const matchC  = !cat || evCat === cat;
+    const matchQ  = !q || text.includes(q);
+    const matchC  = activeCats.size === 0 || activeCats.has(evCat);
     ev.classList.toggle('hidden', !(matchQ && matchC));
   });
 

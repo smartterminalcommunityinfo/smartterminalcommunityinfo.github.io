@@ -215,6 +215,25 @@ main {
 .fact.red   { border-left-color: #be185d; }
 .fact.green { border-left-color: #166534; }
 
+a.fact {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  transition: background .15s, transform .1s;
+}
+a.fact:hover {
+  background: #e2e8f0;
+  transform: translateY(-1px);
+}
+a.fact .fact-label {
+  text-decoration: none;
+}
+a.fact .fact-value::after {
+  content: " \2192";
+  font-weight: 700;
+  opacity: .5;
+}
+
 
 .fact-value {
   font-size: 1.15rem;
@@ -291,50 +310,50 @@ footer {
 
     <div class="facts-grid">
 
-      <div class="fact">
+      <a class="fact" href="maps.html">
         <div class="fact-value">~2,017 ac</div>
         <div class="fact-label">Total site area &mdash; only ~700 ac actually annexed &amp; zoned into the City</div>
-      </div>
-      <div class="fact amber">
+      </a>
+      <a class="fact amber" href="project_timeline.html">
         <div class="fact-value">3 names</div>
         <div class="fact-label">SMART Terminal &rarr; Axis Logistics Park &rarr; TriTexas Logistics Park</div>
-      </div>
-      <div class="fact amber">
+      </a>
+      <a class="fact amber" href="ownership_structure.html">
         <div class="fact-value">Paul L. Foster</div>
         <div class="fact-label">Ultimate owner — Franklin Mountain Investments</div>
-      </div>
-      <div class="fact amber">
+      </a>
+      <a class="fact amber" href="key_players.html">
         <div class="fact-value">Scarborough Lane</div>
         <div class="fact-label">Developer — James Feagin, Ryan Burkhardt</div>
-      </div>
-      <div class="fact amber">
+      </a>
+      <a class="fact amber" href="#site-property-context">
         <div class="fact-value">~$52.8M</div>
         <div class="fact-label">Outstanding loans — AgTrust, ACA</div>
-      </div>
-      <div class="fact red">
+      </a>
+      <a class="fact red" href="businesses_summary.html">
         <div class="fact-value">0 of 14</div>
         <div class="fact-label">Prospective tenants publicly committed, of those actively recruited</div>
-      </div>
-      <div class="fact red">
+      </a>
+      <a class="fact red" href="impact_fees.html">
         <div class="fact-value">Summer 2028</div>
         <div class="fact-label">Earliest city wastewater capacity available</div>
-      </div>
-      <div class="fact amber">
+      </a>
+      <a class="fact amber" href="documents.html">
         <div class="fact-value">45 years</div>
         <div class="fact-label">Development Agreement initial term — City bound until ~2068</div>
-      </div>
-      <div class="fact amber">
+      </a>
+      <a class="fact amber" href="impact_fees.html">
         <div class="fact-value">2,108 LUEs</div>
         <div class="fact-label">Wastewater units guaranteed; impact fees frozen at 2019 rates</div>
-      </div>
-      <div class="fact red">
+      </a>
+      <a class="fact red" href="land_use.html">
         <div class="fact-value">80 ft</div>
         <div class="fact-label">Container storage height allowed (DA waiver — standard is 12 ft)</div>
-      </div>
-      <div class="fact red">
+      </a>
+      <a class="fact red" href="documents.html">
         <div class="fact-value">70% / 90%</div>
         <div class="fact-label">Max impervious cover — site-wide / per individual lot (DA §2.03)</div>
-      </div>
+      </a>
       <div class="fact red">
         <div class="fact-value">85 / 75 dB(A)</div>
         <div class="fact-label">Max noise day / night (SMDC §7.4.2.1) — measured at public ROW</div>
@@ -352,7 +371,7 @@ footer {
     </div>
   </div>
 
-  <p class="section-label">Site &amp; Property Context</p>
+  <p class="section-label" id="site-property-context">Site &amp; Property Context</p>
 
   <div style="background:var(--card);border-radius:12px;padding:20px 24px 18px;box-shadow:0 1px 4px rgba(0,0,0,.09);margin-bottom:40px;font-size:.84rem;line-height:1.65;color:#374151;">
     <b>Land Owner:</b> Franklin Mountain San Marcos I, LP (GP: Scarborough San Marcos GP LLC; Manager: Ryan Burkhardt; 16380 Addison Road, Addison TX 75001; Tax contacts: James Feagin &amp; Bruce Browne). A separate entity — <b>Franklin Mountain San Marcos 75, LP</b> (Owner ID 242650) — holds ~75 acres (William Pettus Survey, Abs. 21) acquired April 17, 2024. Same address and manager; may be a parcel-specific or tenant-specific SPE.<br><br>
@@ -396,10 +415,34 @@ footer {
 
   <div class="grid">
 
-    <a class="card accent" href="political_influence.html">
-      <h2>Political Contributions &amp; Regulatory Influence</h2>
-      <p>Tracks campaign donations from project principals to state officials, and the regulatory bodies those officials oversee that bear on the project.</p>
+    <a class="card" href="superfund.html" style="border-top-color: #b45309;">
+      <h2>Groundwater Contamination Research</h2>
+      <p>Historical contamination at Gary Air Force Base / Gary Job Corps Center and questions raised about its potential relevance to ground disturbance at the SMART Terminal site.</p>
       <div class="open-label">View Report &rarr;</div>
+    </a>
+
+    <a class="card" href="impact_fees.html" style="border-top-color:#be185d;">
+      <h2>Impact Fees &amp; the 2019 Freeze</h2>
+      <p>How San Marcos calculates wastewater impact fees, why the City's 2026 study proposes to roughly quadruple the rate, and how SMART's frozen 2019 rate creates a ~$17.9M gap versus its own growth-driven infrastructure cost.</p>
+      <div class="open-label">View Analysis &rarr;</div>
+    </a>
+
+    <a class="card" href="documents.html" style="border-top-color:#0f6b8e;">
+      <h2>Key Documents</h2>
+      <p>Official signed versions of the 2023 Development Agreement and the April 2023 Administrative Amendment adding the 100-ft Reedville buffer and updated stormwater commitments.</p>
+      <div class="open-label">View Documents &rarr;</div>
+    </a>
+
+    <a class="card red" href="key_players.html">
+      <h2>Key Players</h2>
+      <p>Roster of 80+ identified individuals connected to the project — owners, developers, city and county officials, engineers, brokers, and legal counsel.</p>
+      <div class="open-label">View Key Players &rarr;</div>
+    </a>
+
+    <a class="card" href="maps.html" style="border-top-color:#166534;">
+      <h2>Maps &amp; Site Exhibits</h2>
+      <p>Over 60 engineering exhibits, survey plats, and drainage/floodplain studies compiled from public records — roadway alignments, water quality buffers, tree preservation plans, and property surveys.</p>
+      <div class="open-label">View Maps &rarr;</div>
     </a>
 
     <a class="card purple" href="ownership_structure.html">
@@ -408,9 +451,15 @@ footer {
       <div class="open-label">View Report &rarr;</div>
     </a>
 
-    <a class="card teal" href="businesses_summary.html">
-      <h2>Prospective Businesses Summary</h2>
-      <p>Overview of industrial recruitment efforts — the companies being pursued, projected investment figures, job claims, and current status of each prospect.</p>
+    <a class="card green" href="land_use.html">
+      <h2>Permitted &amp; Prohibited Uses</h2>
+      <p>The full Exhibit D Land Use Matrix from the 2023 Development Agreement — 51 permitted uses, geographic restrictions, and expressly prohibited activities. Includes note on the June 2026 data center ordinance conflict.</p>
+      <div class="open-label">View Land Use Matrix &rarr;</div>
+    </a>
+
+    <a class="card accent" href="political_influence.html">
+      <h2>Political Contributions &amp; Regulatory Influence</h2>
+      <p>Tracks campaign donations from project principals to state officials, and the regulatory bodies those officials oversee that bear on the project.</p>
       <div class="open-label">View Report &rarr;</div>
     </a>
 
@@ -420,40 +469,10 @@ footer {
       <div class="open-label">View Timeline &rarr;</div>
     </a>
 
-    <a class="card" href="superfund.html" style="border-top-color: #b45309;">
-      <h2>Groundwater Contamination Research</h2>
-      <p>Historical contamination at Gary Air Force Base / Gary Job Corps Center and questions raised about its potential relevance to ground disturbance at the SMART Terminal site.</p>
+    <a class="card teal" href="businesses_summary.html">
+      <h2>Prospective Businesses Summary</h2>
+      <p>Overview of industrial recruitment efforts — the companies being pursued, projected investment figures, job claims, and current status of each prospect.</p>
       <div class="open-label">View Report &rarr;</div>
-    </a>
-
-    <a class="card" href="documents.html" style="border-top-color:#0f6b8e;">
-      <h2>Key Documents</h2>
-      <p>Official signed versions of the 2023 Development Agreement and the April 2023 Administrative Amendment adding the 100-ft Reedville buffer and updated stormwater commitments.</p>
-      <div class="open-label">View Documents &rarr;</div>
-    </a>
-
-    <a class="card" href="impact_fees.html" style="border-top-color:#be185d;">
-      <h2>Impact Fees &amp; the 2019 Freeze</h2>
-      <p>How San Marcos calculates wastewater impact fees, why the City's 2026 study proposes to roughly quadruple the rate, and how SMART's frozen 2019 rate creates a ~$17.9M gap versus its own growth-driven infrastructure cost.</p>
-      <div class="open-label">View Analysis &rarr;</div>
-    </a>
-
-    <a class="card green" href="land_use.html">
-      <h2>Permitted &amp; Prohibited Uses</h2>
-      <p>The full Exhibit D Land Use Matrix from the 2023 Development Agreement — 51 permitted uses, geographic restrictions, and expressly prohibited activities. Includes note on the June 2026 data center ordinance conflict.</p>
-      <div class="open-label">View Land Use Matrix &rarr;</div>
-    </a>
-
-    <a class="card" href="maps.html" style="border-top-color:#166534;">
-      <h2>Maps &amp; Site Exhibits</h2>
-      <p>Over 60 engineering exhibits, survey plats, and drainage/floodplain studies compiled from public records — roadway alignments, water quality buffers, tree preservation plans, and property surveys.</p>
-      <div class="open-label">View Maps &rarr;</div>
-    </a>
-
-    <a class="card red" href="key_players.html">
-      <h2>Key Players</h2>
-      <p>Roster of 80+ identified individuals connected to the project — owners, developers, city and county officials, engineers, brokers, and legal counsel.</p>
-      <div class="open-label">View Key Players &rarr;</div>
     </a>
 
   </div>

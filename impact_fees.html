@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Impact Fees &amp; the 2019 Freeze — SMART Terminal / TriTexas Logistics Park</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --navy:   #1e3a5f;
+  --amber:  #b45309;
+  --green:  #166534;
+  --bg:     #f1f4f8;
+  --card:   #ffffff;
+}
+
+body {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: #1a2330;
+  min-height: 100vh;
+}
+
+/* ── NAV ── */
+.site-nav {
+  background: var(--navy);
+  padding: 10px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+.site-nav a {
+  color: #93c5fd;
+  text-decoration: none;
+  font-size: .85rem;
+  font-weight: 600;
+  letter-spacing: .02em;
+}
+.site-nav a:hover { color: #fff; }
+
+/* ── PAGE HEADER ── */
+.page-header {
+  background: var(--navy);
+  color: #fff;
+  padding: 36px 24px 30px;
+  text-align: center;
+}
+.page-header .pre-label {
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #93c5fd;
+  margin-bottom: 10px;
+}
+.page-header h1 {
+  font-size: 1.75rem;
+  font-weight: 900;
+  line-height: 1.25;
+  margin-bottom: 8px;
+}
+.page-header .sub {
+  font-size: .9rem;
+  color: #cbd5e1;
+  max-width: 680px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* ── DISCLAIMER BAND ── */
+.disclaimer-band {
+  background: #fef9c3;
+  border-bottom: 1px solid #fde047;
+  padding: 14px 24px;
+  text-align: center;
+  font-size: .83rem;
+  color: #713f12;
+  line-height: 1.65;
+}
+.disclaimer-band strong { font-weight: 700; }
+
+/* ── MAIN CONTENT ── */
+main {
+  max-width: 1200px;
+  margin: 40px auto 80px;
+  padding: 0 20px;
+}
+
+/* ── BIG HEADLINE NUMBER BANNER ── */
+.headline-banner {
+  background: linear-gradient(135deg, #1e3a5f, #0f2a45);
+  color: #fff;
+  border-radius: 14px;
+  padding: 30px 28px;
+  margin-bottom: 28px;
+  text-align: center;
+  box-shadow: 0 4px 16px rgba(0,0,0,.18);
+}
+.headline-banner .headline-label {
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: #93c5fd;
+  margin-bottom: 10px;
+}
+.headline-banner .headline-num {
+  font-size: 2.6rem;
+  font-weight: 900;
+  color: #fde047;
+  line-height: 1.1;
+}
+.headline-banner .headline-sub {
+  font-size: .92rem;
+  color: #dbeafe;
+  max-width: 620px;
+  margin: 10px auto 0;
+  line-height: 1.6;
+}
+
+/* ── SECTION ── */
+.section {
+  background: var(--card);
+  border-radius: 12px;
+  padding: 28px 28px 24px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.09);
+  margin-bottom: 28px;
+  border-top: 4px solid var(--navy);
+}
+.section.amber  { border-top-color: var(--amber); }
+.section.red    { border-top-color: #be185d; }
+.section.green  { border-top-color: var(--green); }
+.section.teal   { border-top-color: #0f6b8e; }
+
+.section h2 {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #1a2330;
+  margin-bottom: 14px;
+  line-height: 1.3;
+}
+.section h3 {
+  font-size: .92rem;
+  font-weight: 700;
+  color: #1a2330;
+  margin: 18px 0 10px;
+}
+
+.section p {
+  font-size: .88rem;
+  color: #374151;
+  line-height: 1.7;
+  margin-bottom: 10px;
+}
+.section p:last-child { margin-bottom: 0; }
+
+.section ol, .section ul {
+  font-size: .88rem;
+  color: #374151;
+  line-height: 1.7;
+  padding-left: 22px;
+  margin-bottom: 10px;
+}
+.section li { margin-bottom: 6px; }
+
+/* ── DATA TABLE ── */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .84rem;
+  margin: 14px 0;
+}
+.data-table th {
+  background: #f1f4f8;
+  text-align: left;
+  padding: 8px 12px;
+  font-weight: 700;
+  color: #374151;
+  border-bottom: 2px solid #e2e8f0;
+  font-size: .78rem;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+.data-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid #e2e8f0;
+  color: #374151;
+  vertical-align: top;
+}
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:hover td { background: #f8fafc; }
+.data-table td.num, .data-table th.num { text-align: right; font-variant-numeric: tabular-nums; }
+.data-table tr.frozen-row td { background: #fff7ed; font-weight: 700; }
+.data-table tr.proposed-row td { background: #fef2f2; font-weight: 700; }
+.data-table tr.total-row td { border-top: 2px solid #1a2330; font-weight: 800; }
+
+/* ── HIGHLIGHT BOX ── */
+.highlight-box {
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  border-left: 4px solid var(--amber);
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin: 14px 0;
+  font-size: .86rem;
+  color: #431407;
+  line-height: 1.65;
+}
+.highlight-box.blue {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+  border-left-color: #1d4ed8;
+  color: #1e3a5f;
+}
+.highlight-box.red {
+  background: #fff1f2;
+  border-color: #fecdd3;
+  border-left-color: #be185d;
+  color: #4c0519;
+}
+.highlight-box.green {
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+  border-left-color: var(--green);
+  color: #14532d;
+}
+.highlight-box strong { font-weight: 700; }
+
+/* ── STAT ROW ── */
+.stat-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin: 16px 0;
+}
+.stat-box {
+  flex: 1;
+  min-width: 140px;
+  background: #f1f4f8;
+  border-radius: 8px;
+  padding: 14px 16px;
+  text-align: center;
+}
+.stat-box .stat-num { font-size: 1.5rem; font-weight: 800; color: #1a2330; line-height: 1.1; }
+.stat-box .stat-label { font-size: .74rem; color: #64748b; margin-top: 4px; line-height: 1.4; }
+.stat-box.gap .stat-num { color: #be185d; }
+
+/* ── VS COMPARISON BAR ── */
+.vs-wrap {
+  margin: 20px 0;
+}
+.vs-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 10px;
+}
+.vs-row .vs-label {
+  width: 190px;
+  font-size: .82rem;
+  font-weight: 700;
+  color: #374151;
+  flex-shrink: 0;
+}
+.vs-row .vs-bar-track {
+  flex: 1;
+  background: #eef1f6;
+  border-radius: 6px;
+  height: 30px;
+  position: relative;
+  overflow: hidden;
+}
+.vs-row .vs-bar-fill {
+  height: 100%;
+  border-radius: 6px 0 0 6px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  color: #fff;
+  font-size: .78rem;
+  font-weight: 700;
+  padding-right: 10px;
+  white-space: nowrap;
+}
+.vs-row .vs-bar-fill.frozen { background: var(--green); }
+.vs-row .vs-bar-fill.proposed { background: #be185d; }
+
+/* ── SOURCES ── */
+.sources {
+  background: var(--card);
+  border-radius: 12px;
+  padding: 22px 28px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.09);
+  margin-bottom: 28px;
+}
+.sources h3 {
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: #94a3b8;
+  margin-bottom: 12px;
+}
+.sources ol {
+  padding-left: 18px;
+  font-size: .82rem;
+  color: #64748b;
+  line-height: 1.65;
+}
+.sources ol li { margin-bottom: 6px; }
+.sources ol li strong { color: #374151; }
+
+/* ── FOOTER ── */
+footer {
+  text-align: center;
+  font-size: .78rem;
+  color: #94a3b8;
+  padding: 28px 20px 40px;
+  border-top: 1px solid #e2e8f0;
+}
+
+@media (max-width: 640px) {
+  .vs-row { flex-direction: column; align-items: stretch; }
+  .vs-row .vs-label { width: auto; }
+  .headline-banner .headline-num { font-size: 2rem; }
+}
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="index.html">&#8592; Citizens Against Smart Axis</a>
+</nav>
+
+<div class="page-header">
+  <div class="pre-label">Financial Research</div>
+  <h1>Impact Fees &amp; the 2019 Rate Freeze</h1>
+  <p class="sub">
+    How San Marcos calculates wastewater impact fees, why the City just proposed to
+    roughly quadruple them, and why the SMART Terminal / TriTexas Logistics Park
+    development agreement locks the developer into paying 2019-era prices instead.
+  </p>
+</div>
+
+<div class="disclaimer-band">
+  <strong>Important disclaimer:</strong> This analysis is built from official public
+  records — a City of San Marcos ordinance (Ch. 86.294), the City's March 2026
+  Wastewater Impact Fee Final Report, and the developer's development agreement summary.
+  One figure in the City's own cost report did not internally reconcile (flagged below in
+  the caveats section) — the dollar comparisons here should be read as directionally
+  solid, not audit-grade.
+</div>
+
+<main>
+
+  <!-- ── HEADLINE ── -->
+  <div class="headline-banner">
+    <div class="headline-label">The bottom line</div>
+    <div class="headline-num">≈ $17.9 million</div>
+    <div class="headline-sub">
+      The estimated gap between what SMART's development agreement locks it into paying
+      in wastewater impact fees, and what the City's own 2026 study says that same
+      amount of sewer capacity actually costs to provide today.
+    </div>
+  </div>
+
+  <!-- ── WHAT IS AN IMPACT FEE ── -->
+  <div class="section">
+    <h2>Impact fees</h2>
+    <p>
+      An impact fee is a one-time charge the City assesses against new development to
+      recover the cost of the water/sewer capital infrastructure that development's
+      demand requires — pipes, lift stations, treatment capacity — rather than spreading
+      that cost across the existing ratepayer base.
+    </p>
+  </div>
+
+  <!-- ── HOW IT'S CALCULATED ── -->
+  <div class="section teal">
+    <h2>Calculation method (Sec. 86.294)</h2>
+    <p>
+      San Marcos Code of Ordinances Sec. 86.294 sets the fee as a two-factor calculation:
+    </p>
+    <ol>
+      <li>
+        <strong>LUEs (Living Unit Equivalents).</strong> A connection's expected peak
+        flow (gpm) is converted to LUEs — one LUE is roughly the flow demand of one
+        single-family connection; large industrial users scale to dozens or hundreds of
+        LUEs. The conversion methodology itself is defined in Sec. 86.297, which was not
+        in the records reviewed for this page.
+      </li>
+      <li>
+        <strong>Fee-per-LUE ("Schedule 1").</strong> The City publishes a per-LUE dollar
+        rate that it revises periodically as it re-studies capital infrastructure costs.
+      </li>
+    </ol>
+    <div class="highlight-box blue">
+      <strong>Fee = LUEs &times; rate-per-LUE (schedule in effect).</strong> With LUE
+      count fixed by contract, the variable that determines a project's total bill is
+      which rate schedule applies — which is where the SMART Terminal agreement diverges
+      from current policy.
+    </div>
+  </div>
+
+  <!-- ── RATE HISTORY ── -->
+  <div class="section amber">
+    <h2>Rate schedule history</h2>
+    <p>
+      Sec. 86.294 lists five base (1.0 LUE) rates for water and wastewater service,
+      each reflecting a periodic re-study of infrastructure cost:
+    </p>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Rate schedule takes effect</th>
+          <th class="num">Water $ / LUE</th>
+          <th class="num">Wastewater $ / LUE</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Prior to 10/4/2002</td>
+          <td class="num">$363.00</td>
+          <td class="num">$527.00</td>
+        </tr>
+        <tr>
+          <td>After 12/31/2003</td>
+          <td class="num">$2,466.00</td>
+          <td class="num">$2,185.00</td>
+        </tr>
+        <tr>
+          <td>After 12/31/2013</td>
+          <td class="num">$2,285.00</td>
+          <td class="num">$3,506.00</td>
+        </tr>
+        <tr class="frozen-row">
+          <td>After 4/30/2018 &mdash; <strong>this is the rate SMART is frozen at</strong></td>
+          <td class="num">$3,801.00</td>
+          <td class="num">$2,684.00</td>
+        </tr>
+        <tr class="proposed-row">
+          <td>Proposed, after 9/30/2026</td>
+          <td class="num">$14,519.00</td>
+          <td class="num">$11,161.00</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      March 19, 2019 — the date the SMART Terminal agreement's fee freeze refers to —
+      falls between the 4/30/2018 update and the proposed 9/30/2026 update. No rate
+      change happened in between, so <strong>"2019 rates" and "the after-4/30/2018
+      schedule" are the same number.</strong>
+    </p>
+  </div>
+
+  <!-- ── THE FREEZE ── -->
+  <div class="section red">
+    <h2>Development agreement provisions</h2>
+    <p>
+      The 2023 SMART Terminal development agreement (superseding the original 2019
+      agreement) sets two terms that determine the fee outcome:
+    </p>
+    <ul>
+      <li><strong>Impact fees frozen at March 19, 2019 rates</strong> — fixed regardless
+        of subsequent City fee schedule updates.</li>
+      <li><strong>2,108 LUEs of wastewater service guaranteed</strong> — contractually
+        reserved sewer capacity.</li>
+    </ul>
+    <p>Applying the frozen rate and the proposed 2026 rate to that same LUE count:</p>
+
+    <div class="vs-wrap">
+      <div class="vs-row">
+        <div class="vs-label">Frozen 2019 rate<br><span style="color:#64748b;font-weight:400;">$2,684 / LUE</span></div>
+        <div class="vs-bar-track">
+          <div class="vs-bar-fill frozen" style="width:24%;">$5,657,872</div>
+        </div>
+      </div>
+      <div class="vs-row">
+        <div class="vs-label">Proposed 2026 rate<br><span style="color:#64748b;font-weight:400;">$11,161 / LUE</span></div>
+        <div class="vs-bar-track">
+          <div class="vs-bar-fill proposed" style="width:100%;">$23,527,388</div>
+        </div>
+      </div>
+    </div>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Scenario</th>
+          <th class="num">Rate / LUE</th>
+          <th class="num">&times; 2,108 LUEs</th>
+          <th class="num">Total wastewater impact fee</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="frozen-row">
+          <td>SMART pays this (frozen 2019 rate)</td>
+          <td class="num">$2,684.00</td>
+          <td class="num">2,108</td>
+          <td class="num">$5,657,872</td>
+        </tr>
+        <tr class="proposed-row">
+          <td>City's own 2026 study says this is the real cost</td>
+          <td class="num">$11,161.00</td>
+          <td class="num">2,108</td>
+          <td class="num">$23,527,388</td>
+        </tr>
+        <tr class="total-row">
+          <td colspan="3">The gap</td>
+          <td class="num">$17,869,516</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="stat-row">
+      <div class="stat-box">
+        <div class="stat-num">4.16&times;</div>
+        <div class="stat-label">How much higher the new wastewater rate is vs. the frozen rate</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">3.82&times;</div>
+        <div class="stat-label">Same comparison for the water rate ($3,801 vs. $14,519 / LUE)</div>
+      </div>
+      <div class="stat-box gap">
+        <div class="stat-num">~76%</div>
+        <div class="stat-label">Share of the "real" wastewater fee that SMART's freeze avoids paying</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── WHY THE RATE WENT UP: THE GRAVITY MAIN ── -->
+  <div class="section green">
+    <h2>Driver of the 2026 rate increase</h2>
+    <p>
+      The March 2026 Wastewater Impact Fee study lists the specific capital projects the
+      updated rate is designed to fund. One of them serves this development directly:
+    </p>
+    <div class="highlight-box green">
+      <strong>SMART Development (FM 110) Gravity Main</strong> &mdash; a new 18-inch
+      sewer line along FM 110 that also decommissions the aging Gary Job Corps lift
+      station. Total estimated cost: <strong>$24,078,600</strong>. The City's own
+      utilization study attributes <strong>63% of this project's need to growth</strong>
+      between 2025&ndash;2035, growth the study ties explicitly to the proposed SMART
+      development.
+    </div>
+    <p>
+      The 2026 rate update to $11,161/LUE is calculated to recover costs like this
+      project's. SMART's fee, frozen at $2,684/LUE, recovers a fraction of what the
+      study attributes to its own growth-driven infrastructure need.
+    </p>
+  </div>
+
+  <!-- ── WHO PAYS THE DIFFERENCE ── -->
+  <div class="section">
+    <h2>Funding the gap</h2>
+    <p>
+      Impact fees are one of the primary funding sources for growth-driven infrastructure
+      such as the SMART Development Gravity Main. A shortfall between the fee collected
+      and the study's cost basis doesn't eliminate the need to build the infrastructure.
+      Under standard municipal utility financing, such a gap is typically covered by some
+      combination of:
+    </p>
+    <ul>
+      <li>Existing utility ratepayers, through water/sewer bills</li>
+      <li>City debt (bonds), repaid over years by the utility system as a whole</li>
+      <li>General utility revenue that could otherwise fund other system needs or rate relief</li>
+    </ul>
+    <p>
+      This page does not have documentation showing which of these the City intends to
+      use — that would require the City's specific CIP funding/financing plan, which
+      wasn't in the records reviewed here.
+    </p>
+  </div>
+
+  <!-- ── CAVEATS ── -->
+  <div class="section amber">
+    <h2>Caveats</h2>
+    <ul>
+      <li><strong>LUE math not verified.</strong> The ordinance section that defines how
+        a specific development's peak flow gets converted into an LUE count (Sec. 86.297)
+        was not available in the records reviewed. The 2,108 LUE figure comes from the
+        development agreement summary, not from an independent recalculation.</li>
+      <li><strong>The City's own cost report has an internal inconsistency.</strong> The
+        itemized cost sheet for the SMART Development Gravity Main project (in the March
+        2026 report) totals $9,631,500 on its own line-item math, while the report's
+        summary table lists the same project at $24,078,600 in three separate places.
+        The same mismatch appears on an adjacent project's detail sheet, suggesting a
+        row-reference/formatting error in how the source PDF was assembled — not
+        something resolvable from the document alone. This page uses the $24,078,600
+        summary-table figure, which is corroborated in multiple places.</li>
+      <li><strong>The proposed 9/30/2026 rate schedule is a proposal, not yet a final
+        adopted rate</strong> as of this document's "Proposed Revisions Shown" title —
+        confirm current status before citing it as an adopted fee.</li>
+    </ul>
+  </div>
+
+</main>
+
+<div class="sources">
+  <h3>Sources</h3>
+  <ol>
+    <li><strong>City of San Marcos Code of Ordinances, Sec. 86.294 (Schedule 1)</strong> &mdash; "Chapter_86.294 - Proposed Revisions Shown," obtained via public information request. Sets the historical and proposed water/wastewater impact fee-per-LUE amounts.</li>
+    <li><strong>City of San Marcos Wastewater Impact Fee Final Report</strong> (dated March 2026), obtained via public information request. Source of the SMART Development (FM 110) Gravity Main project description, cost estimate, growth-driven utilization percentage, and the proposed 2026 rate update.</li>
+    <li><strong>First Amended &amp; Restated SMART Terminal Development Agreement</strong> (executed January 17, 2023, Res. 2023-20R / PDA-22-07) &mdash; source of the "impact fees frozen at March 19, 2019 rates" and "2,108 LUEs of wastewater service guaranteed" provisions. See <a href="documents.html" style="color:#1e3a5f;font-weight:600;">Key Documents</a>.</li>
+    <li><strong>Original SMART Terminal Chapter 380 / ETJ Development Agreement</strong> (effective March 19, 2019, Res. 2019-49R) &mdash; establishes the March 19, 2019 date referenced by the fee freeze.</li>
+  </ol>
+</div>
+
+<footer>
+  Citizens Against Smart Axis (CASA) &mdash; All figures are drawn from public records and City documents. This page does not constitute legal, financial, or accounting advice.
+</footer>
+
+</body>
+</html>

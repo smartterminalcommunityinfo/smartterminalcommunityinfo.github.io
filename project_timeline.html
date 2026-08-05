@@ -1310,7 +1310,10 @@ function renderMiniTimelineView() {
   const buf = span * 0.02; // don't clip dots right at the visible edge
   cachedParsed.forEach(p => {
     if (+p.date < +viewMin - buf || +p.date > +viewMax + buf) return;
-    const xp = xPos(p.date);
+    // A dot just outside [viewMin, viewMax] (within the buffer) maps to an x
+    // outside [pad, W-pad] — clamp it to the plot edge so it never bleeds into
+    // the margin area reserved for the boundary year label.
+    const xp = Math.min(W - pad, Math.max(pad, xPos(p.date)));
     const color = CAT_COLORS[p.cat] || '#555';
     const label = escapeHtml(p.date.toLocaleDateString() + ' — ' + p.title);
     content += `<circle class="mt-dot" data-target="${p.ev.id}" cx="${xp.toFixed(1)}" cy="${axisY}" r="5" fill="${color}"><title>${label}</title></circle>`;
@@ -1377,7 +1380,10 @@ const miniSvg = document.getElementById('miniTimeline');
 
 miniSvg.addEventListener('wheel', (e) => {
   e.preventDefault();
-  const factor = e.deltaY < 0 ? 1.4 : 1 / 1.4;
+  // Scale continuously with scroll distance instead of a fixed step per event —
+  // trackpads fire many small wheel events per gesture, and a fixed multiplier
+  // per event compounds into a huge, overshooting zoom for one swipe.
+  const factor = Math.exp(-e.deltaY * 0.0018);
   mtZoomAt(e.clientX, factor);
 }, { passive: false });
 

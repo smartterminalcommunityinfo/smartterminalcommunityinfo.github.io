@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TriTexas Logistics Park (formerly SMART Terminal / Axis Logistics Park) — Project Timeline</title>
+<title>TriTexas Logistics Park (formerly SMART Terminal / Axis Logistics Park) - Project Timeline</title>
 <style>
   * { box-sizing: border-box; }
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -46,7 +46,7 @@
   .event.legal::before      { background: #7f8c8d; box-shadow: 0 0 0 2px #7f8c8d; }
 
   /* An event can belong to more than one category (e.g. a milestone that's also
-     a council vote) — data-cat/class list every category it matches for filtering,
+     a council vote) - data-cat/class list every category it matches for filtering,
      but the dot/border color shows one "primary" category. These compound
      selectors have higher specificity than the single-category rules above, so
      they win regardless of source order. */
@@ -152,7 +152,7 @@
 </nav>
 
 
-<h1>TriTexas Logistics Park (formerly SMART Terminal / Axis Logistics Park) — Project Timeline</h1>
+<h1>TriTexas Logistics Park (formerly SMART Terminal / Axis Logistics Park) - Project Timeline</h1>
 <p class="subtitle">Synthesized from 836 public information request documents, City of San Marcos Legistar legislative records, and 32 Caldwell County deed/easement/agreement records &mdash;
 San Marcos, Texas &mdash; Updated May 2026</p>
 
@@ -187,7 +187,7 @@ San Marcos, Texas &mdash; Updated May 2026</p>
 <div class="card">
   <div class="card-date">December 11, 2014</div>
   <div class="card-title"><span class="badge b-legal">Legal</span> <span class="badge b-council">City Council</span> Cotton Center Consent Agreement &amp; MUD Petition Approved (<a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=1948324&GUID=5D7AFDC1-0D8A-4597-AFCB-76C9DF2FFEF0" target="_blank" rel="noopener" class="legistar-link">MUD-14-02</a> / <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=2013679&GUID=4A500CD5-EFD2-4D4E-A756-EF8354D6F836" target="_blank" rel="noopener" class="legistar-link">Ord. 2014-70</a>)</div>
-  <div class="card-body">City Council approves the original <strong>Cotton Center Consent Agreement</strong> and processes the Municipal Utility District (MUD) petition for the Cotton Center area in Caldwell County. The Consent Agreement governs water/wastewater service obligations and is tied to the City's Sewer Certificate of Convenience and Necessity (CCN No. 20116). This agreement — signed by Walton Texas LP and related entities — becomes a foundational document that persists through 2025.
+  <div class="card-body">City Council approves the original <strong>Cotton Center Consent Agreement</strong> and processes the Municipal Utility District (MUD) petition for the Cotton Center area in Caldwell County. The Consent Agreement governs water/wastewater service obligations and is tied to the City's Sewer Certificate of Convenience and Necessity (CCN No. 20116). This agreement - signed by Walton Texas LP and related entities - becomes a foundational document that persists through 2025.
   <ul>
     <li><a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=1948324&GUID=5D7AFDC1-0D8A-4597-AFCB-76C9DF2FFEF0" target="_blank" rel="noopener" class="legistar-link">MUD-14-02</a>: Petition for MUD by Metcalfe, Wolfe, Stuart &amp; Williams (on behalf of landowners)</li>
     <li><a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=2013679&GUID=4A500CD5-EFD2-4D4E-A756-EF8354D6F836" target="_blank" rel="noopener" class="legistar-link">Ord. 2014-70</a>: Ordinance approving the Consent Agreement and MUD proceedings</li>
@@ -704,7 +704,7 @@ San Marcos, Texas &mdash; Updated May 2026</p>
     <li>The strip was an abandoned county road corridor running through the Quail Run / Martindale area of the assemblage</li>
     <li>Acquiring road-bed fee title from the County eliminates a potential gap or encumbrance in FM's ownership along the eastern edge of the site</li>
     <li>This is the only parcel in FM's portfolio acquired from a governmental entity rather than a private seller</li>
-    <li>CAD shows no value history before 2024 — parcel was newly created upon conveyance from the County</li>
+    <li>CAD shows no value history before 2024 - parcel was newly created upon conveyance from the County</li>
   </ul>
   </div>
   <div class="source">Source: Caldwell CAD Property ID 129763 &mdash; Property Deed History (WD 2024-002658)</div>
@@ -1221,7 +1221,7 @@ function escapeHtml(s) {
 const MONTH_INDEX = { jan:0, feb:1, mar:2, apr:3, may:4, jun:5, jul:6, aug:7, sep:8, oct:9, nov:10, dec:11 };
 
 // Card dates are free-text and often ranges ("Jan – Feb 2019", "Nov 14 & Dec 14, 2022",
-// bare "2021", "Feb 13–16, 2024"). New Date(string) on these is unreliable — it can
+// bare "2021", "Feb 13–16, 2024"). New Date(string) on these is unreliable - it can
 // silently produce a wrong date instead of failing, and a bare year is parsed as UTC and can
 // shift a year in local time. Pull the first clean date out with regex instead, and always
 // build it with new Date(y, m, d) (local, no timezone ambiguity).
@@ -1278,7 +1278,7 @@ function buildMiniTimeline() {
 }
 
 // Re-draws using the current zoom window (viewMin/viewMax) against the
-// already-parsed event list — used for zoom/pan/resize, no DOM re-scan.
+// already-parsed event list - used for zoom/pan/resize, no DOM re-scan.
 function renderMiniTimelineView() {
   const svg = document.getElementById('miniTimeline');
   if (!viewMin || !viewMax) return;
@@ -1311,11 +1311,11 @@ function renderMiniTimelineView() {
   cachedParsed.forEach(p => {
     if (+p.date < +viewMin - buf || +p.date > +viewMax + buf) return;
     // A dot just outside [viewMin, viewMax] (within the buffer) maps to an x
-    // outside [pad, W-pad] — clamp it to the plot edge so it never bleeds into
+    // outside [pad, W-pad] - clamp it to the plot edge so it never bleeds into
     // the margin area reserved for the boundary year label.
     const xp = Math.min(W - pad, Math.max(pad, xPos(p.date)));
     const color = CAT_COLORS[p.cat] || '#555';
-    const label = escapeHtml(p.date.toLocaleDateString() + ' — ' + p.title);
+    const label = escapeHtml(p.date.toLocaleDateString() + ' - ' + p.title);
     content += `<circle class="mt-dot" data-target="${p.ev.id}" cx="${xp.toFixed(1)}" cy="${axisY}" r="5" fill="${color}"><title>${label}</title></circle>`;
   });
 
@@ -1380,7 +1380,7 @@ const miniSvg = document.getElementById('miniTimeline');
 
 miniSvg.addEventListener('wheel', (e) => {
   e.preventDefault();
-  // Scale continuously with scroll distance instead of a fixed step per event —
+  // Scale continuously with scroll distance instead of a fixed step per event -
   // trackpads fire many small wheel events per gesture, and a fixed multiplier
   // per event compounds into a huge, overshooting zoom for one swipe.
   const factor = Math.exp(-e.deltaY * 0.0018);

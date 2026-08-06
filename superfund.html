@@ -248,6 +248,33 @@ footer {
 </style>
 </head>
 <body>
+<div id="site-search-overlay" style="display:none; position:fixed; inset:0; background:rgba(15,23,42,0.65); z-index:10000; padding:60px 20px; overflow-y:auto;">
+  <div style="max-width:640px; margin:0 auto; background:#fff; border-radius:10px; padding:20px; box-shadow:0 10px 40px rgba(0,0,0,0.3);">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+      <strong style="color:#1e3a5f; font-family:'Segoe UI',system-ui,sans-serif;">Search this site</strong>
+      <button id="site-search-close" style="background:none; border:none; font-size:1.2rem; cursor:pointer; color:#1e3a5f;">&times;</button>
+    </div>
+    <div id="site-search"></div>
+  </div>
+</div>
+<button id="site-search-open" aria-label="Search this site" style="position:fixed; top:12px; right:12px; z-index:9999; background:#1e3a5f; color:#93c5fd; border:none; border-radius:6px; padding:8px 14px; font-family:'Segoe UI',system-ui,sans-serif; font-size:.85rem; font-weight:600; cursor:pointer;">Search</button>
+<link href="/pagefind/pagefind-ui.css" rel="stylesheet">
+<script src="/pagefind/pagefind-ui.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  new PagefindUI({ element: "#site-search", showSubResults: true, showImages: false });
+  var overlay = document.getElementById('site-search-overlay');
+  document.getElementById('site-search-open').addEventListener('click', function () {
+    overlay.style.display = 'block';
+  });
+  document.getElementById('site-search-close').addEventListener('click', function () {
+    overlay.style.display = 'none';
+  });
+  overlay.addEventListener('click', function (e) {
+    if (e.target === overlay) overlay.style.display = 'none';
+  });
+});
+</script>
 
 <nav class="site-nav">
   <a href="index.html">&#8592; Citizens Against Smart Axis</a>

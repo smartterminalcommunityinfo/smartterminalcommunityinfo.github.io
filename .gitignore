@@ -21,3 +21,7 @@ compliance_report.html
 # Allow PDFs in the docs folder
 !docs/
 !docs/*.pdf
+
+# Allow the generated Pagefind search index (regenerate with: npx pagefind --site .)
+!pagefind/
+!pagefind/**

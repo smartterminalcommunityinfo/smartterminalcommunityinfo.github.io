@@ -42,6 +42,36 @@ header a.back {
 }
 header a.back:hover { text-decoration: underline; }
 
+.site-nav {
+  background: var(--navy);
+  padding: 10px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.site-nav a {
+  color: #93c5fd;
+  text-decoration: none;
+  font-size: .85rem;
+  font-weight: 600;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  letter-spacing: .02em;
+}
+.site-nav a:hover { color: #fff; }
+.site-nav-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.site-nav .nav-btn { border: 1px solid #3b5f8a; border-radius: 20px; padding: 5px 14px; }
+.site-nav .nav-btn-search, .site-nav .nav-btn-donate {
+  border: none; font-weight: 700; border-radius: 20px; padding: 5px 14px;
+  font-family: 'Segoe UI', system-ui, sans-serif; font-size: .85rem; cursor: pointer;
+}
+.site-nav .nav-btn-search { background: #93c5fd; color: #1e3a5f; }
+.site-nav .nav-btn-donate { background: #fbbf24; color: #1e3a5f; }
+
 .intro-band {
   background: #fef9c3; border-bottom: 1px solid #fde047;
   padding: 14px 24px; text-align: center;
@@ -128,7 +158,6 @@ footer {
     <div id="site-search"></div>
   </div>
 </div>
-<button id="site-search-open" aria-label="Search this site" style="position:fixed; top:12px; right:12px; z-index:9999; background:#1e3a5f; color:#93c5fd; border:none; border-radius:6px; padding:8px 14px; font-family:'Segoe UI',system-ui,sans-serif; font-size:.85rem; font-weight:600; cursor:pointer;">Search</button>
 <link href="/pagefind/pagefind-ui.css" rel="stylesheet">
 <script src="/pagefind/pagefind-ui.js"></script>
 <script>
@@ -147,8 +176,18 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 
+<nav class="site-nav">
+  <a href="index.html">&#8592; Citizens Against Smart Axis</a>
+  <div class="site-nav-actions">
+    <a class="nav-btn-donate" href="https://givebutter.com/casa-smtx" target="_blank" rel="noopener">Donate</a>
+    <a class="nav-btn" href="https://linktr.ee/casa.smtx" target="_blank" rel="noopener">Linktree</a>
+    <a class="nav-btn" href="https://www.instagram.com/casa.smtx" target="_blank" rel="noopener">Instagram</a>
+    <a class="nav-btn" href="mailto:smartterminalcommunityinfo@gmail.com">Email</a>
+    <button id="site-search-open" class="nav-btn-search" aria-label="Search this site">Search</button>
+  </div>
+</nav>
+
 <header>
-  <a class="back" href="index.html">&larr; Back to Home</a>
   <h1>Maps &amp; Site Exhibits</h1>
   <p class="sub">
     Engineering exhibits, survey plats, drainage/floodplain studies, and aerial maps for the TriTexas Logistics Park

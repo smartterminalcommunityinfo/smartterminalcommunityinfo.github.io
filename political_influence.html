@@ -30,12 +30,17 @@ body {
   font-family: 'Segoe UI', system-ui, sans-serif;
   background: var(--bg);
   color: #1a2330;
-  padding: 32px 20px 80px;
+  padding: 0;
   font-size: 14px;
 }
+.wrap { padding: 32px 20px 80px; }
 
-h1 { text-align: center; font-size: 1.5rem; font-weight: 800; color: #1a2330; margin-bottom: 6px; }
-.subtitle { text-align: center; font-size: .82rem; color: #64748b; margin-bottom: 8px; }
+.page-header {
+  background: #1e3a5f; color: #fff; padding: 36px 24px 32px; text-align: center;
+}
+.page-header h1 { font-size: 1.7rem; font-weight: 900; margin-bottom: 8px; color: #fff; }
+.page-header .sub { font-size: .88rem; color: #93c5fd; max-width: 640px; margin: 0 auto; line-height: 1.6; }
+
 .disclaimer {
   text-align: center; font-size: .75rem;
   background: #fef9c3; border: 1px solid #fde047; border-radius: 6px;
@@ -245,7 +250,7 @@ footer { text-align: center; font-size: .72rem; color: #94a3b8; margin-top: 20px
 }
 
 @media (max-width: 640px) {
-  body { padding: 16px 12px 60px; }
+  .wrap { padding: 16px 12px 60px; }
   .flow-wrap, .timeline-wrap, .matrix-wrap { padding: 16px 12px 14px; border-radius: 8px; }
   .amounts-grid { grid-template-columns: 1fr; }
   .callout { padding: 12px 14px; }
@@ -324,8 +329,13 @@ document.addEventListener('DOMContentLoaded', function () {
 </nav>
 
 
-<h1>TriTexas Logistics Park - Political Contributions &amp; Regulatory Influence</h1>
-<p class="subtitle">Paul L. Foster &bull; Franklin Mountain San Marcos I, LP &bull; ERCOT &bull; Texas Parks &amp; Wildlife Commission</p>
+<div class="page-header">
+  <h1>TriTexas Logistics Park - Political Contributions &amp; Regulatory Influence</h1>
+  <p class="sub">Paul L. Foster &bull; Franklin Mountain San Marcos I, LP &bull; ERCOT &bull; Texas Parks &amp; Wildlife Commission</p>
+</div>
+
+<div class="wrap">
+
 <div class="disclaimer">
   <strong>Research note:</strong> All contribution figures sourced from Texas Ethics Commission records (via Texas Tribune, Reform Austin, and Transparency USA reporting) and FEC filings (via OpenSecrets and Facing South). ERCOT and TPWD actions sourced from public agency records and news reporting. No quid-pro-quo has been established or alleged - structural overlap is documented; intent is not.
 </div>
@@ -740,6 +750,8 @@ document.addEventListener('DOMContentLoaded', function () {
 <div style="text-align:center; font-size:.72rem; color:#94a3b8; margin-top:20px; max-width:1200px; margin-left:auto; margin-right:auto;">
   Sources: Texas Ethics Commission (via Texas Tribune, Reform Austin, Transparency USA) &bull; FEC filings (via OpenSecrets, Facing South, LittleSis) &bull; ERCOT public records &bull; TPWD Commission meeting archives &bull; Texas Register (Mar 21, 2025, preamble reviewed) &bull; Parks &amp; Wildlife Code §12.0011 &bull; Edwards Aquifer Habitat Conservation Plan (EAA) &bull; Reform Austin &bull; Texas Observer &bull; Hart Energy &bull; LCRA (Hays Energy–Kendall project page) &bull; Franklin Mountain Investments (wnr.com) &bull; Caldwell County deed records &bull; Caldwell CAD 2026 property records<br><br>
   Compiled for research purposes from public records only. All contribution amounts from journalism sourcing TEC and FEC filings. No quid-pro-quo established or alleged.
+</div>
+
 </div>
 
 <footer>

@@ -28,19 +28,14 @@ body {
   min-height: 100vh;
 }
 
-header {
+.page-header {
   background: var(--navy);
   color: #fff;
   padding: 36px 24px 32px;
   text-align: center;
 }
-header h1 { font-size: 1.7rem; font-weight: 900; margin-bottom: 8px; }
-header .sub { font-size: .88rem; color: #93c5fd; max-width: 640px; margin: 0 auto; line-height: 1.6; }
-header a.back {
-  display: inline-block; margin-bottom: 18px;
-  font-size: .78rem; color: #93c5fd; text-decoration: none; letter-spacing: .04em;
-}
-header a.back:hover { text-decoration: underline; }
+.page-header h1 { font-size: 1.7rem; font-weight: 900; margin-bottom: 8px; }
+.page-header .sub { font-size: .88rem; color: #93c5fd; max-width: 640px; margin: 0 auto; line-height: 1.6; }
 
 .site-nav {
   background: var(--navy);
@@ -187,14 +182,14 @@ document.addEventListener('DOMContentLoaded', function () {
   </div>
 </nav>
 
-<header>
+<div class="page-header">
   <h1>Maps &amp; Site Exhibits</h1>
   <p class="sub">
     Engineering exhibits, survey plats, drainage/floodplain studies, and aerial maps for the TriTexas Logistics Park
     (formerly SMART Terminal / Axis Logistics Park), compiled from public information requests filed with the City of
     San Marcos and Caldwell County. Click any image to view full resolution.
   </p>
-</header>
+</div>
 
 <div class="intro-band">
   All exhibits below are sourced from public records obtained via open records requests. Most are engineering drawings

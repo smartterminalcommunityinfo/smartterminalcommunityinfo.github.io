@@ -28,56 +28,25 @@ body {
   min-height: 100vh;
 }
 
-/* ── HEADER ── */
-header {
+/* ── PAGE HEADER ── */
+.page-header {
   background: var(--navy);
   color: #fff;
   padding: 48px 24px 40px;
   text-align: center;
 }
-
-header .org-label {
-  font-size: .75rem;
-  font-weight: 700;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: #93c5fd;
-  margin-bottom: 10px;
-}
-
-header h1 {
+.page-header h1 {
   font-size: 2rem;
   font-weight: 900;
   line-height: 1.2;
   margin-bottom: 10px;
 }
-
-header h1 span {
-  color: #fbbf24;
-}
-
-header .tagline {
+.page-header .sub {
   font-size: .95rem;
   color: #cbd5e1;
   max-width: 560px;
-  margin: 0 auto 20px;
+  margin: 0 auto;
   line-height: 1.6;
-}
-
-header .instagram-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  font-size: .82rem;
-  color: #93c5fd;
-  text-decoration: none;
-  border: 1px solid #3b5f8a;
-  border-radius: 20px;
-  padding: 5px 14px;
-  transition: background .15s;
-}
-header .instagram-link:hover {
-  background: rgba(255,255,255,.08);
 }
 
 /* ── NAV ── */
@@ -339,14 +308,14 @@ document.addEventListener('DOMContentLoaded', function () {
   </div>
 </nav>
 
-<header>
+<div class="page-header">
   <h1>Citizens Against Smart Axis</h1>
-  <p class="tagline">
+  <p class="sub">
     Public records, ownership analysis, and accountability research on the
     TriTexas Logistics Park (formerly SMART Terminal / Axis Logistics Park)
     in San Marcos, Texas.
   </p>
-</header>
+</div>
 
 <div class="intro-band">
   All findings on this site are sourced from public records, official filings, and government databases.

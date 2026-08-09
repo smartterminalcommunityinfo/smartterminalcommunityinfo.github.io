@@ -19,22 +19,16 @@
     background: #f1f4f8;
     color: #1a2330;
     min-height: 100vh;
-    padding: 32px 20px 60px;
+    padding: 0;
   }
+  .wrap { padding: 32px 20px 60px; }
 
-  h1 {
-    text-align: center;
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #1a2330;
-    margin-bottom: 4px;
+  .page-header {
+    background: #1e3a5f; color: #fff; padding: 36px 24px 32px; text-align: center;
   }
-  .subtitle {
-    text-align: center;
-    font-size: .85rem;
-    color: #64748b;
-    margin-bottom: 36px;
-  }
+  .page-header h1 { font-size: 1.7rem; font-weight: 900; margin-bottom: 8px; color: #fff; }
+  .page-header .sub { font-size: .88rem; color: #93c5fd; max-width: 640px; margin: 0 auto; line-height: 1.6; }
+  .caption { text-align: center; font-size: .85rem; color: #64748b; }
 
   /* ── TREE LAYOUT ─────────────────────────────── */
   .tree {
@@ -210,7 +204,7 @@
   }
 
   @media (max-width: 640px) {
-    body { padding: 16px 12px 48px; }
+    .wrap { padding: 16px 12px 48px; }
     .people-section { padding: 16px 14px; border-radius: 8px; }
     .people-grid { grid-template-columns: 1fr; }
     .notes-section { padding: 14px 14px; border-radius: 8px; }
@@ -288,8 +282,12 @@ document.addEventListener('DOMContentLoaded', function () {
 </nav>
 
 
-<h1>TriTexas Logistics Park - Corporate Ownership Structure</h1>
-<p class="subtitle">Source: Texas Secretary of State records, Caldwell County deed records, Franklin Mountain Investments website (wnr.com), public corporate databases</p>
+<div class="page-header">
+  <h1>TriTexas Logistics Park - Corporate Ownership Structure</h1>
+  <p class="sub">Source: Texas Secretary of State records, Caldwell County deed records, Franklin Mountain Investments website (wnr.com), public corporate databases</p>
+</div>
+
+<div class="wrap">
 
 <!-- ═══════════════════════════════════════════ LEGEND -->
 <div class="legend">
@@ -306,7 +304,7 @@ document.addEventListener('DOMContentLoaded', function () {
   <div class="legend-item"><svg width="26" height="12"><path d="M1,2 C13,2 13,10 25,10" stroke="#be185d" stroke-width="2" stroke-dasharray="5,4" fill="none"/></svg> Shared officer / director</div>
   <div class="legend-item">&#128205; Shared registered address</div>
 </div>
-<p class="subtitle" style="margin-top:10px;max-width:760px;margin-left:auto;margin-right:auto;">Node positions show the formal ownership/control chain (solid lines). Dashed pink lines and the &#128205; address marker expose relationships a corporate chart alone would hide: the same officers and the same registered address recurring across entities presented publicly as separate. Hover any node for sourcing detail.</p>
+<p class="caption" style="margin-top:10px;max-width:760px;margin-left:auto;margin-right:auto;">Node positions show the formal ownership/control chain (solid lines). Dashed pink lines and the &#128205; address marker expose relationships a corporate chart alone would hide: the same officers and the same registered address recurring across entities presented publicly as separate. Hover any node for sourcing detail.</p>
 
 <!-- ═══════════════════════════════════════════ NETWORK GRAPH -->
 <div style="overflow-x:auto; margin-top:24px;">
@@ -538,7 +536,9 @@ document.addEventListener('DOMContentLoaded', function () {
   Compiled from: Texas SOS filings &bull; Caldwell County deed records (instruments 370_2021_007621–370_2025_004791) &bull; Caldwell CAD 2026 property records &bull; Franklin Mountain Investments (wnr.com) &bull; Public corporate databases &bull; Press releases
 </div>
 
-<footer style="text-align:center; font-size:.78rem; color:#94a3b8; padding:28px 20px 40px; border-top:1px solid #e2e8f0; margin-top:20px;">
+</div>
+
+<footer style="text-align:center; font-size:.78rem; color:#94a3b8; padding:28px 20px 40px; border-top:1px solid #e2e8f0;">
   Citizens Against Smart Axis - San Marcos, Texas
 </footer>
 

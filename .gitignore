@@ -10,6 +10,10 @@ compliance_report.html
 # Allow this file
 !.gitignore
 
+# Allow SEO files at the repo root
+!robots.txt
+!sitemap.xml
+
 # Allow images (and source PDFs) in the maps folder
 !maps/
 !maps/*.jpg

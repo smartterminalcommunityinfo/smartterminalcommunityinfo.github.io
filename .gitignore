@@ -13,6 +13,8 @@ compliance_report.html
 # Allow SEO files at the repo root
 !robots.txt
 !sitemap.xml
+!sitemap/
+!sitemap/sitemap.xml
 
 # Allow images (and source PDFs) in the maps folder
 !maps/

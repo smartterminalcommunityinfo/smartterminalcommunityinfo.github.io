@@ -349,6 +349,21 @@ footer {
   .vs-row .vs-label { width: auto; }
   .headline-banner .headline-num { font-size: 2rem; }
 }
+
+.category-badge {
+  display: inline-block;
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+  background: rgba(180,83,9,.28);
+  color: #fde68a;
+  border: 1px solid rgba(180,83,9,.7);
+}
+.page-header { border-top: 5px solid #b45309; }
 </style>
 </head>
 <body>
@@ -391,6 +406,7 @@ document.addEventListener('DOMContentLoaded', function () {
 </nav>
 
 <div class="page-header">
+  <span class="category-badge">MONEY &amp; POLITICAL INFLUENCE</span>
   <h1>Impact Fees &amp; the 2019 Rate Freeze</h1>
   <p class="sub">
     How San Marcos calculates wastewater impact fees, why the City just proposed to
@@ -586,13 +602,13 @@ document.addEventListener('DOMContentLoaded', function () {
   </div>
 
   <!-- ── WHY THE RATE WENT UP: THE GRAVITY MAIN ── -->
-  <div class="section green">
+  <div class="section amber">
     <h2>Driver of the 2026 rate increase</h2>
     <p>
       The March 2026 Wastewater Impact Fee study lists the specific capital projects the
       updated rate is designed to fund. One of them serves this development directly:
     </p>
-    <div class="highlight-box green">
+    <div class="highlight-box">
       <strong>SMART Development (FM 110) Gravity Main</strong> - a new 18-inch
       sewer line along FM 110 that also decommissions the aging Gary Job Corps lift
       station. Total estimated cost: <strong>$24,078,600</strong>. The City's own
@@ -608,7 +624,7 @@ document.addEventListener('DOMContentLoaded', function () {
   </div>
 
   <!-- ── WHO PAYS THE DIFFERENCE ── -->
-  <div class="section">
+  <div class="section green">
     <h2>Funding the gap</h2>
     <p>
       Impact fees are one of the primary funding sources for growth-driven infrastructure
@@ -630,7 +646,7 @@ document.addEventListener('DOMContentLoaded', function () {
   </div>
 
   <!-- ── CAVEATS ── -->
-  <div class="section amber">
+  <div class="section teal">
     <h2>Caveats</h2>
     <ul>
       <li><strong>LUE math not verified.</strong> The ordinance section that defines how

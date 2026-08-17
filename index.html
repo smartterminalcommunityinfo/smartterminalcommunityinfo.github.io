@@ -146,6 +146,28 @@ main {
   padding-left: 4px;
 }
 
+.color-key {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  margin: -8px 0 18px;
+  padding-left: 4px;
+}
+.color-key span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: .74rem;
+  color: #64748b;
+}
+.color-key i {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -492,25 +514,25 @@ document.addEventListener('DOMContentLoaded', function () {
 
   <div class="grid">
 
-    <a class="card" href="documents.html" style="border-top-color:#0f6b8e;">
+    <a class="card" href="documents.html">
       <h2>Key Documents</h2>
       <p>Official signed versions of the 2023 Development Agreement and the April 2023 Administrative Amendment adding the 100-ft Reedville buffer and updated stormwater commitments.</p>
       <div class="open-label">View Documents &rarr;</div>
     </a>
 
-    <a class="card" href="maps.html" style="border-top-color:#166534;">
+    <a class="card" href="maps.html">
       <h2>Maps &amp; Site Exhibits</h2>
       <p>Over 60 engineering exhibits, survey plats, and drainage/floodplain studies compiled from public records - roadway alignments, water quality buffers, tree preservation plans, and property surveys.</p>
       <div class="open-label">View Maps &rarr;</div>
     </a>
 
-    <a class="card" href="project_timeline.html">
+    <a class="card purple" href="project_timeline.html">
       <h2>Project Timeline</h2>
       <p>Chronological record of major project milestones, government approvals, public announcements, and key decisions from inception to present.</p>
       <div class="open-label">View Timeline &rarr;</div>
     </a>
 
-    <a class="card green" href="land_use.html">
+    <a class="card purple" href="land_use.html">
       <h2>Permitted &amp; Prohibited Uses</h2>
       <p>The full Exhibit D Land Use Matrix from the 2023 Development Agreement - 51 permitted uses, geographic restrictions, and expressly prohibited activities. Includes note on the June 2026 data center ordinance conflict.</p>
       <div class="open-label">View Land Use Matrix &rarr;</div>
@@ -522,7 +544,7 @@ document.addEventListener('DOMContentLoaded', function () {
       <div class="open-label">View Report &rarr;</div>
     </a>
 
-    <a class="card" href="data_center.html" style="border-top-color:#be185d;">
+    <a class="card red" href="data_center.html">
       <h2>Data Center Exemption</h2>
       <p>San Marcos banned data centers citywide in June 2026 - but a vested-rights clause in the development agreement may mean the ban doesn't apply to this property.</p>
       <div class="open-label">View Analysis &rarr;</div>
@@ -534,25 +556,25 @@ document.addEventListener('DOMContentLoaded', function () {
 
   <div class="grid">
 
-    <a class="card" href="superfund.html" style="border-top-color: #b45309;">
+    <a class="card green" href="superfund.html">
       <h2>Groundwater Contamination Research</h2>
       <p>Historical contamination at Gary Air Force Base / Gary Job Corps Center and questions raised about its potential relevance to ground disturbance at the SMART Terminal site.</p>
       <div class="open-label">View Report &rarr;</div>
     </a>
 
-    <a class="card" href="impact_fees.html" style="border-top-color:#be185d;">
+    <a class="card accent" href="impact_fees.html">
       <h2>Impact Fees &amp; the 2019 Freeze</h2>
       <p>How San Marcos calculates wastewater impact fees, why the City's 2026 study proposes to roughly quadruple the rate, and how SMART's frozen 2019 rate creates a ~$17.9M gap versus its own growth-driven infrastructure cost.</p>
       <div class="open-label">View Analysis &rarr;</div>
     </a>
 
-    <a class="card red" href="key_players.html">
+    <a class="card teal" href="key_players.html">
       <h2>Key Players</h2>
       <p>Roster of 80+ identified individuals connected to the project - owners, developers, city and county officials, engineers, brokers, and legal counsel.</p>
       <div class="open-label">View Key Players &rarr;</div>
     </a>
 
-    <a class="card purple" href="ownership_structure.html">
+    <a class="card teal" href="ownership_structure.html">
       <h2>Ownership Structure</h2>
       <p>Corporate chain of title tracing the entities behind the project - from land ownership through development partnerships and holding companies.</p>
       <div class="open-label">View Report &rarr;</div>
@@ -564,7 +586,7 @@ document.addEventListener('DOMContentLoaded', function () {
       <div class="open-label">View Report &rarr;</div>
     </a>
 
-    <a class="card" href="development_agreement_issues.html" style="border-top-color:#6d28d9;">
+    <a class="card red" href="development_agreement_issues.html">
       <h2>Development Agreement Legal Issues</h2>
       <p>The agreement's term appears to exceed the 45-year cap in state law, its annexation clause pre-commits the City to a vote, and the developer later withdrew the annexation application the agreement relies on.</p>
       <div class="open-label">View Analysis &rarr;</div>

@@ -128,7 +128,7 @@
   .person-card.burkhardt { border-color: #4d7c0f; }
   .person-card.feagin    { border-color: #6d28d9; }
   .person-card.browne    { border-color: #6d28d9; }
-  .person-card.kendall   { border-color: #0891b2; }
+  .person-card.kendall   { border-color: #4d7c0f; }
   .person-name {
     font-weight: 700;
     font-size: .9rem;
@@ -136,6 +136,16 @@
     margin-bottom: 3px;
   }
   .person-role { color: #475569; }
+  .person-key {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+    margin: -6px 0 16px;
+    font-size: .76rem;
+    color: #64748b;
+  }
+  .person-key span { display: inline-flex; align-items: center; gap: 6px; }
+  .person-key i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
 
   /* ── LEGEND ───────────────────────────────────── */
   .legend {
@@ -253,6 +263,21 @@
 }
 .site-nav .nav-btn-search { background: #93c5fd; color: #1e3a5f; }
 .site-nav .nav-btn-donate { background: #fbbf24; color: #1e3a5f; }
+
+.category-badge {
+  display: inline-block;
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+  background: rgba(15,107,142,.28);
+  color: #bae6fd;
+  border: 1px solid rgba(15,107,142,.7);
+}
+.page-header { border-top: 5px solid #0f6b8e; }
 </style>
 </head>
 <body>
@@ -295,6 +320,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 <div class="page-header">
+  <span class="category-badge">PEOPLE, BUSINESSES &amp; CORPORATE STRUCTURE</span>
   <h1>TriTexas Logistics Park - Corporate Ownership Structure</h1>
   <p class="sub">Source: Texas Secretary of State records, Caldwell County deed records, Franklin Mountain Investments website (wnr.com), public corporate databases</p>
 </div>
@@ -485,6 +511,10 @@ document.addEventListener('DOMContentLoaded', function () {
 <!-- ═══════════════════════════════════════════ PEOPLE -->
 <div class="people-section">
   <h2>Key Personnel</h2>
+  <p class="person-key">
+    <span><i style="background:#4d7c0f;"></i>Scarborough Lane Development / Franklin Mountain Communities (operator)</span>
+    <span><i style="background:#6d28d9;"></i>Landmark Interests (brokerage)</span>
+  </p>
   <div class="people-grid">
     <div class="person-card burkhardt">
       <div class="person-name">Ryan Burkhardt</div>

@@ -450,28 +450,122 @@ document.addEventListener('DOMContentLoaded', function () {
 
   <!-- ── HOW IT'S CALCULATED ── -->
   <div class="section teal">
-    <h2>Calculation method (Sec. 86.294)</h2>
+    <h2>How the City converts demand into LUEs (Secs. 86.294, 86.298, 86.299)</h2>
     <p>
-      San Marcos Code of Ordinances Sec. 86.294 sets the fee as a two-factor calculation:
+      Every impact fee is the product of two numbers: a count of service units (LUEs), and
+      a dollar rate per LUE. The development agreement freezes the <em>rate</em>. The
+      <em>count</em> is governed by the City's ordinance, and the method the ordinance uses
+      turns out to matter as much as the frozen rate does.
     </p>
     <ol>
       <li>
-        <strong>LUEs (Living Unit Equivalents).</strong> A connection's expected peak
-        flow (gpm) is converted to LUEs - one LUE is roughly the flow demand of one
-        single-family connection; large industrial users scale to dozens or hundreds of
-        LUEs. The conversion methodology itself is defined in Sec. 86.297, which was not
-        in the records reviewed for this page.
+        <strong>One LUE is 0.41 gpm.</strong> Sec. 86.294 defines a service unit as a
+        living unit equivalent "based upon the relationship of the maximum design water
+        flow to that of single family residential peak demand as served by a
+        [fraction]-inch displacement-water meter," and fixes that single-family peak
+        demand at <strong>0.41 gpm</strong>.
       </li>
       <li>
-        <strong>Fee-per-LUE ("Schedule 1").</strong> The City publishes a per-LUE dollar
-        rate that it revises periodically as it re-studies capital infrastructure costs.
+        <strong>The input is peak water flow, calculated from plumbing fixtures.</strong>
+        Sec. 86.294 defines "peak flow calculation" as "the calculation of water demand
+        based upon the proposed fixture types using city approved methodology." Under Sec.
+        86.299(b)(1)(a), where industrial or commercial equipment makes a fixture count
+        unworkable, water demand comes from manufacturer data and is added to the
+        fixture-count flow.
+      </li>
+      <li>
+        <strong>Wastewater LUEs are derived from the water number.</strong> Schedule 1 has
+        a single input column, "Calculated Peak Water Flow (gpm)," and both the water
+        utility and wastewater utility fee tiers hang off it. The sewer fee is not based on
+        measured or projected sewer discharge.
+      </li>
+      <li>
+        <strong>The applicant produces the calculation.</strong> Under Sec. 86.299(b)(1),
+        peak water demand "is to be determined initially by the applicant and is subject to
+        review and approval by the director," who may require building plans, plumbing
+        layouts and flow calculations.
       </li>
     </ol>
     <div class="highlight-box blue">
-      <strong>Fee = LUEs &times; rate-per-LUE (schedule in effect).</strong> With LUE
-      count fixed by contract, the variable that determines a project's total bill is
-      which rate schedule applies - which is where the SMART Terminal agreement diverges
-      from current policy.
+      <strong>When the count is fixed, and at what rate.</strong> Sec. 86.298(a)(1)
+      provides that for unplatted land where platting is not required, assessment occurs at
+      building permit, plumbing permit or utility application, at "the maximum impact fee
+      per service unit <strong>then in effect</strong>." Sec. 86.298(a)(2) does the same
+      for platted land at plat recordation. And Sec. 86.298(b) adds that once assessed, the
+      per-unit amount cannot be increased unless the quantity of service units increases,
+      in which case "a new assessment <strong>shall</strong> occur using the Schedule 1
+      rate then in effect for such additional service units." No plats have been recorded
+      for this project.
+    </div>
+  </div>
+
+  <!-- ── THE STEP TABLE ── -->
+  <div class="section red">
+    <h2>Schedule 1 is a step table, not a rate</h2>
+    <p>
+      The conversion from peak water flow to LUEs is not a division. It is a nine-row
+      lookup table, and it is steeply non-linear:
+    </p>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Calculated peak water flow (gpm)</th>
+          <th class="num">LUEs</th>
+          <th class="num">Implied LUEs per gpm</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>1 to 10</td><td class="num">1.0</td><td class="num">0.10</td></tr>
+        <tr><td>&gt;10 to 15</td><td class="num">2.0</td><td class="num">0.13</td></tr>
+        <tr><td>&gt;15 to 25</td><td class="num">4.0</td><td class="num">0.16</td></tr>
+        <tr><td>&gt;25 to 50</td><td class="num">6.0</td><td class="num">0.12</td></tr>
+        <tr><td>&gt;50 to 80</td><td class="num">8.5</td><td class="num">0.11</td></tr>
+        <tr><td>&gt;80 to 160</td><td class="num">32.5</td><td class="num">0.20</td></tr>
+        <tr><td>&gt;160 to 250</td><td class="num">64.5</td><td class="num">0.26</td></tr>
+        <tr class="frozen-row"><td>&gt;250 to 500</td><td class="num">104.0</td><td class="num">0.21</td></tr>
+        <tr class="proposed-row"><td>&gt;500</td><td class="num">150.0 + (peak gpm &minus; 500) / 0.41</td><td class="num">2.44 marginal</td></tr>
+      </tbody>
+    </table>
+    <p>
+      Two things happen at the 500 gpm line. The count jumps discontinuously from 104 LUEs
+      to 150 LUEs, and the marginal cost of the next gallon per minute rises from about
+      0.21 LUEs to <strong>2.44 LUEs, roughly a twelvefold increase</strong>. Below 500
+      gpm the table charges a small fraction of what the ordinance's own 0.41 gpm
+      definition of a LUE would imply. Above it, the table charges exactly that definition.
+    </p>
+    <div class="highlight-box red">
+      <strong>The consequence is that identical demand produces very different fees
+      depending on how the development is divided into connections.</strong> Sec. 86.299(a)
+      computes and collects per building permit or utility application, so the number of
+      connections is largely a design choice. Take 2,000 gpm of total peak demand:
+    </div>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Same 2,000 gpm, delivered as...</th>
+          <th class="num">LUEs charged</th>
+          <th class="num">Wastewater fee at $2,684 / LUE</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="proposed-row"><td>One connection at 2,000 gpm</td><td class="num">3,809</td><td class="num">$10,223,356</td></tr>
+        <tr><td>4 connections at 500 gpm</td><td class="num">416</td><td class="num">$1,116,544</td></tr>
+        <tr><td>25 connections at 80 gpm</td><td class="num">213</td><td class="num">$571,692</td></tr>
+        <tr class="frozen-row"><td>200 connections at 10 gpm</td><td class="num">200</td><td class="num">$536,800</td></tr>
+      </tbody>
+    </table>
+    <p>
+      An eighteen-fold spread, for the same water and the same load on the same treatment
+      plant. A 2,000-acre park built out as dozens of separately permitted buildings sits
+      near the cheap end of that range by default.
+    </p>
+    <div class="highlight-box">
+      <strong>Why this matters beyond this project.</strong> The step table applies to every
+      development in San Marcos and is a feature of the current code, not something
+      negotiated in the development agreement. It also interacts with the freeze: a ceiling
+      expressed in LUEs only constrains a project if the <em>charged</em> LUE count actually
+      reaches it, and this table is structured to keep charged counts low. The rate schedule
+      now before Council is the occasion to examine it.
     </div>
   </div>
 
@@ -601,6 +695,225 @@ document.addEventListener('DOMContentLoaded', function () {
     </div>
   </div>
 
+
+  <!-- ── TENANT PIPELINE LUE ESTIMATE ── -->
+  <div class="section amber">
+    <h2>What the tenant pipeline implies about LUEs</h2>
+    <p>
+      The 2,108 LUE figure only matters in relation to what the site will actually need. The
+      City's released RFI correspondence for the 23 documented prospective tenants includes
+      stated water and wastewater demands for most of them, which makes this a calculation
+      rather than a guess. Running those figures through Schedule 1 gives the table below.
+    </p>
+    <div class="highlight-box blue">
+      <strong>Method, and its limits.</strong> Schedule 1 takes <em>peak</em> water flow in
+      gpm. The RFI documents state average daily demand in gpd. The low end of each range
+      below converts at continuous operation (gpd &divide; 1,440); the high end applies a
+      2&times; peaking factor. Actual charged LUEs come from a plumbing fixture count under
+      Sec. 86.299, not from daily demand, so treat these as order-of-magnitude figures that
+      show which side of 2,108 a project falls on. Because of the step table above, the
+      charged count could also come in far lower if a project's load is split across many
+      separate connections. Where an RFI states demand per month, it is converted at 30 days
+      per month; where it states demand per hour, that hourly rate is used directly as the
+      peak.
+    </div>
+
+    <h3>Currently active, shortlisted or pending</h3>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Project</th>
+          <th class="num">Stated demand</th>
+          <th class="num">Peak gpm</th>
+          <th class="num">LUEs</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="proposed-row"><td><strong>Project North Star</strong><br><span style="color:#64748b;font-size:.78rem;">Advanced magnetics (rare-earth-free)<br>Active, decision Jul/Aug 2026</span></td><td class="num">1,400,000 gpd</td><td class="num">972 &ndash; 1,944</td><td class="num"><strong>1,301.8 &ndash; 3,673.0</strong></td></tr>
+        <tr class="proposed-row"><td><strong>Project Vista Prism</strong><br><span style="color:#64748b;font-size:.78rem;">Electronics manufacturing<br>Active, in discussion</span></td><td class="num">576,700 gal/hr</td><td class="num">9,612</td><td class="num"><strong>22,373.6</strong></td></tr>
+        <tr><td><strong>Project Thomas Train</strong><br><span style="color:#64748b;font-size:.78rem;">Gas turbines powering data centers<br>Active</span></td><td class="num">870,000 gpd</td><td class="num">604 &ndash; 1,208</td><td class="num"><strong>404.1 &ndash; 1,877.6</strong></td></tr>
+        <tr><td><strong>Project Neighborhood Club</strong><br><span style="color:#64748b;font-size:.78rem;">Critical minerals processing<br>Active, requirements met</span></td><td class="num">414,625 gpd</td><td class="num">288 &ndash; 576</td><td class="num"><strong>104.0 &ndash; 335.0</strong></td></tr>
+        <tr><td><strong>Project Savannah</strong><br><span style="color:#64748b;font-size:.78rem;">Pharmaceutical API / mAb<br>Shortlisted</span></td><td class="num">350,000 gpd</td><td class="num">243 &ndash; 486</td><td class="num"><strong>64.5 &ndash; 104.0</strong></td></tr>
+        <tr><td><strong>Project Frontier</strong><br><span style="color:#64748b;font-size:.78rem;">Architectural products<br>Active</span></td><td class="num">216,300 gpd</td><td class="num">150 &ndash; 300</td><td class="num"><strong>32.5 &ndash; 104.0</strong></td></tr>
+        <tr><td><strong>Project Lassen</strong><br><span style="color:#64748b;font-size:.78rem;">High-salinity industrial<br>Active, under evaluation</span></td><td class="num">150,000 gpd (sewer)</td><td class="num">104 &ndash; 208</td><td class="num"><strong>32.5 &ndash; 64.5</strong></td></tr>
+        <tr><td><strong>Project America Flag</strong><br><span style="color:#64748b;font-size:.78rem;">Tire manufacturing<br>Shortlisted</span></td><td class="num">137,000 gpd</td><td class="num">95 &ndash; 190</td><td class="num"><strong>32.5 &ndash; 64.5</strong></td></tr>
+        <tr><td><strong>Project Matcha Latte</strong><br><span style="color:#64748b;font-size:.78rem;">Ceramic pavers<br>Active</span></td><td class="num">50,000 gpd</td><td class="num">35 &ndash; 69</td><td class="num"><strong>6.0 &ndash; 8.5</strong></td></tr>
+        <tr><td><strong>Project Skate Board</strong><br><span style="color:#64748b;font-size:.78rem;">Aerospace PCB<br>Unresolved</span></td><td class="num">50,000 gpd</td><td class="num">35 &ndash; 69</td><td class="num"><strong>6.0 &ndash; 8.5</strong></td></tr>
+        <tr><td><strong>Project Mount Fuji</strong><br><span style="color:#64748b;font-size:.78rem;">High-purity magnesium oxide<br>Active, site tour Mar 2026</span></td><td class="num">47,560 gpd</td><td class="num">33 &ndash; 66</td><td class="num"><strong>6.0 &ndash; 8.5</strong></td></tr>
+        <tr><td><strong>Project Sling Shot</strong><br><span style="color:#64748b;font-size:.78rem;">Steel pipe manufacturing<br>Pending</span></td><td class="num">19,196 gpd</td><td class="num">13 &ndash; 27</td><td class="num"><strong>2.0 &ndash; 6.0</strong></td></tr>
+      </tbody>
+    </table>
+
+    <div class="highlight-box red">
+      <strong>One active project can consume the entire reservation.</strong> Project North
+      Star, an advanced magnetics plant with a $1.8 billion investment and a decision
+      expected July or August 2026, states 1.4 MGD of water and 0.8 MGD of wastewater. That
+      converts to roughly <strong>1,302 to 3,673 LUEs</strong>, or
+      62% to 174% of the 2,108 LUEs the development
+      agreement reserves. At the frozen rate that single project's wastewater impact fee is
+      about <strong>$3,493,928</strong>. At the proposed 2026 rate it would be about
+      <strong>$14,528,960</strong>, a difference of roughly
+      <strong>$11,035,032</strong> on one tenant.
+    </div>
+
+    <p>
+      These projects are competing for the same ground, so the column does not sum to a
+      buildout total. But a combination that fits the acreage does. Taking North Star,
+      Savannah (~200 ac), Frontier (60&ndash;80 ac), Neighborhood Club (1,000 ac), Matcha
+      Latte (100 ac), Mount Fuji and Sling Shot (120 ac) together uses roughly 1,500 stated
+      acres, which is close to the site's developable area, and produces about
+      <strong>1,517 to 4,239 LUEs</strong>. The 2,108 reservation sits inside
+      that range.
+    </p>
+
+    <h3>Projects the City turned away, and what they would have needed</h3>
+    <p>
+      Several prospects were declined on water grounds. Their demands illustrate how quickly
+      heavy industrial water use overwhelms a 2,108 LUE reservation. These use the
+      continuous-operation conversion only, which is the low end of the method above:
+    </p>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Project</th>
+          <th class="num">Stated water demand</th>
+          <th class="num">Peak gpm</th>
+          <th class="num">LUEs</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="proposed-row"><td><strong>Project Roller Coaster</strong><br><span style="color:#64748b;font-size:.78rem;">Semiconductor ($10B, 5,100 jobs)<br>Not recommended - water</span></td><td class="num">15,400,000 gpd</td><td class="num">10,694</td><td class="num"><strong>25,014.5</strong></td></tr>
+        <tr class="proposed-row"><td><strong>Project Horizon Mill B</strong><br><span style="color:#64748b;font-size:.78rem;">Steel mill / DRI<br>No submission - water</span></td><td class="num">9,000,000 gpd</td><td class="num">6,250</td><td class="num"><strong>14,174.4</strong></td></tr>
+        <tr class="proposed-row"><td><strong>Project Golden Eagle Sun</strong><br><span style="color:#64748b;font-size:.78rem;">Solar manufacturing<br>No submission - timeline</span></td><td class="num">1,000,000 gpd</td><td class="num">694</td><td class="num"><strong>624.3</strong></td></tr>
+        <tr><td><strong>Project Fiber Optics</strong><br><span style="color:#64748b;font-size:.78rem;">Fiber optics manufacturing<br>Deadline missed</span></td><td class="num">505,000 gpd</td><td class="num">351</td><td class="num"><strong>104.0</strong></td></tr>
+        <tr><td><strong>Project Apex Prime</strong><br><span style="color:#64748b;font-size:.78rem;">Wheat-to-pasta processing<br>Declined</span></td><td class="num">300,000 gpd</td><td class="num">208</td><td class="num"><strong>64.5</strong></td></tr>
+        <tr><td><strong>Project Hat Trick</strong><br><span style="color:#64748b;font-size:.78rem;">Metal smelting<br>No submission - prohibited</span></td><td class="num">150,000 gpd</td><td class="num">104</td><td class="num"><strong>32.5</strong></td></tr>
+      </tbody>
+    </table>
+
+    <div class="highlight-box">
+      <strong>The pipeline is not a logistics pipeline.</strong> The site is marketed as a
+      logistics and intermodal park, and warehouse distribution generates very little
+      wastewater because demand is driven almost entirely by employee restrooms. Not one of
+      the 23 documented prospects is a distribution or warehousing tenant. Every one is
+      manufacturing, chemical processing, semiconductors, metals, food processing or power
+      generation. That difference is what moves the plausible buildout figure from several
+      hundred LUEs to several thousand, and it is the reason the reservation and the frozen
+      rate are worth attention now rather than at buildout.
+    </div>
+  </div>
+
+
+  <!-- ── WHAT HAPPENS ABOVE 2,108 LUES ── -->
+  <div class="section">
+    <h2>What happens above 2,108 LUEs</h2>
+    <p>
+      If the site's charged LUE count passes the number the agreement reserves, does the
+      2019 rate still apply to the excess? Three sources speak to this, and they do not
+      align.
+    </p>
+
+    <h3>The City's ordinance: additional units get the current rate</h3>
+    <p>
+      Sec. 86.298(b) is the most direct answer available, and it is mandatory:
+    </p>
+    <div class="highlight-box blue">
+      "Following assessment under subsection (a), the amount of the assessment per service
+      unit for that development cannot be increased unless the quantity of service units
+      needed for that development increases by the submission of a new application for plat
+      approval or other development application that results in approval of additional
+      service units. <strong>In the event of such an increase in service units, a new
+      assessment shall occur using the Schedule 1 rate then in effect for such additional
+      service units.</strong>"
+      <br><span style="font-size:.79rem;color:#475569;">San Marcos Code of Ordinances Sec. 86.298(b)</span>
+    </div>
+    <p>
+      Read on its own, that means LUEs beyond the assessed or agreed quantity are charged at
+      whatever rate is current when they are assessed. At the proposed schedule that is
+      $11,161 per wastewater LUE rather than $2,684, a difference of
+      <strong>$8,477 per LUE</strong>.
+    </p>
+
+    <h3>State law: the same direction, less explicitly</h3>
+    <p>
+      Texas Local Government Code Sec. 395.017 provides that after assessment of impact
+      fees "or execution of an agreement for payment of impact fees," fees may not be
+      increased "unless the number of service units to be developed on the tract increases,"
+      and that in that event "the impact fees to be imposed are limited to the amount
+      attributable to the additional service units."
+    </p>
+    <p>
+      Two things follow. Sec. 395.017 does not itself name a rate; the rate comes from Sec.
+      395.016(d) and Sec. 86.298(a), which fix it at the time of assessment. And more
+      importantly, Sec. 395.017 is the provision that gives an assessment or an agreement
+      its lock-in effect in the first place, and it carves additional service units out of
+      that protection on its face. A freeze that depends on Sec. 395.017 cannot escape Sec.
+      395.017's own limitation.
+    </p>
+
+    <h3>The agreement: no ceiling at all</h3>
+    <p>
+      The development agreement's own language points the other way, and it is broad:
+    </p>
+    <div class="highlight-box red">
+      "Due to the significant investment undertaken by Owner in developing the Property, the
+      City agrees that <strong>all</strong> water and wastewater impact fees to be charged by
+      the City <strong>during the development of the Property</strong> will be the fees in
+      effect as of March 19, 2019."
+      <br><span style="font-size:.79rem;color:#4c0519;">Development Agreement, Section 1.05.A.3</span>
+    </div>
+    <p>
+      No service-unit limit, no acreage limit, no end date. The 2,108 LUE figure appears in
+      a separate provision reserving sewer capacity, not as a cap on the freeze. So the
+      ceiling, if there is one, comes from the law rather than from the contract, and the
+      owner's position will be that Sec. 1.05.A.3 covers every fee the City ever charges on
+      this land.
+    </p>
+
+    <h3>Why the answer is not settled</h3>
+    <p>
+      A contract term may well displace a city ordinance, so Sec. 86.298(b) alone does not
+      end the argument. What a contract cannot do is give the City authority the Legislature
+      withheld, which is why the state-law question is the one that matters. And the authority for an impact
+      fee agreement, Sec. 395.018, is narrow in two ways at once:
+    </p>
+    <div class="highlight-box">
+      "A political subdivision is authorized to enter into an agreement with the owner of a
+      tract of land <strong>for which the plat has been recorded</strong> providing for the
+      <strong>time and method of payment</strong> of the impact fees."
+      <br><span style="font-size:.79rem;color:#431407;">Tex. Loc. Gov't Code Sec. 395.018</span>
+    </div>
+    <p>
+      No plats have been recorded for this property. And the authority granted reaches the
+      time and method of payment, not the amount. Whether the general authority in Sec.
+      212.172(b)(9) to include "other lawful terms" in a development agreement absorbs a
+      rate freeze that Chapter 395 does not itself authorize is an open question, and Sec.
+      395.073 provides that state and local restrictions on impact fees are cumulative
+      rather than displaceable. This page sets out the texts; it does not resolve them.
+    </p>
+
+    <h3>The practical catch</h3>
+    <div class="highlight-box red">
+      <strong>A ceiling measured in LUEs may never be reached, whatever the law says.</strong>
+      Because of the Schedule 1 step table, a project built out as many separately permitted
+      connections generates a far smaller charged LUE count than the same demand delivered
+      through one large connection. Actual demand on the treatment plant could run several
+      times the reserved capacity while the charged count stays under 2,108. The service-unit
+      ceiling protects the City only if the charged number crosses it.
+    </div>
+
+    <h3>What could be settled now, without litigation</h3>
+    <p>
+      Sec. 86.297(b) requires the fee per service unit to be "established by ordinance of
+      the city council." The proposed 2026 schedule therefore has to be adopted by ordinance
+      before it takes effect, and that proceeding is the natural place to ask Council and the
+      City Attorney to state on the record whether Sec. 86.298 applies to this development,
+      so that service units beyond the reserved quantity are assessed at then-current rates.
+      An answer either way is useful: it bounds the City's exposure, or it documents a
+      current position rather than one taken in 2023.
+    </p>
+  </div>
+
   <!-- ── WHY THE RATE WENT UP: THE GRAVITY MAIN ── -->
   <div class="section amber">
     <h2>Driver of the 2026 rate increase</h2>
@@ -649,10 +962,23 @@ document.addEventListener('DOMContentLoaded', function () {
   <div class="section teal">
     <h2>Caveats</h2>
     <ul>
-      <li><strong>LUE math not verified.</strong> The ordinance section that defines how
-        a specific development's peak flow gets converted into an LUE count (Sec. 86.297)
-        was not available in the records reviewed. The 2,108 LUE figure comes from the
-        development agreement summary, not from an independent recalculation.</li>
+      <li><strong>The LUE methodology is now sourced; the 2,108 figure is not.</strong>
+        The conversion method (Secs. 86.294, 86.297, 86.298 and 86.299) has been read out of
+        the City Code and is reproduced above. The <strong>2,108 LUE</strong> figure itself
+        still comes from a summary of the development agreement rather than from the executed
+        document, and should be verified against the agreement text before it is relied on.
+        Note that in Schedule 1 the pre-2002 wastewater fee for 4.0 LUEs is
+        4 &times; $527 = $2,108, so the coincidence of digits is worth ruling out.</li>
+      <li><strong>The pipeline LUE estimates are demand-based, not fixture-count based.</strong>
+        Sec. 86.299 computes LUEs from a plumbing fixture count, not from average daily
+        demand. The estimates above convert stated gpd figures to gpm and read Schedule 1,
+        which establishes order of magnitude but is not the calculation the City would
+        perform. RFI water and wastewater figures are also company-stated projections at the
+        inquiry stage, and several projects state figures for a first phase only.</li>
+      <li><strong>The ordinance text has an illegible fraction.</strong> The copy of Sec.
+        86.294 obtained through public information request renders the residential meter
+        size as "[fraction]-inch" in both places it appears. The 0.41 gpm peak-demand basis
+        is legible and is the operative number.</li>
       <li><strong>The City's own cost report has an internal inconsistency.</strong> The
         itemized cost sheet for the SMART Development Gravity Main project (in the March
         2026 report) totals $9,631,500 on its own line-item math, while the report's
@@ -673,6 +999,9 @@ document.addEventListener('DOMContentLoaded', function () {
   <h3>Sources</h3>
   <ol>
     <li><strong>City of San Marcos Code of Ordinances, Sec. 86.294 (Schedule 1)</strong> - "Chapter_86.294 - Proposed Revisions Shown," obtained via public information request. Sets the historical and proposed water/wastewater impact fee-per-LUE amounts.</li>
+    <li><strong>City of San Marcos Code of Ordinances, Secs. 86.294 through 86.299</strong> (impact fee division) - definitions of "service unit," "peak flow calculation" and "plat recordation"; Schedule 1's peak-flow-to-LUE step table; Sec. 86.297 (maximum impact fees per service unit); Sec. 86.298 (assessment of impact fees, including the no-increase rule and its exception); Sec. 86.299 (computation of service units and collection).</li>
+    <li><strong>Texas Local Government Code, Chapter 395</strong> - Secs. 395.016 (time for assessment and collection), 395.017 (additional fee prohibited; exception), 395.018 (agreement with owner regarding payment), 395.019 (collection of fees if services not available), 395.021 (authority to spend funds to reduce fees).</li>
+    <li><strong>Texas Governor's Office EDT RFI correspondence, 2024&ndash;2026</strong>, obtained via public information request - stated water and wastewater demands for the prospective tenant projects. See <a href="businesses_summary.html" style="color:#1e3a5f;font-weight:600;">Prospective Tenants &amp; Businesses</a>.</li>
     <li><strong>City of San Marcos Wastewater Impact Fee Final Report</strong> (dated March 2026), obtained via public information request. Source of the SMART Development (FM 110) Gravity Main project description, cost estimate, growth-driven utilization percentage, and the proposed 2026 rate update.</li>
     <li><strong>First Amended &amp; Restated SMART Terminal Development Agreement</strong> (executed January 17, 2023, Res. 2023-20R / PDA-22-07) - source of the "impact fees frozen at March 19, 2019 rates" and "2,108 LUEs of wastewater service guaranteed" provisions. See <a href="documents.html" style="color:#1e3a5f;font-weight:600;">Key Documents</a>.</li>
     <li><strong>Original SMART Terminal Chapter 380 / ETJ Development Agreement</strong> (effective March 19, 2019, Res. 2019-49R) - establishes the March 19, 2019 date referenced by the fee freeze.</li>

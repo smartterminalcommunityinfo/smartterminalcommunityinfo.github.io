@@ -109,6 +109,12 @@ body {
   letter-spacing: .02em;
 }
 .site-nav a:hover { color: #fff; }
+.site-nav .site-nav-title {
+  color: #93c5fd;
+  font-size: .85rem;
+  font-weight: 600;
+  letter-spacing: .02em;
+}
 .site-nav-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .site-nav .nav-btn { border: 1px solid #3b5f8a; border-radius: 20px; padding: 5px 14px; }
 .site-nav .nav-btn-search, .site-nav .nav-btn-donate {
@@ -358,7 +364,7 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 
 <nav class="site-nav">
-  <a href="index.html">&#8592; Citizens Against TriTexas</a>
+  <span class="site-nav-title">Citizens Against TriTexas</span>
   <div class="site-nav-actions">
     <a class="nav-btn-donate" href="https://givebutter.com/casa-smtx" target="_blank" rel="noopener">Donate</a>
     <a class="nav-btn" href="https://linktr.ee/casa.smtx" target="_blank" rel="noopener">Linktree</a>

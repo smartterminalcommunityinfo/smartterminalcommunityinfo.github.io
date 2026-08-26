@@ -131,6 +131,8 @@ main {
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  align-items: start;   /* cards size to their own content; a short record
+                           should not be stretched to match a long one */
   gap: 18px;
   margin-bottom: 52px;
 }
@@ -180,6 +182,102 @@ main {
 .vote-for   { color: #166534; font-weight: 700; }
 .vote-against { color: #991b1b; font-weight: 700; }
 .vote-unrecorded { color: #94a3b8; font-style: italic; }
+.vote-absent { color: #92400e; font-weight: 700; }
+.vote-draft { color: #64748b; font-style: italic; font-size: .9em; }
+
+/* At-a-glance lean strip: one chip per contested project vote, in date order. */
+.lean { margin: 0 0 12px; }
+.lean-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 8px;
+  margin-bottom: 7px;
+}
+.lean-label {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: .7rem;
+  font-weight: 800;
+  letter-spacing: .03em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.lean-pro       { background: #166534; color: #fff; }
+.lean-pro-mild  { background: #dcfce7; color: #14532d; }
+.lean-con       { background: #991b1b; color: #fff; }
+.lean-con-mild  { background: #fee2e2; color: #7f1d1d; }
+.lean-pro-lean  { background: #f0fdf4; color: #166534; box-shadow: inset 0 0 0 1px #bbf7d0; }
+.lean-con-lean  { background: #fef2f2; color: #991b1b; box-shadow: inset 0 0 0 1px #fecaca; }
+.lean-split     { background: #fef3c7; color: #78350f; }
+.lean-none      { background: #e2e8f0; color: #475569; }
+.lean-count { font-size: .76rem; color: #64748b; line-height: 1.4; }
+.lean-strip { display: flex; flex-wrap: wrap; gap: 3px; }
+.lean-strip .chip {
+  width: 17px;
+  height: 17px;
+  border-radius: 3px;
+  font-size: .72rem;
+  font-weight: 800;
+  line-height: 17px;
+  text-align: center;
+  cursor: help;
+}
+.lean-strip .chip-pro { background: #166534; color: #fff; }
+.lean-strip .chip-con { background: #991b1b; color: #fff; }
+.lean-strip .chip-na  { background: #eef2f7; border: 1px dashed #cbd5e1; cursor: default; }
+.lean-key {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  align-items: center;
+  margin: 14px 0 4px;
+  font-size: .8rem;
+  color: #475569;
+}
+.lean-key span.chip { cursor: default; }
+.lean-key .lean-key-item { display: flex; align-items: center; gap: 6px; }
+/* .section-label has no top margin - it relies on the previous block's bottom
+   margin, which the legend does not supply. Restore the gap for this one case. */
+.lean-key + .section-label { margin-top: 46px; }
+
+/* Election ballot board */
+.ballot { display: flex; flex-direction: column; gap: 14px; margin-bottom: 52px; }
+.race {
+  background: var(--card);
+  border-radius: 12px;
+  border-top: 4px solid var(--navy);
+  box-shadow: 0 1px 4px rgba(0,0,0,.09);
+  padding: 18px 20px 16px;
+}
+.race-head {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px;
+  padding-bottom: 10px; margin-bottom: 14px; border-bottom: 1px solid #e2e8f0;
+}
+.race-seat { font-size: 1.02rem; font-weight: 800; color: #1a2330; }
+.race-note { font-size: .8rem; color: #64748b; }
+.race-body {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  align-items: start; gap: 16px;
+}
+.cand { display: flex; flex-direction: column; gap: 7px; }
+.cand-name { font-size: .95rem; font-weight: 700; color: #1a2330; }
+.cand-inc {
+  font-size: .62rem; font-weight: 800; text-transform: uppercase; letter-spacing: .04em;
+  background: #e2e8f0; color: #475569; border-radius: 999px; padding: 2px 7px;
+  vertical-align: middle; margin-left: 4px;
+}
+.cand-tag {
+  font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em;
+  color: #94a3b8;
+}
+.cand-note { font-size: .78rem; color: #374151; line-height: 1.55; }
+.race-foot {
+  margin-top: 14px; padding-top: 11px; border-top: 1px dashed #e2e8f0;
+  font-size: .78rem; color: #64748b; line-height: 1.55;
+}
+
 .legistar-link { color: inherit; text-decoration: none; border-bottom: 1px dotted currentColor; }
 .legistar-link:hover { border-bottom-style: solid; }
 
@@ -211,7 +309,6 @@ main {
   font-size: .83rem;
   color: #374151;
   line-height: 1.65;
-  flex: 1;
 }
 
 /* ── FOOTER ── */
@@ -390,13 +487,128 @@ document.addEventListener('DOMContentLoaded', function () {
     authority over annexation ordinances, development agreement amendments, and zoning changes
     tied to the project. Below is every identified piece of City Council legislation touching
     the project (2019&ndash;2025) with each then-serving member's vote where it is individually
-    recorded. <strong>No finalized City Council meeting minutes have been published since
-    roughly mid-2022</strong> - for every item after that point, the aggregate outcome is known
-    but individual roll-call votes are not published anywhere in the public record found to
-    date. That gap is marked explicitly rather than guessed at. 2026 is an election year:
+    recorded. <strong>The City has still not published finalized minutes for any meeting after
+    roughly mid-2022.</strong> What it did release, in response to a public information request
+    answered in August 2026, are the <strong>unapproved draft minutes</strong> for the 2022&ndash;2025
+    meetings - and those drafts do record individual votes. Every post-2022 vote below is
+    therefore sourced to a draft, and is marked
+    <span class="vote-draft">(draft minutes)</span> to say so. Drafts are working documents that
+    have not been adopted by Council, and the released set contains demonstrable transcription
+    errors - most seriously, the September 3, 2024 draft scrambles Council members' first and
+    last names throughout its roll call. Surname-only vote tallies are used here in preference
+    to any full name appearing in those drafts. Where the record is still silent, that is marked
+    rather than guessed at. 2026 is an election year:
     Mayor Hughson is not seeking re-election as Mayor and is instead running against incumbent
     Alyssa Garza for Place 3; Amanda Rodriguez has announced a run for Mayor.
   </p>
+  <p class="section-intro">
+    Each card opens with a <strong>record strip</strong> - one square per contested project vote,
+    left to right in date order, so you can see at a glance which way a member leaned and whether
+    that changed over time. Hover any square for the item and the member's vote.
+    <strong>Only contested votes are scored.</strong> A unanimous vote says nothing about which
+    way someone leans, and several of the biggest decisions here were unanimous - including the
+    6&ndash;0 vote that expanded the project to roughly 2,017 acres. Counting those would flatten
+    every member toward &ldquo;supportive&rdquo; regardless of how they behaved when the Council
+    actually divided. Ten contested votes are scored, from January 2019 to September 2024. Votes
+    on a motion to <em>postpone</em> or to <em>deny</em> are inverted, because voting for one of
+    those was a vote against the project advancing. Where one question produced two votes at a
+    single meeting - August 5, 2024, where a motion to deny failed and the approval then carried -
+    it counts once. The strip is a summary of the itemised record below it, not a substitute for
+    it, and it inherits the draft-minutes caveat above for everything after 2022.
+  </p>
+  <p class="section-intro">
+    The badge is a plain description of the count beside it, on a fixed scale:
+    <strong>Consistent</strong> means every contested vote went one way;
+    <strong>Mostly</strong> means at least two thirds did;
+    <strong>Leans</strong> means a simple majority did, which on a five-vote record is a
+    3&ndash;2 margin and should be read as weak. No member currently sits at an even split.
+    Members with short tenures have small denominators, so a badge is never stronger evidence
+    than the number of squares behind it.
+  </p>
+  <div class="lean-key">
+    <span class="lean-key-item"><span class="chip chip-pro">+</span> voted the way that advanced the project</span>
+    <span class="lean-key-item"><span class="chip chip-con">&minus;</span> voted the way that slowed or blocked it</span>
+    <span class="lean-key-item"><span class="chip chip-na">&nbsp;</span> not on council for that vote</span>
+  </div>
+
+  <!-- ── ON THE BALLOT, NOV 3 2026 ── -->
+  <h2 class="section-label">On the Ballot &mdash; November 3, 2026</h2>
+  <p class="section-intro">
+    Three council seats and the Mayor&rsquo;s office are before voters. Where a candidate has a
+    Council voting record on this project, the same record strip used below is shown for them.
+    Where a candidate has none, the row says <strong>No record</strong> and shows an empty strip.
+    <strong>An empty strip means no evidence, not a moderate position</strong> &mdash; it should
+    never be read as a middle ground between the two coloured rows. Positions taken in campaign
+    statements, endorsements and contributions are a different and weaker class of evidence and
+    are deliberately not mixed in here. Candidate names, filings and withdrawals are from the
+    City&rsquo;s official list, retrieved Aug. 26, 2026
+    (<a href="https://www.sanmarcostx.gov/4117/Current-Candidates" target="_blank" rel="noopener">sanmarcostx.gov/4117</a>); a field can still change.
+  </p>
+  <div class="ballot">
+    <div class="race">
+      <div class="race-head"><span class="race-seat">Mayor</span><span class="race-note">Open seat &mdash; Hughson is not seeking re-election as Mayor</span></div>
+      <div class="race-body">
+        <div class="cand">
+          <div class="cand-name">Amanda Rodriguez <span class="cand-inc">incumbent</span></div>
+          <div class="cand-tag">Place 6 Council Member</div>
+          <div class="lean-head"><span class="lean-label lean-none">No contested votes</span><span class="lean-count">took office Dec. 2024, after every contested vote</span></div>
+          <div class="lean-strip"><span class="chip chip-na" title="Jan 15, 2019 - no record">&nbsp;</span><span class="chip chip-na" title="Jan 15, 2019 - no record">&nbsp;</span><span class="chip chip-na" title="Mar 19, 2019 - no record">&nbsp;</span><span class="chip chip-na" title="Mar 19, 2019 - no record">&nbsp;</span><span class="chip chip-na" title="Mar 19, 2019 - no record">&nbsp;</span><span class="chip chip-na" title="Feb 7, 2023 - no record">&nbsp;</span><span class="chip chip-na" title="Apr 18, 2023 - no record">&nbsp;</span><span class="chip chip-na" title="Apr 18, 2023 - no record">&nbsp;</span><span class="chip chip-na" title="Aug 5, 2024 - no record">&nbsp;</span><span class="chip chip-na" title="Sep 3, 2024 - no record">&nbsp;</span></div>
+          <div class="cand-note">One project vote on record: Res. 2025-212R, Nov. 5, 2025, terminating the Cotton Center Development Agreement and releasing ~1,786 ac from the City&rsquo;s ETJ &mdash; carried 7&ndash;0, so it says nothing about which way she leans.</div>
+        </div>
+        <div class="cand">
+          <div class="cand-name">Ryan Thomason</div>
+          <div class="cand-tag">Former Place 5, 2010&ndash;2015</div>
+          <div class="lean-head"><span class="lean-label lean-none">No record</span><span class="lean-count">left Council in Nov. 2015</span></div>
+          <div class="lean-strip"><span class="chip chip-na" title="Jan 15, 2019 - no record">&nbsp;</span><span class="chip chip-na" title="Jan 15, 2019 - no record">&nbsp;</span><span class="chip chip-na" title="Mar 19, 2019 - no record">&nbsp;</span><span class="chip chip-na" title="Mar 19, 2019 - no record">&nbsp;</span><span class="chip chip-na" title="Mar 19, 2019 - no record">&nbsp;</span><span class="chip chip-na" title="Feb 7, 2023 - no record">&nbsp;</span><span class="chip chip-na" title="Apr 18, 2023 - no record">&nbsp;</span><span class="chip chip-na" title="Apr 18, 2023 - no record">&nbsp;</span><span class="chip chip-na" title="Aug 5, 2024 - no record">&nbsp;</span><span class="chip chip-na" title="Sep 3, 2024 - no record">&nbsp;</span></div>
+          <div class="cand-note">Served entirely before the project reached Council &mdash; the first identified item is Oct. 2018. Mayor Hughson was named his campaign treasurer on his July 20, 2026 filing; an amendment on July 30, 2026 replaced her with Thomason himself, the same day Hughson filed for Place 3.</div>
+        </div>
+      </div>
+      <div class="race-foot">Bill Miller and Christopher &ldquo;Crispy&rdquo; Polanco both filed for Mayor and withdrew on July 27, 2026.</div>
+    </div>
+    <div class="race">
+      <div class="race-head"><span class="race-seat">Place 3</span><span class="race-note">Incumbent challenged &mdash; the only race where both candidates have a record</span></div>
+      <div class="race-body">
+        <div class="cand">
+          <div class="cand-name">Alyssa Garza <span class="cand-inc">incumbent</span></div>
+          <div class="cand-tag">elected 2020</div>
+          <div class="lean-head"><span class="lean-label lean-con">Consistent opposition</span><span class="lean-count">0 of 5 contested votes went the project&rsquo;s way</span></div>
+          <div class="lean-strip"><span class="chip chip-na" title="Jan 15, 2019 - no record">&nbsp;</span><span class="chip chip-na" title="Jan 15, 2019 - no record">&nbsp;</span><span class="chip chip-na" title="Mar 19, 2019 - no record">&nbsp;</span><span class="chip chip-na" title="Mar 19, 2019 - no record">&nbsp;</span><span class="chip chip-na" title="Mar 19, 2019 - no record">&nbsp;</span><span class="chip chip-con" title="Feb 7, 2023 - Res. 2023-26R annexation services, AN-22-20: voted against">&minus;</span><span class="chip chip-con" title="Apr 18, 2023 - Ord. 2023-32 annexation, 1st reading: voted against">&minus;</span><span class="chip chip-con" title="Apr 18, 2023 - Ord. 2023-33 zoning, motion to postpone: voted to postpone">&minus;</span><span class="chip chip-con" title="Aug 5, 2024 - Ord. 2024-27 Energy Parkway ROW, 1st reading: voted against">&minus;</span><span class="chip chip-con" title="Sep 3, 2024 - Ord. 2024-27, 2nd reading, adopted: voted against">&minus;</span></div>
+          <div class="cand-note">Voted against every contested project item she was present for, and moved the April 2023 postponement that stopped the Heavy Industrial rezoning.</div>
+        </div>
+        <div class="cand">
+          <div class="cand-name">Jane Garnette Hughson</div>
+          <div class="cand-tag">Mayor since 2018, seeking this seat</div>
+          <div class="lean-head"><span class="lean-label lean-pro">Consistent support</span><span class="lean-count">10 of 10 contested votes went the project&rsquo;s way</span></div>
+          <div class="lean-strip"><span class="chip chip-pro" title="Jan 15, 2019 - Ord. 2019-01 annexation, 1st reading: voted for">+</span><span class="chip chip-pro" title="Jan 15, 2019 - Ord. 2019-02 Heavy Industrial zoning, 1st reading: voted for">+</span><span class="chip chip-pro" title="Mar 19, 2019 - Res. 2019-49R Ch. 380 / ETJ Development Agreement: voted for">+</span><span class="chip chip-pro" title="Mar 19, 2019 - Ord. 2019-01 annexation, 2nd reading: voted for">+</span><span class="chip chip-pro" title="Mar 19, 2019 - Ord. 2019-02 Heavy Industrial zoning, 2nd reading: voted for">+</span><span class="chip chip-pro" title="Feb 7, 2023 - Res. 2023-26R annexation services, AN-22-20: voted for">+</span><span class="chip chip-pro" title="Apr 18, 2023 - Ord. 2023-32 annexation, 1st reading: voted for">+</span><span class="chip chip-pro" title="Apr 18, 2023 - Ord. 2023-33 zoning, motion to postpone: voted against postponing">+</span><span class="chip chip-pro" title="Aug 5, 2024 - Ord. 2024-27 Energy Parkway ROW, 1st reading: voted for">+</span><span class="chip chip-pro" title="Sep 3, 2024 - Ord. 2024-27, 2nd reading, adopted: voted for">+</span></div>
+          <div class="cand-note">The only person on any 2026 ballot with a full record on the project, and it is unbroken support across all ten contested votes from 2019 to 2024. Sat on the Council&rsquo;s SMART Terminal oversight committee.</div>
+        </div>
+      </div>
+    </div>
+    <div class="race">
+      <div class="race-head"><span class="race-seat">Place 4</span><span class="race-note">Incumbent challenged</span></div>
+      <div class="race-body">
+        <div class="cand">
+          <div class="cand-name">Shane Scott <span class="cand-inc">incumbent</span></div>
+          <div class="cand-tag">returned to Council 2020</div>
+          <div class="lean-head"><span class="lean-label lean-con-lean">Leans opposition</span><span class="lean-count">2 of 5 contested votes went the project&rsquo;s way</span></div>
+          <div class="lean-strip"><span class="chip chip-na" title="Jan 15, 2019 - no record">&nbsp;</span><span class="chip chip-na" title="Jan 15, 2019 - no record">&nbsp;</span><span class="chip chip-na" title="Mar 19, 2019 - no record">&nbsp;</span><span class="chip chip-na" title="Mar 19, 2019 - no record">&nbsp;</span><span class="chip chip-na" title="Mar 19, 2019 - no record">&nbsp;</span><span class="chip chip-pro" title="Feb 7, 2023 - Res. 2023-26R annexation services, AN-22-20: voted for">+</span><span class="chip chip-pro" title="Apr 18, 2023 - Ord. 2023-32 annexation, 1st reading: voted for">+</span><span class="chip chip-con" title="Apr 18, 2023 - Ord. 2023-33 zoning, motion to postpone: voted to postpone">&minus;</span><span class="chip chip-con" title="Aug 5, 2024 - Ord. 2024-27 Energy Parkway ROW, 1st reading: voted against">&minus;</span><span class="chip chip-con" title="Sep 3, 2024 - Ord. 2024-27, 2nd reading, adopted: voted against">&minus;</span></div>
+          <div class="cand-note">Split: backed the Feb. 2023 annexation services and the April 2023 annexation, then voted to postpone the rezoning and moved to deny the Energy Parkway annexation in Aug. 2024. A 3&ndash;2 margin is weak evidence.</div>
+        </div>
+        <div class="cand">
+          <div class="cand-name">Heather Hunter</div>
+          <div class="cand-tag">challenger</div>
+          <div class="lean-head"><span class="lean-label lean-none">No record</span><span class="lean-count">has not held the seat</span></div>
+          <div class="lean-strip"><span class="chip chip-na" title="Jan 15, 2019 - no record">&nbsp;</span><span class="chip chip-na" title="Jan 15, 2019 - no record">&nbsp;</span><span class="chip chip-na" title="Mar 19, 2019 - no record">&nbsp;</span><span class="chip chip-na" title="Mar 19, 2019 - no record">&nbsp;</span><span class="chip chip-na" title="Mar 19, 2019 - no record">&nbsp;</span><span class="chip chip-na" title="Feb 7, 2023 - no record">&nbsp;</span><span class="chip chip-na" title="Apr 18, 2023 - no record">&nbsp;</span><span class="chip chip-na" title="Apr 18, 2023 - no record">&nbsp;</span><span class="chip chip-na" title="Aug 5, 2024 - no record">&nbsp;</span><span class="chip chip-na" title="Sep 3, 2024 - no record">&nbsp;</span></div>
+          <div class="cand-note">No Council voting record on the project. Nothing further is documented here, because this page scores recorded votes only.</div>
+        </div>
+      </div>
+    </div>
+    <div class="race">
+      <div class="race-head"><span class="race-seat">Place 6</span><span class="race-note">Special election for the unexpired term to Nov. 2027</span></div>
+      <div class="race-foot">All three candidates who filed have withdrawn: Juan Miguel Arredondo (Aug. 18, 2026), and Bill Miller and former Council Member Lisa Prewitt (both Aug. 20, 2026). <strong>No active candidate is on file for this seat.</strong> The City&rsquo;s candidate page gives no reason for the vacancy behind the special election.</div>
+    </div>
+  </div>
+
   <div class="grid">
 
     <div class="card red full-width">
@@ -405,28 +617,44 @@ document.addEventListener('DOMContentLoaded', function () {
       <div class="person-title">Mayor</div>
       <div class="person-term">Elected Nov. 2018 &middot; re-elected 2020, 2022, 2024 &middot; NOT seeking re-election as Mayor in 2026 - running for Place 3 against incumbent Alyssa Garza</div>
       <div class="divider"></div>
+      <div class="lean">
+        <div class="lean-head"><span class="lean-label lean-pro">Consistent support</span><span class="lean-count">10 of 10 contested votes went the project&rsquo;s way</span></div>
+        <div class="lean-strip" role="img" aria-label="Jane Hughson: Consistent support"><span class="chip chip-pro" title="Jan 15, 2019 - Ord. 2019-01 annexation, 1st reading (6-1): voted for">+</span><span class="chip chip-pro" title="Jan 15, 2019 - Ord. 2019-02 Heavy Industrial zoning, 1st reading (5-2): voted for">+</span><span class="chip chip-pro" title="Mar 19, 2019 - Res. 2019-49R Ch. 380 / ETJ Development Agreement (6-1): voted for">+</span><span class="chip chip-pro" title="Mar 19, 2019 - Ord. 2019-01 annexation, 2nd reading (6-1): voted for">+</span><span class="chip chip-pro" title="Mar 19, 2019 - Ord. 2019-02 Heavy Industrial zoning, 2nd reading (6-1): voted for">+</span><span class="chip chip-pro" title="Feb 7, 2023 - Res. 2023-26R annexation services, AN-22-20 (6-1): voted for">+</span><span class="chip chip-pro" title="Apr 18, 2023 - Ord. 2023-32 annexation, 1st reading (4-3): voted for">+</span><span class="chip chip-pro" title="Apr 18, 2023 - Ord. 2023-33 zoning, motion to postpone to July 3 (4-3): voted against postponing">+</span><span class="chip chip-pro" title="Aug 5, 2024 - Ord. 2024-27 Energy Parkway ROW, 1st reading (4-3): voted for">+</span><span class="chip chip-pro" title="Sep 3, 2024 - Ord. 2024-27, 2nd reading, adopted (4-3): voted for">+</span></div>
+      </div>
       <p class="person-desc">
         Served on the Council's SMART Terminal oversight committee alongside Mark Gleason and
         Maxfield Baker. At the August 20, 2024 regular meeting, posed written questions about
         the alignment of the annexed Energy Parkway road, specifically whether it was
-        positioned to run behind existing residential properties. Serving as campaign treasurer
-        for 2026 mayoral candidate Ryan Thomason (see the 2026 Mayoral Candidates section below).
+        positioned to run behind existing residential properties. Was named campaign treasurer
+        on 2026 mayoral candidate Ryan Thomason's July 20, 2026 filing; his July 30, 2026
+        amendment replaced her with himself, the same day she filed for Place 3 (see the 2026
+        Mayoral Candidates section below).
       </p>
       <ul class="vote-list">
         <li>Jan. 15, 2019 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3831652&GUID=D86EE462-494D-45EC-B690-35FF013D7A5A" target="_blank" rel="noopener" class="legistar-link">Ord. 2019-01</a>, annexation (~934 ac), 1st reading: <span class="vote-for">FOR</span> (6&ndash;1)</li>
         <li>Jan. 15, 2019 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3831658&GUID=3109F41F-4E11-4277-BD0E-D3AF8271633E" target="_blank" rel="noopener" class="legistar-link">Ord. 2019-02</a>, Heavy Industrial zoning, 1st reading: <span class="vote-for">FOR</span> (5&ndash;2)</li>
-        <li>Jan.&ndash;Feb. 2019 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3890166&GUID=966F08A7-5FE7-466A-94D8-0AEC013184FD" target="_blank" rel="noopener" class="legistar-link">Ord. 2019-01(b)</a>/<a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3890167&GUID=8A5D80F5-C1CE-4C38-86A6-E063BDA1DF27" target="_blank" rel="noopener" class="legistar-link">2019-02(b)</a> 2nd readings (734.6 ac) &amp; <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3890165&GUID=CA0F3C4A-0CEF-426F-8084-0288EDEC918C" target="_blank" rel="noopener" class="legistar-link">Res. 2019-49R</a> (Ch. 380/ETJ Dev. Agreement): <span class="vote-unrecorded">individual vote not recorded</span></li>
-        <li>Oct. 17, 2019 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=4210424&GUID=72F8EA74-3318-42EE-8B9E-2DACCE22E18D" target="_blank" rel="noopener" class="legistar-link">Res. 2019-225R</a> (Katerra Ch. 380 incentive): <span class="vote-unrecorded">individual vote not recorded</span></li>
+        <li>Mar. 19, 2019 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3890165&GUID=CA0F3C4A-0CEF-426F-8084-0288EDEC918C" target="_blank" rel="noopener" class="legistar-link">Res. 2019-49R</a> (Ch. 380 Economic Incentive &amp; ETJ Development Agreement): <span class="vote-for">FOR</span> (6&ndash;1)</li>
+        <li>Mar. 19, 2019 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3890166&GUID=966F08A7-5FE7-466A-94D8-0AEC013184FD" target="_blank" rel="noopener" class="legistar-link">Ord. 2019-01</a>, annexation, 2nd reading (734.6 ac): <span class="vote-for">FOR</span> (6&ndash;1)</li>
+        <li>Mar. 19, 2019 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3890167&GUID=8A5D80F5-C1CE-4C38-86A6-E063BDA1DF27" target="_blank" rel="noopener" class="legistar-link">Ord. 2019-02</a>, HI zoning, 2nd reading (734.6 ac): <span class="vote-for">FOR</span> (6&ndash;1)</li>
+        <li>Nov. 6, 2019 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=4210424&GUID=72F8EA74-3318-42EE-8B9E-2DACCE22E18D" target="_blank" rel="noopener" class="legistar-link">Res. 2019-225R</a>, moving the Katerra Ch. 380 incentive off the SH 80 site to the Whisper PDD and rescinding Res. 2018-184R: <span class="vote-for">FOR</span> (7&ndash;0, unanimous)</li>
         <li>Jan. 21, 2020 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=4304812&GUID=2B3C36CA-D881-4A9D-B8BC-A9013DACC8BF" target="_blank" rel="noopener" class="legistar-link">Res. 2020-17R</a> (Martindale ETJ agreement): <span class="vote-for">FOR postponement</span> (7&ndash;0, unanimous)</li>
-        <li>Jul. 2022 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5741776&GUID=3211A692-6361-424E-884C-A6E2E2A97071" target="_blank" rel="noopener" class="legistar-link">PDA-22-07(a)</a>, authorize DA renegotiation: <span class="vote-unrecorded">individual vote not recorded</span></li>
-        <li>Dec. 14, 2022 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5949657&GUID=DDEF5211-39AE-4FB5-BC8E-0035C2300965" target="_blank" rel="noopener" class="legistar-link">ID22-874</a>/<a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5961707&GUID=9B92DA09-F1BA-43A5-9CC5-806F4D994E92" target="_blank" rel="noopener" class="legistar-link">ID22-901</a>, Cotton Center DA negotiation &amp; committee appointment: <span class="vote-unrecorded">individual vote not recorded</span></li>
-        <li>Jan. 2023 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5992444&GUID=6531CEE6-087C-4281-969F-7D41FC50252E" target="_blank" rel="noopener" class="legistar-link">Res. 2023-20R</a>, First Amended &amp; Restated Development Agreement (~2,017 ac): <span class="vote-unrecorded">individual vote not recorded</span></li>
-        <li>Apr. 9, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6695341&GUID=73B2B156-AB4A-48A2-80A3-F7581EF8FEBA" target="_blank" rel="noopener" class="legistar-link">Res. 2024-89R</a>, AN-24-03 annexation service agreement: <span class="vote-unrecorded">individual vote not recorded</span></li>
-        <li>Aug. 5, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6808693&GUID=5FD09DB4-46E3-4B94-AE48-DFDCBD595B59" target="_blank" rel="noopener" class="legistar-link">Ord. 2024-27</a>, 1st reading (Energy Parkway ROW): <span class="vote-unrecorded">individual vote not recorded</span></li>
-        <li>Sept. 3, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6844511&GUID=0A70EDD0-B654-4098-85CB-C93D40B6FA2E" target="_blank" rel="noopener" class="legistar-link">Ord. 2024-27, 2nd reading</a>: <span class="vote-unrecorded">individual vote not recorded</span> - secondary sources conflict on the aggregate tally (San Marxist: 6&ndash;1; San Marcos Record coverage suggests 4&ndash;3)</li>
-        <li>Sept. 17, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6877042&GUID=87F0799A-ABC5-437D-B175-3FEA7C122556" target="_blank" rel="noopener" class="legistar-link">Res. 2024-195R</a>, Cotton Center partial release ($50K): <span class="vote-unrecorded">individual vote not recorded</span></li>
-        <li>Nov. 6, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6808693&GUID=5FD09DB4-46E3-4B94-AE48-DFDCBD595B59" target="_blank" rel="noopener" class="legistar-link">Ord. 2024-27</a>, final adoption (7.553 ac annexed): <span class="vote-unrecorded">individual vote not recorded</span></li>
-        <li>Nov. 5, 2025 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=7719892&GUID=7B7D5E74-2EF6-44C2-B91B-ED57D449CD0E" target="_blank" rel="noopener" class="legistar-link">Res. 2025-212R</a>, Cotton Center full termination ($280K): <span class="vote-unrecorded">individual vote not recorded</span></li>
+        <li>Feb. 4, 2020 - Res. 2020-17R(b), Martindale ETJ boundary agreement <strong>adopted</strong> after the January postponement: <span class="vote-unrecorded">individual vote not recorded</span> - no minutes released for this meeting</li>
+        <li>Aug. 2, 2022 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5741776&GUID=3211A692-6361-424E-884C-A6E2E2A97071" target="_blank" rel="noopener" class="legistar-link">PDA-22-07(a)</a>, authorizing DA renegotiation with Franklin Mountain (~1,987 ac): <span class="vote-for">FOR</span> (6&ndash;0, Prather absent) <span class="vote-draft">(draft minutes)</span> - seconded the motion, and was named to the three-member oversight committee</li>
+        <li>Nov. 14, 2022 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5949657&GUID=DDEF5211-39AE-4FB5-BC8E-0035C2300965" target="_blank" rel="noopener" class="legistar-link">ID22-874</a>, appointment to the SMART Terminal oversight committee: <span class="vote-unrecorded">individual vote not recorded</span> - no minutes released. The Dec. 6, 2022 draft separately records the committee seat going to Prather on a 7&ndash;0 vote; whether that was a second appointment or the same action carried over is unresolved</li>
+        <li>Dec. 14, 2022 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5949657&GUID=DDEF5211-39AE-4FB5-BC8E-0035C2300965" target="_blank" rel="noopener" class="legistar-link">ID22-901</a>, removing 660 ac from the Cotton Center DA for transfer into the SMART Terminal DA: <span class="vote-for">FOR</span> (7&ndash;0) <span class="vote-draft">(draft minutes)</span></li>
+        <li>Jan. 17, 2023 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5992444&GUID=6531CEE6-087C-4281-969F-7D41FC50252E" target="_blank" rel="noopener" class="legistar-link">Res. 2023-20R</a>, First Amended &amp; Restated Development Agreement (~2,017 ac): <span class="vote-for">FOR</span> (6&ndash;0, Scott absent) <span class="vote-draft">(draft minutes)</span> - no speaker opposed at the hearing except one adjacent property owner</li>
+        <li>Feb. 7, 2023 - Res. 2023-26R, owner-requested annexation services, AN-22-20 (619.755 ac, Caldwell County): <span class="vote-for">FOR</span> (6&ndash;1) <span class="vote-draft">(draft minutes)</span></li>
+        <li>Apr. 18, 2023 - Ord. 2023-32, SMART Terminal annexation, 1st reading: <span class="vote-for">FOR</span> (4&ndash;3) <span class="vote-draft">(draft minutes)</span> - seconded the motion</li>
+        <li>Apr. 18, 2023 - Ord. 2023-33, Heavy Industrial zoning (ZC-23-01), motion to postpone the 1st reading to July 3: <span class="vote-against">AGAINST postponement</span> (4&ndash;3) <span class="vote-draft">(draft minutes)</span></li>
+        <li>May 2, 2023 - initiating review of the SMART Terminal DA and authorizing renegotiation on the community-requested amendments: <span class="vote-for">FOR</span> (7&ndash;0, unanimous) <span class="vote-draft">(draft minutes)</span></li>
+        <li>Jul. 2, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6695341&GUID=73B2B156-AB4A-48A2-80A3-F7581EF8FEBA" target="_blank" rel="noopener" class="legistar-link">Res. 2024-89R</a>, AN-24-03 annexation service agreement (postponed from May 21): <span class="vote-for">FOR</span> (7&ndash;0, unanimous) <span class="vote-draft">(draft minutes)</span></li>
+        <li>Aug. 5, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6808693&GUID=5FD09DB4-46E3-4B94-AE48-DFDCBD595B59" target="_blank" rel="noopener" class="legistar-link">Ord. 2024-27</a>, 1st reading (Energy Parkway ROW): <span class="vote-for">FOR</span> (4&ndash;3) <span class="vote-draft">(draft minutes)</span> - also voted against the preceding motion to deny, which failed 3&ndash;4</li>
+        <li>Aug. 20, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6808693&GUID=5FD09DB4-46E3-4B94-AE48-DFDCBD595B59" target="_blank" rel="noopener" class="legistar-link">Ord. 2024-27</a>, 2nd reading postponed to September: <span class="vote-for">FOR postponement</span> (7&ndash;0, unanimous) <span class="vote-draft">(draft minutes)</span></li>
+        <li>Sept. 3, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6844511&GUID=0A70EDD0-B654-4098-85CB-C93D40B6FA2E" target="_blank" rel="noopener" class="legistar-link">Ord. 2024-27, 2nd reading</a>, adopted: <span class="vote-for">FOR</span> (4&ndash;3) <span class="vote-draft">(draft minutes; FOR side derived by subtraction - the draft names only the three no votes)</span> - this settles the conflict between secondary sources, which had reported 6&ndash;1 and 4&ndash;3</li>
+        <li>Sept. 17, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6877042&GUID=87F0799A-ABC5-437D-B175-3FEA7C122556" target="_blank" rel="noopener" class="legistar-link">Res. 2024-195R</a>, Cotton Center partial release ($50K): <span class="vote-unrecorded">individual vote not recorded</span> - no minutes released for this meeting</li>
+        <li>Oct. 15, 2024 - Ord. 2019-01 Exhibit A survey correction, reducing the 2019 annexation from ~734.6 ac to ~733.6 ac, 1st reading: carried 5&ndash;0 with two members absent, <span class="vote-unrecorded">individual votes not itemized</span> <span class="vote-draft">(draft minutes)</span></li>
+        <li>Nov. 6, 2024 - Ord. 2019-01 Exhibit A survey correction, 2nd reading: the draft records consent items 1&ndash;11 approved on a single motion, 6&ndash;0, but <strong>never enumerates which item was which</strong>, so the correction cannot be tied to a numbered line. <span class="vote-unrecorded">individual votes not itemized</span> <span class="vote-draft">(draft minutes)</span></li>
+        <li>Nov. 5, 2025 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=7719892&GUID=7B7D5E74-2EF6-44C2-B91B-ED57D449CD0E" target="_blank" rel="noopener" class="legistar-link">Res. 2025-212R</a>, Cotton Center DA termination and release of ~1,786 ac from the City's ETJ: <span class="vote-for">FOR</span> (7&ndash;0, unanimous) <span class="vote-draft">(draft minutes)</span></li>
       </ul>
     </div>
 
@@ -436,14 +664,27 @@ document.addEventListener('DOMContentLoaded', function () {
       <div class="person-title">Council Member</div>
       <div class="person-term">Elected Nov. 2022 (defeated incumbent Maxfield Baker) &middot; re-elected 2025, term through 2027</div>
       <div class="divider"></div>
+      <div class="lean">
+        <div class="lean-head"><span class="lean-label lean-pro-mild">Mostly support</span><span class="lean-count">4 of 5 contested votes went the project&rsquo;s way</span></div>
+        <div class="lean-strip" role="img" aria-label="Matthew Mendoza: Mostly support"><span class="chip chip-na" title="Jan 15, 2019 - not on council">&nbsp;</span><span class="chip chip-na" title="Jan 15, 2019 - not on council">&nbsp;</span><span class="chip chip-na" title="Mar 19, 2019 - not on council">&nbsp;</span><span class="chip chip-na" title="Mar 19, 2019 - not on council">&nbsp;</span><span class="chip chip-na" title="Mar 19, 2019 - not on council">&nbsp;</span><span class="chip chip-pro" title="Feb 7, 2023 - Res. 2023-26R annexation services, AN-22-20 (6-1): voted for">+</span><span class="chip chip-pro" title="Apr 18, 2023 - Ord. 2023-32 annexation, 1st reading (4-3): voted for">+</span><span class="chip chip-pro" title="Apr 18, 2023 - Ord. 2023-33 zoning, motion to postpone to July 3 (4-3): voted against postponing">+</span><span class="chip chip-pro" title="Aug 5, 2024 - Ord. 2024-27 Energy Parkway ROW, 1st reading (4-3): voted for">+</span><span class="chip chip-con" title="Sep 3, 2024 - Ord. 2024-27, 2nd reading, adopted (4-3): voted against">&minus;</span></div>
+      </div>
       <ul class="vote-list">
-        <li>Jul. 2022 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5741776&GUID=3211A692-6361-424E-884C-A6E2E2A97071" target="_blank" rel="noopener" class="legistar-link">PDA-22-07(a)</a>: <span class="vote-unrecorded">individual vote not recorded</span> (took office Dec. 2022 - may postdate this action)</li>
-        <li>Dec. 14, 2022 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5949657&GUID=DDEF5211-39AE-4FB5-BC8E-0035C2300965" target="_blank" rel="noopener" class="legistar-link">ID22-874</a>/<a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5961707&GUID=9B92DA09-F1BA-43A5-9CC5-806F4D994E92" target="_blank" rel="noopener" class="legistar-link">ID22-901</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
-        <li>Jan. 2023 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5992444&GUID=6531CEE6-087C-4281-969F-7D41FC50252E" target="_blank" rel="noopener" class="legistar-link">Res. 2023-20R</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
-        <li>Apr. 9, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6695341&GUID=73B2B156-AB4A-48A2-80A3-F7581EF8FEBA" target="_blank" rel="noopener" class="legistar-link">Res. 2024-89R</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
-        <li>Aug. 5 &ndash; Nov. 6, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6808693&GUID=5FD09DB4-46E3-4B94-AE48-DFDCBD595B59" target="_blank" rel="noopener" class="legistar-link">Ord. 2024-27</a>, all readings &amp; adoption: <span class="vote-unrecorded">individual vote not recorded</span></li>
-        <li>Sept. 17, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6877042&GUID=87F0799A-ABC5-437D-B175-3FEA7C122556" target="_blank" rel="noopener" class="legistar-link">Res. 2024-195R</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
-        <li>Nov. 5, 2025 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=7719892&GUID=7B7D5E74-2EF6-44C2-B91B-ED57D449CD0E" target="_blank" rel="noopener" class="legistar-link">Res. 2025-212R</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
+        <li>Aug. 2, 2022 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5741776&GUID=3211A692-6361-424E-884C-A6E2E2A97071" target="_blank" rel="noopener" class="legistar-link">PDA-22-07(a)</a>: <span class="vote-unrecorded">not on council yet</span> (took office Dec. 2022 - predecessor Maxfield Baker held the seat)</li>
+        <li>Nov. 14, 2022 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5949657&GUID=DDEF5211-39AE-4FB5-BC8E-0035C2300965" target="_blank" rel="noopener" class="legistar-link">ID22-874</a>, SMART Terminal oversight committee appointment: <span class="vote-unrecorded">not on council yet</span> (sworn in Dec. 2022)</li>
+        <li>Dec. 14, 2022 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5949657&GUID=DDEF5211-39AE-4FB5-BC8E-0035C2300965" target="_blank" rel="noopener" class="legistar-link">ID22-901</a>, removing 660 ac from the Cotton Center DA: <span class="vote-for">FOR</span> (7&ndash;0) <span class="vote-draft">(draft minutes)</span> - seconded the motion, and asked that the SMART Terminal DA's conditions be applied to the 660 ac being transferred in</li>
+        <li>Jan. 17, 2023 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5992444&GUID=6531CEE6-087C-4281-969F-7D41FC50252E" target="_blank" rel="noopener" class="legistar-link">Res. 2023-20R</a>: <span class="vote-for">FOR</span> (6&ndash;0, Scott absent) <span class="vote-draft">(draft minutes)</span> - seconded the motion</li>
+        <li>Feb. 7, 2023 - Res. 2023-26R, AN-22-20 annexation services: <span class="vote-for">FOR</span> (6&ndash;1) <span class="vote-draft">(draft minutes)</span></li>
+        <li>Apr. 18, 2023 - Ord. 2023-32, annexation, 1st reading: <span class="vote-for">FOR</span> (4&ndash;3) <span class="vote-draft">(draft minutes)</span></li>
+        <li>Apr. 18, 2023 - Ord. 2023-33, HI zoning, motion to postpone: <span class="vote-against">AGAINST postponement</span> (4&ndash;3) <span class="vote-draft">(draft minutes)</span></li>
+        <li>May 2, 2023 - DA review and renegotiation: <span class="vote-for">FOR</span> (7&ndash;0) <span class="vote-draft">(draft minutes)</span></li>
+        <li>Jul. 2, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6695341&GUID=73B2B156-AB4A-48A2-80A3-F7581EF8FEBA" target="_blank" rel="noopener" class="legistar-link">Res. 2024-89R</a>: <span class="vote-for">FOR</span> (7&ndash;0) <span class="vote-draft">(draft minutes)</span> - seconded the motion</li>
+        <li>Aug. 5, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6808693&GUID=5FD09DB4-46E3-4B94-AE48-DFDCBD595B59" target="_blank" rel="noopener" class="legistar-link">Ord. 2024-27</a>, 1st reading: <span class="vote-for">FOR</span> (4&ndash;3) <span class="vote-draft">(draft minutes)</span> - spoke in support, saying the road would relieve traffic on FM 1984</li>
+        <li>Aug. 20, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6808693&GUID=5FD09DB4-46E3-4B94-AE48-DFDCBD595B59" target="_blank" rel="noopener" class="legistar-link">Ord. 2024-27</a>, 2nd reading postponed: <span class="vote-for">FOR postponement</span> (7&ndash;0) <span class="vote-draft">(draft minutes)</span> - seconded the motion</li>
+        <li>Sept. 3, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6844511&GUID=0A70EDD0-B654-4098-85CB-C93D40B6FA2E" target="_blank" rel="noopener" class="legistar-link">Ord. 2024-27, 2nd reading</a>: <span class="vote-against">AGAINST</span> (4&ndash;3) <span class="vote-draft">(draft minutes)</span> - <strong>reversed his August 5 support.</strong> An initial vote failed while he was out of chambers; the item was re-voted on his return and passed without him</li>
+        <li>Sept. 17, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6877042&GUID=87F0799A-ABC5-437D-B175-3FEA7C122556" target="_blank" rel="noopener" class="legistar-link">Res. 2024-195R</a>: <span class="vote-unrecorded">individual vote not recorded</span> - no minutes released for this meeting</li>
+        <li>Oct. 15, 2024 - Ord. 2019-01 Exhibit A survey correction (734.6 &rarr; 733.6 ac), 1st reading: moved the motion; carried 5&ndash;0, <span class="vote-unrecorded">individual votes not itemized</span> <span class="vote-draft">(draft minutes)</span></li>
+        <li>Nov. 6, 2024 - Ord. 2019-01 Exhibit A survey correction, 2nd reading: the draft records consent items 1&ndash;11 approved on a single motion, 6&ndash;0, but <strong>never enumerates which item was which</strong>, so the correction cannot be tied to a numbered line. <span class="vote-unrecorded">individual votes not itemized</span> <span class="vote-draft">(draft minutes)</span></li>
+        <li>Nov. 5, 2025 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=7719892&GUID=7B7D5E74-2EF6-44C2-B91B-ED57D449CD0E" target="_blank" rel="noopener" class="legistar-link">Res. 2025-212R</a>: <span class="vote-for">FOR</span> (7&ndash;0) <span class="vote-draft">(draft minutes)</span></li>
       </ul>
     </div>
 
@@ -453,6 +694,10 @@ document.addEventListener('DOMContentLoaded', function () {
       <div class="person-title">Council Member</div>
       <div class="person-term">Elected Dec. 2025 runoff (defeated incumbent Saul Gonzales) &middot; term 2025&ndash;2028</div>
       <div class="divider"></div>
+      <div class="lean">
+        <div class="lean-head"><span class="lean-label lean-none">No contested votes</span><span class="lean-count">Took office Dec. 2025, after every identified project vote.</span></div>
+        <div class="lean-strip" role="img" aria-label="no contested votes on record"><span class="chip chip-na" title="Jan 15, 2019 - not on council">&nbsp;</span><span class="chip chip-na" title="Jan 15, 2019 - not on council">&nbsp;</span><span class="chip chip-na" title="Mar 19, 2019 - not on council">&nbsp;</span><span class="chip chip-na" title="Mar 19, 2019 - not on council">&nbsp;</span><span class="chip chip-na" title="Mar 19, 2019 - not on council">&nbsp;</span><span class="chip chip-na" title="Feb 7, 2023 - not on council">&nbsp;</span><span class="chip chip-na" title="Apr 18, 2023 - not on council">&nbsp;</span><span class="chip chip-na" title="Apr 18, 2023 - not on council">&nbsp;</span><span class="chip chip-na" title="Aug 5, 2024 - not on council">&nbsp;</span><span class="chip chip-na" title="Sep 3, 2024 - not on council">&nbsp;</span></div>
+      </div>
       <p class="person-desc">
         First term. Took office after every project-related item identified to date, so has no
         vote on record for the project. Predecessor Saul Gonzales held Place 2 through the
@@ -466,14 +711,28 @@ document.addEventListener('DOMContentLoaded', function () {
       <div class="person-title">Council Member</div>
       <div class="person-term">Elected Nov. 2020 &middot; re-elected unopposed 2023, term through 2026 &middot; running for re-election in 2026 against Mayor Jane Hughson</div>
       <div class="divider"></div>
+      <div class="lean">
+        <div class="lean-head"><span class="lean-label lean-con">Consistent opposition</span><span class="lean-count">0 of 5 contested votes went the project&rsquo;s way</span></div>
+        <div class="lean-strip" role="img" aria-label="Alyssa Garza: Consistent opposition"><span class="chip chip-na" title="Jan 15, 2019 - not on council">&nbsp;</span><span class="chip chip-na" title="Jan 15, 2019 - not on council">&nbsp;</span><span class="chip chip-na" title="Mar 19, 2019 - not on council">&nbsp;</span><span class="chip chip-na" title="Mar 19, 2019 - not on council">&nbsp;</span><span class="chip chip-na" title="Mar 19, 2019 - not on council">&nbsp;</span><span class="chip chip-con" title="Feb 7, 2023 - Res. 2023-26R annexation services, AN-22-20 (6-1): voted against">&minus;</span><span class="chip chip-con" title="Apr 18, 2023 - Ord. 2023-32 annexation, 1st reading (4-3): voted against">&minus;</span><span class="chip chip-con" title="Apr 18, 2023 - Ord. 2023-33 zoning, motion to postpone to July 3 (4-3): voted to postpone">&minus;</span><span class="chip chip-con" title="Aug 5, 2024 - Ord. 2024-27 Energy Parkway ROW, 1st reading (4-3): voted against">&minus;</span><span class="chip chip-con" title="Sep 3, 2024 - Ord. 2024-27, 2nd reading, adopted (4-3): voted against">&minus;</span></div>
+      </div>
       <ul class="vote-list">
-        <li>Jul. 2022 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5741776&GUID=3211A692-6361-424E-884C-A6E2E2A97071" target="_blank" rel="noopener" class="legistar-link">PDA-22-07(a)</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
-        <li>Dec. 14, 2022 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5949657&GUID=DDEF5211-39AE-4FB5-BC8E-0035C2300965" target="_blank" rel="noopener" class="legistar-link">ID22-874</a>/<a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5961707&GUID=9B92DA09-F1BA-43A5-9CC5-806F4D994E92" target="_blank" rel="noopener" class="legistar-link">ID22-901</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
-        <li>Jan. 2023 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5992444&GUID=6531CEE6-087C-4281-969F-7D41FC50252E" target="_blank" rel="noopener" class="legistar-link">Res. 2023-20R</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
-        <li>Apr. 9, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6695341&GUID=73B2B156-AB4A-48A2-80A3-F7581EF8FEBA" target="_blank" rel="noopener" class="legistar-link">Res. 2024-89R</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
-        <li>Aug. 5 &ndash; Nov. 6, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6808693&GUID=5FD09DB4-46E3-4B94-AE48-DFDCBD595B59" target="_blank" rel="noopener" class="legistar-link">Ord. 2024-27</a>, all readings &amp; adoption: <span class="vote-unrecorded">individual vote not recorded</span></li>
-        <li>Sept. 17, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6877042&GUID=87F0799A-ABC5-437D-B175-3FEA7C122556" target="_blank" rel="noopener" class="legistar-link">Res. 2024-195R</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
-        <li>Nov. 5, 2025 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=7719892&GUID=7B7D5E74-2EF6-44C2-B91B-ED57D449CD0E" target="_blank" rel="noopener" class="legistar-link">Res. 2025-212R</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
+        <li>Aug. 2, 2022 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5741776&GUID=3211A692-6361-424E-884C-A6E2E2A97071" target="_blank" rel="noopener" class="legistar-link">PDA-22-07(a)</a>, authorizing DA renegotiation with Franklin Mountain (~1,987 ac): <span class="vote-for">FOR</span> (6&ndash;0, Prather absent) <span class="vote-draft">(draft minutes)</span></li>
+        <li>Nov. 14, 2022 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5949657&GUID=DDEF5211-39AE-4FB5-BC8E-0035C2300965" target="_blank" rel="noopener" class="legistar-link">ID22-874</a>, appointment to the SMART Terminal oversight committee: <span class="vote-unrecorded">individual vote not recorded</span> - no minutes released. The Dec. 6, 2022 draft separately records the committee seat going to Prather on a 7&ndash;0 vote; whether that was a second appointment or the same action carried over is unresolved</li>
+        <li>Dec. 14, 2022 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5949657&GUID=DDEF5211-39AE-4FB5-BC8E-0035C2300965" target="_blank" rel="noopener" class="legistar-link">ID22-901</a>, removing 660 ac from the Cotton Center DA: <span class="vote-for">FOR</span> (7&ndash;0) <span class="vote-draft">(draft minutes)</span></li>
+        <li>Jan. 17, 2023 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5992444&GUID=6531CEE6-087C-4281-969F-7D41FC50252E" target="_blank" rel="noopener" class="legistar-link">Res. 2023-20R</a>, First Amended &amp; Restated DA (~2,017 ac): <span class="vote-for">FOR</span> (6&ndash;0, Scott absent) <span class="vote-draft">(draft minutes)</span></li>
+        <li>Feb. 7, 2023 - Res. 2023-26R, AN-22-20 annexation services (619.755 ac): <span class="vote-against">AGAINST</span> (6&ndash;1, <strong>sole dissent</strong>) <span class="vote-draft">(draft minutes)</span> - pulled the item from consent over constituent concerns and noted she had voted no on it before</li>
+        <li>Apr. 18, 2023 - Ord. 2023-32, SMART Terminal annexation, 1st reading: <span class="vote-against">AGAINST</span> (4&ndash;3) <span class="vote-draft">(draft minutes)</span></li>
+        <li>Apr. 18, 2023 - Ord. 2023-33, HI zoning, motion to postpone the 1st reading to July 3: <span class="vote-for">FOR postponement</span> (4&ndash;3) <span class="vote-draft">(draft minutes)</span> - <strong>moved the postponement</strong>, which stopped the Heavy Industrial rezoning that night</li>
+        <li>May 2, 2023 - initiating DA review and renegotiation: <span class="vote-for">FOR</span> (7&ndash;0) <span class="vote-draft">(draft minutes)</span></li>
+        <li>May 21, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6695341&GUID=73B2B156-AB4A-48A2-80A3-F7581EF8FEBA" target="_blank" rel="noopener" class="legistar-link">Res. 2024-89R</a> postponed to July 2: <span class="vote-absent">ABSENT</span> <span class="vote-draft">(draft minutes)</span></li>
+        <li>Jul. 2, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6695341&GUID=73B2B156-AB4A-48A2-80A3-F7581EF8FEBA" target="_blank" rel="noopener" class="legistar-link">Res. 2024-89R</a>, AN-24-03 service agreement: <span class="vote-for">FOR</span> (7&ndash;0) <span class="vote-draft">(draft minutes)</span></li>
+        <li>Aug. 5, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6808693&GUID=5FD09DB4-46E3-4B94-AE48-DFDCBD595B59" target="_blank" rel="noopener" class="legistar-link">Ord. 2024-27</a>, 1st reading (Energy Parkway ROW): <span class="vote-against">AGAINST</span> (4&ndash;3) <span class="vote-draft">(draft minutes)</span> - seconded the motion to deny, which failed 3&ndash;4</li>
+        <li>Aug. 20, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6808693&GUID=5FD09DB4-46E3-4B94-AE48-DFDCBD595B59" target="_blank" rel="noopener" class="legistar-link">Ord. 2024-27</a>, 2nd reading postponed: <span class="vote-for">FOR postponement</span> (7&ndash;0) <span class="vote-draft">(draft minutes)</span></li>
+        <li>Sept. 3, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6844511&GUID=0A70EDD0-B654-4098-85CB-C93D40B6FA2E" target="_blank" rel="noopener" class="legistar-link">Ord. 2024-27, 2nd reading</a>, adopted: <span class="vote-against">AGAINST</span> (4&ndash;3) <span class="vote-draft">(draft minutes)</span></li>
+        <li>Sept. 17, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6877042&GUID=87F0799A-ABC5-437D-B175-3FEA7C122556" target="_blank" rel="noopener" class="legistar-link">Res. 2024-195R</a>, Cotton Center partial release ($50K): <span class="vote-unrecorded">individual vote not recorded</span> - no minutes released for this meeting</li>
+        <li>Oct. 15, 2024 - Ord. 2019-01 Exhibit A survey correction (734.6 &rarr; 733.6 ac), 1st reading: carried 5&ndash;0 with two members absent, <span class="vote-unrecorded">individual votes not itemized</span> <span class="vote-draft">(draft minutes)</span></li>
+        <li>Nov. 6, 2024 - Ord. 2019-01 Exhibit A survey correction, 2nd reading: the draft records consent items 1&ndash;11 approved on a single motion, 6&ndash;0, but <strong>never enumerates which item was which</strong>, so the correction cannot be tied to a numbered line. <span class="vote-unrecorded">individual votes not itemized</span> <span class="vote-draft">(draft minutes)</span></li>
+        <li>Nov. 5, 2025 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=7719892&GUID=7B7D5E74-2EF6-44C2-B91B-ED57D449CD0E" target="_blank" rel="noopener" class="legistar-link">Res. 2025-212R</a>, Cotton Center DA termination: <span class="vote-for">FOR</span> (7&ndash;0) <span class="vote-draft">(draft minutes)</span></li>
       </ul>
     </div>
 
@@ -483,14 +742,28 @@ document.addEventListener('DOMContentLoaded', function () {
       <div class="person-title">Council Member</div>
       <div class="person-term">Previously Place 2, 2010&ndash;2015 &middot; returned as Place 4, Nov. 2020 (defeated incumbent Mark Rockeymoore) &middot; re-elected 2023, term through 2026</div>
       <div class="divider"></div>
+      <div class="lean">
+        <div class="lean-head"><span class="lean-label lean-con-lean">Leans opposition</span><span class="lean-count">2 of 5 contested votes went the project&rsquo;s way</span></div>
+        <div class="lean-strip" role="img" aria-label="Shane Scott: Split"><span class="chip chip-na" title="Jan 15, 2019 - not on council">&nbsp;</span><span class="chip chip-na" title="Jan 15, 2019 - not on council">&nbsp;</span><span class="chip chip-na" title="Mar 19, 2019 - not on council">&nbsp;</span><span class="chip chip-na" title="Mar 19, 2019 - not on council">&nbsp;</span><span class="chip chip-na" title="Mar 19, 2019 - not on council">&nbsp;</span><span class="chip chip-pro" title="Feb 7, 2023 - Res. 2023-26R annexation services, AN-22-20 (6-1): voted for">+</span><span class="chip chip-pro" title="Apr 18, 2023 - Ord. 2023-32 annexation, 1st reading (4-3): voted for">+</span><span class="chip chip-con" title="Apr 18, 2023 - Ord. 2023-33 zoning, motion to postpone to July 3 (4-3): voted to postpone">&minus;</span><span class="chip chip-con" title="Aug 5, 2024 - Ord. 2024-27 Energy Parkway ROW, 1st reading (4-3): voted against">&minus;</span><span class="chip chip-con" title="Sep 3, 2024 - Ord. 2024-27, 2nd reading, adopted (4-3): voted against">&minus;</span></div>
+      </div>
       <ul class="vote-list">
-        <li>Jul. 2022 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5741776&GUID=3211A692-6361-424E-884C-A6E2E2A97071" target="_blank" rel="noopener" class="legistar-link">PDA-22-07(a)</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
-        <li>Dec. 14, 2022 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5949657&GUID=DDEF5211-39AE-4FB5-BC8E-0035C2300965" target="_blank" rel="noopener" class="legistar-link">ID22-874</a>/<a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5961707&GUID=9B92DA09-F1BA-43A5-9CC5-806F4D994E92" target="_blank" rel="noopener" class="legistar-link">ID22-901</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
-        <li>Jan. 2023 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5992444&GUID=6531CEE6-087C-4281-969F-7D41FC50252E" target="_blank" rel="noopener" class="legistar-link">Res. 2023-20R</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
-        <li>Apr. 9, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6695341&GUID=73B2B156-AB4A-48A2-80A3-F7581EF8FEBA" target="_blank" rel="noopener" class="legistar-link">Res. 2024-89R</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
-        <li>Aug. 5 &ndash; Nov. 6, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6808693&GUID=5FD09DB4-46E3-4B94-AE48-DFDCBD595B59" target="_blank" rel="noopener" class="legistar-link">Ord. 2024-27</a>, all readings &amp; adoption: <span class="vote-unrecorded">individual vote not recorded</span></li>
-        <li>Sept. 17, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6877042&GUID=87F0799A-ABC5-437D-B175-3FEA7C122556" target="_blank" rel="noopener" class="legistar-link">Res. 2024-195R</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
-        <li>Nov. 5, 2025 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=7719892&GUID=7B7D5E74-2EF6-44C2-B91B-ED57D449CD0E" target="_blank" rel="noopener" class="legistar-link">Res. 2025-212R</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
+        <li>Aug. 2, 2022 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5741776&GUID=3211A692-6361-424E-884C-A6E2E2A97071" target="_blank" rel="noopener" class="legistar-link">PDA-22-07(a)</a>, authorizing DA renegotiation with Franklin Mountain (~1,987 ac): <span class="vote-for">FOR</span> (6&ndash;0, Prather absent) <span class="vote-draft">(draft minutes)</span> - <strong>moved the motion</strong></li>
+        <li>Nov. 14, 2022 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5949657&GUID=DDEF5211-39AE-4FB5-BC8E-0035C2300965" target="_blank" rel="noopener" class="legistar-link">ID22-874</a>, appointment to the SMART Terminal oversight committee: <span class="vote-unrecorded">individual vote not recorded</span> - no minutes released. The Dec. 6, 2022 draft separately records the committee seat going to Prather on a 7&ndash;0 vote; whether that was a second appointment or the same action carried over is unresolved</li>
+        <li>Dec. 14, 2022 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5949657&GUID=DDEF5211-39AE-4FB5-BC8E-0035C2300965" target="_blank" rel="noopener" class="legistar-link">ID22-901</a>, removing 660 ac from the Cotton Center DA: <span class="vote-for">FOR</span> (7&ndash;0) <span class="vote-draft">(draft minutes)</span></li>
+        <li>Jan. 17, 2023 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5992444&GUID=6531CEE6-087C-4281-969F-7D41FC50252E" target="_blank" rel="noopener" class="legistar-link">Res. 2023-20R</a>, First Amended &amp; Restated DA (~2,017 ac): <span class="vote-absent">ABSENT</span> <span class="vote-draft">(draft minutes)</span> - the only member not present for the vote expanding the project to ~2,017 ac</li>
+        <li>Feb. 7, 2023 - Res. 2023-26R, AN-22-20 annexation services: <span class="vote-for">FOR</span> (6&ndash;1) <span class="vote-draft">(draft minutes)</span> - seconded the motion</li>
+        <li>Apr. 18, 2023 - Ord. 2023-32, SMART Terminal annexation, 1st reading: <span class="vote-for">FOR</span> (4&ndash;3) <span class="vote-draft">(draft minutes)</span></li>
+        <li>Apr. 18, 2023 - Ord. 2023-33, HI zoning, motion to postpone: <span class="vote-for">FOR postponement</span> (4&ndash;3) <span class="vote-draft">(draft minutes)</span> - <strong>split his vote</strong>, backing annexation but not the rezoning timetable</li>
+        <li>May 2, 2023 - initiating DA review and renegotiation: <span class="vote-for">FOR</span> (7&ndash;0) <span class="vote-draft">(draft minutes)</span> - seconded the motion</li>
+        <li>May 21, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6695341&GUID=73B2B156-AB4A-48A2-80A3-F7581EF8FEBA" target="_blank" rel="noopener" class="legistar-link">Res. 2024-89R</a> postponed to July 2: <span class="vote-for">FOR</span> postponement (6&ndash;0) <span class="vote-draft">(draft minutes)</span> - moved the motion</li>
+        <li>Jul. 2, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6695341&GUID=73B2B156-AB4A-48A2-80A3-F7581EF8FEBA" target="_blank" rel="noopener" class="legistar-link">Res. 2024-89R</a>, AN-24-03 service agreement: <span class="vote-for">FOR</span> (7&ndash;0) <span class="vote-draft">(draft minutes)</span></li>
+        <li>Aug. 5, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6808693&GUID=5FD09DB4-46E3-4B94-AE48-DFDCBD595B59" target="_blank" rel="noopener" class="legistar-link">Ord. 2024-27</a>, 1st reading (Energy Parkway ROW): <span class="vote-against">AGAINST</span> (4&ndash;3) <span class="vote-draft">(draft minutes)</span> - <strong>moved to deny</strong> the ordinance; that motion failed 3&ndash;4</li>
+        <li>Aug. 20, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6808693&GUID=5FD09DB4-46E3-4B94-AE48-DFDCBD595B59" target="_blank" rel="noopener" class="legistar-link">Ord. 2024-27</a>, 2nd reading postponed: <span class="vote-for">FOR postponement</span> (7&ndash;0) <span class="vote-draft">(draft minutes)</span></li>
+        <li>Sept. 3, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6844511&GUID=0A70EDD0-B654-4098-85CB-C93D40B6FA2E" target="_blank" rel="noopener" class="legistar-link">Ord. 2024-27, 2nd reading</a>, adopted: <span class="vote-against">AGAINST</span> (4&ndash;3) <span class="vote-draft">(draft minutes)</span></li>
+        <li>Sept. 17, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6877042&GUID=87F0799A-ABC5-437D-B175-3FEA7C122556" target="_blank" rel="noopener" class="legistar-link">Res. 2024-195R</a>: <span class="vote-unrecorded">individual vote not recorded</span> - no minutes released for this meeting</li>
+        <li>Oct. 15, 2024 - Ord. 2019-01 Exhibit A survey correction (734.6 &rarr; 733.6 ac), 1st reading: carried 5&ndash;0 with two members absent, <span class="vote-unrecorded">individual votes not itemized</span> <span class="vote-draft">(draft minutes)</span></li>
+        <li>Nov. 6, 2024 - Ord. 2019-01 Exhibit A survey correction, 2nd reading: the draft records consent items 1&ndash;11 approved on a single motion, 6&ndash;0, but <strong>never enumerates which item was which</strong>, so the correction cannot be tied to a numbered line. <span class="vote-unrecorded">individual votes not itemized</span> <span class="vote-draft">(draft minutes)</span></li>
+        <li>Nov. 5, 2025 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=7719892&GUID=7B7D5E74-2EF6-44C2-B91B-ED57D449CD0E" target="_blank" rel="noopener" class="legistar-link">Res. 2025-212R</a>: <span class="vote-for">FOR</span> (7&ndash;0) <span class="vote-draft">(draft minutes)</span></li>
       </ul>
     </div>
 
@@ -500,9 +773,13 @@ document.addEventListener('DOMContentLoaded', function () {
       <div class="person-title">Council Member</div>
       <div class="person-term">Elected Dec. 2024 runoff by 12 votes over Roland Saucedo &middot; sworn in Dec. 23, 2024 &middot; term through 2027</div>
       <div class="divider"></div>
+      <div class="lean">
+        <div class="lean-head"><span class="lean-label lean-none">No contested votes</span><span class="lean-count">Sworn in Dec. 2024, after every contested vote. His one project vote, on Nov. 5, 2025, was unanimous.</span></div>
+        <div class="lean-strip" role="img" aria-label="no contested votes on record"><span class="chip chip-na" title="Jan 15, 2019 - not on council">&nbsp;</span><span class="chip chip-na" title="Jan 15, 2019 - not on council">&nbsp;</span><span class="chip chip-na" title="Mar 19, 2019 - not on council">&nbsp;</span><span class="chip chip-na" title="Mar 19, 2019 - not on council">&nbsp;</span><span class="chip chip-na" title="Mar 19, 2019 - not on council">&nbsp;</span><span class="chip chip-na" title="Feb 7, 2023 - not on council">&nbsp;</span><span class="chip chip-na" title="Apr 18, 2023 - not on council">&nbsp;</span><span class="chip chip-na" title="Apr 18, 2023 - not on council">&nbsp;</span><span class="chip chip-na" title="Aug 5, 2024 - not on council">&nbsp;</span><span class="chip chip-na" title="Sep 3, 2024 - not on council">&nbsp;</span></div>
+      </div>
       <ul class="vote-list">
-        <li>Nov. 6, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6808693&GUID=5FD09DB4-46E3-4B94-AE48-DFDCBD595B59" target="_blank" rel="noopener" class="legistar-link">Ord. 2024-27</a>, final adoption: <span class="vote-unrecorded">not on council yet</span> (sworn in Dec. 23, 2024 - predecessor Mark Gleason held the seat)</li>
-        <li>Nov. 5, 2025 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=7719892&GUID=7B7D5E74-2EF6-44C2-B91B-ED57D449CD0E" target="_blank" rel="noopener" class="legistar-link">Res. 2025-212R</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
+        <li>Sept. 3, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6844511&GUID=0A70EDD0-B654-4098-85CB-C93D40B6FA2E" target="_blank" rel="noopener" class="legistar-link">Ord. 2024-27, 2nd reading</a>, final adoption of the Energy Parkway ROW annexation: <span class="vote-unrecorded">not on council yet</span> (sworn in Dec. 23, 2024 - predecessor Mark Gleason held the seat)</li>
+        <li>Nov. 5, 2025 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=7719892&GUID=7B7D5E74-2EF6-44C2-B91B-ED57D449CD0E" target="_blank" rel="noopener" class="legistar-link">Res. 2025-212R</a>, Cotton Center DA termination and ETJ release (~1,786 ac): <span class="vote-for">FOR</span> (7&ndash;0) <span class="vote-draft">(draft minutes)</span> - <strong>moved the motion</strong></li>
       </ul>
     </div>
 
@@ -512,9 +789,13 @@ document.addEventListener('DOMContentLoaded', function () {
       <div class="person-title">Council Member</div>
       <div class="person-term">Elected Nov. 5, 2024 &middot; term through 2027 &middot; announced run for Mayor in 2026</div>
       <div class="divider"></div>
+      <div class="lean">
+        <div class="lean-head"><span class="lean-label lean-none">No contested votes</span><span class="lean-count">Took office Dec. 2024, after every contested vote. Her one project vote, on Nov. 5, 2025, was unanimous.</span></div>
+        <div class="lean-strip" role="img" aria-label="no contested votes on record"><span class="chip chip-na" title="Jan 15, 2019 - not on council">&nbsp;</span><span class="chip chip-na" title="Jan 15, 2019 - not on council">&nbsp;</span><span class="chip chip-na" title="Mar 19, 2019 - not on council">&nbsp;</span><span class="chip chip-na" title="Mar 19, 2019 - not on council">&nbsp;</span><span class="chip chip-na" title="Mar 19, 2019 - not on council">&nbsp;</span><span class="chip chip-na" title="Feb 7, 2023 - not on council">&nbsp;</span><span class="chip chip-na" title="Apr 18, 2023 - not on council">&nbsp;</span><span class="chip chip-na" title="Apr 18, 2023 - not on council">&nbsp;</span><span class="chip chip-na" title="Aug 5, 2024 - not on council">&nbsp;</span><span class="chip chip-na" title="Sep 3, 2024 - not on council">&nbsp;</span></div>
+      </div>
       <ul class="vote-list">
-        <li>Nov. 6, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6808693&GUID=5FD09DB4-46E3-4B94-AE48-DFDCBD595B59" target="_blank" rel="noopener" class="legistar-link">Ord. 2024-27</a>, final adoption: <span class="vote-unrecorded">not yet sworn in</span> (predecessor Jude Prather held the seat)</li>
-        <li>Nov. 5, 2025 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=7719892&GUID=7B7D5E74-2EF6-44C2-B91B-ED57D449CD0E" target="_blank" rel="noopener" class="legistar-link">Res. 2025-212R</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
+        <li>Sept. 3, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6844511&GUID=0A70EDD0-B654-4098-85CB-C93D40B6FA2E" target="_blank" rel="noopener" class="legistar-link">Ord. 2024-27, 2nd reading</a>, final adoption of the Energy Parkway ROW annexation: <span class="vote-unrecorded">not yet sworn in</span> (elected Nov. 5, 2024 - predecessor Jude Prather held the seat)</li>
+        <li>Nov. 5, 2025 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=7719892&GUID=7B7D5E74-2EF6-44C2-B91B-ED57D449CD0E" target="_blank" rel="noopener" class="legistar-link">Res. 2025-212R</a>, Cotton Center DA termination and ETJ release (~1,786 ac): <span class="vote-for">FOR</span> (7&ndash;0) <span class="vote-draft">(draft minutes)</span> - seconded the motion</li>
       </ul>
     </div>
 
@@ -525,47 +806,21 @@ document.addEventListener('DOMContentLoaded', function () {
   <p class="section-intro">
     These members were on council for some portion of the project's 2019&ndash;2025 legislative
     history but are no longer serving. Vote attribution follows the same sourcing standard as
-    current members above.
+    current members above. Ordered by <strong>most recently in office first</strong>, so the
+    list runs backwards from Saul Gonzales, who left in December 2025 after serving the entire
+    span, to Lisa Prewitt, who left in November 2019.
   </p>
   <div class="grid">
-
-    <div class="card red">
-      <div class="person-name">Lisa Prewitt</div>
-      <div class="person-org">City of San Marcos - Place 1</div>
-      <div class="person-title">Former Council Member</div>
-      <div class="person-term">Two terms: 2013&ndash;16, 2016&ndash;19 &middot; did not seek re-election, succeeded by Maxfield Baker</div>
-      <div class="divider"></div>
-      <ul class="vote-list">
-        <li>Jan. 15, 2019 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3831652&GUID=D86EE462-494D-45EC-B690-35FF013D7A5A" target="_blank" rel="noopener" class="legistar-link">Ord. 2019-01</a>, annexation, 1st reading: <span class="vote-for">FOR</span> (6&ndash;1)</li>
-        <li>Jan. 15, 2019 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3831658&GUID=3109F41F-4E11-4277-BD0E-D3AF8271633E" target="_blank" rel="noopener" class="legistar-link">Ord. 2019-02</a>, HI zoning, 1st reading: <span class="vote-for">FOR</span> (5&ndash;2)</li>
-      </ul>
-    </div>
-
-    <div class="card red">
-      <div class="person-name">Maxfield Baker</div>
-      <div class="person-org">City of San Marcos - Place 1</div>
-      <div class="person-title">Former Council Member</div>
-      <div class="person-term">2019&ndash;2022 &middot; defeated by Matthew Mendoza, Nov. 2022</div>
-      <div class="divider"></div>
-      <p class="person-desc">
-        Before joining Council, Baker sat on the Planning &amp; Zoning Commission and cast the
-        lone dissenting vote against the SMART Terminal zoning reconsideration (ZC-18-21a,
-        Jan. 8, 2019, carried 7&ndash;1). Later served on the Council's SMART Terminal oversight
-        committee with Mayor Hughson and Mark Gleason; when Baker left Council in Dec. 2022,
-        Jude Prather took over his seat on that committee.
-      </p>
-      <ul class="vote-list">
-        <li>Jan. 21, 2020 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=4304812&GUID=2B3C36CA-D881-4A9D-B8BC-A9013DACC8BF" target="_blank" rel="noopener" class="legistar-link">Res. 2020-17R</a> (Martindale ETJ): <span class="vote-for">FOR postponement</span> (7&ndash;0, unanimous)</li>
-        <li>Jul. 2022 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5741776&GUID=3211A692-6361-424E-884C-A6E2E2A97071" target="_blank" rel="noopener" class="legistar-link">PDA-22-07(a)</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
-      </ul>
-    </div>
-
     <div class="card red">
       <div class="person-name">Saul Gonzales</div>
       <div class="person-org">City of San Marcos - Place 2</div>
       <div class="person-title">Former Council Member</div>
       <div class="person-term">On council through the entire 2019&ndash;2025 project span &middot; defeated by Josh Paselk, Dec. 2025 runoff</div>
       <div class="divider"></div>
+      <div class="lean">
+        <div class="lean-head"><span class="lean-label lean-pro-mild">Mostly support</span><span class="lean-count">7 of 10 contested votes went the project&rsquo;s way</span></div>
+        <div class="lean-strip" role="img" aria-label="Saul Gonzales: Mostly support"><span class="chip chip-pro" title="Jan 15, 2019 - Ord. 2019-01 annexation, 1st reading (6-1): voted for">+</span><span class="chip chip-pro" title="Jan 15, 2019 - Ord. 2019-02 Heavy Industrial zoning, 1st reading (5-2): voted for">+</span><span class="chip chip-pro" title="Mar 19, 2019 - Res. 2019-49R Ch. 380 / ETJ Development Agreement (6-1): voted for">+</span><span class="chip chip-pro" title="Mar 19, 2019 - Ord. 2019-01 annexation, 2nd reading (6-1): voted for">+</span><span class="chip chip-pro" title="Mar 19, 2019 - Ord. 2019-02 Heavy Industrial zoning, 2nd reading (6-1): voted for">+</span><span class="chip chip-pro" title="Feb 7, 2023 - Res. 2023-26R annexation services, AN-22-20 (6-1): voted for">+</span><span class="chip chip-con" title="Apr 18, 2023 - Ord. 2023-32 annexation, 1st reading (4-3): voted against">&minus;</span><span class="chip chip-con" title="Apr 18, 2023 - Ord. 2023-33 zoning, motion to postpone to July 3 (4-3): voted to postpone">&minus;</span><span class="chip chip-con" title="Aug 5, 2024 - Ord. 2024-27 Energy Parkway ROW, 1st reading (4-3): voted against">&minus;</span><span class="chip chip-pro" title="Sep 3, 2024 - Ord. 2024-27, 2nd reading, adopted (4-3): voted for">+</span></div>
+      </div>
       <p class="person-desc">
         Longest-serving member during the project's legislative history - in office for every
         identified vote from the original 2019 annexation through the 2025 Cotton Center DA
@@ -574,51 +829,28 @@ document.addEventListener('DOMContentLoaded', function () {
       <ul class="vote-list">
         <li>Jan. 15, 2019 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3831652&GUID=D86EE462-494D-45EC-B690-35FF013D7A5A" target="_blank" rel="noopener" class="legistar-link">Ord. 2019-01</a>, annexation, 1st reading: <span class="vote-for">FOR</span> (6&ndash;1)</li>
         <li>Jan. 15, 2019 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3831658&GUID=3109F41F-4E11-4277-BD0E-D3AF8271633E" target="_blank" rel="noopener" class="legistar-link">Ord. 2019-02</a>, HI zoning, 1st reading: <span class="vote-for">FOR</span> (5&ndash;2)</li>
+        <li>Mar. 19, 2019 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3890165&GUID=CA0F3C4A-0CEF-426F-8084-0288EDEC918C" target="_blank" rel="noopener" class="legistar-link">Res. 2019-49R</a> (Ch. 380 Economic Incentive &amp; ETJ Development Agreement): <span class="vote-for">FOR</span> (6&ndash;1)</li>
+        <li>Mar. 19, 2019 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3890166&GUID=966F08A7-5FE7-466A-94D8-0AEC013184FD" target="_blank" rel="noopener" class="legistar-link">Ord. 2019-01</a>, annexation, 2nd reading (734.6 ac): <span class="vote-for">FOR</span> (6&ndash;1)</li>
+        <li>Mar. 19, 2019 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3890167&GUID=8A5D80F5-C1CE-4C38-86A6-E063BDA1DF27" target="_blank" rel="noopener" class="legistar-link">Ord. 2019-02</a>, HI zoning, 2nd reading (734.6 ac): <span class="vote-for">FOR</span> (6&ndash;1)</li>
+        <li>Nov. 6, 2019 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=4210424&GUID=72F8EA74-3318-42EE-8B9E-2DACCE22E18D" target="_blank" rel="noopener" class="legistar-link">Res. 2019-225R</a>, moving the Katerra Ch. 380 incentive off the SH 80 site to the Whisper PDD and rescinding Res. 2018-184R: <span class="vote-for">FOR</span> (7&ndash;0, unanimous)</li>
         <li>Jan. 21, 2020 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=4304812&GUID=2B3C36CA-D881-4A9D-B8BC-A9013DACC8BF" target="_blank" rel="noopener" class="legistar-link">Res. 2020-17R</a>: <span class="vote-for">FOR postponement</span> (7&ndash;0, unanimous)</li>
-        <li>Jul. 2022 &ndash; Nov. 2025 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5741776&GUID=3211A692-6361-424E-884C-A6E2E2A97071" target="_blank" rel="noopener" class="legistar-link">PDA-22-07(a)</a>, <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5949657&GUID=DDEF5211-39AE-4FB5-BC8E-0035C2300965" target="_blank" rel="noopener" class="legistar-link">ID22-874</a>/<a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5961707&GUID=9B92DA09-F1BA-43A5-9CC5-806F4D994E92" target="_blank" rel="noopener" class="legistar-link">ID22-901</a>, <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5992444&GUID=6531CEE6-087C-4281-969F-7D41FC50252E" target="_blank" rel="noopener" class="legistar-link">Res. 2023-20R</a>, <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6695341&GUID=73B2B156-AB4A-48A2-80A3-F7581EF8FEBA" target="_blank" rel="noopener" class="legistar-link">Res. 2024-89R</a>, <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6808693&GUID=5FD09DB4-46E3-4B94-AE48-DFDCBD595B59" target="_blank" rel="noopener" class="legistar-link">Ord. 2024-27</a> (all readings), <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6877042&GUID=87F0799A-ABC5-437D-B175-3FEA7C122556" target="_blank" rel="noopener" class="legistar-link">Res. 2024-195R</a>, <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=7719892&GUID=7B7D5E74-2EF6-44C2-B91B-ED57D449CD0E" target="_blank" rel="noopener" class="legistar-link">Res. 2025-212R</a>: <span class="vote-unrecorded">individual vote not recorded for any item</span></li>
-      </ul>
-    </div>
-
-    <div class="card red">
-      <div class="person-name">Ed Mihalkanin</div>
-      <div class="person-org">City of San Marcos - Place 3</div>
-      <div class="person-title">Former Council Member</div>
-      <div class="person-term">Three non-consecutive terms: 1996&ndash;2000, 2001&ndash;06, 2016&ndash;20 &middot; defeated by Alyssa Garza, Nov. 2020</div>
-      <div class="divider"></div>
-      <ul class="vote-list">
-        <li>Jan. 15, 2019 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3831652&GUID=D86EE462-494D-45EC-B690-35FF013D7A5A" target="_blank" rel="noopener" class="legistar-link">Ord. 2019-01</a>, annexation, 1st reading: <span class="vote-for">FOR</span> (6&ndash;1)</li>
-        <li>Jan. 15, 2019 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3831658&GUID=3109F41F-4E11-4277-BD0E-D3AF8271633E" target="_blank" rel="noopener" class="legistar-link">Ord. 2019-02</a>, HI zoning, 1st reading: <span class="vote-for">FOR</span> (5&ndash;2)</li>
-        <li>Jan. 21, 2020 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=4304812&GUID=2B3C36CA-D881-4A9D-B8BC-A9013DACC8BF" target="_blank" rel="noopener" class="legistar-link">Res. 2020-17R</a>: <span class="vote-for">FOR postponement</span> (7&ndash;0, unanimous) - moved the initial motion to table pending executive session</li>
-      </ul>
-    </div>
-
-    <div class="card red">
-      <div class="person-name">Mark Rockeymoore</div>
-      <div class="person-org">City of San Marcos - Place 4</div>
-      <div class="person-title">Former Council Member</div>
-      <div class="person-term">2018&ndash;2020 &middot; defeated by Shane Scott, Nov. 2020</div>
-      <div class="divider"></div>
-      <ul class="vote-list">
-        <li>Jan. 15, 2019 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3831652&GUID=D86EE462-494D-45EC-B690-35FF013D7A5A" target="_blank" rel="noopener" class="legistar-link">Ord. 2019-01</a>, annexation, 1st reading: <span class="vote-for">FOR</span> (6&ndash;1)</li>
-        <li>Jan. 15, 2019 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3831658&GUID=3109F41F-4E11-4277-BD0E-D3AF8271633E" target="_blank" rel="noopener" class="legistar-link">Ord. 2019-02</a>, HI zoning, 1st reading: <span class="vote-against">AGAINST</span> (5&ndash;2)</li>
-        <li>Jan. 21, 2020 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=4304812&GUID=2B3C36CA-D881-4A9D-B8BC-A9013DACC8BF" target="_blank" rel="noopener" class="legistar-link">Res. 2020-17R</a>: <span class="vote-for">FOR postponement</span> (7&ndash;0, unanimous) - seconded the motion to remove from the table after executive session</li>
-      </ul>
-    </div>
-
-    <div class="card red">
-      <div class="person-name">Joca Marquez</div>
-      <div class="person-org">City of San Marcos - Place 5</div>
-      <div class="person-title">Former Council Member</div>
-      <div class="person-term">2018&ndash;2020 &middot; defeated/succeeded by Mark Gleason, Dec. 2020</div>
-      <div class="divider"></div>
-      <p class="person-desc">
-        The sole dissenting vote on both first-reading items in January 2019 - the project's
-        earliest recorded opposition on Council.
-      </p>
-      <ul class="vote-list">
-        <li>Jan. 15, 2019 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3831652&GUID=D86EE462-494D-45EC-B690-35FF013D7A5A" target="_blank" rel="noopener" class="legistar-link">Ord. 2019-01</a>, annexation, 1st reading: <span class="vote-against">AGAINST</span> (6&ndash;1, sole dissent)</li>
-        <li>Jan. 15, 2019 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3831658&GUID=3109F41F-4E11-4277-BD0E-D3AF8271633E" target="_blank" rel="noopener" class="legistar-link">Ord. 2019-02</a>, HI zoning, 1st reading: <span class="vote-against">AGAINST</span> (5&ndash;2)</li>
-        <li>Jan. 21, 2020 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=4304812&GUID=2B3C36CA-D881-4A9D-B8BC-A9013DACC8BF" target="_blank" rel="noopener" class="legistar-link">Res. 2020-17R</a>: <span class="vote-for">FOR postponement</span> (7&ndash;0, unanimous)</li>
+        <li>Feb. 4, 2020 - Res. 2020-17R(b), Martindale ETJ boundary agreement <strong>adopted</strong> after the January postponement: <span class="vote-unrecorded">individual vote not recorded</span> - no minutes released for this meeting</li>
+        <li>Aug. 2, 2022 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5741776&GUID=3211A692-6361-424E-884C-A6E2E2A97071" target="_blank" rel="noopener" class="legistar-link">PDA-22-07(a)</a>, authorizing DA renegotiation with Franklin Mountain (~1,987 ac): <span class="vote-for">FOR</span> (6&ndash;0, Prather absent) <span class="vote-draft">(draft minutes)</span></li>
+        <li>Nov. 14, 2022 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5949657&GUID=DDEF5211-39AE-4FB5-BC8E-0035C2300965" target="_blank" rel="noopener" class="legistar-link">ID22-874</a>, appointment to the SMART Terminal oversight committee: <span class="vote-unrecorded">individual vote not recorded</span> - no minutes released. The Dec. 6, 2022 draft separately records the committee seat going to Prather on a 7&ndash;0 vote; whether that was a second appointment or the same action carried over is unresolved</li>
+        <li>Dec. 14, 2022 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5949657&GUID=DDEF5211-39AE-4FB5-BC8E-0035C2300965" target="_blank" rel="noopener" class="legistar-link">ID22-901</a>, removing 660 ac from the Cotton Center DA: <span class="vote-for">FOR</span> (7&ndash;0) <span class="vote-draft">(draft minutes)</span></li>
+        <li>Jan. 17, 2023 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5992444&GUID=6531CEE6-087C-4281-969F-7D41FC50252E" target="_blank" rel="noopener" class="legistar-link">Res. 2023-20R</a>, First Amended &amp; Restated DA (~2,017 ac): <span class="vote-for">FOR</span> (6&ndash;0, Scott absent) <span class="vote-draft">(draft minutes)</span> - seconded the motion</li>
+        <li>Feb. 7, 2023 - Res. 2023-26R, AN-22-20 annexation services: <span class="vote-for">FOR</span> (6&ndash;1) <span class="vote-draft">(draft minutes)</span></li>
+        <li>Apr. 18, 2023 - Ord. 2023-32, SMART Terminal annexation, 1st reading: <span class="vote-against">AGAINST</span> (4&ndash;3) <span class="vote-draft">(draft minutes)</span> - pressed for a developer contribution to fire station costs and raised the impact on shallow-well residents</li>
+        <li>Apr. 18, 2023 - Ord. 2023-33, HI zoning, motion to postpone: <span class="vote-for">FOR postponement</span> (4&ndash;3) <span class="vote-draft">(draft minutes)</span> - seconded the postponement</li>
+        <li>May 2, 2023 - initiating DA review and renegotiation: <span class="vote-for">FOR</span> (7&ndash;0) <span class="vote-draft">(draft minutes)</span> - asked staff to seek a developer contribution toward fire station construction, beyond the donated land</li>
+        <li>Jul. 2, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6695341&GUID=73B2B156-AB4A-48A2-80A3-F7581EF8FEBA" target="_blank" rel="noopener" class="legistar-link">Res. 2024-89R</a>, AN-24-03 service agreement: <span class="vote-for">FOR</span> (7&ndash;0) <span class="vote-draft">(draft minutes)</span></li>
+        <li>Aug. 5, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6808693&GUID=5FD09DB4-46E3-4B94-AE48-DFDCBD595B59" target="_blank" rel="noopener" class="legistar-link">Ord. 2024-27</a>, 1st reading (Energy Parkway ROW): <span class="vote-against">AGAINST</span> (4&ndash;3) <span class="vote-draft">(draft minutes)</span> - voted for the failed motion to deny, citing congestion on FM 1984</li>
+        <li>Aug. 20, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6808693&GUID=5FD09DB4-46E3-4B94-AE48-DFDCBD595B59" target="_blank" rel="noopener" class="legistar-link">Ord. 2024-27</a>, 2nd reading postponed: <span class="vote-for">FOR postponement</span> (7&ndash;0) <span class="vote-draft">(draft minutes)</span></li>
+        <li>Sept. 3, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6844511&GUID=0A70EDD0-B654-4098-85CB-C93D40B6FA2E" target="_blank" rel="noopener" class="legistar-link">Ord. 2024-27, 2nd reading</a>, adopted: <span class="vote-for">FOR</span> (4&ndash;3) <span class="vote-draft">(draft minutes)</span> - <strong>reversed his August 5 opposition</strong>; vote derived by subtraction, the draft names only the three no votes</li>
+        <li>Sept. 17, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6877042&GUID=87F0799A-ABC5-437D-B175-3FEA7C122556" target="_blank" rel="noopener" class="legistar-link">Res. 2024-195R</a>: <span class="vote-unrecorded">individual vote not recorded</span> - no minutes released for this meeting</li>
+        <li>Oct. 15, 2024 - Ord. 2019-01 Exhibit A survey correction (734.6 &rarr; 733.6 ac), 1st reading: carried 5&ndash;0 with two members absent, <span class="vote-unrecorded">individual votes not itemized</span> <span class="vote-draft">(draft minutes)</span></li>
+        <li>Nov. 6, 2024 - Ord. 2019-01 Exhibit A survey correction, 2nd reading: the draft records consent items 1&ndash;11 approved on a single motion, 6&ndash;0, but <strong>never enumerates which item was which</strong>, so the correction cannot be tied to a numbered line. <span class="vote-unrecorded">individual votes not itemized</span> <span class="vote-draft">(draft minutes)</span></li>
+        <li>Nov. 5, 2025 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=7719892&GUID=7B7D5E74-2EF6-44C2-B91B-ED57D449CD0E" target="_blank" rel="noopener" class="legistar-link">Res. 2025-212R</a>, Cotton Center DA termination: <span class="vote-for">FOR</span> (7&ndash;0) <span class="vote-draft">(draft minutes)</span> - his last recorded project vote</li>
       </ul>
     </div>
 
@@ -628,6 +860,10 @@ document.addEventListener('DOMContentLoaded', function () {
       <div class="person-title">Former Council Member</div>
       <div class="person-term">Elected Dec. 2020 runoff &middot; re-elected 2021 &middot; did not seek re-election in 2024 &middot; succeeded by Lorenzo Gonzalez</div>
       <div class="divider"></div>
+      <div class="lean">
+        <div class="lean-head"><span class="lean-label lean-pro">Consistent support</span><span class="lean-count">5 of 5 contested votes went the project&rsquo;s way</span></div>
+        <div class="lean-strip" role="img" aria-label="Mark Gleason: Consistent support"><span class="chip chip-na" title="Jan 15, 2019 - not on council">&nbsp;</span><span class="chip chip-na" title="Jan 15, 2019 - not on council">&nbsp;</span><span class="chip chip-na" title="Mar 19, 2019 - not on council">&nbsp;</span><span class="chip chip-na" title="Mar 19, 2019 - not on council">&nbsp;</span><span class="chip chip-na" title="Mar 19, 2019 - not on council">&nbsp;</span><span class="chip chip-pro" title="Feb 7, 2023 - Res. 2023-26R annexation services, AN-22-20 (6-1): voted for">+</span><span class="chip chip-pro" title="Apr 18, 2023 - Ord. 2023-32 annexation, 1st reading (4-3): voted for">+</span><span class="chip chip-pro" title="Apr 18, 2023 - Ord. 2023-33 zoning, motion to postpone to July 3 (4-3): voted against postponing">+</span><span class="chip chip-pro" title="Aug 5, 2024 - Ord. 2024-27 Energy Parkway ROW, 1st reading (4-3): voted for">+</span><span class="chip chip-pro" title="Sep 3, 2024 - Ord. 2024-27, 2nd reading, adopted (4-3): voted for">+</span></div>
+      </div>
       <p class="person-desc">
         Previously vice-chair of the Planning &amp; Zoning Commission, where he voted on the
         original SMART Terminal zoning case (ZC-18-21) before joining Council: against the
@@ -636,25 +872,21 @@ document.addEventListener('DOMContentLoaded', function () {
         Mayor Hughson and Maxfield Baker.
       </p>
       <ul class="vote-list">
-        <li>Jul. 2022 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5741776&GUID=3211A692-6361-424E-884C-A6E2E2A97071" target="_blank" rel="noopener" class="legistar-link">PDA-22-07(a)</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
-        <li>Dec. 14, 2022 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5949657&GUID=DDEF5211-39AE-4FB5-BC8E-0035C2300965" target="_blank" rel="noopener" class="legistar-link">ID22-874</a>/<a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5961707&GUID=9B92DA09-F1BA-43A5-9CC5-806F4D994E92" target="_blank" rel="noopener" class="legistar-link">ID22-901</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
-        <li>Jan. 2023 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5992444&GUID=6531CEE6-087C-4281-969F-7D41FC50252E" target="_blank" rel="noopener" class="legistar-link">Res. 2023-20R</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
-        <li>Apr. 9, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6695341&GUID=73B2B156-AB4A-48A2-80A3-F7581EF8FEBA" target="_blank" rel="noopener" class="legistar-link">Res. 2024-89R</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
-        <li>Aug. 5 &ndash; Nov. 6, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6808693&GUID=5FD09DB4-46E3-4B94-AE48-DFDCBD595B59" target="_blank" rel="noopener" class="legistar-link">Ord. 2024-27</a>, all readings &amp; final adoption: <span class="vote-unrecorded">individual vote not recorded</span> (last Place 5 vote before leaving council)</li>
-        <li>Sept. 17, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6877042&GUID=87F0799A-ABC5-437D-B175-3FEA7C122556" target="_blank" rel="noopener" class="legistar-link">Res. 2024-195R</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
-      </ul>
-    </div>
-
-    <div class="card red">
-      <div class="person-name">Melissa Derrick</div>
-      <div class="person-org">City of San Marcos - Place 6</div>
-      <div class="person-title">Former Council Member</div>
-      <div class="person-term">Two terms: 2016&ndash;19, 2019&ndash;21 &middot; succeeded by Jude Prather</div>
-      <div class="divider"></div>
-      <ul class="vote-list">
-        <li>Jan. 15, 2019 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3831652&GUID=D86EE462-494D-45EC-B690-35FF013D7A5A" target="_blank" rel="noopener" class="legistar-link">Ord. 2019-01</a>, annexation, 1st reading: <span class="vote-for">FOR</span> (6&ndash;1)</li>
-        <li>Jan. 15, 2019 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3831658&GUID=3109F41F-4E11-4277-BD0E-D3AF8271633E" target="_blank" rel="noopener" class="legistar-link">Ord. 2019-02</a>, HI zoning, 1st reading: <span class="vote-for">FOR</span> (5&ndash;2)</li>
-        <li>Jan. 21, 2020 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=4304812&GUID=2B3C36CA-D881-4A9D-B8BC-A9013DACC8BF" target="_blank" rel="noopener" class="legistar-link">Res. 2020-17R</a>: <span class="vote-for">FOR postponement</span> (7&ndash;0, unanimous) - moved the motion to postpone after executive session</li>
+        <li>Aug. 2, 2022 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5741776&GUID=3211A692-6361-424E-884C-A6E2E2A97071" target="_blank" rel="noopener" class="legistar-link">PDA-22-07(a)</a>, authorizing DA renegotiation with Franklin Mountain (~1,987 ac): <span class="vote-for">FOR</span> (6&ndash;0, Prather absent) <span class="vote-draft">(draft minutes)</span> - named to the three-member oversight committee</li>
+        <li>Nov. 14, 2022 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5949657&GUID=DDEF5211-39AE-4FB5-BC8E-0035C2300965" target="_blank" rel="noopener" class="legistar-link">ID22-874</a>, appointment to the SMART Terminal oversight committee: <span class="vote-unrecorded">individual vote not recorded</span> - no minutes released. The Dec. 6, 2022 draft separately records the committee seat going to Prather on a 7&ndash;0 vote; whether that was a second appointment or the same action carried over is unresolved</li>
+        <li>Dec. 14, 2022 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5949657&GUID=DDEF5211-39AE-4FB5-BC8E-0035C2300965" target="_blank" rel="noopener" class="legistar-link">ID22-901</a>, removing 660 ac from the Cotton Center DA: <span class="vote-for">FOR</span> (7&ndash;0) <span class="vote-draft">(draft minutes)</span> - <strong>moved the motion</strong> as Mayor Pro Tem</li>
+        <li>Jan. 17, 2023 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5992444&GUID=6531CEE6-087C-4281-969F-7D41FC50252E" target="_blank" rel="noopener" class="legistar-link">Res. 2023-20R</a>, First Amended &amp; Restated DA (~2,017 ac): <span class="vote-for">FOR</span> (6&ndash;0, Scott absent) <span class="vote-draft">(draft minutes)</span> - <strong>moved the motion</strong>; also moved the companion Res. 2023-21R amending the Cotton Center DA</li>
+        <li>Feb. 7, 2023 - Res. 2023-26R, AN-22-20 annexation services: <span class="vote-for">FOR</span> (6&ndash;1) <span class="vote-draft">(draft minutes)</span> - moved the motion</li>
+        <li>Apr. 18, 2023 - Ord. 2023-32, SMART Terminal annexation, 1st reading: <span class="vote-for">FOR</span> (4&ndash;3) <span class="vote-draft">(draft minutes)</span> - <strong>moved the motion</strong></li>
+        <li>Apr. 18, 2023 - Ord. 2023-33, HI zoning, motion to postpone: <span class="vote-against">AGAINST postponement</span> (4&ndash;3) <span class="vote-draft">(draft minutes)</span> - asked the developer to raise TSS removal to 80% and add solid fencing along the residential buffer before second reading</li>
+        <li>May 2, 2023 - initiating DA review and renegotiation: <span class="vote-for">FOR</span> (7&ndash;0) <span class="vote-draft">(draft minutes)</span> - moved the motion, and had the electrical substation struck from the community-requested prohibited-uses list</li>
+        <li>Jul. 2, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6695341&GUID=73B2B156-AB4A-48A2-80A3-F7581EF8FEBA" target="_blank" rel="noopener" class="legistar-link">Res. 2024-89R</a>, AN-24-03 service agreement: <span class="vote-for">FOR</span> (7&ndash;0) <span class="vote-draft">(draft minutes)</span> - moved the motion</li>
+        <li>Aug. 5, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6808693&GUID=5FD09DB4-46E3-4B94-AE48-DFDCBD595B59" target="_blank" rel="noopener" class="legistar-link">Ord. 2024-27</a>, 1st reading (Energy Parkway ROW): <span class="vote-for">FOR</span> (4&ndash;3) <span class="vote-draft">(draft minutes)</span> - moved the approval after the denial motion failed, and told Council he had "met the Fosters"</li>
+        <li>Aug. 20, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6808693&GUID=5FD09DB4-46E3-4B94-AE48-DFDCBD595B59" target="_blank" rel="noopener" class="legistar-link">Ord. 2024-27</a>, 2nd reading postponed: <span class="vote-for">FOR postponement</span> (7&ndash;0) <span class="vote-draft">(draft minutes)</span> - moved the postponement</li>
+        <li>Sept. 3, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6844511&GUID=0A70EDD0-B654-4098-85CB-C93D40B6FA2E" target="_blank" rel="noopener" class="legistar-link">Ord. 2024-27, 2nd reading</a>, adopted: <span class="vote-for">FOR</span> (4&ndash;3) <span class="vote-draft">(draft minutes)</span> - moved the motion</li>
+        <li>Sept. 17, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6877042&GUID=87F0799A-ABC5-437D-B175-3FEA7C122556" target="_blank" rel="noopener" class="legistar-link">Res. 2024-195R</a>: <span class="vote-unrecorded">individual vote not recorded</span> - no minutes released for this meeting</li>
+        <li>Oct. 15, 2024 - Ord. 2019-01 Exhibit A survey correction (734.6 &rarr; 733.6 ac), 1st reading: carried 5&ndash;0 with two members absent, <span class="vote-unrecorded">individual votes not itemized</span> <span class="vote-draft">(draft minutes)</span></li>
+        <li>Nov. 6, 2024 - Ord. 2019-01 Exhibit A survey correction, 2nd reading: the draft records consent items 1&ndash;11 approved on a single motion, 6&ndash;0, but <strong>never enumerates which item was which</strong>, so the correction cannot be tied to a numbered line. <span class="vote-unrecorded">individual votes not itemized</span> <span class="vote-draft">(draft minutes)</span> - last project vote before leaving council</li>
       </ul>
     </div>
 
@@ -664,17 +896,177 @@ document.addEventListener('DOMContentLoaded', function () {
       <div class="person-title">Former Council Member</div>
       <div class="person-term">Three terms: 2010&ndash;13, 2013&ndash;16 (consecutive), then 2021&ndash;24 after a five-year gap &middot; did not seek re-election in 2024 &middot; succeeded by Amanda Rodriguez</div>
       <div class="divider"></div>
+      <div class="lean">
+        <div class="lean-head"><span class="lean-label lean-pro-lean">Leans support</span><span class="lean-count">3 of 5 contested votes went the project&rsquo;s way</span></div>
+        <div class="lean-strip" role="img" aria-label="Jude Prather: Split"><span class="chip chip-na" title="Jan 15, 2019 - not on council">&nbsp;</span><span class="chip chip-na" title="Jan 15, 2019 - not on council">&nbsp;</span><span class="chip chip-na" title="Mar 19, 2019 - not on council">&nbsp;</span><span class="chip chip-na" title="Mar 19, 2019 - not on council">&nbsp;</span><span class="chip chip-na" title="Mar 19, 2019 - not on council">&nbsp;</span><span class="chip chip-pro" title="Feb 7, 2023 - Res. 2023-26R annexation services, AN-22-20 (6-1): voted for">+</span><span class="chip chip-con" title="Apr 18, 2023 - Ord. 2023-32 annexation, 1st reading (4-3): voted against">&minus;</span><span class="chip chip-con" title="Apr 18, 2023 - Ord. 2023-33 zoning, motion to postpone to July 3 (4-3): voted to postpone">&minus;</span><span class="chip chip-pro" title="Aug 5, 2024 - Ord. 2024-27 Energy Parkway ROW, 1st reading (4-3): voted for">+</span><span class="chip chip-pro" title="Sep 3, 2024 - Ord. 2024-27, 2nd reading, adopted (4-3): voted for">+</span></div>
+      </div>
       <p class="person-desc">
         Took over Maxfield Baker's seat on the Council's SMART Terminal oversight committee
         after Baker left Council in Dec. 2022.
       </p>
       <ul class="vote-list">
-        <li>Jul. 2022 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5741776&GUID=3211A692-6361-424E-884C-A6E2E2A97071" target="_blank" rel="noopener" class="legistar-link">PDA-22-07(a)</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
-        <li>Dec. 14, 2022 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5949657&GUID=DDEF5211-39AE-4FB5-BC8E-0035C2300965" target="_blank" rel="noopener" class="legistar-link">ID22-874</a>/<a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5961707&GUID=9B92DA09-F1BA-43A5-9CC5-806F4D994E92" target="_blank" rel="noopener" class="legistar-link">ID22-901</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
-        <li>Jan. 2023 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5992444&GUID=6531CEE6-087C-4281-969F-7D41FC50252E" target="_blank" rel="noopener" class="legistar-link">Res. 2023-20R</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
-        <li>Apr. 9, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6695341&GUID=73B2B156-AB4A-48A2-80A3-F7581EF8FEBA" target="_blank" rel="noopener" class="legistar-link">Res. 2024-89R</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
-        <li>Aug. 5 &ndash; Nov. 6, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6808693&GUID=5FD09DB4-46E3-4B94-AE48-DFDCBD595B59" target="_blank" rel="noopener" class="legistar-link">Ord. 2024-27</a>, all readings &amp; final adoption: <span class="vote-unrecorded">individual vote not recorded</span> (last Place 6 vote before leaving council)</li>
-        <li>Sept. 17, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6877042&GUID=87F0799A-ABC5-437D-B175-3FEA7C122556" target="_blank" rel="noopener" class="legistar-link">Res. 2024-195R</a>: <span class="vote-unrecorded">individual vote not recorded</span></li>
+        <li>2021 &ndash; Jul. 2022 - <span class="vote-draft">no Council action in this window</span>. Prather returned to Council in 2021, but no project item reached a Council vote until August 2022. His record on the project begins there.</li>
+        <li>Aug. 2, 2022 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5741776&GUID=3211A692-6361-424E-884C-A6E2E2A97071" target="_blank" rel="noopener" class="legistar-link">PDA-22-07(a)</a>, authorizing DA renegotiation with Franklin Mountain: <span class="vote-absent">ABSENT</span> <span class="vote-draft">(draft minutes)</span></li>
+        <li>Dec. 6, 2022 - appointed to the Council's SMART Terminal committee, taking Maxfield Baker's seat: approved 7&ndash;0 <span class="vote-draft">(draft minutes)</span></li>
+        <li>Dec. 14, 2022 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5949657&GUID=DDEF5211-39AE-4FB5-BC8E-0035C2300965" target="_blank" rel="noopener" class="legistar-link">ID22-901</a>, removing 660 ac from the Cotton Center DA: <span class="vote-for">FOR</span> (7&ndash;0) <span class="vote-draft">(draft minutes)</span></li>
+        <li>Jan. 17, 2023 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5992444&GUID=6531CEE6-087C-4281-969F-7D41FC50252E" target="_blank" rel="noopener" class="legistar-link">Res. 2023-20R</a>, First Amended &amp; Restated DA (~2,017 ac): <span class="vote-for">FOR</span> (6&ndash;0, Scott absent) <span class="vote-draft">(draft minutes)</span></li>
+        <li>Feb. 7, 2023 - Res. 2023-26R, AN-22-20 annexation services: <span class="vote-for">FOR</span> (6&ndash;1) <span class="vote-draft">(draft minutes)</span></li>
+        <li>Apr. 18, 2023 - Ord. 2023-32, SMART Terminal annexation, 1st reading: <span class="vote-against">AGAINST</span> (4&ndash;3) <span class="vote-draft">(draft minutes)</span></li>
+        <li>Apr. 18, 2023 - Ord. 2023-33, HI zoning, motion to postpone: <span class="vote-for">FOR postponement</span> (4&ndash;3) <span class="vote-draft">(draft minutes)</span></li>
+        <li>May 2, 2023 - initiating DA review and renegotiation: <span class="vote-for">FOR</span> (7&ndash;0) <span class="vote-draft">(draft minutes)</span></li>
+        <li>Jul. 2, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6695341&GUID=73B2B156-AB4A-48A2-80A3-F7581EF8FEBA" target="_blank" rel="noopener" class="legistar-link">Res. 2024-89R</a>, AN-24-03 service agreement: <span class="vote-for">FOR</span> (7&ndash;0) <span class="vote-draft">(draft minutes)</span></li>
+        <li>Aug. 5, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6808693&GUID=5FD09DB4-46E3-4B94-AE48-DFDCBD595B59" target="_blank" rel="noopener" class="legistar-link">Ord. 2024-27</a>, 1st reading (Energy Parkway ROW): <span class="vote-for">FOR</span> (4&ndash;3) <span class="vote-draft">(draft minutes)</span> - seconded the approval motion</li>
+        <li>Aug. 20, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6808693&GUID=5FD09DB4-46E3-4B94-AE48-DFDCBD595B59" target="_blank" rel="noopener" class="legistar-link">Ord. 2024-27</a>, 2nd reading postponed: <span class="vote-for">FOR postponement</span> (7&ndash;0) <span class="vote-draft">(draft minutes)</span></li>
+        <li>Sept. 3, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6844511&GUID=0A70EDD0-B654-4098-85CB-C93D40B6FA2E" target="_blank" rel="noopener" class="legistar-link">Ord. 2024-27, 2nd reading</a>, adopted: <span class="vote-for">FOR</span> (4&ndash;3) <span class="vote-draft">(draft minutes)</span> - seconded the motion</li>
+        <li>Sept. 17, 2024 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6877042&GUID=87F0799A-ABC5-437D-B175-3FEA7C122556" target="_blank" rel="noopener" class="legistar-link">Res. 2024-195R</a>: <span class="vote-unrecorded">individual vote not recorded</span> - no minutes released for this meeting</li>
+        <li>Oct. 15, 2024 - Ord. 2019-01 Exhibit A survey correction (734.6 &rarr; 733.6 ac), 1st reading: seconded the motion; carried 5&ndash;0, <span class="vote-unrecorded">individual votes not itemized</span> <span class="vote-draft">(draft minutes)</span></li>
+        <li>Nov. 6, 2024 - Ord. 2019-01 Exhibit A survey correction, 2nd reading: the draft records consent items 1&ndash;11 approved on a single motion, 6&ndash;0, but <strong>never enumerates which item was which</strong>, so the correction cannot be tied to a numbered line. <span class="vote-unrecorded">individual votes not itemized</span> <span class="vote-draft">(draft minutes)</span></li>
+      </ul>
+    </div>
+
+    <div class="card red">
+      <div class="person-name">Maxfield Baker</div>
+      <div class="person-org">City of San Marcos - Place 1</div>
+      <div class="person-title">Former Council Member</div>
+      <div class="person-term">2019&ndash;2022 &middot; defeated by Matthew Mendoza, Nov. 2022</div>
+      <div class="divider"></div>
+      <div class="lean">
+        <div class="lean-head"><span class="lean-label lean-none">No contested votes</span><span class="lean-count">Took office after the March 2019 approvals and left before the February 2023 items. His one project vote, on Aug. 2, 2022, was unanimous.</span></div>
+        <div class="lean-strip" role="img" aria-label="no contested votes on record"><span class="chip chip-na" title="Jan 15, 2019 - not on council">&nbsp;</span><span class="chip chip-na" title="Jan 15, 2019 - not on council">&nbsp;</span><span class="chip chip-na" title="Mar 19, 2019 - not on council">&nbsp;</span><span class="chip chip-na" title="Mar 19, 2019 - not on council">&nbsp;</span><span class="chip chip-na" title="Mar 19, 2019 - not on council">&nbsp;</span><span class="chip chip-na" title="Feb 7, 2023 - not on council">&nbsp;</span><span class="chip chip-na" title="Apr 18, 2023 - not on council">&nbsp;</span><span class="chip chip-na" title="Apr 18, 2023 - not on council">&nbsp;</span><span class="chip chip-na" title="Aug 5, 2024 - not on council">&nbsp;</span><span class="chip chip-na" title="Sep 3, 2024 - not on council">&nbsp;</span></div>
+      </div>
+      <p class="person-desc">
+        Before joining Council, Baker sat on the Planning &amp; Zoning Commission and cast the
+        lone dissenting vote against the SMART Terminal zoning reconsideration (ZC-18-21a,
+        Jan. 8, 2019, carried 7&ndash;1). Later served on the Council's SMART Terminal oversight
+        committee with Mayor Hughson and Mark Gleason; when Baker left Council in Dec. 2022,
+        Jude Prather took over his seat on that committee.
+      </p>
+      <ul class="vote-list">
+        <li>Jan. 21, 2020 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=4304812&GUID=2B3C36CA-D881-4A9D-B8BC-A9013DACC8BF" target="_blank" rel="noopener" class="legistar-link">Res. 2020-17R</a> (Martindale ETJ): <span class="vote-for">FOR postponement</span> (7&ndash;0, unanimous)</li>
+        <li>Feb. 4, 2020 - Res. 2020-17R(b), Martindale ETJ boundary agreement <strong>adopted</strong> after the January postponement: <span class="vote-unrecorded">individual vote not recorded</span> - no minutes released for this meeting</li>
+        <li>Feb. 2020 &ndash; Jul. 2022 - <span class="vote-draft">no Council action in this window</span>. Baker served this entire stretch. The project moved through private land transactions rather than Council votes: Franklin Mountain assembled the site across 2021&ndash;22 and the development agreement was assigned to it in Dec. 2021, none of which required Council action.</li>
+        <li>Aug. 2, 2022 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5741776&GUID=3211A692-6361-424E-884C-A6E2E2A97071" target="_blank" rel="noopener" class="legistar-link">PDA-22-07(a)</a>, authorizing DA renegotiation with Franklin Mountain (~1,987 ac): <span class="vote-for">FOR</span> (6&ndash;0, Prather absent) <span class="vote-draft">(draft minutes)</span> - named to the three-member oversight committee at the same meeting</li>
+        <li>Aug. 31 &amp; Oct. 10, 2022 - SMART Terminal oversight committee meetings, held virtually with Hughson and Gleason, reviewing the draft amended Development Agreement: <span class="vote-unrecorded">committee sessions, no recorded vote</span></li>
+        <li>Dec. 14, 2022 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5961707&GUID=9B92DA09-F1BA-43A5-9CC5-806F4D994E92" target="_blank" rel="noopener" class="legistar-link">ID22-901</a>: the draft minutes list Baker among the seven members voting for this item, but he had already left Council and the same meeting's roll call does not seat him. <span class="vote-unrecorded">Treated as a transcription error in the draft, not a vote.</span></li>
+      </ul>
+    </div>
+
+    <div class="card red">
+      <div class="person-name">Melissa Derrick</div>
+      <div class="person-org">City of San Marcos - Place 6</div>
+      <div class="person-title">Former Council Member</div>
+      <div class="person-term">Two terms: 2016&ndash;19, 2019&ndash;21 &middot; succeeded by Jude Prather</div>
+      <div class="divider"></div>
+      <div class="lean">
+        <div class="lean-head"><span class="lean-label lean-pro">Consistent support</span><span class="lean-count">5 of 5 contested votes went the project&rsquo;s way</span></div>
+        <div class="lean-strip" role="img" aria-label="Melissa Derrick: Consistent support"><span class="chip chip-pro" title="Jan 15, 2019 - Ord. 2019-01 annexation, 1st reading (6-1): voted for">+</span><span class="chip chip-pro" title="Jan 15, 2019 - Ord. 2019-02 Heavy Industrial zoning, 1st reading (5-2): voted for">+</span><span class="chip chip-pro" title="Mar 19, 2019 - Res. 2019-49R Ch. 380 / ETJ Development Agreement (6-1): voted for">+</span><span class="chip chip-pro" title="Mar 19, 2019 - Ord. 2019-01 annexation, 2nd reading (6-1): voted for">+</span><span class="chip chip-pro" title="Mar 19, 2019 - Ord. 2019-02 Heavy Industrial zoning, 2nd reading (6-1): voted for">+</span><span class="chip chip-na" title="Feb 7, 2023 - not on council">&nbsp;</span><span class="chip chip-na" title="Apr 18, 2023 - not on council">&nbsp;</span><span class="chip chip-na" title="Apr 18, 2023 - not on council">&nbsp;</span><span class="chip chip-na" title="Aug 5, 2024 - not on council">&nbsp;</span><span class="chip chip-na" title="Sep 3, 2024 - not on council">&nbsp;</span></div>
+      </div>
+      <ul class="vote-list">
+        <li>Jan. 15, 2019 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3831652&GUID=D86EE462-494D-45EC-B690-35FF013D7A5A" target="_blank" rel="noopener" class="legistar-link">Ord. 2019-01</a>, annexation, 1st reading: <span class="vote-for">FOR</span> (6&ndash;1)</li>
+        <li>Jan. 15, 2019 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3831658&GUID=3109F41F-4E11-4277-BD0E-D3AF8271633E" target="_blank" rel="noopener" class="legistar-link">Ord. 2019-02</a>, HI zoning, 1st reading: <span class="vote-for">FOR</span> (5&ndash;2)</li>
+        <li>Mar. 19, 2019 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3890165&GUID=CA0F3C4A-0CEF-426F-8084-0288EDEC918C" target="_blank" rel="noopener" class="legistar-link">Res. 2019-49R</a> (Ch. 380 Economic Incentive &amp; ETJ Development Agreement): <span class="vote-for">FOR</span> (6&ndash;1)</li>
+        <li>Mar. 19, 2019 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3890166&GUID=966F08A7-5FE7-466A-94D8-0AEC013184FD" target="_blank" rel="noopener" class="legistar-link">Ord. 2019-01</a>, annexation, 2nd reading (734.6 ac): <span class="vote-for">FOR</span> (6&ndash;1)</li>
+        <li>Mar. 19, 2019 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3890167&GUID=8A5D80F5-C1CE-4C38-86A6-E063BDA1DF27" target="_blank" rel="noopener" class="legistar-link">Ord. 2019-02</a>, HI zoning, 2nd reading (734.6 ac): <span class="vote-for">FOR</span> (6&ndash;1)</li>
+        <li>Mar. 19, 2019 - seconded the zoning ordinance on second reading</li>
+        <li>Nov. 6, 2019 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=4210424&GUID=72F8EA74-3318-42EE-8B9E-2DACCE22E18D" target="_blank" rel="noopener" class="legistar-link">Res. 2019-225R</a>, moving the Katerra Ch. 380 incentive off the SH 80 site to the Whisper PDD and rescinding Res. 2018-184R: <span class="vote-for">FOR</span> (7&ndash;0, unanimous)</li>
+        <li>Jan. 21, 2020 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=4304812&GUID=2B3C36CA-D881-4A9D-B8BC-A9013DACC8BF" target="_blank" rel="noopener" class="legistar-link">Res. 2020-17R</a>: <span class="vote-for">FOR postponement</span> (7&ndash;0, unanimous) - moved the motion to postpone after executive session</li>
+        <li>Feb. 4, 2020 - Res. 2020-17R(b), Martindale ETJ boundary agreement <strong>adopted</strong> after the January postponement: <span class="vote-unrecorded">individual vote not recorded</span> - no minutes released for this meeting</li>
+      </ul>
+    </div>
+
+    <div class="card red">
+      <div class="person-name">Joca Marquez</div>
+      <div class="person-org">City of San Marcos - Place 5</div>
+      <div class="person-title">Former Council Member</div>
+      <div class="person-term">2018&ndash;2020 &middot; defeated/succeeded by Mark Gleason, Dec. 2020</div>
+      <div class="divider"></div>
+      <div class="lean">
+        <div class="lean-head"><span class="lean-label lean-con">Consistent opposition</span><span class="lean-count">0 of 5 contested votes went the project&rsquo;s way</span></div>
+        <div class="lean-strip" role="img" aria-label="Joca Marquez: Consistent opposition"><span class="chip chip-con" title="Jan 15, 2019 - Ord. 2019-01 annexation, 1st reading (6-1): voted against">&minus;</span><span class="chip chip-con" title="Jan 15, 2019 - Ord. 2019-02 Heavy Industrial zoning, 1st reading (5-2): voted against">&minus;</span><span class="chip chip-con" title="Mar 19, 2019 - Res. 2019-49R Ch. 380 / ETJ Development Agreement (6-1): voted against">&minus;</span><span class="chip chip-con" title="Mar 19, 2019 - Ord. 2019-01 annexation, 2nd reading (6-1): voted against">&minus;</span><span class="chip chip-con" title="Mar 19, 2019 - Ord. 2019-02 Heavy Industrial zoning, 2nd reading (6-1): voted against">&minus;</span><span class="chip chip-na" title="Feb 7, 2023 - not on council">&nbsp;</span><span class="chip chip-na" title="Apr 18, 2023 - not on council">&nbsp;</span><span class="chip chip-na" title="Apr 18, 2023 - not on council">&nbsp;</span><span class="chip chip-na" title="Aug 5, 2024 - not on council">&nbsp;</span><span class="chip chip-na" title="Sep 3, 2024 - not on council">&nbsp;</span></div>
+      </div>
+      <p class="person-desc">
+        The project's earliest and most consistent opposition on Council. Voted against both
+        January 2019 first readings, then cast the <strong>lone no vote on all three final
+        approvals</strong> on March 19, 2019 - the annexation, the Heavy Industrial zoning, and
+        the Chapter 380 / ETJ Development Agreement itself.
+      </p>
+      <ul class="vote-list">
+        <li>Jan. 15, 2019 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3831652&GUID=D86EE462-494D-45EC-B690-35FF013D7A5A" target="_blank" rel="noopener" class="legistar-link">Ord. 2019-01</a>, annexation, 1st reading: <span class="vote-against">AGAINST</span> (6&ndash;1, sole dissent)</li>
+        <li>Jan. 15, 2019 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3831658&GUID=3109F41F-4E11-4277-BD0E-D3AF8271633E" target="_blank" rel="noopener" class="legistar-link">Ord. 2019-02</a>, HI zoning, 1st reading: <span class="vote-against">AGAINST</span> (5&ndash;2)</li>
+        <li>Mar. 19, 2019 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3890165&GUID=CA0F3C4A-0CEF-426F-8084-0288EDEC918C" target="_blank" rel="noopener" class="legistar-link">Res. 2019-49R</a> (Ch. 380 Economic Incentive &amp; ETJ Development Agreement): <span class="vote-against">AGAINST</span> (6&ndash;1, sole dissent)</li>
+        <li>Mar. 19, 2019 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3890166&GUID=966F08A7-5FE7-466A-94D8-0AEC013184FD" target="_blank" rel="noopener" class="legistar-link">Ord. 2019-01</a>, annexation, 2nd reading (734.6 ac): <span class="vote-against">AGAINST</span> (6&ndash;1, sole dissent)</li>
+        <li>Mar. 19, 2019 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3890167&GUID=8A5D80F5-C1CE-4C38-86A6-E063BDA1DF27" target="_blank" rel="noopener" class="legistar-link">Ord. 2019-02</a>, HI zoning, 2nd reading (734.6 ac): <span class="vote-against">AGAINST</span> (6&ndash;1, sole dissent)</li>
+        <li>Mar. 19, 2019 - <strong>the lone no vote on all three final approvals</strong>, after questioning staff on downstream drainage to Tributary 1 and Bypass Creek and on the site's proximity to environmentally sensitive areas</li>
+        <li>Nov. 6, 2019 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=4210424&GUID=72F8EA74-3318-42EE-8B9E-2DACCE22E18D" target="_blank" rel="noopener" class="legistar-link">Res. 2019-225R</a>, moving the Katerra Ch. 380 incentive off the SH 80 site to the Whisper PDD and rescinding Res. 2018-184R: <span class="vote-for">FOR</span> (7&ndash;0, unanimous)</li>
+        <li>Jan. 21, 2020 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=4304812&GUID=2B3C36CA-D881-4A9D-B8BC-A9013DACC8BF" target="_blank" rel="noopener" class="legistar-link">Res. 2020-17R</a>: <span class="vote-for">FOR postponement</span> (7&ndash;0, unanimous)</li>
+        <li>Feb. 4, 2020 - Res. 2020-17R(b), Martindale ETJ boundary agreement <strong>adopted</strong> after the January postponement: <span class="vote-unrecorded">individual vote not recorded</span> - no minutes released for this meeting</li>
+      </ul>
+    </div>
+
+    <div class="card red">
+      <div class="person-name">Ed Mihalkanin</div>
+      <div class="person-org">City of San Marcos - Place 3</div>
+      <div class="person-title">Former Council Member</div>
+      <div class="person-term">Three non-consecutive terms: 1996&ndash;2000, 2001&ndash;06, 2016&ndash;20 &middot; defeated by Alyssa Garza, Nov. 2020</div>
+      <div class="divider"></div>
+      <div class="lean">
+        <div class="lean-head"><span class="lean-label lean-pro">Consistent support</span><span class="lean-count">5 of 5 contested votes went the project&rsquo;s way</span></div>
+        <div class="lean-strip" role="img" aria-label="Ed Mihalkanin: Consistent support"><span class="chip chip-pro" title="Jan 15, 2019 - Ord. 2019-01 annexation, 1st reading (6-1): voted for">+</span><span class="chip chip-pro" title="Jan 15, 2019 - Ord. 2019-02 Heavy Industrial zoning, 1st reading (5-2): voted for">+</span><span class="chip chip-pro" title="Mar 19, 2019 - Res. 2019-49R Ch. 380 / ETJ Development Agreement (6-1): voted for">+</span><span class="chip chip-pro" title="Mar 19, 2019 - Ord. 2019-01 annexation, 2nd reading (6-1): voted for">+</span><span class="chip chip-pro" title="Mar 19, 2019 - Ord. 2019-02 Heavy Industrial zoning, 2nd reading (6-1): voted for">+</span><span class="chip chip-na" title="Feb 7, 2023 - not on council">&nbsp;</span><span class="chip chip-na" title="Apr 18, 2023 - not on council">&nbsp;</span><span class="chip chip-na" title="Apr 18, 2023 - not on council">&nbsp;</span><span class="chip chip-na" title="Aug 5, 2024 - not on council">&nbsp;</span><span class="chip chip-na" title="Sep 3, 2024 - not on council">&nbsp;</span></div>
+      </div>
+      <ul class="vote-list">
+        <li>Jan. 15, 2019 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3831652&GUID=D86EE462-494D-45EC-B690-35FF013D7A5A" target="_blank" rel="noopener" class="legistar-link">Ord. 2019-01</a>, annexation, 1st reading: <span class="vote-for">FOR</span> (6&ndash;1)</li>
+        <li>Jan. 15, 2019 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3831658&GUID=3109F41F-4E11-4277-BD0E-D3AF8271633E" target="_blank" rel="noopener" class="legistar-link">Ord. 2019-02</a>, HI zoning, 1st reading: <span class="vote-for">FOR</span> (5&ndash;2)</li>
+        <li>Mar. 19, 2019 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3890165&GUID=CA0F3C4A-0CEF-426F-8084-0288EDEC918C" target="_blank" rel="noopener" class="legistar-link">Res. 2019-49R</a> (Ch. 380 Economic Incentive &amp; ETJ Development Agreement): <span class="vote-for">FOR</span> (6&ndash;1)</li>
+        <li>Mar. 19, 2019 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3890166&GUID=966F08A7-5FE7-466A-94D8-0AEC013184FD" target="_blank" rel="noopener" class="legistar-link">Ord. 2019-01</a>, annexation, 2nd reading (734.6 ac): <span class="vote-for">FOR</span> (6&ndash;1)</li>
+        <li>Mar. 19, 2019 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3890167&GUID=8A5D80F5-C1CE-4C38-86A6-E063BDA1DF27" target="_blank" rel="noopener" class="legistar-link">Ord. 2019-02</a>, HI zoning, 2nd reading (734.6 ac): <span class="vote-for">FOR</span> (6&ndash;1)</li>
+        <li>Mar. 19, 2019 - moved both the <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3890165&GUID=CA0F3C4A-0CEF-426F-8084-0288EDEC918C" target="_blank" rel="noopener" class="legistar-link">Res. 2019-49R</a> Development Agreement and the annexation ordinance on second reading</li>
+        <li>Nov. 6, 2019 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=4210424&GUID=72F8EA74-3318-42EE-8B9E-2DACCE22E18D" target="_blank" rel="noopener" class="legistar-link">Res. 2019-225R</a>, moving the Katerra Ch. 380 incentive off the SH 80 site to the Whisper PDD and rescinding Res. 2018-184R: <span class="vote-for">FOR</span> (7&ndash;0, unanimous)</li>
+        <li>Jan. 21, 2020 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=4304812&GUID=2B3C36CA-D881-4A9D-B8BC-A9013DACC8BF" target="_blank" rel="noopener" class="legistar-link">Res. 2020-17R</a>: <span class="vote-for">FOR postponement</span> (7&ndash;0, unanimous) - moved the initial motion to table pending executive session</li>
+        <li>Feb. 4, 2020 - Res. 2020-17R(b), Martindale ETJ boundary agreement <strong>adopted</strong> after the January postponement: <span class="vote-unrecorded">individual vote not recorded</span> - no minutes released for this meeting</li>
+      </ul>
+    </div>
+
+    <div class="card red">
+      <div class="person-name">Mark Rockeymoore</div>
+      <div class="person-org">City of San Marcos - Place 4</div>
+      <div class="person-title">Former Council Member</div>
+      <div class="person-term">2018&ndash;2020 &middot; defeated by Shane Scott, Nov. 2020</div>
+      <div class="divider"></div>
+      <div class="lean">
+        <div class="lean-head"><span class="lean-label lean-pro-mild">Mostly support</span><span class="lean-count">4 of 5 contested votes went the project&rsquo;s way</span></div>
+        <div class="lean-strip" role="img" aria-label="Mark Rockeymoore: Mostly support"><span class="chip chip-pro" title="Jan 15, 2019 - Ord. 2019-01 annexation, 1st reading (6-1): voted for">+</span><span class="chip chip-con" title="Jan 15, 2019 - Ord. 2019-02 Heavy Industrial zoning, 1st reading (5-2): voted against">&minus;</span><span class="chip chip-pro" title="Mar 19, 2019 - Res. 2019-49R Ch. 380 / ETJ Development Agreement (6-1): voted for">+</span><span class="chip chip-pro" title="Mar 19, 2019 - Ord. 2019-01 annexation, 2nd reading (6-1): voted for">+</span><span class="chip chip-pro" title="Mar 19, 2019 - Ord. 2019-02 Heavy Industrial zoning, 2nd reading (6-1): voted for">+</span><span class="chip chip-na" title="Feb 7, 2023 - not on council">&nbsp;</span><span class="chip chip-na" title="Apr 18, 2023 - not on council">&nbsp;</span><span class="chip chip-na" title="Apr 18, 2023 - not on council">&nbsp;</span><span class="chip chip-na" title="Aug 5, 2024 - not on council">&nbsp;</span><span class="chip chip-na" title="Sep 3, 2024 - not on council">&nbsp;</span></div>
+      </div>
+      <ul class="vote-list">
+        <li>Jan. 15, 2019 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3831652&GUID=D86EE462-494D-45EC-B690-35FF013D7A5A" target="_blank" rel="noopener" class="legistar-link">Ord. 2019-01</a>, annexation, 1st reading: <span class="vote-for">FOR</span> (6&ndash;1)</li>
+        <li>Jan. 15, 2019 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3831658&GUID=3109F41F-4E11-4277-BD0E-D3AF8271633E" target="_blank" rel="noopener" class="legistar-link">Ord. 2019-02</a>, HI zoning, 1st reading: <span class="vote-against">AGAINST</span> (5&ndash;2)</li>
+        <li>Mar. 19, 2019 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3890165&GUID=CA0F3C4A-0CEF-426F-8084-0288EDEC918C" target="_blank" rel="noopener" class="legistar-link">Res. 2019-49R</a> (Ch. 380 Economic Incentive &amp; ETJ Development Agreement): <span class="vote-for">FOR</span> (6&ndash;1)</li>
+        <li>Mar. 19, 2019 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3890166&GUID=966F08A7-5FE7-466A-94D8-0AEC013184FD" target="_blank" rel="noopener" class="legistar-link">Ord. 2019-01</a>, annexation, 2nd reading (734.6 ac): <span class="vote-for">FOR</span> (6&ndash;1)</li>
+        <li>Mar. 19, 2019 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3890167&GUID=8A5D80F5-C1CE-4C38-86A6-E063BDA1DF27" target="_blank" rel="noopener" class="legistar-link">Ord. 2019-02</a>, HI zoning, 2nd reading (734.6 ac): <span class="vote-for">FOR</span> (6&ndash;1)</li>
+        <li>Mar. 19, 2019 - <strong>switched to support</strong> on the zoning second reading after questioning staff on the 2015 flood, 200-year event modeling and Atlas 14 rainfall data</li>
+        <li>Nov. 6, 2019 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=4210424&GUID=72F8EA74-3318-42EE-8B9E-2DACCE22E18D" target="_blank" rel="noopener" class="legistar-link">Res. 2019-225R</a>, moving the Katerra Ch. 380 incentive off the SH 80 site to the Whisper PDD and rescinding Res. 2018-184R: <span class="vote-for">FOR</span> (7&ndash;0, unanimous)</li>
+        <li>Jan. 21, 2020 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=4304812&GUID=2B3C36CA-D881-4A9D-B8BC-A9013DACC8BF" target="_blank" rel="noopener" class="legistar-link">Res. 2020-17R</a>: <span class="vote-for">FOR postponement</span> (7&ndash;0, unanimous) - seconded the motion to remove from the table after executive session</li>
+        <li>Feb. 4, 2020 - Res. 2020-17R(b), Martindale ETJ boundary agreement <strong>adopted</strong> after the January postponement: <span class="vote-unrecorded">individual vote not recorded</span> - no minutes released for this meeting</li>
+      </ul>
+    </div>
+
+    <div class="card red">
+      <div class="person-name">Lisa Prewitt</div>
+      <div class="person-org">City of San Marcos - Place 1</div>
+      <div class="person-title">Former Council Member</div>
+      <div class="person-term">Two terms: 2013&ndash;16, 2016&ndash;19 &middot; did not seek re-election, succeeded by Maxfield Baker &middot; filed for the Place 6 special election on July 28, 2026 and withdrew on Aug. 20, 2026</div>
+      <div class="divider"></div>
+      <div class="lean">
+        <div class="lean-head"><span class="lean-label lean-pro">Consistent support</span><span class="lean-count">5 of 5 contested votes went the project&rsquo;s way</span></div>
+        <div class="lean-strip" role="img" aria-label="Lisa Prewitt: Consistent support"><span class="chip chip-pro" title="Jan 15, 2019 - Ord. 2019-01 annexation, 1st reading (6-1): voted for">+</span><span class="chip chip-pro" title="Jan 15, 2019 - Ord. 2019-02 Heavy Industrial zoning, 1st reading (5-2): voted for">+</span><span class="chip chip-pro" title="Mar 19, 2019 - Res. 2019-49R Ch. 380 / ETJ Development Agreement (6-1): voted for">+</span><span class="chip chip-pro" title="Mar 19, 2019 - Ord. 2019-01 annexation, 2nd reading (6-1): voted for">+</span><span class="chip chip-pro" title="Mar 19, 2019 - Ord. 2019-02 Heavy Industrial zoning, 2nd reading (6-1): voted for">+</span><span class="chip chip-na" title="Feb 7, 2023 - not on council">&nbsp;</span><span class="chip chip-na" title="Apr 18, 2023 - not on council">&nbsp;</span><span class="chip chip-na" title="Apr 18, 2023 - not on council">&nbsp;</span><span class="chip chip-na" title="Aug 5, 2024 - not on council">&nbsp;</span><span class="chip chip-na" title="Sep 3, 2024 - not on council">&nbsp;</span></div>
+      </div>
+      <ul class="vote-list">
+        <li>Jan. 15, 2019 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3831652&GUID=D86EE462-494D-45EC-B690-35FF013D7A5A" target="_blank" rel="noopener" class="legistar-link">Ord. 2019-01</a>, annexation, 1st reading: <span class="vote-for">FOR</span> (6&ndash;1)</li>
+        <li>Jan. 15, 2019 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3831658&GUID=3109F41F-4E11-4277-BD0E-D3AF8271633E" target="_blank" rel="noopener" class="legistar-link">Ord. 2019-02</a>, HI zoning, 1st reading: <span class="vote-for">FOR</span> (5&ndash;2)</li>
+        <li>Mar. 19, 2019 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3890165&GUID=CA0F3C4A-0CEF-426F-8084-0288EDEC918C" target="_blank" rel="noopener" class="legistar-link">Res. 2019-49R</a> (Ch. 380 Economic Incentive &amp; ETJ Development Agreement): <span class="vote-for">FOR</span> (6&ndash;1)</li>
+        <li>Mar. 19, 2019 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3890166&GUID=966F08A7-5FE7-466A-94D8-0AEC013184FD" target="_blank" rel="noopener" class="legistar-link">Ord. 2019-01</a>, annexation, 2nd reading (734.6 ac): <span class="vote-for">FOR</span> (6&ndash;1)</li>
+        <li>Mar. 19, 2019 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3890167&GUID=8A5D80F5-C1CE-4C38-86A6-E063BDA1DF27" target="_blank" rel="noopener" class="legistar-link">Ord. 2019-02</a>, HI zoning, 2nd reading (734.6 ac): <span class="vote-for">FOR</span> (6&ndash;1)</li>
+        <li>Mar. 19, 2019 - moved <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=3890165&GUID=CA0F3C4A-0CEF-426F-8084-0288EDEC918C" target="_blank" rel="noopener" class="legistar-link">Res. 2019-49R</a> and seconded the annexation ordinance; told Council that "if we say no to these agreements, we could lose this project"</li>
+        <li>Nov. 6, 2019 - <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=4210424&GUID=72F8EA74-3318-42EE-8B9E-2DACCE22E18D" target="_blank" rel="noopener" class="legistar-link">Res. 2019-225R</a>, moving the Katerra Ch. 380 incentive off the SH 80 site to the Whisper PDD and rescinding Res. 2018-184R: <span class="vote-for">FOR</span> (7&ndash;0, unanimous)</li>
       </ul>
     </div>
 
@@ -683,9 +1075,10 @@ document.addEventListener('DOMContentLoaded', function () {
   <!-- ── 2026 MAYORAL CANDIDATES ── -->
   <h2 class="section-label">2026 Mayoral Candidates</h2>
   <p class="section-intro">
-    Three candidates are on the ballot for Mayor in the Nov. 3, 2026 election: Amanda Rodriguez
-    (current Place 6 Council Member, profiled above), Christopher "Crispy" Polanco, and Ryan
-    Thomason. Thomason's prior council tenure and business history are documented below.
+    Two candidates remain on the ballot for Mayor in the Nov. 3, 2026 election: Amanda Rodriguez
+    (current Place 6 Council Member, profiled above) and Ryan Thomason. Bill Miller and
+    Christopher "Crispy" Polanco both filed and withdrew on July 27, 2026. Thomason's prior
+    council tenure and business history are documented below.
   </p>
   <div class="grid">
 
@@ -718,7 +1111,7 @@ document.addEventListener('DOMContentLoaded', function () {
         Thomason business connection.)
       </p>
       <p class="person-desc">
-        Filed for Mayor in 2026 against Amanda Rodriguez and Christopher "Crispy" Polanco.
+        Filed for Mayor on July 20, 2026. Now facing Amanda Rodriguez in a two-way race after Bill Miller and Christopher "Crispy" Polanco withdrew on July 27, 2026. His original filing named <strong>Mayor Jane Hughson as his campaign treasurer</strong>; an amendment filed July 30, 2026 replaced her with Thomason himself, the same day Hughson filed for Place 3.
         Outgoing Mayor <strong>Jane Hughson is serving as his campaign treasurer</strong>.
       </p>
     </div>

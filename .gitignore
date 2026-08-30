@@ -31,3 +31,8 @@ compliance_report.html
 # Allow the generated Pagefind search index (regenerate with: npx pagefind --site .)
 !pagefind/
 !pagefind/**
+
+# Allow favicons / site icons at the repo root
+!favicon.ico
+!favicon-*.png
+!apple-touch-icon.png

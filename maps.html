@@ -99,6 +99,25 @@ main { max-width: 1200px; margin: 36px auto 80px; padding: 0 20px; }
   margin: -8px 0 16px; padding-left: 2px;
 }
 
+.page-intro {
+  background: var(--card);
+  border-radius: 10px;
+  border-left: 4px solid var(--accent);
+  padding: 24px 26px;
+  margin-bottom: 44px;
+  box-shadow: 0 1px 3px rgba(30, 58, 95, .08);
+}
+.page-intro h2 {
+  font-size: 1.05rem; font-weight: 800; color: var(--navy);
+  margin-bottom: 12px;
+}
+.page-intro p { font-size: .9rem; line-height: 1.75; color: #334155; }
+.page-intro p + p { margin-top: 12px; }
+.page-intro a { color: var(--accent); }
+@media (max-width: 640px) {
+  .page-intro { padding: 20px 18px; }
+}
+
 .map-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -214,6 +233,51 @@ document.addEventListener('DOMContentLoaded', function () {
 </div>
 
 <main>
+
+  <div class="page-intro">
+    <h2>About this collection</h2>
+    <p>
+      This page collects 52 engineering exhibits, survey plats, drainage and floodplain studies, and aerial maps
+      documenting the TriTexas Logistics Park, the roughly 2,000-acre industrial development east of San Marcos,
+      Texas, known previously as the SMART Terminal and as Axis Logistics Park. Nearly all of these drawings were
+      prepared by Kimley-Horn and Associates on behalf of Franklin Mountain San Marcos I, LP, and were obtained
+      through open records requests filed with the City of San Marcos and Caldwell County. Many have never been
+      published anywhere else, and several exist only as attachments buried in council agenda packets.
+    </p>
+    <p>
+      The exhibits are grouped into seven sections. <strong>Site Overview and Regional Context</strong> establishes the
+      project boundary and its relationship to Highway 21, the rail line, and neighboring communities.
+      <strong>Land Use, Zoning and Phasing</strong> reproduces the exhibits attached to the 2023 Development Agreement,
+      including Exhibit B, which maps the heavy industrial and heavy commercial zones, the 100-foot Reedville
+      residential buffer, and the area where container storage is excluded. <strong>Roadway, Utility and Annexation
+      Exhibits</strong> covers the PDA-22-07 location exhibit, the AN-24-03 annexation footprint, the county
+      right-of-way swap near FM 1984 and FM 240, the sanitary sewer planning exhibit, and the proposed fire station
+      location.
+    </p>
+    <p>
+      <strong>Water Quality, Drainage and Floodplain</strong> is the largest section and the most consequential. It
+      includes the mass grading plan, the proposed and existing water quality buffer maps, both overall drainage area
+      sheets, the regional wastewater service options exhibit, the wellhead protection area, the water CCN boundary,
+      and discharge maps showing modeled impacts on the Blanco River and Blanco River Village. These drawings are the
+      underlying source material for the wastewater capacity and floodplain questions examined on the
+      <a href="development_agreement_issues.html">Development Agreement</a> and
+      <a href="land_use.html">Land Use</a> pages. <strong>Tree Preservation</strong> and <strong>FAA and Height
+      Restrictions</strong> follow, the latter relevant to San Marcos Airport proximity and the 80-foot
+      container-storage height waiver.
+    </p>
+    <p>
+      The final section, <strong>Groundwater Contamination</strong>, reproduces figures from the 1995 EPA Site
+      Inspection Prioritization Report and the 2022 Department of Labor Draft Environmental Assessment for the Gary
+      Job Corps Center, including water well locations, sampling points, probable past landfill activity, and the
+      former municipal landfill boundaries adjacent to the project site. Full context for those documents is on the
+      <a href="superfund.html">Groundwater Contamination</a> page.
+    </p>
+    <p>
+      Most of these drawings are marked "For Review Only" or "Not For Construction." They represent proposed and
+      planning-stage designs rather than final as-built conditions, and in several cases they document plans that
+      were later revised or withdrawn. Click any image to open it at full resolution.
+    </p>
+  </div>
 
   <p class="section-label">Site Overview &amp; Regional Context</p>
   <p class="section-intro">General-purpose maps showing the overall project boundary and its relationship to surrounding roads, rail, and landmarks.</p>

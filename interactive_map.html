@@ -143,8 +143,7 @@ document.addEventListener('DOMContentLoaded', function () {
       its project boundary to the appraisal district's parcel lines (median difference about 12 feet), so these areas are
       approximate, as drawn by the developer.</li>
     <li><b>Development phases</b> are traced by color from Exhibit C: Conceptual Phasing Plan and placed with the same fit as
-      Exhibit B; traced acreages are within about 6% of the labeled 825, 343 and 808 acres. The <b>original Katerra tract</b> is the
-      appraisal parcel at 19780 San Marcos Hwy, which matches Exhibit B-2 to the 2019 SMART Terminal Chapter 380 agreement.</li>
+      Exhibit B; traced acreages are within about 6% of the labeled 825, 343 and 808 acres.</li>
     <li><b>Earthship Project Irish</b> shows only the appraisal district parcels whose acreage matches a tract listed in the
       October 23, 2025 development agreements. Those tracts were under purchase contract, not owned, when the agreements were
       approved, and some listed tracts could not be matched to a parcel.</li>
@@ -297,10 +296,7 @@ document.addEventListener('DOMContentLoaded', function () {
       { id: 'ponds', file: 'detention_ponds.geojson', name: 'Detention ponds and drainage channels (proposed)', note: 'As drawn on the Detention and Water Quality Summary Exhibit (approximate)', on: false, kind: 'fill', pane: 'p_small',
         key: [['#56B4E9', 'Detention pond'], ['#A6DCF5', 'Drainage channel']],
         style: function (f) { var c = f.properties.kind === 'drainage_channel'; return { color: c ? '#56B4E9' : '#ffffff', weight: c ? 1 : 1.5, fillColor: c ? '#A6DCF5' : '#56B4E9', fillOpacity: c ? 0.55 : 0.65 }; },
-        popup: function (p) { return '<b>' + esc(p.label) + '</b><br>About ' + esc(p.acres_drawn) + ' acres as drawn<br>Kimley-Horn, Axis Detention and Water Quality Summary Exhibit<br><small>Placed with the same fit as Exhibits B and C; the exhibit&#39;s road lines up with the built Energy Parkway within about 20 feet. Approximate, as drawn by the developer.</small><br><a href="maps.html">Original exhibit</a>'; } },
-      { id: 'katerra', file: 'katerra_tract.geojson', name: 'Planned Katerra tract (2019)', note: 'Never split off; Katerra located elsewhere', on: false, kind: 'fill', pane: 'p_plan',
-        style: { color: '#e2e8f0', weight: 3, dashArray: '2 5', fillColor: '#e2e8f0', fillOpacity: 0.12 },
-        popup: function (p) { return '<b>The planned 2019 "Katerra Tract"</b><br>About 73.6 acres (27.441 + 46.182) shown on Exhibit B-2 to the 2019 SMART Terminal Chapter 380 agreement (Res. 2019-49R). It was never split off as its own parcel, and the 2023 restated agreement removed the Katerra references.<br><small>' + esc(p.method) + '</small>'; } }
+        popup: function (p) { return '<b>' + esc(p.label) + '</b><br>About ' + esc(p.acres_drawn) + ' acres as drawn<br>Kimley-Horn, Axis Detention and Water Quality Summary Exhibit<br><small>Placed with the same fit as Exhibits B and C; the exhibit&#39;s road lines up with the built Energy Parkway within about 20 feet. Approximate, as drawn by the developer.</small><br><a href="maps.html">Original exhibit</a>'; } }
     ] },
     { name: 'TriTexas site: roads and public facilities', layers: [
       { id: 'energy', file: 'energy_parkway.geojson', name: 'Energy Parkway', note: 'Opened Sept. 29, 2026', on: true, kind: 'line', pane: 'p_line',

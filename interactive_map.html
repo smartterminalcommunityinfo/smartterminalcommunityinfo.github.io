@@ -41,8 +41,14 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); co
 .panel { background: #fff; border-radius: 10px; box-shadow: 0 1px 4px rgba(0,0,0,.12); padding: 14px 14px 10px;
   font-size: .84rem; max-height: 72vh; overflow-y: auto; }
 .panel h2 { font-size: .74rem; text-transform: uppercase; letter-spacing: .06em; color: #64748b; margin: 4px 0 8px; }
+.grp { border-bottom: 1px solid #e2e8f0; padding: 4px 0 6px; }
+.grp-head { display: flex; align-items: center; gap: 8px; padding: 6px 0 2px; }
+.grp-tog { background: none; border: none; font: inherit; font-weight: 700; color: var(--navy); cursor: pointer; padding: 0; text-align: left; }
+.grp-tog .caret { display: inline-block; width: 12px; color: #64748b; }
+.grp-kids { padding-left: 20px; }
 .layer { display: flex; align-items: flex-start; gap: 8px; padding: 5px 0; border-bottom: 1px solid #f1f5f9; cursor: pointer; }
 .layer input { margin-top: 3px; }
+.layer.hot { background: #eff6ff; }
 .sw { width: 18px; height: 12px; border-radius: 2px; flex: 0 0 18px; margin-top: 3px; }
 .sw.line { height: 0; border-top-width: 3px; border-top-style: solid; margin-top: 9px; }
 .layer small { display: block; color: #64748b; font-size: .74rem; line-height: 1.35; }
@@ -114,9 +120,8 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="basemaps" id="basemaps"></div>
     <h2>Layers</h2>
     <div id="layers"></div>
-    <p class="pending">More layers are being added from the developer's own exhibits: the container storage area, the
-      project phases, the original Katerra tract, Energy Parkway and others. Developer-drawn layers will be marked as
-      approximate.</p>
+    <p class="pending">Tick a group name to turn on all of its layers. Hover a shape or a layer name to highlight it.
+      More developer layers (project phases, the original Katerra tract, Energy Parkway) are being added.</p>
   </div>
 </div>
 
@@ -129,14 +134,25 @@ document.addEventListener('DOMContentLoaded', function () {
       County Order 01-2027 (Kimley-Horn survey dated October 27, 2026). The traced boundary closes within 0.02 feet and
       measures 611.01 acres, and it was placed on the map by fitting it to the appraisal district's outline of the
       660.503-acre tract (average difference about 5 feet).</li>
-    <li><b>City limits and ETJ</b> are from the City of San Marcos GIS. <b>Floodplain</b> is FEMA's National Flood
+    <li><b>Developer land use</b> (industrial, commercial, greenbelt, the Reedville buffer and the container storage area) is traced
+      from Kimley-Horn's Exhibit B: Conceptual Land Use Plan (issued April 5, 2023). The exhibit was placed on the map by matching
+      its project boundary to the appraisal district's parcel lines (median difference about 12 feet), so these areas are
+      approximate, as drawn by the developer.</li>
+    <li><b>Earthship Irish North and South</b> show only the appraisal district parcels whose acreage matches a tract listed in the
+      October 23, 2025 development agreements. Those tracts were under purchase contract, not owned, when the agreements were
+      approved, and some listed tracts could not be matched to a parcel.</li>
+    <li><b>Martindale city limits and ETJ, utility districts, the 2024 County road plan and 911 address points</b> are from the
+      Caldwell Central Appraisal District's public GIS. Address points mark addressed buildings, most of them homes; no names
+      or addresses are shown.</li>
+    <li><b>San Marcos city limits and ETJ</b> are from the City of San Marcos GIS. <b>Floodplain</b> is FEMA's National Flood
       Hazard Layer (1% and 0.2% annual chance zones). <b>Pipelines</b> are from the Railroad Commission of Texas public
       pipeline map; the RRC notes its pipeline locations are approximate. <b>Rail</b> is from OpenStreetMap.</li>
   </ul>
   <h3>Sources</h3>
   <ul>
     <li>Caldwell County Commissioners Court, <a href="https://www.co.caldwell.tx.us/upload/page/0252/docs/Agenda%20Packets/11.12.26%20Agenda%20Packet_Reduced.pdf#page=268" target="_blank" rel="noopener">Nov. 12, 2026 agenda packet</a> (Order 01-2027 and Exhibit A) and <a href="https://www.co.caldwell.tx.us/upload/page/0252/docs/Agenda%20Packets/3.26.26%20Agenda%20Packet.pdf" target="_blank" rel="noopener">Mar. 26, 2026 agenda packet</a> (EDC Austin tax abatement, Zone #1).</li>
-    <li>Caldwell Central Appraisal District parcel service; City of San Marcos GIS (City Limit and ETJ layers); FEMA National Flood Hazard Layer; Railroad Commission of Texas public GIS (pipelines); OpenStreetMap contributors (rail).</li>
+    <li>Kimley-Horn, Exhibit B: Conceptual Land Use Plan, PDA-22-07(A) color exhibits (2023); Development Agreement (Res. 2023-20R), Section 1.07.F; Caldwell County Commissioners Court, <a href="https://www.co.caldwell.tx.us/upload/page/0245/docs/Agenda%20Packets/10.23.25%20Agenda%20Packet.pdf" target="_blank" rel="noopener">Oct. 23, 2025 agenda packet</a> (Earthship Irish North and South).</li>
+    <li>Caldwell Central Appraisal District parcel service and public GIS; City of San Marcos GIS (City Limit and ETJ layers); FEMA National Flood Hazard Layer; Railroad Commission of Texas public GIS (pipelines); OpenStreetMap contributors (rail).</li>
     <li>Background imagery: U.S. Geological Survey, The National Map. Street map: &copy; OpenStreetMap contributors.</li>
   </ul>
   <p style="margin-top:10px;">See also <a href="maps.html">Maps &amp; Site Exhibits</a> for the original engineering drawings.</p>
@@ -165,8 +181,9 @@ document.addEventListener('DOMContentLoaded', function () {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script>
 (function () {
-  var map = L.map('map', { zoomControl: true, scrollWheelZoom: true }).setView([29.868, -97.828], 14);
+  var map = L.map('map', { zoomControl: true, scrollWheelZoom: true, preferCanvas: false }).setView([29.868, -97.828], 14);
   L.control.scale({ imperial: true, metric: false }).addTo(map);
+  var canvas = L.canvas({ padding: 0.5 });
 
   var bases = {
     'Aerial (USGS)': L.tileLayer('https://basemap.nationalmap.gov/arcgis/rest/services/USGSImageryOnly/MapServer/tile/{z}/{y}/{x}',
@@ -190,61 +207,176 @@ document.addEventListener('DOMContentLoaded', function () {
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
   function acres(a) { return a ? Number(a).toLocaleString(undefined, { maximumFractionDigits: 2 }) + ' acres' : ''; }
   function cadLink(id) { return '<a href="https://esearch.caldwellcad.org/Property/View/' + id + '" target="_blank" rel="noopener">CAD ' + id + '</a>'; }
+  function parcel(p, extra) {
+    return '<b>' + esc(p.owner) + '</b><br>' + acres(p.acres) + '<br>' + cadLink(p.prop_id) +
+      (p.deed_doc ? '<br>Deed ' + esc(p.deed_date) + ', doc. ' + esc(p.deed_doc) : '') + (extra || '') +
+      '<br>Source: Caldwell Central Appraisal District';
+  }
+  var PKT1112 = 'https://www.co.caldwell.tx.us/upload/page/0252/docs/Agenda%20Packets/11.12.26%20Agenda%20Packet_Reduced.pdf';
+  var PKT1023 = 'https://www.co.caldwell.tx.us/upload/page/0245/docs/Agenda%20Packets/10.23.25%20Agenda%20Packet.pdf';
+  var EXB = 'https://smartterminalcommunityinfo.github.io/maps.html';
+  var MUDS = { MCO1: 'Cotton Center MUD No. 1', MCO2: 'Cotton Center MUD No. 2' };
+  var EXBC = {
+    industrial: { color: '#0891b2', fill: '#22d3ee', name: 'Heavy Industrial' },
+    commercial: { color: '#c2410c', fill: '#fb923c', name: 'Heavy Commercial' },
+    greenbelt: { color: '#15803d', fill: '#4ade80', name: 'Green Belt / Drainage' },
+    buffer: { color: '#7e22ce', fill: '#a855f7', name: "100' Reedville Residential Buffer" },
+    container: { color: '#a16207', fill: '#facc15', name: "Container storage up to 80' high" }
+  };
+  function exb(cat, on) {
+    var c = EXBC[cat];
+    return { id: 'exb_' + cat, file: 'exhibit_b_land_use.geojson', filter: function (f) { return f.properties.category === cat; },
+      name: c.name, note: cat === 'container' ? 'Exclusive area per DA Section 1.04.B.7' : 'As drawn on Exhibit B (approximate)', on: on, kind: 'fill',
+      style: { color: c.color, weight: 2, fillColor: c.fill, fillOpacity: cat === 'container' ? 0.45 : 0.3 },
+      popup: function (p) { return '<b>' + esc(p.label) + '</b><br>About ' + esc(p.acres_drawn) + ' acres as drawn<br>' + esc(p.source) + '<br><small>Traced from the developer\'s exhibit and placed by matching its project boundary to appraisal district parcel lines (median difference about 12 feet). Approximate.</small><br><a href="maps.html">Original exhibit</a>'; } };
+  }
 
-  var defs = [
-    { id: 'city', file: 'city_limits.geojson', name: 'San Marcos city limits', note: 'City of San Marcos GIS', on: true, kind: 'fill',
-      style: { color: '#2563eb', weight: 2, fillColor: '#3b82f6', fillOpacity: 0.06 },
-      popup: function () { return '<b>San Marcos city limits</b><br>Source: City of San Marcos GIS'; } },
-    { id: 'etj', file: 'etj.geojson', name: 'San Marcos ETJ', note: 'Extraterritorial jurisdiction', on: false, kind: 'line',
-      style: { color: '#60a5fa', weight: 2, dashArray: '6 6', fill: false },
-      popup: function () { return '<b>San Marcos extraterritorial jurisdiction (ETJ)</b><br>Source: City of San Marcos GIS'; } },
-    { id: 'flood', file: 'floodplain.geojson', name: 'FEMA floodplain', note: '1% (100-year) and 0.2% (500-year) zones', on: false, kind: 'fill',
-      style: function (f) { var p = /0\.2/.test(f.properties.subtype); return { color: p ? '#7dd3fc' : '#0ea5e9', weight: 1, fillColor: p ? '#7dd3fc' : '#0ea5e9', fillOpacity: p ? 0.2 : 0.35 }; },
-      popup: function (p) { return '<b>FEMA flood zone ' + esc(p.zone) + '</b>' + (p.subtype ? '<br>' + esc(p.subtype) : '') + '<br>Source: FEMA National Flood Hazard Layer'; } },
-    { id: 'tri', file: 'tritexas_parcels.geojson', name: 'TriTexas site (Franklin Mountain land)', note: 'Caldwell CAD parcels; ~2,090 acres', on: true, kind: 'fill',
-      style: function (f) { var sep = f.properties.prop_id === 28052; return { color: '#f97316', weight: 3, dashArray: sep ? '6 5' : null, fillColor: '#fb923c', fillOpacity: 0.18 }; },
-      popup: function (p) { return '<b>' + esc(p.owner) + '</b><br>' + acres(p.acres) + '<br>' + cadLink(p.prop_id) + (p.deed_doc ? '<br>Deed ' + esc(p.deed_date) + ', doc. ' + esc(p.deed_doc) : '') + (p.note ? '<br><i>' + esc(p.note) + '</i>' : '') + '<br>Source: Caldwell Central Appraisal District'; } },
-    { id: 'zone2', file: 'zone2.geojson', name: 'Caldwell 142 Reinvestment Zone #2', note: '611 acres; Project Hercules survey; Nov. 12, 2026', on: true, kind: 'fill',
-      style: { color: '#dc2626', weight: 3, fillColor: '#ef4444', fillOpacity: 0.25 },
-      popup: function (p) { return '<b>Caldwell 142 Reinvestment Zone #2</b><br>611.000 acres. County Order 01-2027: for "a one-building industrial manufacturing and assembly facility." The Kimley-Horn survey file is named "PROJECT HERCULES."<br><a href="https://www.co.caldwell.tx.us/upload/page/0252/docs/Agenda%20Packets/11.12.26%20Agenda%20Packet_Reduced.pdf#page=268" target="_blank" rel="noopener">Order and survey (Nov. 12, 2026 packet)</a><br><a href="businesses_summary.html#hercules">Project Hercules card</a><br><small>' + esc(p.method) + '</small>'; } },
-    { id: 'edc', file: 'edc_austin_parcels.geojson', name: 'EDC Austin data center land (Zone #1)', note: '$7.3B data center abatement, Mar. 26, 2026', on: true, kind: 'fill',
-      style: { color: '#9333ea', weight: 3, fillColor: '#a855f7', fillOpacity: 0.22 },
-      popup: function (p) { return '<b>' + esc(p.owner) + '</b><br>' + acres(p.acres) + '<br>' + cadLink(p.prop_id) + '<br>In Caldwell 142 Reinvestment Zone #1 (data center campus; County tax abatement approved Mar. 26, 2026). The zone itself is described in the order only by four corner points, so the land parcels are shown.<br>Source: Caldwell Central Appraisal District; <a href="https://www.co.caldwell.tx.us/upload/page/0252/docs/Agenda%20Packets/3.26.26%20Agenda%20Packet.pdf" target="_blank" rel="noopener">Mar. 26, 2026 packet</a>'; } },
-    { id: 'proto', file: 'proto_land_parcels.geojson', name: 'Proto-Land parcels', note: 'Bought Sept.-Oct. 2026', on: false, kind: 'line',
-      style: { color: '#eab308', weight: 3, dashArray: '4 4', fillOpacity: 0 },
-      popup: function (p) { return '<b>' + esc(p.owner) + '</b><br>' + acres(p.acres) + '<br>' + cadLink(p.prop_id) + '<br>Deed ' + esc(p.deed_date) + ', doc. ' + esc(p.deed_doc) + '<br>Source: Caldwell Central Appraisal District'; } },
-    { id: 'pipe', file: 'pipelines.geojson', name: 'Gas transmission pipelines', note: 'Approximate, per Railroad Commission', on: false, kind: 'line',
-      style: function (f) { var big = f.properties.diameter_in >= 40; return { color: big ? '#7c2d12' : '#b45309', weight: big ? 4 : 3, dashArray: '8 5' }; },
-      popup: function (p) { return '<b>' + esc(p.system) + '</b><br>' + esc(p.operator) + '<br>' + esc(p.diameter_in) + '-inch ' + esc(p.commodity).toLowerCase() + ', ' + esc(p.status) + (p.t4_permit ? '<br>RRC T-4 permit ' + esc(p.t4_permit) : '') + '<br>Source: Railroad Commission of Texas (locations approximate)'; } },
-    { id: 'rail', file: 'railroad.geojson', name: 'Railroad', note: 'OpenStreetMap', on: true, kind: 'line',
-      style: { color: '#111827', weight: 3, dashArray: '10 4' },
-      popup: function (p) { return '<b>Railroad</b>' + (p.operator ? '<br>' + esc(p.operator) : '') + (p.name ? '<br>' + esc(p.name) : '') + '<br>Source: OpenStreetMap'; } }
+  var groups = [
+    { name: 'Boundaries', layers: [
+      { id: 'city', file: 'city_limits.geojson', name: 'San Marcos city limits', note: 'City of San Marcos GIS', on: true, kind: 'fill',
+        style: { color: '#2563eb', weight: 2, fillColor: '#3b82f6', fillOpacity: 0.06 },
+        popup: function () { return '<b>San Marcos city limits</b><br>Source: City of San Marcos GIS'; } },
+      { id: 'etj', file: 'etj.geojson', name: 'San Marcos ETJ', note: 'Extraterritorial jurisdiction', on: false, kind: 'line',
+        style: { color: '#60a5fa', weight: 2, dashArray: '6 6', fill: false },
+        popup: function () { return '<b>San Marcos extraterritorial jurisdiction (ETJ)</b><br>Source: City of San Marcos GIS'; } },
+      { id: 'mcity', file: 'martindale_city_limits.geojson', name: 'Martindale city limits', note: 'Caldwell CAD GIS', on: false, kind: 'fill',
+        style: { color: '#be123c', weight: 2, fillColor: '#f43f5e', fillOpacity: 0.07 },
+        popup: function () { return '<b>City of Martindale city limits</b><br>Source: Caldwell Central Appraisal District GIS'; } },
+      { id: 'metj', file: 'martindale_etj.geojson', name: 'Martindale ETJ', note: 'Caldwell CAD GIS', on: false, kind: 'line',
+        style: { color: '#fb7185', weight: 2, dashArray: '6 6', fill: false },
+        popup: function () { return '<b>Martindale extraterritorial jurisdiction (ETJ)</b><br>Source: Caldwell Central Appraisal District GIS'; } },
+      { id: 'mud', file: 'muds.geojson', name: 'Municipal utility districts', note: 'Including Cotton Center MUD No. 1', on: false, kind: 'line',
+        style: { color: '#0f766e', weight: 2, dashArray: '2 5', fill: false },
+        popup: function (p) { return '<b>' + esc(MUDS[p.name] || p.name || 'Utility district') + '</b>' + (MUDS[p.name] ? ' (' + esc(p.name) + ')' : '') + (p.adopted ? '<br>Mapped: ' + esc(p.adopted) : '') + '<br>Source: Caldwell Central Appraisal District GIS'; } }
+    ] },
+    { name: 'TriTexas site (developer)', layers: [
+      { id: 'tri', file: 'tritexas_parcels.geojson', name: 'Franklin Mountain land', note: 'Caldwell CAD parcels; ~2,090 acres', on: true, kind: 'fill',
+        style: function (f) { var sep = f.properties.prop_id === 28052; return { color: '#f97316', weight: 3, dashArray: sep ? '6 5' : null, fillColor: '#fb923c', fillOpacity: 0.15 }; },
+        popup: function (p) { return parcel(p, p.note ? '<br><i>' + esc(p.note) + '</i>' : ''); } },
+      exb('container', true), exb('industrial', false), exb('commercial', false), exb('greenbelt', false), exb('buffer', true),
+      { id: 'fire', file: 'fire_station.geojson', name: 'Fire station site (City-owned)', note: 'Dedicated under DA Section 1.07.F', on: true, kind: 'fill',
+        style: { color: '#b91c1c', weight: 3, fillColor: '#f87171', fillOpacity: 0.6 },
+        popup: function (p) { return parcel(p, '<br>Deeded to the City of San Marcos. The Development Agreement (Section 1.07.F) requires the owner to donate two three-acre fire station sites, the westernmost within one year of the January 2023 agreement.'); } }
+    ] },
+    { name: 'Incentives and prospects', layers: [
+      { id: 'zone2', file: 'zone2.geojson', name: 'Reinvestment Zone #2 (Hercules)', note: '611 acres; County order Nov. 12, 2026', on: true, kind: 'fill',
+        style: { color: '#dc2626', weight: 3, fillColor: '#ef4444', fillOpacity: 0.22 },
+        popup: function (p) { return '<b>Caldwell 142 Reinvestment Zone #2</b><br>611.000 acres. County Order 01-2027: for "a one-building industrial manufacturing and assembly facility." The Kimley-Horn survey file is named "PROJECT HERCULES."<br><a href="' + PKT1112 + '#page=268" target="_blank" rel="noopener">Order and survey (Nov. 12, 2026 packet)</a><br><a href="businesses_summary.html#hercules">Project Hercules card</a><br><small>' + esc(p.method) + '</small>'; } },
+      { id: 'edc', file: 'edc_austin_parcels.geojson', name: 'EDC Austin data center (Zone #1)', note: '$7.3B County abatement, Mar. 26, 2026', on: true, kind: 'fill',
+        style: { color: '#9333ea', weight: 3, fillColor: '#a855f7', fillOpacity: 0.22 },
+        popup: function (p) { return parcel(p, '<br>In Caldwell 142 Reinvestment Zone #1 (data center campus; County tax abatement approved Mar. 26, 2026). The zone is described in the order only by four corner points, so the land parcels are shown.'); } },
+      { id: 'irn', file: 'irish_north.geojson', name: 'Earthship Irish North', note: 'Tracts under contract; DA approved Oct. 23, 2025', on: false, kind: 'fill',
+        style: { color: '#4d7c0f', weight: 2, dashArray: '5 4', fillColor: '#84cc16', fillOpacity: 0.2 },
+        popup: function (p) { return parcel(p, '<br><b>Project Irish North</b> (Earthship Corporation development agreement, approved 5-0 on Oct. 23, 2025). The agreement lists a ' + esc(p.da_tract_acres) + '-acre tract under purchase contract that matches this parcel. Not all listed tracts could be matched to parcels.<br><a href="' + PKT1023 + '#page=318" target="_blank" rel="noopener">Agreement (Oct. 23, 2025 packet)</a>'); } },
+      { id: 'irs', file: 'irish_south.geojson', name: 'Earthship Irish South', note: 'Tracts under contract; 2 bought by Proto-Land', on: false, kind: 'fill',
+        style: { color: '#3f6212', weight: 2, dashArray: '5 4', fillColor: '#a3e635', fillOpacity: 0.25 },
+        popup: function (p) { return parcel(p, '<br><b>Project Irish South</b> (Earthship Corporation development agreement, approved 5-0 on Oct. 23, 2025). The agreement lists a ' + esc(p.da_tract_acres) + '-acre tract under purchase contract that matches this parcel.<br><a href="' + PKT1023 + '#page=373" target="_blank" rel="noopener">Agreement (Oct. 23, 2025 packet)</a>'); } },
+      { id: 'proto', file: 'proto_land_parcels.geojson', name: 'Proto-Land purchases', note: 'Bought Sept.-Oct. 2026', on: false, kind: 'line',
+        style: { color: '#eab308', weight: 3, dashArray: '4 4', fillOpacity: 0 },
+        popup: function (p) { return parcel(p); } }
+    ] },
+    { name: 'Infrastructure and environment', layers: [
+      { id: 'flood', file: 'floodplain.geojson', name: 'FEMA floodplain', note: '1% and 0.2% annual chance', on: false, kind: 'fill',
+        style: function (f) { var p = /0\.2/.test(f.properties.subtype); return { color: p ? '#7dd3fc' : '#0ea5e9', weight: 1, fillColor: p ? '#7dd3fc' : '#0ea5e9', fillOpacity: p ? 0.2 : 0.35 }; },
+        popup: function (p) { return '<b>FEMA flood zone ' + esc(p.zone) + '</b>' + (p.subtype ? '<br>' + esc(p.subtype) : '') + '<br>Source: FEMA National Flood Hazard Layer'; } },
+      { id: 'pipe', file: 'pipelines.geojson', name: 'Gas transmission pipelines', note: 'Approximate, per Railroad Commission', on: false, kind: 'line',
+        style: function (f) { var big = f.properties.diameter_in >= 40; return { color: big ? '#7c2d12' : '#b45309', weight: big ? 4 : 3, dashArray: '8 5' }; },
+        popup: function (p) { return '<b>' + esc(p.system) + '</b><br>' + esc(p.operator) + '<br>' + esc(p.diameter_in) + '-inch ' + esc(p.commodity).toLowerCase() + ', ' + esc(p.status) + (p.t4_permit ? '<br>RRC T-4 permit ' + esc(p.t4_permit) : '') + '<br>Source: Railroad Commission of Texas (locations approximate)'; } },
+      { id: 'rail', file: 'railroad.geojson', name: 'Railroad', note: 'OpenStreetMap', on: true, kind: 'line',
+        style: { color: '#111827', weight: 3, dashArray: '10 4' },
+        popup: function (p) { return '<b>Railroad</b>' + (p.operator ? '<br>' + esc(p.operator) : '') + '<br>Source: OpenStreetMap'; } },
+      { id: 'fuds', file: 'fuds_gary.geojson', name: 'Former Gary AFB (groundwater history)', note: 'USACE Formerly Used Defense Site', on: false, kind: 'fill',
+        style: { color: '#78350f', weight: 2, dashArray: '3 4', fillColor: '#a16207', fillOpacity: 0.12 },
+        popup: function (p) { return '<b>' + esc(p.featurename) + '</b> (FUDS ' + esc(p.fudsuniquepropertynumber) + ')<br>Former San Marcos Army Airfield / Gary Air Force Base, now the airport and Gary Job Corps Center. USACE status: ' + esc(p.status) + ', ' + esc(p.eligibility) + ' (FY' + esc(p.fiscalyear) + ').<br>The EPA-evaluated San Marcos Municipal Landfill (EPA ID TXD980625222, archived as No Further Remedial Action Planned) is at Camp Gary near Reedville.<br><a href="superfund.html">Groundwater contamination page</a> &middot; <a href="' + esc(p.emsmgmtactionplanlink) + '" target="_blank" rel="noopener">USACE record</a><br>Source: U.S. Army Corps of Engineers FUDS data (FY2024); EPA SEMS'; } },
+      { id: 'roads', file: 'county_road_plan.geojson', name: 'County road plan (2024)', note: 'Planned and existing corridors', on: false, kind: 'line',
+        style: function (f) { var n = /^New/.test(f.properties.class || ''); return { color: n ? '#db2777' : '#9d174d', weight: 4, dashArray: n ? '10 6' : null, opacity: 0.85 }; },
+        popup: function (p) { return '<b>' + esc(p.name) + '</b><br>' + esc(p.class) + '<br>Source: Caldwell County 2024 Transportation Plan (Caldwell CAD GIS)'; } }
+    ] },
+    { name: 'Community', layers: [
+      { id: 'homes', file: 'address_points.geojson', name: 'Homes and other buildings', note: 'Caldwell County 911 address points', on: false, kind: 'point',
+        style: { radius: 3, color: '#ffffff', weight: 1, fillColor: '#0f172a', fillOpacity: 0.9 },
+        popup: function () { return '<b>Addressed building</b><br>A Caldwell County 911 address point, most of which are homes.<br>Source: Caldwell Central Appraisal District GIS'; } }
+    ] }
   ];
 
   var panel = document.getElementById('layers');
-  var order = ['city', 'etj', 'flood', 'tri', 'proto', 'edc', 'zone2', 'pipe', 'rail'];
-  var loaded = {};
-  defs.forEach(function (d) {
-    var row = document.createElement('label'); row.className = 'layer';
-    var cb = document.createElement('input'); cb.type = 'checkbox'; cb.checked = d.on;
-    var st = typeof d.style === 'function' ? d.style({ properties: { subtype: '', prop_id: 0, diameter_in: 42 } }) : d.style;
-    var sw = document.createElement('span'); sw.className = 'sw' + (d.kind === 'line' ? ' line' : '');
-    if (d.kind === 'line') { sw.style.borderTopColor = st.color; if (st.dashArray) sw.style.borderTopStyle = 'dashed'; }
-    else { sw.style.background = st.fillColor; sw.style.border = '2px solid ' + st.color; sw.style.opacity = 0.9; }
-    var txt = document.createElement('span'); txt.innerHTML = esc(d.name) + '<small>' + esc(d.note) + '</small>';
-    row.appendChild(cb); row.appendChild(sw); row.appendChild(txt); panel.appendChild(row);
-    fetch('maps/data/' + d.file).then(function (r) { return r.json(); }).then(function (gj) {
-      var layer = L.geoJSON(gj, { style: d.style, onEachFeature: function (f, l) { l.bindPopup(d.popup(f.properties)); } });
-      loaded[d.id] = layer;
-      if (cb.checked) layer.addTo(map);
-      restack();
+  var stackOrder = ['flood', 'city', 'etj', 'mcity', 'metj', 'mud', 'tri', 'exb_industrial', 'exb_commercial', 'exb_greenbelt', 'exb_buffer', 'exb_container',
+    'fuds', 'irn', 'irs', 'proto', 'edc', 'zone2', 'fire', 'roads', 'pipe', 'rail', 'homes'];
+  var all = {};
+
+  function swatch(d) {
+    var st = typeof d.style === 'function' ? d.style({ properties: { subtype: '', prop_id: 0, diameter_in: 42, class: 'New' } }) : d.style;
+    var sw = document.createElement('span');
+    if (d.kind === 'line') { sw.className = 'sw line'; sw.style.borderTopColor = st.color; if (st.dashArray) sw.style.borderTopStyle = 'dashed'; }
+    else if (d.kind === 'point') { sw.className = 'sw'; sw.style.cssText = 'width:9px;height:9px;flex:0 0 9px;border-radius:50%;margin:5px 5px 0 4px;background:' + st.fillColor; }
+    else { sw.className = 'sw'; sw.style.background = st.fillColor; sw.style.border = '2px solid ' + st.color; }
+    return sw;
+  }
+  function tip(d, p) {
+    var t = '<b>' + esc(d.name) + '</b>';
+    if (p.owner && d.id !== 'tri') t += '<br>' + esc(p.owner);
+    if (p.acres) t += '<br>' + acres(p.acres);
+    if (p.acres_drawn) t += '<br>About ' + esc(p.acres_drawn) + ' acres as drawn';
+    if (p.zone) t += '<br>Zone ' + esc(p.zone) + (p.subtype ? ' (' + esc(p.subtype) + ')' : '');
+    if (p.system) t += '<br>' + esc(p.system) + ', ' + esc(p.diameter_in) + '-inch';
+    if (p.class) t += '<br>' + esc(p.name) + ': ' + esc(p.class);
+    return t + '<br><small>Click for details</small>';
+  }
+  function baseStyle(d, l) { return typeof d.style === 'function' ? d.style(l.feature) : d.style; }
+  function hi(l, d) {
+    var b = baseStyle(d, l);
+    if (d.kind === 'point') { l.setStyle({ radius: 7, fillColor: '#f59e0b' }); return; }
+    l.setStyle({ weight: (b.weight || 2) + 3, opacity: 1,
+      fillOpacity: b.fillOpacity === 0 || b.fill === false ? 0 : Math.min(0.65, (b.fillOpacity || 0) + 0.25) });
+    if (l.bringToFront) l.bringToFront();
+  }
+  function restack() { stackOrder.forEach(function (id) { var d = all[id]; if (d && d.layer && map.hasLayer(d.layer) && d.kind !== 'point') d.layer.bringToFront(); }); }
+  function setOn(d, on) {
+    d.cb.checked = on;
+    if (!d.layer) { d.want = on; return; }
+    if (on) { d.layer.addTo(map); restack(); } else map.removeLayer(d.layer);
+  }
+
+  groups.forEach(function (g) {
+    var box = document.createElement('div'); box.className = 'grp';
+    var head = document.createElement('div'); head.className = 'grp-head';
+    var gcb = document.createElement('input'); gcb.type = 'checkbox'; gcb.setAttribute('aria-label', 'Show all ' + g.name);
+    var tog = document.createElement('button'); tog.className = 'grp-tog'; tog.type = 'button'; tog.setAttribute('aria-expanded', 'true');
+    tog.innerHTML = '<span class="caret">&#9662;</span> ' + esc(g.name);
+    head.appendChild(gcb); head.appendChild(tog); box.appendChild(head);
+    var kids = document.createElement('div'); kids.className = 'grp-kids'; box.appendChild(kids);
+    panel.appendChild(box);
+    tog.onclick = function () { var open = kids.style.display !== 'none'; kids.style.display = open ? 'none' : ''; tog.setAttribute('aria-expanded', String(!open)); tog.querySelector('.caret').innerHTML = open ? '&#9656;' : '&#9662;'; };
+    function syncParent() {
+      var n = g.layers.filter(function (d) { return d.cb.checked; }).length;
+      gcb.checked = n === g.layers.length; gcb.indeterminate = n > 0 && n < g.layers.length;
+    }
+    gcb.onchange = function () { g.layers.forEach(function (d) { setOn(d, gcb.checked); }); syncParent(); };
+
+    g.layers.forEach(function (d) {
+      all[d.id] = d; d.want = d.on;
+      var row = document.createElement('label'); row.className = 'layer';
+      var cb = document.createElement('input'); cb.type = 'checkbox'; cb.checked = d.on; d.cb = cb;
+      var txt = document.createElement('span'); txt.innerHTML = esc(d.name) + '<small>' + esc(d.note) + '</small>';
+      row.appendChild(cb); row.appendChild(swatch(d)); row.appendChild(txt); kids.appendChild(row);
+      cb.addEventListener('change', function () { setOn(d, cb.checked); syncParent(); });
+      fetch('maps/data/' + d.file).then(function (r) { return r.json(); }).then(function (gj) {
+        var opts = { filter: d.filter, onEachFeature: function (f, l) {
+          l.bindPopup(d.popup(f.properties));
+          l.bindTooltip(tip(d, f.properties), { sticky: true, direction: 'top', opacity: 0.95 });
+          l.on('mouseover', function () { hi(l, d); row.classList.add('hot'); });
+          l.on('mouseout', function () { d.layer.resetStyle(l); restack(); row.classList.remove('hot'); });
+        } };
+        if (d.kind === 'point') { opts.pointToLayer = function (f, ll) { return L.circleMarker(ll, L.extend({ renderer: canvas }, d.style)); }; }
+        else opts.style = d.style;
+        d.layer = L.geoJSON(gj, opts);
+        row.addEventListener('mouseenter', function () { if (map.hasLayer(d.layer) && d.kind !== 'point') d.layer.eachLayer(function (l) { hi(l, d); }); });
+        row.addEventListener('mouseleave', function () { if (d.kind !== 'point') { d.layer.resetStyle(); restack(); } });
+        if (cb.checked) { d.layer.addTo(map); restack(); }
+      });
     });
-    cb.addEventListener('change', function () {
-      var l = loaded[d.id]; if (!l) return;
-      if (cb.checked) { l.addTo(map); restack(); } else map.removeLayer(l);
-    });
+    syncParent();
   });
-  function restack() { order.forEach(function (id) { var l = loaded[id]; if (l && map.hasLayer(l)) l.bringToFront(); }); }
 })();
 </script>
 </body>

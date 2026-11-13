@@ -206,7 +206,7 @@ document.addEventListener('DOMContentLoaded', function () {
 (function () {
   var map = L.map('map', { zoomControl: true, scrollWheelZoom: true, preferCanvas: false }).setView([29.868, -97.828], 14);
   L.control.scale({ imperial: true, metric: false }).addTo(map);
-  var DATA_VERSION = '2026-11-13f'; // bump when maps/data files change so browsers fetch fresh copies
+  var DATA_VERSION = '2026-11-13g'; // bump when maps/data files change so browsers fetch fresh copies
 
   var bases = {
     'Aerial 2025 (Esri)': L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
@@ -276,8 +276,8 @@ document.addEventListener('DOMContentLoaded', function () {
   var groups = [
     { name: 'TriTexas site: land and plans', layers: [
       { id: 'tri', file: 'tritexas_parcels.geojson', name: 'Franklin Mountain land', note: 'Caldwell CAD parcels; ~2,090 acres', on: true, kind: 'fill', pane: 'p_site', edge: true,
-        casing: { weight: 3 },
-        style: function (f) { var sep = f.properties.prop_id === 28052; return { color: '#D55E00', weight: 3, dashArray: sep ? '6 5' : null, fillColor: '#D55E00', fillOpacity: 0.08 }; },
+        outline: { file: 'tritexas_outline.geojson', casing: 3, style: { color: '#D55E00', weight: 3.5, fillColor: '#D55E00', fillOpacity: 0.08 } },
+        style: function (f) { var sep = f.properties.prop_id === 28052; return { color: '#D55E00', weight: 1.2, opacity: 0.85, dashArray: sep ? '6 5' : '3 4', fillOpacity: 0 }; },
         popup: function (p) { return parcel(p, p.note ? '<br><i>' + esc(p.note) + '</i>' : ''); } },
       { id: 'exb_landuse', file: 'exhibit_b_land_use.geojson', filter: function (f) { return /^(industrial|commercial|greenbelt)$/.test(f.properties.category); },
         name: 'Land use designations (Exhibit B)', note: 'As drawn on Exhibit B (approximate)', on: false, kind: 'fill', pane: 'p_plan', excl: 'plan',
@@ -388,7 +388,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function hexA(h, a) { var n = parseInt(h.slice(1), 16); return 'rgba(' + (n >> 16) + ',' + ((n >> 8) & 255) + ',' + (n & 255) + ',' + a + ')'; }
   function swatch(d) {
-    var st = typeof d.style === 'function' ? d.style({ properties: { subtype: '', prop_id: 0, diameter_in: 42, max_ft: '15', category: 'industrial' } }) : d.style;
+    var st = d.outline ? d.outline.style : typeof d.style === 'function' ? d.style({ properties: { subtype: '', prop_id: 0, diameter_in: 42, max_ft: '15', category: 'industrial' } }) : d.style;
     var sw = document.createElement('span');
     var light = /^#(ffffff|e2e8f0|d1d5db)$/i.test(st.color);
     if (d.kind === 'line') {
@@ -397,7 +397,7 @@ document.addEventListener('DOMContentLoaded', function () {
     } else {
       sw.className = 'sw'; sw.style.background = st.fillOpacity ? hexA(st.fillColor, Math.max(st.fillOpacity, 0.35)) : 'transparent';
       sw.style.border = '2px ' + (st.dashArray ? 'dashed ' : 'solid ') + st.color;
-      if (d.casing || light) sw.style.outline = '1px solid #475569';
+      if (d.casing || d.outline || light) sw.style.outline = '1px solid #475569';
     }
     return sw;
   }
@@ -418,7 +418,7 @@ document.addEventListener('DOMContentLoaded', function () {
   function baseStyle(d, l) { return typeof d.style === 'function' ? d.style(l.feature) : d.style; }
   function hi(l, d) {  // highlight in place; never reorders, so the shapes under the cursor stay put
     var b = baseStyle(d, l);
-    l.setStyle({ weight: (b.weight || 2) + 3, opacity: 1,
+    l.setStyle({ weight: (b.weight || 2) + 3, opacity: 1, color: d.outline ? d.outline.style.color : b.color, dashArray: d.outline ? null : b.dashArray,
       fillOpacity: b.fill === false ? 0 : Math.min(0.65, (b.fillOpacity || 0) + 0.25) });
   }
   function syncAll() { groups.forEach(function (g) { if (g.sync) g.sync(); }); }
@@ -457,7 +457,9 @@ document.addEventListener('DOMContentLoaded', function () {
       var txt = document.createElement('span'); txt.innerHTML = esc(d.name) + '<small>' + esc(d.note) + (d.excl ? '. One plan layer shows at a time.' : '') + '</small>' + (d.key ? d.key.map(function (k) { return '<small class="key"><i style="background:' + k[0] + '"></i>' + esc(k[1]) + '</small>'; }).join('') : '');
       row.appendChild(cb); row.appendChild(swatch(d)); row.appendChild(txt); kids.appendChild(row);
       cb.addEventListener('change', function () { setOn(d, cb.checked); syncAll(); });
-      fetch('maps/data/' + d.file + '?v=' + DATA_VERSION).then(function (r) { return r.json(); }).then(function (gj) {
+      var get = function (file) { return fetch('maps/data/' + file + '?v=' + DATA_VERSION).then(function (r) { return r.json(); }); };
+      Promise.all([get(d.file), d.outline ? get(d.outline.file) : null]).then(function (res) {
+        var gj = res[0], og = res[1];
         var labels = L.layerGroup();
         var opts = { filter: d.filter, pane: d.pane, style: d.style, onEachFeature: function (f, l) {
           l.bindPopup(d.popup(f.properties));
@@ -477,6 +479,11 @@ document.addEventListener('DOMContentLoaded', function () {
           var cs = d.casing;
           d.parts.unshift(L.geoJSON(gj, { filter: d.filter, pane: d.pane, interactive: false,
             style: function (f) { var b = typeof d.style === 'function' ? d.style(f) : d.style; return { color: cs.color || CASE.color, opacity: cs.opacity || CASE.opacity, weight: (b.weight || 2) + cs.weight, fill: false }; } }));
+        }
+        if (og) {  // one overall boundary under the faint parcel lines
+          var ost = d.outline.style;
+          d.parts.unshift(L.geoJSON(og, { pane: d.pane, interactive: false, style: ost }));
+          d.parts.unshift(L.geoJSON(og, { pane: d.pane, interactive: false, style: { color: CASE.color, opacity: CASE.opacity, weight: ost.weight + d.outline.casing, fill: false } }));
         }
         row.addEventListener('mouseenter', function () { if (map.hasLayer(d.layer)) d.layer.eachLayer(function (l) { hi(l, d); }); });
         row.addEventListener('mouseleave', function () { d.layer.resetStyle(); });

@@ -150,7 +150,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <li><b>Homes</b> are appraisal district parcels whose improvements carry a residential state code (single-family, mobile home,
       multifamily or rural home) or that have a homestead exemption, from the 2026 certified Caldwell CAD export. Homesteads are
       owner-occupied homes. Tracts over 25 acres are left off so whole farms are not shaded. No names or addresses are shown.</li>
-    <li><b>Martindale city limits and ETJ and utility districts</b> are from the Caldwell Central
+    <li><b>Martindale city limits and ETJ</b> are from the Caldwell Central
       Appraisal District's public GIS. <b>Streams</b> are from the USGS National Hydrography Dataset.</li>
     <li><b>Former San Marcos Municipal Landfill</b> is traced from Figure 5 of the U.S. Department of Labor's Gary Job Corps
       Center Draft Environmental Assessment (July 2022). It was placed by fitting that figure's Tract IV and V outlines to the
@@ -163,6 +163,7 @@ document.addEventListener('DOMContentLoaded', function () {
       Approximate, as drawn by the developer.</li>
     <li><b>Allowed cut and fill depth</b> (Exhibit G) was placed by
       aligning that exhibit's aerial background with Exhibit B. Approximate, as drawn by the developer.</li>
+    <li><b>Municipal utility districts</b> are the Texas Commission on Environmental Quality's official water district boundaries.</li>
     <li><b>Water and sewer service areas</b> are Certificate of Convenience and Necessity (CCN) boundaries from the Public Utility Commission of Texas.</li>
     <li><b>San Marcos city limits and ETJ</b> are from the City of San Marcos GIS. <b>Floodplain</b> is FEMA's National Flood
       Hazard Layer (1% and 0.2% annual chance zones). <b>Pipelines</b> are from the Railroad Commission of Texas public
@@ -211,7 +212,7 @@ document.addEventListener('DOMContentLoaded', function () {
 (function () {
   var map = L.map('map', { zoomControl: true, scrollWheelZoom: true, preferCanvas: false }).setView([29.868, -97.828], 14);
   L.control.scale({ imperial: true, metric: false }).addTo(map);
-  var DATA_VERSION = '2026-11-13j'; // bump when maps/data files change so browsers fetch fresh copies
+  var DATA_VERSION = '2026-11-13k'; // bump when maps/data files change so browsers fetch fresh copies
 
   var bases = {
     'Aerial 2025 (Esri)': L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
@@ -245,7 +246,6 @@ document.addEventListener('DOMContentLoaded', function () {
   var PKT1112 = 'https://www.co.caldwell.tx.us/upload/page/0252/docs/Agenda%20Packets/11.12.26%20Agenda%20Packet_Reduced.pdf';
   var PKT1023 = 'https://www.co.caldwell.tx.us/upload/page/0245/docs/Agenda%20Packets/10.23.25%20Agenda%20Packet.pdf';
   var EXB = 'https://smartterminalcommunityinfo.github.io/maps.html';
-  var MUDS = { MCO1: 'Cotton Center MUD No. 1', MCO2: 'Cotton Center MUD No. 2' };
   // Color scheme: one family per theme. Land use follows APA LBCS colors; flood zones follow FEMA's NFHL renderer;
   // utilities follow the APWA uniform color code (water blue, sewer green, gas yellow); other hues are Okabe-Ito.
   // Draw order is fixed by pane (large areas low, small shapes and lines high) so hover never reorders the map.
@@ -347,9 +347,9 @@ document.addEventListener('DOMContentLoaded', function () {
       { id: 'metj', file: 'martindale_etj.geojson', name: 'Martindale ETJ', note: 'Caldwell CAD GIS', on: false, kind: 'line', pane: 'p_bound',
         style: { color: '#E69F00', weight: 2.5, dashArray: '8 6', fill: false },
         popup: function () { return '<b>Martindale extraterritorial jurisdiction (ETJ)</b><br>Source: Caldwell Central Appraisal District GIS'; } },
-      { id: 'mud', file: 'muds.geojson', name: 'Municipal utility districts', note: 'Including Cotton Center MUD No. 1', on: false, kind: 'line', pane: 'p_bound',
+      { id: 'mud', file: 'muds.geojson', name: 'Municipal utility districts', note: 'TCEQ official boundaries', on: false, kind: 'line', pane: 'p_bound',
         style: { color: '#d1d5db', weight: 2.5, dashArray: '2 5', fill: false },
-        popup: function (p) { return '<b>' + esc(MUDS[p.name] || p.name || 'Utility district') + '</b>' + (MUDS[p.name] ? ' (' + esc(p.name) + ')' : '') + (p.adopted ? '<br>Mapped: ' + esc(p.adopted) : '') + '<br>Source: Caldwell Central Appraisal District GIS'; } }
+        popup: function (p) { return '<b>' + esc(p.name) + '</b><br>TCEQ district ' + esc(p.district_id) + (p.plat_acres ? ', ' + esc(Number(p.plat_acres).toLocaleString()) + ' acres' : '') + (p.boundary_change ? '<br>Boundary last changed ' + esc(p.boundary_change) : '') + (/Cotton Center MUD 1/.test(p.name) ? '<br>On May 3, 2024 the district excluded three tracts, including Franklin Mountain&#39;s 660.503 acres (Caldwell County Doc. 2024-003500).' : '') + '<br>Source: Texas Commission on Environmental Quality, water district boundaries'; } },
     ] },
     { name: 'Utility service areas', layers: [
       ccn('wccn', 'water_ccn.geojson', 'Water service areas (CCN)', 'Public Utility Commission; who may serve each area', '#56B4E9', 'water'),

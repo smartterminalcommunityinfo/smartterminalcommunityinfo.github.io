@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <div class="notes">
   <h3>How the layers were made</h3>
   <ul>
-    <li><b>Parcels</b> (TriTexas ownership, EDC Austin, Proto-Land) are the Caldwell Central Appraisal District's parcel
+    <li><b>Parcels</b> (TriTexas ownership, EDC Austin, Project Irish) are the Caldwell Central Appraisal District's parcel
       outlines. Appraisal maps are close but are not surveys.</li>
     <li><b>Caldwell 142 Reinvestment Zone #2</b> is traced from the 23 recorded boundary calls in Exhibit A to Caldwell
       County Order 01-2027 (Kimley-Horn survey dated October 27, 2026). The traced boundary closes within 0.02 feet and
@@ -323,11 +323,7 @@ document.addEventListener('DOMContentLoaded', function () {
       { id: 'irish', file: 'irish.geojson', name: 'Earthship Project Irish (North and South)', note: 'Tracts under contract; DAs approved Oct. 23, 2025', on: false, kind: 'fill', pane: 'p_parcel',
         casing: { weight: 3 },
         style: { color: '#ffffff', weight: 2.5, dashArray: '7 5', fillColor: '#ffffff', fillOpacity: 0.1 },
-        popup: function (p) { var s = p.project === 'Irish South'; return parcel(p, '<br><b>Project ' + esc(p.project) + '</b> (Earthship Corporation development agreement, approved 5-0 on Oct. 23, 2025). The agreement lists a ' + esc(p.da_tract_acres) + '-acre tract under purchase contract that matches this parcel. Not every listed tract could be matched to a parcel.<br><a href="' + PKT1023 + '#page=' + (s ? 373 : 318) + '" target="_blank" rel="noopener">Agreement (Oct. 23, 2025 packet)</a>'); } },
-      { id: 'proto', file: 'proto_land_parcels.geojson', name: 'Proto-Land purchases', note: 'Bought Sept.-Oct. 2026', on: false, kind: 'fill', pane: 'p_parcel',
-        casing: { weight: 3 },
-        style: { color: '#ffffff', weight: 2.5, dashArray: '2 5', fillColor: '#ffffff', fillOpacity: 0.1 },
-        popup: function (p) { return parcel(p); } }
+        popup: function (p) { var s = p.project === 'Irish South'; return parcel(p, '<br><b>Project ' + esc(p.project) + '</b> (Earthship Corporation development agreement, approved 5-0 on Oct. 23, 2025). The agreement lists a ' + esc(p.da_tract_acres) + '-acre tract under purchase contract that matches this parcel. Not every listed tract could be matched to a parcel.<br><a href="' + PKT1023 + '#page=' + (s ? 373 : 318) + '" target="_blank" rel="noopener">Agreement (Oct. 23, 2025 packet)</a>'); } }
     ] },
     { name: 'Jurisdictions', layers: [
       { id: 'city', file: 'city_limits.geojson', name: 'San Marcos city limits', note: 'City of San Marcos GIS', on: false, kind: 'line', pane: 'p_bound',

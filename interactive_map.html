@@ -157,7 +157,8 @@ document.addEventListener('DOMContentLoaded', function () {
       appraisal district parcels those tracts became (median difference about 14 feet). <b>Fuel dumps and military landfill
       spots</b> are from the sketch map in the EPA's 1995 Site Inspection Prioritization report for the Gary Job Corps Center,
       which is labeled "not to scale" and records a 1987 recollection; the sketch was placed by matching its runways to the
-      airport (within about 150 feet), so these spots are approximate.</li>
+      airport (within about 150 feet), so these spots are approximate. The <b>0.5- and 0.8-mile rings</b> mark the distances at which
+      that report found contaminated residential wells southeast of the landfill; the wells themselves are not marked.</li>
     <li><b>Detention ponds and drainage channels</b> are traced from Kimley-Horn's Axis Detention and Water Quality Summary Exhibit, which is drawn on the
       same sheet as Exhibit C and placed with the same fit. Its road matches the built Energy Parkway within about 20 feet.
       Approximate, as drawn by the developer.</li>
@@ -216,7 +217,7 @@ document.addEventListener('DOMContentLoaded', function () {
 (function () {
   var map = L.map('map', { zoomControl: true, scrollWheelZoom: true, preferCanvas: false }).setView([29.868, -97.828], 14);
   L.control.scale({ imperial: true, metric: false }).addTo(map);
-  var DATA_VERSION = '2026-11-13l'; // bump when maps/data files change so browsers fetch fresh copies
+  var DATA_VERSION = '2026-11-13p'; // bump when maps/data files change so browsers fetch fresh copies
 
   var bases = {
     'Aerial 2025 (Esri)': L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
@@ -360,16 +361,18 @@ document.addEventListener('DOMContentLoaded', function () {
       ccn('sccn', 'sewer_ccn.geojson', 'Sewer service areas (CCN)', 'Public Utility Commission; who may serve each area', '#009E73', 'sewer')
     ] },
     { name: 'Water and environment', layers: [
-      { id: 'landfill', file: 'landfill_municipal.geojson', name: 'Former landfills and fuel dumps', note: 'Municipal landfill per the 2022 Gary Job Corps assessment; spots from the 1995 EPA report (approximate)', on: false, kind: 'fill', pane: 'p_zone', pointPane: 'p_point',
-        key: [['#B91C1C', 'Former San Marcos Municipal Landfill'], ['#F0E442', 'Reported fuel dump (1995 EPA report)'], ['#7F1D1D', 'Reported military landfill spot (1995 EPA report)']],
+      { id: 'landfill', file: 'landfill_municipal.geojson', name: 'Former landfills, fuel dumps and well contamination', note: 'Municipal landfill per the 2022 Gary Job Corps assessment; other features from the 1995 EPA report (approximate)', on: false, kind: 'fill', pane: 'p_zone', pointPane: 'p_point',
+        key: [['#B91C1C', 'Former San Marcos Municipal Landfill'], ['#F0E442', 'Reported fuel dump (1995 EPA report)'], ['#7F1D1D', 'Reported military landfill spot (1995 EPA report)'], ['#FCA5A5', '0.5 and 0.8 mile from the landfill: contaminated residential wells were in this range to the southeast']],
         style: function (f) { var k = f.properties.kind;
           if (k === 'fuel_dump') return { radius: 8, color: '#111827', weight: 2, fillColor: '#F0E442', fillOpacity: 0.95 };
           if (k === 'military') return { radius: 8, color: '#ffffff', weight: 2, fillColor: '#7F1D1D', fillOpacity: 0.95 };
+          if (k === 'well_ring') return { color: '#FCA5A5', weight: 2.5, dashArray: '6 6', fill: false, opacity: 0.95 };
           return { color: '#B91C1C', weight: 2.5, fillColor: '#B91C1C', fillOpacity: 0.3 }; },
-        label: function (p, l) { return p.kind === 'fuel_dump' ? [l.getLatLng(), p.label, 'right'] : null; },
+        label: function (p, l) { return p.kind === 'fuel_dump' ? [l.getLatLng(), p.label, 'right'] : (p.kind === 'well_ring' ? [p.label_pt, p.miles + ' mi'] : null); },
         popup: function (p) {
+          if (p.kind === 'well_ring') return '<b>' + esc(p.miles) + ' mile from the former landfill</b><br>The EPA&#39;s 1995 Site Inspection Prioritization report found cis-1,2-dichloroethene, a chlorinated solvent breakdown product, in four private residential wells about 0.5 to 0.8 mile southeast of the closed San Marcos Municipal Landfill, sampled in October 1988 and again in 1989: 54.3 ppb in a barn well (0.5 mile), 17.2 ppb (0.5 mile), 5 ppb (0.7 mile) and 5.5 ppb (0.8 mile). None exceeded the federal drinking water limit of 70 ppb. The report names the landfill as the believed source. Owners&#39; names are withheld in the EPA record, and the wells are not marked individually here.<br><a href="superfund.html">Groundwater contamination page</a>';
           if (p.kind !== 'municipal') return '<b>' + esc(p.label) + '</b><br>' + esc(p.desc) + '<br>The EPA&#39;s 1995 Site Inspection Prioritization report for the Gary Job Corps Center records that the center&#39;s environmental coordinator said in 1987 there had been &quot;' + esc(p.quote) + '.&quot; It also records his guess that tetraethyl lead buried by the military would be near the fuel dumps. Soil samples were proposed at each fuel dump and around the military landfill; the report contains no soil results.<br><a href="superfund.html">Groundwater contamination page</a><br><small>' + esc(p.method) + '</small>';
-          return '<b>Former San Marcos Municipal Landfill</b><br>About ' + esc(p.acres_drawn) + ' acres as drawn, east of the airport runways. The U.S. Department of Labor&#39;s 2022 Draft Environmental Assessment for the Gary Job Corps Center (Figure 5) shows the landfill across Job Corps Tracts IV and V. Those tracts are now appraisal district parcels 121632 and 121633 (City of San Marcos, deed Jan. 29, 2026) and 132449 (Texas State University, deed Mar. 7, 2025).<br>The CAPCOG closed landfill inventory lists this area as site #640.<br><a href="superfund.html">Groundwater contamination page</a><br><small>' + esc(p.method) + '</small>'; } },
+          return '<b>Former San Marcos Municipal Landfill</b><br>About ' + esc(p.acres_drawn) + ' acres as drawn, east of the airport runways. The U.S. Department of Labor&#39;s 2022 Draft Environmental Assessment for the Gary Job Corps Center (Figure 5) shows the landfill across Job Corps Tracts IV and V. Those tracts are now appraisal district parcels 121632 and 121633 (City of San Marcos, deed Jan. 29, 2026) and 132449 (Texas State University, deed Mar. 7, 2025).<br>The CAPCOG closed landfill inventory lists this area as site #640.<br>Monitoring wells at the landfill sampled by EPA contractors in 1988 showed 1,1-dichloroethene, 1,2-dichloroethene, vinyl chloride, carbon disulfide, pyrene and delta-BHC, and arsenic, barium, lead and other metals above background (1995 EPA Site Inspection Prioritization report).<br><a href="superfund.html">Groundwater contamination page</a><br><small>' + esc(p.method) + '</small>'; } },
       { id: 'flood', file: 'floodplain.geojson', name: 'FEMA floodplain', note: 'FEMA map colors', on: false, kind: 'fill', pane: 'p_flood',
         key: [['#00E6FF', '1% annual chance (100-year)'], ['#FF8000', '0.2% annual chance (500-year)'], ['#FF0000', 'Floodway']],
         style: function (f) { var s = f.properties.subtype || '', c = /FLOODWAY/.test(s) ? '#FF0000' : (/0\.2/.test(s) ? '#FF8000' : '#00E6FF'); return { color: c, weight: 0.8, fillColor: c, fillOpacity: /0\.2/.test(s) ? 0.3 : 0.35 }; },
@@ -516,7 +519,7 @@ document.addEventListener('DOMContentLoaded', function () {
         row.addEventListener('mouseleave', function () { d.layer.resetStyle(); });
         if (cb.checked) d.parts.forEach(function (x) { x.addTo(map); });
         if (d.id === 'tri' && !location.hash) map.fitBounds(d.layer.getBounds(), { padding: [30, 30] });  // open framed on the site
-      });
+      }).catch(function (e) { if (window.console) console.error('Layer ' + d.id + ' failed:', e); });
     });
     g.sync();
     if (!g.layers.some(function (d) { return d.on; })) tog.onclick();  // start collapsed when nothing in the group is on

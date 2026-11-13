@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Q1K0ZSQV73"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-Q1K0ZSQV73');
+</script>
+<title>Interactive Map - TriTexas Logistics Park / SMART Terminal</title>
+<meta name="description" content="Interactive map of the TriTexas Logistics Park (formerly SMART Terminal) site in Caldwell County, Texas: ownership parcels, city limits, the Caldwell 142 reinvestment zones, floodplain, pipelines and rail, from public records.">
+<meta property="og:title" content="Interactive Map - TriTexas Logistics Park / SMART Terminal">
+<meta property="og:site_name" content="Citizens Against TriTexas">
+<meta property="og:description" content="Interactive map of the TriTexas Logistics Park site: ownership parcels, city limits, the Caldwell 142 reinvestment zones, floodplain, pipelines and rail, from public records.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://smartterminalcommunityinfo.github.io/interactive_map.html">
+<link rel="canonical" href="https://smartterminalcommunityinfo.github.io/interactive_map.html">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root { --navy: #1e3a5f; --bg: #f1f4f8; }
+body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: #1a2330; }
+.site-nav { background: var(--navy); padding: 10px 20px; position: sticky; top: 0; z-index: 9999;
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+.site-nav a { color: #93c5fd; text-decoration: none; font-size: .85rem; }
+.site-nav a:hover { color: #fff; }
+.site-nav-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.site-nav .nav-btn { border: 1px solid #3b5f8a; border-radius: 20px; padding: 5px 14px; }
+.site-nav .nav-btn-search, .site-nav .nav-btn-donate { border: none; font-weight: 700; border-radius: 20px;
+  padding: 5px 14px; font-family: 'Segoe UI', system-ui, sans-serif; font-size: .85rem; cursor: pointer; }
+.site-nav .nav-btn-search { background: #93c5fd; color: #1e3a5f; }
+.site-nav .nav-btn-donate { background: #fbbf24; color: #1e3a5f; }
+.page-header { background: var(--navy); color: #fff; padding: 26px 20px 22px; text-align: center; }
+.page-header h1 { font-size: 1.6rem; font-weight: 900; margin-bottom: 6px; }
+.page-header .sub { font-size: .86rem; color: #93c5fd; max-width: 760px; margin: 0 auto; line-height: 1.6; }
+.map-wrap { max-width: 1200px; margin: 18px auto; padding: 0 16px; display: grid; grid-template-columns: 1fr 290px; gap: 14px; }
+#map { height: 72vh; min-height: 460px; border-radius: 10px; box-shadow: 0 1px 4px rgba(0,0,0,.15); }
+.panel { background: #fff; border-radius: 10px; box-shadow: 0 1px 4px rgba(0,0,0,.12); padding: 14px 14px 10px;
+  font-size: .84rem; max-height: 72vh; overflow-y: auto; }
+.panel h2 { font-size: .74rem; text-transform: uppercase; letter-spacing: .06em; color: #64748b; margin: 4px 0 8px; }
+.layer { display: flex; align-items: flex-start; gap: 8px; padding: 5px 0; border-bottom: 1px solid #f1f5f9; cursor: pointer; }
+.layer input { margin-top: 3px; }
+.sw { width: 18px; height: 12px; border-radius: 2px; flex: 0 0 18px; margin-top: 3px; }
+.sw.line { height: 0; border-top-width: 3px; border-top-style: solid; margin-top: 9px; }
+.layer small { display: block; color: #64748b; font-size: .74rem; line-height: 1.35; }
+.basemaps { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+.basemaps button { border: 1px solid #cbd5e1; background: #fff; border-radius: 16px; padding: 4px 10px; font-size: .78rem; cursor: pointer; }
+.basemaps button.on { background: var(--navy); color: #fff; border-color: var(--navy); }
+.pending { color: #64748b; font-size: .78rem; line-height: 1.5; margin-top: 8px; }
+.notes { max-width: 1200px; margin: 6px auto 24px; padding: 0 16px; font-size: .82rem; line-height: 1.65; color: #334155; }
+.notes h3 { font-size: .9rem; color: var(--navy); margin: 14px 0 6px; }
+.notes ul { padding-left: 20px; }
+.leaflet-popup-content { font-size: .82rem; line-height: 1.45; }
+.leaflet-popup-content b { color: var(--navy); }
+footer { text-align: center; font-size: .78rem; color: #94a3b8; padding: 28px 20px 40px; border-top: 1px solid #e2e8f0; }
+@media (max-width: 860px) {
+  .map-wrap { grid-template-columns: 1fr; }
+  #map { height: 62vh; }
+  .panel { max-height: none; }
+}
+</style>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+</head>
+<body>
+<div id="site-search-overlay" style="display:none; position:fixed; inset:0; background:rgba(15,23,42,0.65); z-index:10000; padding:60px 20px; overflow-y:auto;">
+  <div style="max-width:640px; margin:0 auto; background:#fff; border-radius:10px; padding:20px; box-shadow:0 10px 40px rgba(0,0,0,0.3);">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+      <strong style="color:#1e3a5f; font-family:'Segoe UI',system-ui,sans-serif;">Search this site</strong>
+      <button id="site-search-close" style="background:none; border:none; font-size:1.2rem; cursor:pointer; color:#1e3a5f;">&times;</button>
+    </div>
+    <div id="site-search"></div>
+  </div>
+</div>
+<link href="/pagefind/pagefind-ui.css" rel="stylesheet">
+<script src="/pagefind/pagefind-ui.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  new PagefindUI({ element: "#site-search", showSubResults: true, showImages: false });
+  var overlay = document.getElementById('site-search-overlay');
+  document.getElementById('site-search-open').addEventListener('click', function () { overlay.style.display = 'block'; });
+  document.getElementById('site-search-close').addEventListener('click', function () { overlay.style.display = 'none'; });
+  overlay.addEventListener('click', function (e) { if (e.target === overlay) overlay.style.display = 'none'; });
+});
+</script>
+
+<nav class="site-nav">
+  <a href="index.html">&#8592; Citizens Against TriTexas</a>
+  <div class="site-nav-actions">
+    <a class="nav-btn-donate" href="https://givebutter.com/casa-smtx" target="_blank" rel="noopener">Donate</a>
+    <a class="nav-btn" href="https://linktr.ee/casa.smtx" target="_blank" rel="noopener">Linktree</a>
+    <a class="nav-btn" href="https://www.instagram.com/casa.smtx" target="_blank" rel="noopener">Instagram</a>
+    <a class="nav-btn" href="mailto:smartterminalcommunityinfo@gmail.com">Email</a>
+    <button id="site-search-open" class="nav-btn-search" aria-label="Search this site">Search</button>
+  </div>
+</nav>
+
+<div class="page-header">
+  <h1>Interactive Map</h1>
+  <p class="sub">
+    The TriTexas Logistics Park site (formerly SMART Terminal / Axis Logistics Park) and its surroundings, drawn from
+    public records. Turn layers on and off in the panel, and click any shape for its source.
+  </p>
+</div>
+
+<div class="map-wrap">
+  <div id="map" role="application" aria-label="Interactive map of the TriTexas Logistics Park area"></div>
+  <div class="panel" data-pagefind-ignore>
+    <h2>Background</h2>
+    <div class="basemaps" id="basemaps"></div>
+    <h2>Layers</h2>
+    <div id="layers"></div>
+    <p class="pending">More layers are being added from the developer's own exhibits: the container storage area, the
+      project phases, the original Katerra tract, Energy Parkway and others. Developer-drawn layers will be marked as
+      approximate.</p>
+  </div>
+</div>
+
+<div class="notes">
+  <h3>How the layers were made</h3>
+  <ul>
+    <li><b>Parcels</b> (TriTexas ownership, EDC Austin, Proto-Land) are the Caldwell Central Appraisal District's parcel
+      outlines. Appraisal maps are close but are not surveys.</li>
+    <li><b>Caldwell 142 Reinvestment Zone #2</b> is traced from the 23 recorded boundary calls in Exhibit A to Caldwell
+      County Order 01-2027 (Kimley-Horn survey dated October 27, 2026). The traced boundary closes within 0.02 feet and
+      measures 611.01 acres, and it was placed on the map by fitting it to the appraisal district's outline of the
+      660.503-acre tract (average difference about 5 feet).</li>
+    <li><b>City limits and ETJ</b> are from the City of San Marcos GIS. <b>Floodplain</b> is FEMA's National Flood
+      Hazard Layer (1% and 0.2% annual chance zones). <b>Pipelines</b> are from the Railroad Commission of Texas public
+      pipeline map; the RRC notes its pipeline locations are approximate. <b>Rail</b> is from OpenStreetMap.</li>
+  </ul>
+  <h3>Sources</h3>
+  <ul>
+    <li>Caldwell County Commissioners Court, <a href="https://www.co.caldwell.tx.us/upload/page/0252/docs/Agenda%20Packets/11.12.26%20Agenda%20Packet_Reduced.pdf#page=268" target="_blank" rel="noopener">Nov. 12, 2026 agenda packet</a> (Order 01-2027 and Exhibit A) and <a href="https://www.co.caldwell.tx.us/upload/page/0252/docs/Agenda%20Packets/3.26.26%20Agenda%20Packet.pdf" target="_blank" rel="noopener">Mar. 26, 2026 agenda packet</a> (EDC Austin tax abatement, Zone #1).</li>
+    <li>Caldwell Central Appraisal District parcel service; City of San Marcos GIS (City Limit and ETJ layers); FEMA National Flood Hazard Layer; Railroad Commission of Texas public GIS (pipelines); OpenStreetMap contributors (rail).</li>
+    <li>Background imagery: U.S. Geological Survey, The National Map. Street map: &copy; OpenStreetMap contributors.</li>
+  </ul>
+  <p style="margin-top:10px;">See also <a href="maps.html">Maps &amp; Site Exhibits</a> for the original engineering drawings.</p>
+</div>
+
+<nav class="sitewide-links" data-pagefind-ignore aria-label="All pages" style="max-width:1200px; margin:0 auto; padding:26px 20px 4px; font-family:'Segoe UI',system-ui,sans-serif; font-size:.85rem; line-height:2.1; border-top:1px solid #e2e8f0;">
+  <strong style="display:block; margin-bottom:8px; color:#64748b; font-size:.72rem; letter-spacing:.08em; text-transform:uppercase;">Explore the site</strong>
+  <a href="index.html" style="color:#1e3a5f; text-decoration:none; border-bottom:1px solid #cbd5e1;">Home</a>
+  &middot;
+  <a href="maps.html" style="color:#1e3a5f; text-decoration:none; border-bottom:1px solid #cbd5e1;">Maps &amp; Site Exhibits</a>
+  &middot;
+  <a href="land_use.html" style="color:#1e3a5f; text-decoration:none; border-bottom:1px solid #cbd5e1;">Permitted &amp; Prohibited Uses</a>
+  &middot;
+  <a href="businesses_summary.html" style="color:#1e3a5f; text-decoration:none; border-bottom:1px solid #cbd5e1;">Prospective Tenants</a>
+  &middot;
+  <a href="data_center.html" style="color:#1e3a5f; text-decoration:none; border-bottom:1px solid #cbd5e1;">Data Center Exemption</a>
+  &middot;
+  <a href="project_timeline.html" style="color:#1e3a5f; text-decoration:none; border-bottom:1px solid #cbd5e1;">Project Timeline</a>
+  &middot;
+  <a href="documents.html" style="color:#1e3a5f; text-decoration:none; border-bottom:1px solid #cbd5e1;">Key Documents</a>
+</nav>
+<footer>
+  Citizens Against TriTexas - San Marcos, Texas - smartterminalcommunityinfo.github.io
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+(function () {
+  var map = L.map('map', { zoomControl: true, scrollWheelZoom: true }).setView([29.868, -97.828], 14);
+  L.control.scale({ imperial: true, metric: false }).addTo(map);
+
+  var bases = {
+    'Aerial (USGS)': L.tileLayer('https://basemap.nationalmap.gov/arcgis/rest/services/USGSImageryOnly/MapServer/tile/{z}/{y}/{x}',
+      { maxZoom: 19, maxNativeZoom: 16, attribution: 'Imagery: USGS The National Map' }),
+    'Topo (USGS)': L.tileLayer('https://basemap.nationalmap.gov/arcgis/rest/services/USGSTopo/MapServer/tile/{z}/{y}/{x}',
+      { maxZoom: 19, maxNativeZoom: 16, attribution: 'USGS The National Map' }),
+    'Streets (OSM)': L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+      { maxZoom: 19, attribution: '&copy; OpenStreetMap contributors' })
+  };
+  var current = bases['Aerial (USGS)'].addTo(map);
+  var bm = document.getElementById('basemaps');
+  Object.keys(bases).forEach(function (name, i) {
+    var b = document.createElement('button'); b.textContent = name; if (i === 0) b.className = 'on';
+    b.onclick = function () {
+      map.removeLayer(current); current = bases[name].addTo(map); current.bringToBack();
+      [].forEach.call(bm.children, function (c) { c.className = ''; }); b.className = 'on';
+    };
+    bm.appendChild(b);
+  });
+
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function acres(a) { return a ? Number(a).toLocaleString(undefined, { maximumFractionDigits: 2 }) + ' acres' : ''; }
+  function cadLink(id) { return '<a href="https://esearch.caldwellcad.org/Property/View/' + id + '" target="_blank" rel="noopener">CAD ' + id + '</a>'; }
+
+  var defs = [
+    { id: 'city', file: 'city_limits.geojson', name: 'San Marcos city limits', note: 'City of San Marcos GIS', on: true, kind: 'fill',
+      style: { color: '#2563eb', weight: 2, fillColor: '#3b82f6', fillOpacity: 0.06 },
+      popup: function () { return '<b>San Marcos city limits</b><br>Source: City of San Marcos GIS'; } },
+    { id: 'etj', file: 'etj.geojson', name: 'San Marcos ETJ', note: 'Extraterritorial jurisdiction', on: false, kind: 'line',
+      style: { color: '#60a5fa', weight: 2, dashArray: '6 6', fill: false },
+      popup: function () { return '<b>San Marcos extraterritorial jurisdiction (ETJ)</b><br>Source: City of San Marcos GIS'; } },
+    { id: 'flood', file: 'floodplain.geojson', name: 'FEMA floodplain', note: '1% (100-year) and 0.2% (500-year) zones', on: false, kind: 'fill',
+      style: function (f) { var p = /0\.2/.test(f.properties.subtype); return { color: p ? '#7dd3fc' : '#0ea5e9', weight: 1, fillColor: p ? '#7dd3fc' : '#0ea5e9', fillOpacity: p ? 0.2 : 0.35 }; },
+      popup: function (p) { return '<b>FEMA flood zone ' + esc(p.zone) + '</b>' + (p.subtype ? '<br>' + esc(p.subtype) : '') + '<br>Source: FEMA National Flood Hazard Layer'; } },
+    { id: 'tri', file: 'tritexas_parcels.geojson', name: 'TriTexas site (Franklin Mountain land)', note: 'Caldwell CAD parcels; ~2,090 acres', on: true, kind: 'fill',
+      style: function (f) { var sep = f.properties.prop_id === 28052; return { color: '#f97316', weight: 3, dashArray: sep ? '6 5' : null, fillColor: '#fb923c', fillOpacity: 0.18 }; },
+      popup: function (p) { return '<b>' + esc(p.owner) + '</b><br>' + acres(p.acres) + '<br>' + cadLink(p.prop_id) + (p.deed_doc ? '<br>Deed ' + esc(p.deed_date) + ', doc. ' + esc(p.deed_doc) : '') + (p.note ? '<br><i>' + esc(p.note) + '</i>' : '') + '<br>Source: Caldwell Central Appraisal District'; } },
+    { id: 'zone2', file: 'zone2.geojson', name: 'Caldwell 142 Reinvestment Zone #2', note: '611 acres; Project Hercules survey; Nov. 12, 2026', on: true, kind: 'fill',
+      style: { color: '#dc2626', weight: 3, fillColor: '#ef4444', fillOpacity: 0.25 },
+      popup: function (p) { return '<b>Caldwell 142 Reinvestment Zone #2</b><br>611.000 acres. County Order 01-2027: for "a one-building industrial manufacturing and assembly facility." The Kimley-Horn survey file is named "PROJECT HERCULES."<br><a href="https://www.co.caldwell.tx.us/upload/page/0252/docs/Agenda%20Packets/11.12.26%20Agenda%20Packet_Reduced.pdf#page=268" target="_blank" rel="noopener">Order and survey (Nov. 12, 2026 packet)</a><br><a href="businesses_summary.html#hercules">Project Hercules card</a><br><small>' + esc(p.method) + '</small>'; } },
+    { id: 'edc', file: 'edc_austin_parcels.geojson', name: 'EDC Austin data center land (Zone #1)', note: '$7.3B data center abatement, Mar. 26, 2026', on: true, kind: 'fill',
+      style: { color: '#9333ea', weight: 3, fillColor: '#a855f7', fillOpacity: 0.22 },
+      popup: function (p) { return '<b>' + esc(p.owner) + '</b><br>' + acres(p.acres) + '<br>' + cadLink(p.prop_id) + '<br>In Caldwell 142 Reinvestment Zone #1 (data center campus; County tax abatement approved Mar. 26, 2026). The zone itself is described in the order only by four corner points, so the land parcels are shown.<br>Source: Caldwell Central Appraisal District; <a href="https://www.co.caldwell.tx.us/upload/page/0252/docs/Agenda%20Packets/3.26.26%20Agenda%20Packet.pdf" target="_blank" rel="noopener">Mar. 26, 2026 packet</a>'; } },
+    { id: 'proto', file: 'proto_land_parcels.geojson', name: 'Proto-Land parcels', note: 'Bought Sept.-Oct. 2026', on: false, kind: 'line',
+      style: { color: '#eab308', weight: 3, dashArray: '4 4', fillOpacity: 0 },
+      popup: function (p) { return '<b>' + esc(p.owner) + '</b><br>' + acres(p.acres) + '<br>' + cadLink(p.prop_id) + '<br>Deed ' + esc(p.deed_date) + ', doc. ' + esc(p.deed_doc) + '<br>Source: Caldwell Central Appraisal District'; } },
+    { id: 'pipe', file: 'pipelines.geojson', name: 'Gas transmission pipelines', note: 'Approximate, per Railroad Commission', on: false, kind: 'line',
+      style: function (f) { var big = f.properties.diameter_in >= 40; return { color: big ? '#7c2d12' : '#b45309', weight: big ? 4 : 3, dashArray: '8 5' }; },
+      popup: function (p) { return '<b>' + esc(p.system) + '</b><br>' + esc(p.operator) + '<br>' + esc(p.diameter_in) + '-inch ' + esc(p.commodity).toLowerCase() + ', ' + esc(p.status) + (p.t4_permit ? '<br>RRC T-4 permit ' + esc(p.t4_permit) : '') + '<br>Source: Railroad Commission of Texas (locations approximate)'; } },
+    { id: 'rail', file: 'railroad.geojson', name: 'Railroad', note: 'OpenStreetMap', on: true, kind: 'line',
+      style: { color: '#111827', weight: 3, dashArray: '10 4' },
+      popup: function (p) { return '<b>Railroad</b>' + (p.operator ? '<br>' + esc(p.operator) : '') + (p.name ? '<br>' + esc(p.name) : '') + '<br>Source: OpenStreetMap'; } }
+  ];
+
+  var panel = document.getElementById('layers');
+  var order = ['city', 'etj', 'flood', 'tri', 'proto', 'edc', 'zone2', 'pipe', 'rail'];
+  var loaded = {};
+  defs.forEach(function (d) {
+    var row = document.createElement('label'); row.className = 'layer';
+    var cb = document.createElement('input'); cb.type = 'checkbox'; cb.checked = d.on;
+    var st = typeof d.style === 'function' ? d.style({ properties: { subtype: '', prop_id: 0, diameter_in: 42 } }) : d.style;
+    var sw = document.createElement('span'); sw.className = 'sw' + (d.kind === 'line' ? ' line' : '');
+    if (d.kind === 'line') { sw.style.borderTopColor = st.color; if (st.dashArray) sw.style.borderTopStyle = 'dashed'; }
+    else { sw.style.background = st.fillColor; sw.style.border = '2px solid ' + st.color; sw.style.opacity = 0.9; }
+    var txt = document.createElement('span'); txt.innerHTML = esc(d.name) + '<small>' + esc(d.note) + '</small>';
+    row.appendChild(cb); row.appendChild(sw); row.appendChild(txt); panel.appendChild(row);
+    fetch('maps/data/' + d.file).then(function (r) { return r.json(); }).then(function (gj) {
+      var layer = L.geoJSON(gj, { style: d.style, onEachFeature: function (f, l) { l.bindPopup(d.popup(f.properties)); } });
+      loaded[d.id] = layer;
+      if (cb.checked) layer.addTo(map);
+      restack();
+    });
+    cb.addEventListener('change', function () {
+      var l = loaded[d.id]; if (!l) return;
+      if (cb.checked) { l.addTo(map); restack(); } else map.removeLayer(l);
+    });
+  });
+  function restack() { order.forEach(function (id) { var l = loaded[id]; if (l && map.hasLayer(l)) l.bringToFront(); }); }
+})();
+</script>
+</body>
+</html>

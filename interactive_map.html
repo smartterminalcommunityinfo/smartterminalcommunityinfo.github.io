@@ -184,6 +184,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var map = L.map('map', { zoomControl: true, scrollWheelZoom: true, preferCanvas: false }).setView([29.868, -97.828], 14);
   L.control.scale({ imperial: true, metric: false }).addTo(map);
   var canvas = L.canvas({ padding: 0.5 });
+  var DATA_VERSION = '2026-11-12b'; // bump when maps/data files change so browsers fetch fresh copies
 
   var bases = {
     'Aerial (USGS)': L.tileLayer('https://basemap.nationalmap.gov/arcgis/rest/services/USGSImageryOnly/MapServer/tile/{z}/{y}/{x}',
@@ -360,7 +361,7 @@ document.addEventListener('DOMContentLoaded', function () {
       var txt = document.createElement('span'); txt.innerHTML = esc(d.name) + '<small>' + esc(d.note) + '</small>';
       row.appendChild(cb); row.appendChild(swatch(d)); row.appendChild(txt); kids.appendChild(row);
       cb.addEventListener('change', function () { setOn(d, cb.checked); syncParent(); });
-      fetch('maps/data/' + d.file).then(function (r) { return r.json(); }).then(function (gj) {
+      fetch('maps/data/' + d.file + '?v=' + DATA_VERSION).then(function (r) { return r.json(); }).then(function (gj) {
         var opts = { filter: d.filter, onEachFeature: function (f, l) {
           l.bindPopup(d.popup(f.properties));
           l.bindTooltip(tip(d, f.properties), { sticky: true, direction: 'top', opacity: 0.95 });

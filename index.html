@@ -250,14 +250,16 @@ main {
   margin-bottom: 24px;
 }
 
-.site-map-wrap a { display: block; }
+.site-map-wrap > a { display: block; }
+.site-map-wrap figcaption a { color: #1e3a5f; }
 
 .site-map-wrap img {
   width: 100%;
   border-radius: 8px;
   border: 1px solid #e2e8f0;
+  height: auto;
   display: block;
-  cursor: zoom-in;
+  cursor: pointer;
 }
 
 .site-map-wrap figcaption {
@@ -416,10 +418,10 @@ document.addEventListener('DOMContentLoaded', function () {
     </p>
 
     <figure class="site-map-wrap">
-      <a href="maps/axis-detention-wq-summary-exhibit.jpg" target="_blank" rel="noopener">
-        <img src="maps/axis-detention-wq-summary-exhibit.jpg" alt="Exhibit C: Conceptual Phasing Plan showing Phase 1, 2, and 3 boundaries, detention basins, drainage channels, and floodplain across the ~1,980-acre TriTexas Logistics Park site in Caldwell County, Texas">
+      <a href="interactive_map.html">
+        <img src="maps/interactive-map-preview.jpg" width="1776" height="1104" alt="Preview of the interactive map: an aerial photo of the TriTexas Logistics Park site east of San Marcos with the Franklin Mountain land outlined, beside a panel of map layers that can be turned on and off">
       </a>
-      <figcaption>Exhibit C: Conceptual Phasing Plan - Kimley-Horn. Total project area &plusmn;1,980 acres (&plusmn;325 ac FEMA floodplain). Phase 1 (pink, under construction) and Phase 2 (teal, 343 ac) use regional detention with onsite water-quality treatment; Phase 3 (purple, 808 ac) relies on the same regional system. Dash-dot line = City of San Marcos ETJ boundary. Click image to view full resolution.</figcaption>
+      <figcaption>Interactive map of the site and its surroundings, drawn from public records. Layers include Franklin Mountain's land, the Development Agreement's land use and phasing plans, Reinvestment Zone #2, city limits and ETJs, utility service areas, the FEMA floodplain, former landfills and the airport approach surface. <a href="interactive_map.html">Open the interactive map</a>. The Exhibit C Conceptual Phasing Plan is on the <a href="maps.html">Maps page</a>.</figcaption>
     </figure>
 
     <div class="facts-grid">

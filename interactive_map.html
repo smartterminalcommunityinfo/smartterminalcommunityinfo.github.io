@@ -164,6 +164,10 @@ document.addEventListener('DOMContentLoaded', function () {
     <li><b>Allowed cut and fill depth</b> (Exhibit G) was placed by
       aligning that exhibit's aerial background with Exhibit B. Approximate, as drawn by the developer.</li>
     <li><b>Municipal utility districts</b> are the Texas Commission on Environmental Quality's official water district boundaries.</li>
+    <li><b>Runway 35 approach surface</b> is the FAA Part 77 approach surface for the airport's ultimate Runway 35, from the City's
+      "Ultimate Scenario Part 77 Surfaces" exhibit. The exhibit was placed by matching its parcel lines to appraisal district
+      parcels (median difference about 8 feet), and the surface was redrawn from its standard dimensions (1,000 to 4,000 feet
+      wide over 10,000 feet, rising 1 foot in 34). Heights above ground use USGS ground elevations and are approximate.</li>
     <li><b>Water and sewer service areas</b> are Certificate of Convenience and Necessity (CCN) boundaries from the Public Utility Commission of Texas.</li>
     <li><b>San Marcos city limits and ETJ</b> are from the City of San Marcos GIS. <b>Floodplain</b> is FEMA's National Flood
       Hazard Layer (1% and 0.2% annual chance zones). <b>Pipelines</b> are from the Railroad Commission of Texas public
@@ -212,7 +216,7 @@ document.addEventListener('DOMContentLoaded', function () {
 (function () {
   var map = L.map('map', { zoomControl: true, scrollWheelZoom: true, preferCanvas: false }).setView([29.868, -97.828], 14);
   L.control.scale({ imperial: true, metric: false }).addTo(map);
-  var DATA_VERSION = '2026-11-13k'; // bump when maps/data files change so browsers fetch fresh copies
+  var DATA_VERSION = '2026-11-13l'; // bump when maps/data files change so browsers fetch fresh copies
 
   var bases = {
     'Aerial 2025 (Esri)': L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
@@ -379,6 +383,12 @@ document.addEventListener('DOMContentLoaded', function () {
           return { color: '#56B4E9', weight: river ? 4 : (named ? 2.5 : 1.5), opacity: named ? 1 : 0.8, dashArray: inter && !named ? '4 4' : null }; },
         popup: function (p) { return '<b>' + esc(p.name || 'Unnamed stream') + '</b><br>' + ({ 46003: 'Intermittent stream', 46006: 'Perennial stream', 55800: 'River channel (flow path)', 33600: 'Canal or ditch' }[p.fcode] || 'Stream') + '<br>Source: USGS National Hydrography Dataset'; } }
     ] },
+    { name: 'Airport', layers: [
+      { id: 'faa35', file: 'faa_approach_35.geojson', name: 'Runway 35 approach surface (height limits)', note: 'FAA Part 77, ultimate runway; as drawn on the City exhibit (approximate)', on: false, kind: 'fill', pane: 'p_area',
+        key: [['#BD0026', 'Lowest limit (near the runway)'], ['#FD8D3C', 'Middle'], ['#FFEDA0', 'Highest limit (farthest out)']],
+        style: function (f) { var c = ['#BD0026', '#E31A1C', '#FC4E2A', '#FD8D3C', '#FEB24C', '#FED976', '#FFEDA0', '#FFF5C2', '#FFFBE0'][Math.round((f.properties.elev_low - 571.3) / 32.7)] || '#FED976'; return { color: '#ffffff', weight: 1, opacity: 0.8, fillColor: c, fillOpacity: 0.4 }; },
+        popup: function (p) { return '<b>Runway 35 approach surface</b><br>In this band the surface is ' + esc(p.elev_low) + ' to ' + esc(p.elev_high) + ' feet above sea level. With the ground at about ' + esc(p.ground_ft) + ' feet, that is roughly ' + esc(p.agl_low) + ' to ' + esc(p.agl_high) + ' feet above ground.<br>The FAA Part 77 approach surface rises 1 foot for every 34 feet outward, from 1,000 feet wide at its start to 4,000 feet wide 10,000 feet out. Under 14 CFR Part 77, anything that would rise above it is treated as an obstruction and must go through an FAA hazard study.<br>Source: City of San Marcos exhibit, &quot;Ultimate Scenario Part 77 Surfaces, Runway 35 Ultimate&quot;; ground elevation from USGS 3DEP. <a href="maps.html">Original exhibit</a><br><small>Placed by matching the exhibit&#39;s parcel lines to appraisal district parcels (median difference about 8 feet). Approximate.</small>'; } }
+    ] },
     { name: 'Transportation and pipelines', layers: [
       { id: 'rail', file: 'railroad.geojson', name: 'Railroad', note: 'OpenStreetMap', on: true, kind: 'line', pane: 'p_line',
         casing: { weight: 3, color: '#111827', opacity: 1 },
@@ -427,6 +437,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (d.key && p.label) t += '<br>' + esc(p.label);
     if (p.max_ft) t += '<br>Up to ' + esc(p.max_ft) + ' feet';
     if (p.phase) t += '<br>' + esc(p.phase);
+    if (p.elev_low) t += '<br>Limit ' + esc(p.elev_low) + '-' + esc(p.elev_high) + ' ft above sea level (about ' + esc(p.agl_low) + '-' + esc(p.agl_high) + ' ft above ground)';
     return t + '<br><small>Click for details</small>';
   }
   function baseStyle(d, l) { return typeof d.style === 'function' ? d.style(l.feature) : d.style; }

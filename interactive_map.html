@@ -152,6 +152,7 @@ document.addEventListener('DOMContentLoaded', function () {
       Appraisal District's public GIS. <b>Streams</b> are from the USGS National Hydrography Dataset.</li>
     <li><b>Allowed cut and fill depth</b> (Exhibit G) was placed by
       aligning that exhibit's aerial background with Exhibit B. Approximate, as drawn by the developer.</li>
+    <li><b>Water and sewer service areas</b> are Certificate of Convenience and Necessity (CCN) boundaries from the Public Utility Commission of Texas.</li>
     <li><b>San Marcos city limits and ETJ</b> are from the City of San Marcos GIS. <b>Floodplain</b> is FEMA's National Flood
       Hazard Layer (1% and 0.2% annual chance zones). <b>Pipelines</b> are from the Railroad Commission of Texas public
       pipeline map; the RRC notes its pipeline locations are approximate. <b>Rail</b> is from OpenStreetMap.</li>
@@ -193,7 +194,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var map = L.map('map', { zoomControl: true, scrollWheelZoom: true, preferCanvas: false }).setView([29.868, -97.828], 14);
   L.control.scale({ imperial: true, metric: false }).addTo(map);
   var canvas = L.canvas({ padding: 0.5 });
-  var DATA_VERSION = '2026-11-13b'; // bump when maps/data files change so browsers fetch fresh copies
+  var DATA_VERSION = '2026-11-13c'; // bump when maps/data files change so browsers fetch fresh copies
 
   var bases = {
     'Aerial 2025 (Esri)': L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
@@ -243,6 +244,14 @@ document.addEventListener('DOMContentLoaded', function () {
       popup: function (p) { return '<b>' + esc(p.label) + '</b><br>About ' + esc(p.acres_drawn) + ' acres as drawn<br>' + esc(p.source) + '<br><small>Traced from the developer\'s exhibit and placed by matching its project boundary to appraisal district parcel lines (median difference about 12 feet). Approximate.</small><br><a href="maps.html">Original exhibit</a>'; } };
   }
 
+  var WCOL = { 'Maxwell SUD': '#38bdf8', 'Martindale WSC': '#a78bfa', 'City of San Marcos': '#facc15', 'Crystal Clear SUD': '#34d399', 'County Line SUD': '#fb7185' };
+  var SCOL = { 'City of San Marcos': '#facc15', 'JDB Turner Crest Wastewater LLC': '#f472b6', 'Aqua Texas Inc': '#38bdf8', 'County Line SUD': '#fb7185' };
+  function ccn(id, file, name, note, cols) {
+    return { id: id, file: file, name: name, note: note, on: false, kind: 'fill',
+      key: Object.keys(cols).map(function (u) { return [cols[u], u]; }).concat([['#cbd5e1', 'Other providers']]),
+      style: function (f) { return { color: cols[f.properties.utility] || '#cbd5e1', weight: 3, dashArray: id === 'sccn' ? '10 6' : null, fill: false, opacity: 0.95 }; },
+      popup: function (p) { return '<b>' + esc(p.utility) + '</b><br>' + (id === 'sccn' ? 'Sewer' : 'Water') + ' CCN No. ' + esc(p.ccn_number) + ' (' + esc(p.status) + ')<br>A Certificate of Convenience and Necessity gives a utility the right, and the duty, to serve the area.<br>Source: ' + esc(p.source); } };
+  }
   var groups = [
     { name: 'TriTexas site: land and plans', layers: [
       { id: 'tri', file: 'tritexas_parcels.geojson', name: 'Franklin Mountain land', note: 'Caldwell CAD parcels; ~2,090 acres', on: true, kind: 'fill',
@@ -335,6 +344,10 @@ document.addEventListener('DOMContentLoaded', function () {
         style: function (f) { var big = f.properties.diameter_in >= 40; return { color: big ? '#7c2d12' : '#b45309', weight: big ? 4 : 3, dashArray: '8 5' }; },
         popup: function (p) { return '<b>' + esc(p.system) + '</b><br>' + esc(p.operator) + '<br>' + esc(p.diameter_in) + '-inch ' + esc(p.commodity).toLowerCase() + ', ' + esc(p.status) + (p.t4_permit ? '<br>RRC T-4 permit ' + esc(p.t4_permit) : '') + '<br>Source: Railroad Commission of Texas (locations approximate)'; } }
     ] },
+    { name: 'Utility service areas', layers: [
+      ccn('wccn', 'water_ccn.geojson', 'Water service areas (CCN)', 'Public Utility Commission; who may serve each area', WCOL),
+      ccn('sccn', 'sewer_ccn.geojson', 'Sewer service areas (CCN)', 'Public Utility Commission; who may serve each area', SCOL)
+    ] },
     { name: 'Community', layers: [
       { id: 'homes', file: 'homes.geojson', name: 'Homes (residential parcels)', note: 'Homestead = owner-occupied; 2026 CAD roll', on: false, kind: 'fill',
         style: { color: '#7c3aed', weight: 1, fillColor: '#a78bfa', fillOpacity: 0.45 },
@@ -344,7 +357,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   var panel = document.getElementById('layers');
   var stackOrder = ['flood', 'riverarea', 'homes', 'city', 'etj', 'mcity', 'metj', 'mud', 'tri', 'cutfill', 'phases', 'katerra', 'exb_landuse', 'exb_buffer', 'exb_container',
-    'oz', 'ez', 'fuds', 'irish', 'proto', 'edc', 'zone2', 'fire', 'streams', 'energy', 'pipe', 'rail'];
+    'oz', 'ez', 'fuds', 'irish', 'proto', 'edc', 'zone2', 'fire', 'wccn', 'sccn', 'streams', 'energy', 'pipe', 'rail'];
   var all = {};
 
   function swatch(d) {
@@ -361,6 +374,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (p.acres) t += '<br>' + acres(p.acres);
     if (p.acres_drawn) t += '<br>About ' + esc(p.acres_drawn) + ' acres as drawn';
     if (p.zone) t += '<br>Zone ' + esc(p.zone) + (p.subtype ? ' (' + esc(p.subtype) + ')' : '');
+    if (p.ccn_number) t += '<br>' + esc(p.utility) + ' (CCN ' + esc(p.ccn_number) + ')';
     if (p.system) t += '<br>' + esc(p.system) + ', ' + esc(p.diameter_in) + '-inch';
     if (p.class) t += '<br>' + esc(p.name) + ': ' + esc(p.class);
     if (p.kind === 'homestead') t += '<br>Homestead (owner-occupied)'; else if (p.kind === 'residential') t += '<br>Residential, no homestead exemption';

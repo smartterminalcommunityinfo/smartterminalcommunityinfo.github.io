@@ -152,6 +152,10 @@ document.addEventListener('DOMContentLoaded', function () {
       owner-occupied homes. Tracts over 25 acres are left off so whole farms are not shaded. No names or addresses are shown.</li>
     <li><b>Martindale city limits and ETJ and utility districts</b> are from the Caldwell Central
       Appraisal District's public GIS. <b>Streams</b> are from the USGS National Hydrography Dataset.</li>
+    <li><b>Former San Marcos Municipal Landfill</b> is traced from Figure 5 of the U.S. Department of Labor's Gary Job Corps
+      Center Draft Environmental Assessment (July 2022). It was placed by fitting that figure's Tract IV and V outlines to the
+      appraisal district parcels those tracts became (median difference about 14 feet). <b>Closed landfill sites</b> are point
+      locations from the Capital Area Council of Governments (CAPCOG) Closed Landfill Inventory, which rates how sure it is of each location.</li>
     <li><b>Detention ponds and drainage channels</b> are traced from Kimley-Horn's Axis Detention and Water Quality Summary Exhibit, which is drawn on the
       same sheet as Exhibit C and placed with the same fit. Its road matches the built Energy Parkway within about 20 feet.
       Approximate, as drawn by the developer.</li>
@@ -205,7 +209,7 @@ document.addEventListener('DOMContentLoaded', function () {
 (function () {
   var map = L.map('map', { zoomControl: true, scrollWheelZoom: true, preferCanvas: false }).setView([29.868, -97.828], 14);
   L.control.scale({ imperial: true, metric: false }).addTo(map);
-  var DATA_VERSION = '2026-11-13h'; // bump when maps/data files change so browsers fetch fresh copies
+  var DATA_VERSION = '2026-11-13i'; // bump when maps/data files change so browsers fetch fresh copies
 
   var bases = {
     'Aerial 2025 (Esri)': L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
@@ -244,7 +248,7 @@ document.addEventListener('DOMContentLoaded', function () {
   // utilities follow the APWA uniform color code (water blue, sewer green, gas yellow); other hues are Okabe-Ito.
   // Draw order is fixed by pane (large areas low, small shapes and lines high) so hover never reorders the map.
   [['p_area', 405], ['p_flood', 410], ['p_zone', 412], ['p_parcel', 416], ['p_plan', 420], ['p_home', 425], ['p_site', 430],
-   ['p_small', 440], ['p_line', 460], ['p_bound', 470], ['p_label', 640]].forEach(function (p) {
+   ['p_small', 440], ['p_line', 460], ['p_bound', 470], ['p_point', 480], ['p_label', 640]].forEach(function (p) {
     map.createPane(p[0]).style.zIndex = p[1];
   });
   map.getPane('p_label').style.pointerEvents = 'none';
@@ -350,6 +354,13 @@ document.addEventListener('DOMContentLoaded', function () {
       ccn('sccn', 'sewer_ccn.geojson', 'Sewer service areas (CCN)', 'Public Utility Commission; who may serve each area', '#009E73', 'sewer')
     ] },
     { name: 'Water and environment', layers: [
+      { id: 'landfill', file: 'landfill_municipal.geojson', name: 'Former San Marcos Municipal Landfill', note: 'As drawn in the 2022 Gary Job Corps environmental assessment (approximate)', on: false, kind: 'fill', pane: 'p_zone',
+        style: { color: '#B91C1C', weight: 2.5, fillColor: '#B91C1C', fillOpacity: 0.3 },
+        popup: function (p) { return '<b>Former San Marcos Municipal Landfill</b><br>About ' + esc(p.acres_drawn) + ' acres as drawn, east of the airport runways. The U.S. Department of Labor&#39;s 2022 Draft Environmental Assessment for the Gary Job Corps Center (Figure 5) shows the landfill across Job Corps Tracts IV and V. Those tracts are now appraisal district parcels 121632 and 121633 (City of San Marcos, deed Jan. 29, 2026) and 132449 (Texas State University, deed Mar. 7, 2025).<br>The CAPCOG closed landfill inventory lists this area as site #640.<br><a href="superfund.html">Groundwater contamination page</a><br><small>' + esc(p.method) + '</small>'; } },
+      { id: 'capcog', file: 'capcog_landfills.geojson', name: 'Closed landfill sites (CAPCOG inventory)', note: 'Point locations; confidence 1 (low) to 5 (high)', on: false, kind: 'point', pane: 'p_point',
+        style: function (f) { var hiConf = (f.properties.confidence || 0) >= 5; return { radius: 7, color: '#ffffff', weight: 2, fillColor: '#B91C1C', fillOpacity: hiConf ? 0.95 : 0.45 }; },
+        key: [['#B91C1C', 'Higher confidence (solid)'], ['#E8A3A3', 'Low confidence (faded)']],
+        popup: function (p) { return '<b>Closed landfill site #' + esc(p.site) + '</b><br>' + esc(p.location) + ', ' + esc(p.county) + ' County<br>' + esc(p.permit) + '; location confidence ' + esc(p.confidence) + ' of 5<br>Records: ' + esc(p.documents) + '<br>Source: Capital Area Council of Governments, Closed Landfill Inventory'; } },
       { id: 'flood', file: 'floodplain.geojson', name: 'FEMA floodplain', note: 'FEMA map colors', on: false, kind: 'fill', pane: 'p_flood',
         key: [['#00E6FF', '1% annual chance (100-year)'], ['#FF8000', '0.2% annual chance (500-year)'], ['#FF0000', 'Floodway']],
         style: function (f) { var s = f.properties.subtype || '', c = /FLOODWAY/.test(s) ? '#FF0000' : (/0\.2/.test(s) ? '#FF8000' : '#00E6FF'); return { color: c, weight: 0.8, fillColor: c, fillOpacity: /0\.2/.test(s) ? 0.3 : 0.35 }; },
@@ -388,6 +399,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var st = d.outline ? d.outline.style : typeof d.style === 'function' ? d.style({ properties: { subtype: '', prop_id: 0, diameter_in: 42, max_ft: '15', category: 'industrial' } }) : d.style;
     var sw = document.createElement('span');
     var light = /^#(ffffff|e2e8f0|d1d5db)$/i.test(st.color);
+    if (d.kind === 'point') { sw.className = 'sw'; sw.style.cssText = 'width:11px;height:11px;flex:0 0 11px;border-radius:50%;margin:3px 4px 0 3px;border:2px solid #fff;outline:1px solid #475569;background:' + st.fillColor; return sw; }
     if (d.kind === 'line') {
       sw.className = 'sw line'; sw.style.borderTopColor = st.color; if (st.dashArray) sw.style.borderTopStyle = 'dashed';
       if (d.casing || light) sw.style.boxShadow = '0 0 0 1px ' + (d.casing && d.casing.color || '#475569');
@@ -415,6 +427,7 @@ document.addEventListener('DOMContentLoaded', function () {
   function baseStyle(d, l) { return typeof d.style === 'function' ? d.style(l.feature) : d.style; }
   function hi(l, d) {  // highlight in place; never reorders, so the shapes under the cursor stay put
     var b = baseStyle(d, l);
+    if (d.kind === 'point') { l.setStyle({ radius: (b.radius || 6) + 3, fillOpacity: 1 }); return; }
     l.setStyle({ weight: (b.weight || 2) + 3, opacity: 1, color: d.outline ? d.outline.style.color : b.color, dashArray: d.outline ? null : b.dashArray,
       fillOpacity: b.fill === false ? 0 : Math.min(0.65, (b.fillOpacity || 0) + 0.25) });
   }
@@ -470,6 +483,7 @@ document.addEventListener('DOMContentLoaded', function () {
           }
         } };
         if (d.edge) opts.className = 'edge';  // huge areas answer hover only along their edge, so shapes inside stay reachable
+        opts.pointToLayer = function (f, ll) { var st = typeof d.style === 'function' ? d.style(f) : d.style; return L.circleMarker(ll, L.extend({ pane: d.pane }, st)); };
         d.layer = L.geoJSON(gj, opts);
         d.parts = [d.layer, labels];
         if (d.casing) {  // dark edge under the line so it reads on aerial imagery

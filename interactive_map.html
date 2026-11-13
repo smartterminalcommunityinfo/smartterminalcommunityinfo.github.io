@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <h2>Layers</h2>
     <div id="layers"></div>
     <p class="pending">Tick a group name to turn on all of its layers. Hover a shape or a layer name to highlight it.
-      More developer layers (project phases, the original Katerra tract, Energy Parkway) are being added.</p>
+      Developer-drawn layers are approximate; click any shape for its source.</p>
   </div>
 </div>
 
@@ -138,7 +138,10 @@ document.addEventListener('DOMContentLoaded', function () {
       from Kimley-Horn's Exhibit B: Conceptual Land Use Plan (issued April 5, 2023). The exhibit was placed on the map by matching
       its project boundary to the appraisal district's parcel lines (median difference about 12 feet), so these areas are
       approximate, as drawn by the developer.</li>
-    <li><b>Earthship Irish North and South</b> show only the appraisal district parcels whose acreage matches a tract listed in the
+    <li><b>Development phases</b> are traced by color from Exhibit C: Conceptual Phasing Plan and placed with the same fit as
+      Exhibit B; traced acreages are within about 6% of the labeled 825, 343 and 808 acres. The <b>original Katerra tract</b> is the
+      appraisal parcel at 19780 San Marcos Hwy, which matches Exhibit B-2 to the 2019 SMART Terminal Chapter 380 agreement.</li>
+    <li><b>Earthship Project Irish</b> shows only the appraisal district parcels whose acreage matches a tract listed in the
       October 23, 2025 development agreements. Those tracts were under purchase contract, not owned, when the agreements were
       approved, and some listed tracts could not be matched to a parcel.</li>
     <li><b>Martindale city limits and ETJ, utility districts, the 2024 County road plan and 911 address points</b> are from the
@@ -151,6 +154,7 @@ document.addEventListener('DOMContentLoaded', function () {
   <h3>Sources</h3>
   <ul>
     <li>Caldwell County Commissioners Court, <a href="https://www.co.caldwell.tx.us/upload/page/0252/docs/Agenda%20Packets/11.12.26%20Agenda%20Packet_Reduced.pdf#page=268" target="_blank" rel="noopener">Nov. 12, 2026 agenda packet</a> (Order 01-2027 and Exhibit A) and <a href="https://www.co.caldwell.tx.us/upload/page/0252/docs/Agenda%20Packets/3.26.26%20Agenda%20Packet.pdf" target="_blank" rel="noopener">Mar. 26, 2026 agenda packet</a> (EDC Austin tax abatement, Zone #1).</li>
+    <li>City of San Marcos, Texas Economic Incentive Zones (2020) GIS layer (Enterprise Zone-eligible block groups and Opportunity Zone tracts).</li>
     <li>Kimley-Horn, Exhibit B: Conceptual Land Use Plan, PDA-22-07(A) color exhibits (2023); Development Agreement (Res. 2023-20R), Section 1.07.F; Caldwell County Commissioners Court, <a href="https://www.co.caldwell.tx.us/upload/page/0245/docs/Agenda%20Packets/10.23.25%20Agenda%20Packet.pdf" target="_blank" rel="noopener">Oct. 23, 2025 agenda packet</a> (Earthship Irish North and South).</li>
     <li>Caldwell Central Appraisal District parcel service and public GIS; City of San Marcos GIS (City Limit and ETJ layers); FEMA National Flood Hazard Layer; Railroad Commission of Texas public GIS (pipelines); OpenStreetMap contributors (rail).</li>
     <li>Background imagery: U.S. Geological Survey, The National Map. Street map: &copy; OpenStreetMap contributors.</li>
@@ -184,7 +188,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var map = L.map('map', { zoomControl: true, scrollWheelZoom: true, preferCanvas: false }).setView([29.868, -97.828], 14);
   L.control.scale({ imperial: true, metric: false }).addTo(map);
   var canvas = L.canvas({ padding: 0.5 });
-  var DATA_VERSION = '2026-11-12b'; // bump when maps/data files change so browsers fetch fresh copies
+  var DATA_VERSION = '2026-11-12d'; // bump when maps/data files change so browsers fetch fresh copies
 
   var bases = {
     'Aerial (USGS)': L.tileLayer('https://basemap.nationalmap.gov/arcgis/rest/services/USGSImageryOnly/MapServer/tile/{z}/{y}/{x}',
@@ -254,6 +258,12 @@ document.addEventListener('DOMContentLoaded', function () {
       { id: 'tri', file: 'tritexas_parcels.geojson', name: 'Franklin Mountain land', note: 'Caldwell CAD parcels; ~2,090 acres', on: true, kind: 'fill',
         style: function (f) { var sep = f.properties.prop_id === 28052; return { color: '#f97316', weight: 3, dashArray: sep ? '6 5' : null, fillColor: '#fb923c', fillOpacity: 0.15 }; },
         popup: function (p) { return parcel(p, p.note ? '<br><i>' + esc(p.note) + '</i>' : ''); } },
+      { id: 'phases', file: 'exhibit_c_phases.geojson', name: 'Development phases 1-3', note: 'As drawn on Exhibit C (approximate)', on: false, kind: 'fill',
+        style: function (f) { var c = { 'Phase 1': ['#be123c', '#fb7185'], 'Phase 2': ['#0e7490', '#22d3ee'], 'Phase 3': ['#a21caf', '#e879f9'] }[f.properties.phase] || ['#be123c', '#fb7185']; return { color: c[0], weight: 2, fillColor: c[1], fillOpacity: 0.35 }; },
+        popup: function (p) { return '<b>' + esc(p.phase) + '</b><br>Labeled ' + esc(p.acres_label) + ' acres on the exhibit (about ' + esc(p.acres_drawn) + ' acres as traced)<br>' + esc(p.source) + '<br><small>Traced by color from the developer&#39;s exhibit and placed using the same fit as Exhibit B. Approximate.</small>'; } },
+      { id: 'katerra', file: 'katerra_tract.geojson', name: 'Original Katerra tract (2019)', note: '19780 San Marcos Hwy; Katerra moved off-site', on: false, kind: 'fill',
+        style: { color: '#334155', weight: 3, dashArray: '2 4', fillColor: '#94a3b8', fillOpacity: 0.35 },
+        popup: function (p) { return parcel(p, '<br><b>The 2019 "Katerra Tract"</b>: Exhibit B-2 to the 2019 SMART Terminal Chapter 380 agreement (Res. 2019-49R) shows it as two tracts (27.441 and 46.182 acres) at 19780 San Marcos Hwy, between the railroad and SH 80. This appraisal parcel has that address and about that acreage. Katerra later located elsewhere, and the 2023 restated agreement removed the Katerra references.'); } },
       exb('container', true), exb('industrial', false), exb('commercial', false), exb('greenbelt', false), exb('buffer', true),
       { id: 'fire', file: 'fire_station.geojson', name: 'Fire station site (City-owned)', note: 'Dedicated under DA Section 1.07.F', on: true, kind: 'fill',
         style: { color: '#b91c1c', weight: 3, fillColor: '#f87171', fillOpacity: 0.6 },
@@ -266,12 +276,15 @@ document.addEventListener('DOMContentLoaded', function () {
       { id: 'edc', file: 'edc_austin_parcels.geojson', name: 'EDC Austin data center (Zone #1)', note: '$7.3B County abatement, Mar. 26, 2026', on: true, kind: 'fill',
         style: { color: '#9333ea', weight: 3, fillColor: '#a855f7', fillOpacity: 0.22 },
         popup: function (p) { return parcel(p, '<br>In Caldwell 142 Reinvestment Zone #1 (data center campus; County tax abatement approved Mar. 26, 2026). The zone is described in the order only by four corner points, so the land parcels are shown.'); } },
-      { id: 'irn', file: 'irish_north.geojson', name: 'Earthship Irish North', note: 'Tracts under contract; DA approved Oct. 23, 2025', on: false, kind: 'fill',
-        style: { color: '#4d7c0f', weight: 2, dashArray: '5 4', fillColor: '#84cc16', fillOpacity: 0.2 },
-        popup: function (p) { return parcel(p, '<br><b>Project Irish North</b> (Earthship Corporation development agreement, approved 5-0 on Oct. 23, 2025). The agreement lists a ' + esc(p.da_tract_acres) + '-acre tract under purchase contract that matches this parcel. Not all listed tracts could be matched to parcels.<br><a href="' + PKT1023 + '#page=318" target="_blank" rel="noopener">Agreement (Oct. 23, 2025 packet)</a>'); } },
-      { id: 'irs', file: 'irish_south.geojson', name: 'Earthship Irish South', note: 'Tracts under contract; 2 bought by Proto-Land', on: false, kind: 'fill',
-        style: { color: '#3f6212', weight: 2, dashArray: '5 4', fillColor: '#a3e635', fillOpacity: 0.25 },
-        popup: function (p) { return parcel(p, '<br><b>Project Irish South</b> (Earthship Corporation development agreement, approved 5-0 on Oct. 23, 2025). The agreement lists a ' + esc(p.da_tract_acres) + '-acre tract under purchase contract that matches this parcel.<br><a href="' + PKT1023 + '#page=373" target="_blank" rel="noopener">Agreement (Oct. 23, 2025 packet)</a>'); } },
+      { id: 'oz', file: 'opportunity_zone.geojson', name: 'Federal Opportunity Zone', note: 'Census tracts; investor capital-gains incentive', on: false, kind: 'fill',
+        style: { color: '#1d4ed8', weight: 2, dashArray: '12 6', fillColor: '#60a5fa', fillOpacity: 0.12 },
+        popup: function (p) { return '<b>Federal Opportunity Zone</b><br>' + esc(p.tract) + ', ' + esc(p.county) + ' (GEOID ' + esc(p.geoid) + ')<br>Designated tracts where investors can defer and reduce capital-gains taxes. No local vote is involved.<br>Source: City of San Marcos, Texas Economic Incentive Zones (2020)'; } },
+      { id: 'ez', file: 'enterprise_zone.geojson', name: 'Texas Enterprise Zone (eligible areas)', note: 'Census block groups with 20%+ poverty', on: false, kind: 'fill',
+        style: { color: '#b45309', weight: 2, dashArray: '4 4', fillColor: '#fbbf24', fillOpacity: 0.15 },
+        popup: function (p) { return '<b>Texas Enterprise Zone (eligible area)</b><br>' + esc(p.county) + ' County, tract ' + esc(p.tract) + ', block group ' + esc(p.block_group) + '<br>Poverty rate: ' + Math.round((p.poverty_rate || 0) * 100) + '% (2020 Census)<br>Projects here can be nominated by a city or county for state sales and use tax refunds.<br>Source: City of San Marcos, Texas Economic Incentive Zones (2020)'; } },
+      { id: 'irish', file: 'irish.geojson', name: 'Earthship Project Irish (North and South)', note: 'Tracts under contract; DAs approved Oct. 23, 2025', on: false, kind: 'fill',
+        style: function (f) { var s = f.properties.project === 'Irish South'; return { color: s ? '#3f6212' : '#4d7c0f', weight: 2, dashArray: '5 4', fillColor: s ? '#a3e635' : '#84cc16', fillOpacity: 0.22 }; },
+        popup: function (p) { var s = p.project === 'Irish South'; return parcel(p, '<br><b>Project ' + esc(p.project) + '</b> (Earthship Corporation development agreement, approved 5-0 on Oct. 23, 2025). The agreement lists a ' + esc(p.da_tract_acres) + '-acre tract under purchase contract that matches this parcel. Not every listed tract could be matched to a parcel.<br><a href="' + PKT1023 + '#page=' + (s ? 373 : 318) + '" target="_blank" rel="noopener">Agreement (Oct. 23, 2025 packet)</a>'); } },
       { id: 'proto', file: 'proto_land_parcels.geojson', name: 'Proto-Land purchases', note: 'Bought Sept.-Oct. 2026', on: false, kind: 'line',
         style: { color: '#eab308', weight: 3, dashArray: '4 4', fillOpacity: 0 },
         popup: function (p) { return parcel(p); } }
@@ -283,6 +296,9 @@ document.addEventListener('DOMContentLoaded', function () {
       { id: 'pipe', file: 'pipelines.geojson', name: 'Gas transmission pipelines', note: 'Approximate, per Railroad Commission', on: false, kind: 'line',
         style: function (f) { var big = f.properties.diameter_in >= 40; return { color: big ? '#7c2d12' : '#b45309', weight: big ? 4 : 3, dashArray: '8 5' }; },
         popup: function (p) { return '<b>' + esc(p.system) + '</b><br>' + esc(p.operator) + '<br>' + esc(p.diameter_in) + '-inch ' + esc(p.commodity).toLowerCase() + ', ' + esc(p.status) + (p.t4_permit ? '<br>RRC T-4 permit ' + esc(p.t4_permit) : '') + '<br>Source: Railroad Commission of Texas (locations approximate)'; } },
+      { id: 'energy', file: 'energy_parkway.geojson', name: 'Energy Parkway', note: 'Opened Sept. 29, 2026', on: true, kind: 'line',
+        style: { color: '#f8fafc', weight: 5, opacity: 0.95 },
+        popup: function () { return '<b>Energy Parkway</b><br>The site&#39;s first road (Phase 1; City permit PICP 2024-49692). Opened to traffic Sept. 29, 2026.<br>Source: Caldwell Central Appraisal District road centerlines'; } },
       { id: 'rail', file: 'railroad.geojson', name: 'Railroad', note: 'OpenStreetMap', on: true, kind: 'line',
         style: { color: '#111827', weight: 3, dashArray: '10 4' },
         popup: function (p) { return '<b>Railroad</b>' + (p.operator ? '<br>' + esc(p.operator) : '') + '<br>Source: OpenStreetMap'; } },
@@ -301,8 +317,8 @@ document.addEventListener('DOMContentLoaded', function () {
   ];
 
   var panel = document.getElementById('layers');
-  var stackOrder = ['flood', 'city', 'etj', 'mcity', 'metj', 'mud', 'tri', 'exb_industrial', 'exb_commercial', 'exb_greenbelt', 'exb_buffer', 'exb_container',
-    'fuds', 'irn', 'irs', 'proto', 'edc', 'zone2', 'fire', 'roads', 'pipe', 'rail', 'homes'];
+  var stackOrder = ['flood', 'city', 'etj', 'mcity', 'metj', 'mud', 'tri', 'phases', 'katerra', 'exb_industrial', 'exb_commercial', 'exb_greenbelt', 'exb_buffer', 'exb_container',
+    'oz', 'ez', 'fuds', 'irish', 'proto', 'edc', 'zone2', 'fire', 'roads', 'energy', 'pipe', 'rail', 'homes'];
   var all = {};
 
   function swatch(d) {

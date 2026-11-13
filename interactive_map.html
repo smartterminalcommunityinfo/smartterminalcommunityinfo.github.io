@@ -147,7 +147,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <li><b>Homes</b> are appraisal district parcels whose improvements carry a residential state code (single-family, mobile home,
       multifamily or rural home) or that have a homestead exemption, from the 2026 certified Caldwell CAD export. Homesteads are
       owner-occupied homes. Tracts over 25 acres are left off so whole farms are not shaded. No names or addresses are shown.</li>
-    <li><b>Martindale city limits and ETJ, utility districts and the 2024 County road plan</b> are from the Caldwell Central
+    <li><b>Martindale city limits and ETJ and utility districts</b> are from the Caldwell Central
       Appraisal District's public GIS. <b>Streams</b> are from the USGS National Hydrography Dataset.</li>
     <li><b>Allowed cut and fill depth</b> (Exhibit G) was placed by
       aligning that exhibit's aerial background with Exhibit B. Approximate, as drawn by the developer.</li>
@@ -328,9 +328,6 @@ document.addEventListener('DOMContentLoaded', function () {
       { id: 'rail', file: 'railroad.geojson', name: 'Railroad', note: 'OpenStreetMap', on: true, kind: 'line',
         style: { color: '#111827', weight: 3, dashArray: '10 4' },
         popup: function (p) { return '<b>Railroad</b>' + (p.operator ? '<br>' + esc(p.operator) : '') + '<br>Source: OpenStreetMap'; } },
-      { id: 'roads', file: 'county_road_plan.geojson', name: 'County road plan (2024)', note: 'Planned and existing corridors', on: false, kind: 'line',
-        style: function (f) { var n = /^New/.test(f.properties.class || ''); return { color: n ? '#db2777' : '#9d174d', weight: 4, dashArray: n ? '10 6' : null, opacity: 0.85 }; },
-        popup: function (p) { return '<b>' + esc(p.name) + '</b><br>' + esc(p.class) + '<br>Source: Caldwell County 2024 Transportation Plan (Caldwell CAD GIS)'; } },
       { id: 'pipe', file: 'pipelines.geojson', name: 'Gas transmission pipelines', note: 'Approximate, per Railroad Commission', on: false, kind: 'line',
         style: function (f) { var big = f.properties.diameter_in >= 40; return { color: big ? '#7c2d12' : '#b45309', weight: big ? 4 : 3, dashArray: '8 5' }; },
         popup: function (p) { return '<b>' + esc(p.system) + '</b><br>' + esc(p.operator) + '<br>' + esc(p.diameter_in) + '-inch ' + esc(p.commodity).toLowerCase() + ', ' + esc(p.status) + (p.t4_permit ? '<br>RRC T-4 permit ' + esc(p.t4_permit) : '') + '<br>Source: Railroad Commission of Texas (locations approximate)'; } }
@@ -344,7 +341,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   var panel = document.getElementById('layers');
   var stackOrder = ['flood', 'riverarea', 'homes', 'city', 'etj', 'mcity', 'metj', 'mud', 'tri', 'cutfill', 'phases', 'katerra', 'exb_industrial', 'exb_commercial', 'exb_greenbelt', 'exb_buffer', 'exb_container',
-    'oz', 'ez', 'fuds', 'irish', 'proto', 'edc', 'zone2', 'fire', 'streams', 'roads', 'energy', 'pipe', 'rail'];
+    'oz', 'ez', 'fuds', 'irish', 'proto', 'edc', 'zone2', 'fire', 'streams', 'energy', 'pipe', 'rail'];
   var all = {};
 
   function swatch(d) {

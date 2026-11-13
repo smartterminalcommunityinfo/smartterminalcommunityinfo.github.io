@@ -337,7 +337,7 @@ document.addEventListener('DOMContentLoaded', function () {
     ] },
     { name: 'Community', layers: [
       { id: 'homes', file: 'homes.geojson', name: 'Homes (residential parcels)', note: 'Homestead = owner-occupied; 2026 CAD roll', on: false, kind: 'fill',
-        style: function (f) { var h = f.properties.kind === 'homestead'; return { color: h ? '#be185d' : '#7c3aed', weight: 1, fillColor: h ? '#f472b6' : '#a78bfa', fillOpacity: 0.45 }; },
+        style: { color: '#7c3aed', weight: 1, fillColor: '#a78bfa', fillOpacity: 0.45 },
         popup: function (p) { return p.kind === 'homestead' ? '<b>Homestead</b><br>A residential parcel with a homestead exemption (owner-occupied home) on the 2026 Caldwell CAD certified roll.' : '<b>Residential parcel</b><br>Residential state code on the 2026 Caldwell CAD certified roll, without a homestead exemption (for example a rental, second home or new home).'; } }
     ] }
   ];

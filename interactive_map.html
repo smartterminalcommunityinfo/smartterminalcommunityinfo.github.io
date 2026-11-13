@@ -193,7 +193,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var map = L.map('map', { zoomControl: true, scrollWheelZoom: true, preferCanvas: false }).setView([29.868, -97.828], 14);
   L.control.scale({ imperial: true, metric: false }).addTo(map);
   var canvas = L.canvas({ padding: 0.5 });
-  var DATA_VERSION = '2026-11-13a'; // bump when maps/data files change so browsers fetch fresh copies
+  var DATA_VERSION = '2026-11-13b'; // bump when maps/data files change so browsers fetch fresh copies
 
   var bases = {
     'Aerial 2025 (Esri)': L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',

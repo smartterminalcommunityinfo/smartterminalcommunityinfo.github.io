@@ -52,6 +52,7 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); co
 .sw { width: 18px; height: 12px; border-radius: 2px; flex: 0 0 18px; margin-top: 3px; }
 .sw.line { height: 0; border-top-width: 3px; border-top-style: solid; margin-top: 9px; }
 .layer small { display: block; color: #64748b; font-size: .74rem; line-height: 1.35; }
+.layer small.key i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 5px; vertical-align: -1px; opacity: .8; }
 .basemaps { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
 .basemaps button { border: 1px solid #cbd5e1; background: #fff; border-radius: 16px; padding: 4px 10px; font-size: .78rem; cursor: pointer; }
 .basemaps button.on { background: var(--navy); color: #fff; border-color: var(--navy); }
@@ -252,9 +253,11 @@ document.addEventListener('DOMContentLoaded', function () {
         popup: function (p) { return '<b>' + esc(p.phase) + '</b><br>Labeled ' + esc(p.acres_label) + ' acres on the exhibit (about ' + esc(p.acres_drawn) + ' acres as traced)<br>' + esc(p.source) + '<br><small>Traced by color from the developer&#39;s exhibit and placed using the same fit as Exhibit B. Approximate.</small>'; } },
       exb('container', true),
       exb('buffer', true),
-      exb('industrial', false),
-      exb('commercial', false),
-      exb('greenbelt', false),
+      { id: 'exb_landuse', file: 'exhibit_b_land_use.geojson', filter: function (f) { return /^(industrial|commercial|greenbelt)$/.test(f.properties.category); },
+        name: 'Land use designations (Exhibit B)', note: 'As drawn on Exhibit B (approximate)', on: false, kind: 'fill',
+        key: ['industrial', 'commercial', 'greenbelt'].map(function (c) { return [EXBC[c].fill, EXBC[c].name]; }),
+        style: function (f) { var c = EXBC[f.properties.category] || EXBC.industrial; return { color: c.color, weight: 2, fillColor: c.fill, fillOpacity: 0.3 }; },
+        popup: exb('industrial').popup },
       { id: 'cutfill', file: 'exhibit_g_cut_fill.geojson', name: 'Allowed cut and fill depth', note: 'As drawn on Exhibit G (approximate)', on: false, kind: 'fill',
         style: function (f) { var c = { '20': ['#1e3a8a', '#3b82f6'], '15': ['#c2410c', '#fb923c'], '4': ['#15803d', '#4ade80'] }[f.properties.max_ft] || ['#c2410c', '#fb923c']; return { color: c[0], weight: 1.5, fillColor: c[1], fillOpacity: 0.35 }; },
         popup: function (p) { return '<b>Cut/fill up to ' + esc(p.max_ft) + ' feet</b><br>' + esc(p.label) + '<br>About ' + esc(p.acres_drawn) + ' acres as drawn<br>' + esc(p.source) + '<br><small>Placed by aligning the exhibit&#39;s aerial background with Exhibit B. Approximate.</small>'; } },
@@ -340,7 +343,7 @@ document.addEventListener('DOMContentLoaded', function () {
   ];
 
   var panel = document.getElementById('layers');
-  var stackOrder = ['flood', 'riverarea', 'homes', 'city', 'etj', 'mcity', 'metj', 'mud', 'tri', 'cutfill', 'phases', 'katerra', 'exb_industrial', 'exb_commercial', 'exb_greenbelt', 'exb_buffer', 'exb_container',
+  var stackOrder = ['flood', 'riverarea', 'homes', 'city', 'etj', 'mcity', 'metj', 'mud', 'tri', 'cutfill', 'phases', 'katerra', 'exb_landuse', 'exb_buffer', 'exb_container',
     'oz', 'ez', 'fuds', 'irish', 'proto', 'edc', 'zone2', 'fire', 'streams', 'energy', 'pipe', 'rail'];
   var all = {};
 
@@ -361,6 +364,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (p.system) t += '<br>' + esc(p.system) + ', ' + esc(p.diameter_in) + '-inch';
     if (p.class) t += '<br>' + esc(p.name) + ': ' + esc(p.class);
     if (p.kind === 'homestead') t += '<br>Homestead (owner-occupied)'; else if (p.kind === 'residential') t += '<br>Residential, no homestead exemption';
+    if (d.key && p.label) t += '<br>' + esc(p.label);
     if (p.max_ft) t += '<br>Up to ' + esc(p.max_ft) + ' feet';
     if (p.phase) t += '<br>' + esc(p.phase);
     return t + '<br><small>Click for details</small>';
@@ -400,7 +404,7 @@ document.addEventListener('DOMContentLoaded', function () {
       all[d.id] = d; d.want = d.on;
       var row = document.createElement('label'); row.className = 'layer';
       var cb = document.createElement('input'); cb.type = 'checkbox'; cb.checked = d.on; d.cb = cb;
-      var txt = document.createElement('span'); txt.innerHTML = esc(d.name) + '<small>' + esc(d.note) + '</small>';
+      var txt = document.createElement('span'); txt.innerHTML = esc(d.name) + '<small>' + esc(d.note) + '</small>' + (d.key ? d.key.map(function (k) { return '<small class="key"><i style="background:' + k[0] + '"></i>' + esc(k[1]) + '</small>'; }).join('') : '');
       row.appendChild(cb); row.appendChild(swatch(d)); row.appendChild(txt); kids.appendChild(row);
       cb.addEventListener('change', function () { setOn(d, cb.checked); syncParent(); });
       fetch('maps/data/' + d.file + '?v=' + DATA_VERSION).then(function (r) { return r.json(); }).then(function (gj) {

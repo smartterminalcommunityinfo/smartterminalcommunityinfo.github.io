@@ -269,6 +269,8 @@ main {
 .home-map-key i { display: inline-block; width: 24px; height: 12px; margin-right: 7px; vertical-align: -1px; border-radius: 2px; }
 .home-map-key .k-site { background: rgba(213,94,0,.25); border: 2px solid #D55E00; }
 .home-map-key .k-zone { background: rgba(204,121,167,.35); border: 2px dashed #9E3D78; }
+.home-map-key .k-annex { background: rgba(0,114,178,.4); border: 2px dotted #0072B2; }
+.home-map-key .k-rem { background: rgba(255,255,255,.7); border: 2px dotted #1f2937; }
 .home-map-key .k-road { height: 0; border-top: 4px solid #1e3a5f; vertical-align: 3px; border-radius: 0; }
 .home-map-key .k-city { height: 0; border-top: 3px solid #0072B2; vertical-align: 3px; border-radius: 0; }
 @media (max-width: 640px) { #home-map { height: 360px; } .home-map-open { right: 8px; bottom: 26px; padding: 8px 14px; font-size: .8rem; } }
@@ -446,10 +448,12 @@ document.addEventListener('DOMContentLoaded', function () {
       <ul class="home-map-key">
         <li><i class="k-site"></i>Franklin Mountain land, about 2,058 acres</li>
         <li><i class="k-zone"></i>County Reinvestment Zone #2, 611 acres (Project Hercules)</li>
+        <li><i class="k-annex"></i>Proposed annexation (AN-26-07), about 461.7 acres as drawn by the City</li>
+        <li><i class="k-rem"></i>Possible area of the 319.589-acre removal request (this site's unconfirmed estimate)</li>
         <li><i class="k-road"></i>Energy Parkway, opened Sept. 29, 2026</li>
         <li><i class="k-city"></i>San Marcos city limits</li>
       </ul>
-      <figcaption>Drawn from public records: appraisal district parcels, Caldwell County Order 01-2027 and City of San Marcos GIS. The <a href="interactive_map.html">full interactive map</a> adds the Development Agreement's land use and phasing plans, ETJs, utility service areas, the FEMA floodplain, former landfills, the airport approach surface and an address lookup. The Exhibit C Conceptual Phasing Plan is on the <a href="maps.html">Maps page</a>.</figcaption>
+      <figcaption>Drawn from public records: appraisal district parcels, Caldwell County Order 01-2027 and City of San Marcos GIS. Two requests are pending at the City: an annexation (AN-26-07, in review) and an application to remove approximately 319.589 acres from the Development Agreement (PDA-22-07(B), submitted Nov. 9, 2026). The City's record for the removal gives no location, so the area shown for it is this site's estimate and may be wrong. The <a href="interactive_map.html">full interactive map</a> adds the Development Agreement's land use and phasing plans, ETJs, utility service areas, the FEMA floodplain, former landfills, the airport approach surface and an address lookup. The Exhibit C Conceptual Phasing Plan is on the <a href="maps.html">Maps page</a>.</figcaption>
     </figure>
 
     <div class="facts-grid">
@@ -694,17 +698,22 @@ document.addEventListener('DOMContentLoaded', function () {
   get('city_limits.geojson').then(function (g) {
     L.geoJSON(g, { interactive: false, style: { color: '#0072B2', weight: 2, fill: false } }).addTo(map).bringToBack();
   }).catch(function () {});
-  Promise.all([get('tritexas_outline.geojson'), get('zone2.geojson'), get('energy_parkway.geojson')]).then(function (r) {
+  Promise.all([get('tritexas_outline.geojson'), get('zone2.geojson'), get('energy_parkway.geojson'), get('annexation_an2607.geojson'), get('pda_b_estimate.geojson')]).then(function (r) {
     var site = L.geoJSON(r[0], { style: { color: '#D55E00', weight: 3, fillColor: '#D55E00', fillOpacity: 0.2 } }).addTo(map)
       .bindPopup('<b>TriTexas Logistics Park site</b><br>Land owned by Franklin Mountain: about 2,058 acres in Caldwell Central Appraisal District parcels.' + more('tri,energy,fire'));
     L.geoJSON(r[1], { style: { color: '#9E3D78', weight: 2.5, dashArray: '8 5', fillColor: '#CC79A7', fillOpacity: 0.35 } }).addTo(map)
       .bindPopup('<b>Caldwell 142 Reinvestment Zone #2</b><br>611 acres designated by Caldwell County on Nov. 12, 2026 (Order 01-2027) for a manufacturing and assembly facility. See <a href="businesses_summary.html#hercules">Project Hercules</a>.' + more('tri,zone2'));
+    L.geoJSON(r[3], { style: { color: '#0072B2', weight: 2.5, dashArray: '3 5', fillColor: '#0072B2', fillOpacity: 0.4 } }).addTo(map)
+      .bindPopup('<b>Proposed annexation (AN-26-07)</b><br>About 461.7 acres as drawn on the City of San Marcos planning map. Filed Oct. 15, 2026; in review, not approved.' + more('tri,city,annex'));
+    L.geoJSON(r[4], { style: { color: '#1f2937', weight: 2.5, dashArray: '2 6', fillColor: '#ffffff', fillOpacity: 0.55 } }).addTo(map)
+      .bindPopup('<b>Possible area of the removal request (unconfirmed)</b><br>On Nov. 9, 2026, Franklin Mountain applied to remove approximately 319.589 acres from the Development Agreement (PDA-22-07(B)). The <a href="https://smgis.sanmarcostx.gov/arcgis/rest/services/Planning/PlanningFeatures/MapServer/15/query?where=CaseNumber%3D%27PDA-22-07%28B%29%27&amp;outFields=CaseNumber,ProjectName,CaseType,Status,ProjectDescription,ApplicantBusiness,Address&amp;returnGeometry=false&amp;f=html" target="_blank" rel="noopener">City record</a> does not say which land. This shape is this site&#39;s estimate, not the City&#39;s: the part of Reinvestment Zone #2 on Franklin Mountain land, about 318 acres. It may be wrong.' + more('tri,zone2,pdab'));
     L.geoJSON(r[2], { style: { color: '#1e3a5f', weight: 4 } }).addTo(map)
       .bindPopup('<b>Energy Parkway</b><br>The first road on the site. It opened to traffic on Sept. 29, 2026.' + more('tri,energy'));
     map.fitBounds(site.getBounds(), { padding: [45, 45], animate: false });
-    label([29.8693, -97.8672], 'TriTexas Logistics Park site<small>Franklin Mountain land</small>');
-    label([29.8622, -97.8350], 'Reinvestment Zone #2<small>Project Hercules, 611 acres</small>', true);
-    label([29.8768, -97.8690], 'Energy Parkway', true);
+    label([29.8772, -97.8470], 'TriTexas Logistics Park site<small>Franklin Mountain land</small>');
+    label([29.8605, -97.8275], 'Reinvestment Zone #2<small>Project Hercules, 611 acres</small>', true);
+    label([29.8662, -97.8740], 'Proposed annexation<small>AN-26-07, in review</small>', true);
+    label([29.8700, -97.8362], 'Possible removal area<small>unconfirmed estimate</small>', true);
     low();
   }).catch(function () { el.innerHTML = '<p style="padding:20px;font-size:.9rem;">The map could not be loaded. <a href="interactive_map.html">Open the interactive map</a>.</p>'; });
 })();

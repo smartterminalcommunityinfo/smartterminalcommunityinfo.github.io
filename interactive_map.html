@@ -36,10 +36,44 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); co
 .page-header { background: var(--navy); color: #fff; padding: 26px 20px 22px; text-align: center; }
 .page-header h1 { font-size: 1.6rem; font-weight: 900; margin-bottom: 6px; }
 .page-header .sub { font-size: .86rem; color: #93c5fd; max-width: 760px; margin: 0 auto; line-height: 1.6; }
-.map-wrap { max-width: 1200px; margin: 18px auto; padding: 0 16px; display: grid; grid-template-columns: 1fr 290px; gap: 14px; }
-#map { height: 72vh; min-height: 460px; border-radius: 10px; box-shadow: 0 1px 4px rgba(0,0,0,.15); }
+.map-wrap { --maph: max(72vh, 460px); position: relative; max-width: 1200px; margin: 18px auto; padding: 0 16px; display: grid; grid-template-columns: 1fr 290px; gap: 14px; }
+#map { height: var(--maph); border-radius: 10px; box-shadow: 0 1px 4px rgba(0,0,0,.15); }
 .panel { background: #fff; border-radius: 10px; box-shadow: 0 1px 4px rgba(0,0,0,.12); padding: 14px 14px 10px;
-  font-size: .84rem; max-height: 72vh; overflow-y: auto; }
+  font-size: .84rem; max-height: var(--maph); overflow-y: auto; }
+.panel-close { display: none; float: right; border: 1px solid #cbd5e1; background: #fff; border-radius: 16px; padding: 4px 12px; font: 600 .78rem 'Segoe UI', system-ui, sans-serif; color: var(--navy); cursor: pointer; }
+.refrow { display: flex; align-items: center; gap: 8px; margin: -2px 0 12px; font-size: .8rem; cursor: pointer; }
+/* Drawer: on phones, and on any screen while the map is in full screen, the layer panel slides over the map */
+.map-wrap.drawer .panel { display: none; position: absolute; top: 0; right: 16px; width: min(310px, calc(100% - 32px)); height: var(--maph); max-height: none;
+  z-index: 1200; border-radius: 0 10px 10px 0; box-shadow: -6px 0 18px rgba(0,0,0,.35); }
+.map-wrap.drawer.panel-open .panel { display: block; }
+.map-wrap.drawer .panel-close { display: block; }
+.map-wrap.full { position: fixed; inset: 0; z-index: 10000; max-width: none; margin: 0; padding: 0; display: block; background: #0f172a; }
+.map-wrap.full #map { height: 100%; border-radius: 0; }
+.map-wrap.full .panel { right: 0; height: 100%; border-radius: 0; }
+.mapbtns { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+.mapbtns button { background: #fff; border: 2px solid rgba(0,0,0,.25); background-clip: padding-box; border-radius: 6px; padding: 6px 10px; min-height: 32px;
+  font: 600 .76rem 'Segoe UI', system-ui, sans-serif; color: var(--navy); cursor: pointer; }
+.mapbtns button:hover { background: #eff6ff; }
+.mapbtns button.on { background: var(--navy); color: #fff; }
+.mapbtns .only-drawer { display: none; }
+.map-wrap.drawer .mapbtns .only-drawer { display: block; }
+.maphint { display: none; max-width: 190px; background: rgba(15,23,42,.85); color: #fff; border-radius: 6px; padding: 6px 9px; font: .74rem/1.4 'Segoe UI', system-ui, sans-serif; }
+.mapsearch form { display: flex; border: 2px solid rgba(0,0,0,.25); background-clip: padding-box; border-radius: 6px; overflow: hidden; background: #fff; }
+.mapsearch input { border: none; outline-offset: -2px; padding: 7px 9px; width: 190px; font: .82rem 'Segoe UI', system-ui, sans-serif; }
+.mapsearch button { border: none; border-left: 1px solid #cbd5e1; background: #fff; padding: 0 11px; font: 600 .78rem 'Segoe UI', system-ui, sans-serif; color: var(--navy); cursor: pointer; }
+.mapsearch-msg { display: none; margin-top: 4px; max-width: 250px; background: rgba(15,23,42,.85); color: #fff; border-radius: 6px; padding: 6px 9px; font: .74rem/1.4 'Segoe UI', system-ui, sans-serif; }
+.measuring .leaflet-container, .measuring .leaflet-interactive { cursor: crosshair !important; }
+.touchhint { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 1100; pointer-events: none; opacity: 0; transition: opacity .2s;
+  background: rgba(15,23,42,.8); color: #fff; border-radius: 8px; padding: 10px 14px; font: 600 .85rem 'Segoe UI', system-ui, sans-serif; text-align: center; width: max-content; max-width: 80%; }
+.touchhint.show { opacity: 1; }
+.here-h { font-weight: 700; color: var(--navy); margin: 6px 0 4px; }
+.here details { border-top: 1px solid #e2e8f0; padding: 5px 0; }
+.here summary { cursor: pointer; font-weight: 600; }
+.here summary span { font-weight: 400; color: #475569; }
+.here details > div { padding: 5px 0 2px 14px; }
+.here-f { color: #64748b; font-size: .74rem; margin-top: 6px; border-top: 1px solid #e2e8f0; padding-top: 5px; }
+.layer small.st { color: #475569; font-style: italic; }
+.layer.fail small.st { color: #b91c1c; font-style: normal; font-weight: 600; }
 .panel h2 { font-size: .74rem; text-transform: uppercase; letter-spacing: .06em; color: #64748b; margin: 4px 0 8px; }
 .grp { border-bottom: 1px solid #e2e8f0; padding: 4px 0 6px; }
 .grp-head { display: flex; align-items: center; gap: 8px; padding: 6px 0 2px; }
@@ -61,15 +95,16 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); co
 .notes h3 { font-size: .9rem; color: var(--navy); margin: 14px 0 6px; }
 .notes ul { padding-left: 20px; }
 .leaflet-pane > svg path.leaflet-interactive.edge { pointer-events: visibleStroke; }
+/* a mouse click focuses the shape and the browser would box it; keep the focus ring for keyboard users only */
+.leaflet-container path.leaflet-interactive:focus:not(:focus-visible) { outline: none; }
 .leaflet-tooltip.map-label { background: rgba(15,23,42,.72); color: #fff; border: none; box-shadow: none; font-size: .72rem; font-weight: 600; padding: 2px 6px; white-space: nowrap; }
 .leaflet-tooltip.map-label::before { display: none; }
 .leaflet-popup-content { font-size: .82rem; line-height: 1.45; }
 .leaflet-popup-content b { color: var(--navy); }
 footer { text-align: center; font-size: .78rem; color: #94a3b8; padding: 28px 20px 40px; border-top: 1px solid #e2e8f0; }
 @media (max-width: 860px) {
-  .map-wrap { grid-template-columns: 1fr; }
-  #map { height: 62vh; }
-  .panel { max-height: none; }
+  .map-wrap { --maph: max(68vh, 420px); grid-template-columns: 1fr; }
+  .mapsearch input { width: 132px; }
 }
 </style>
 <link rel="icon" href="/favicon.ico" sizes="any">
@@ -113,19 +148,22 @@ document.addEventListener('DOMContentLoaded', function () {
   <h1>Interactive Map</h1>
   <p class="sub">
     The TriTexas Logistics Park site (formerly SMART Terminal / Axis Logistics Park) and its surroundings, drawn from
-    public records. Turn layers on and off in the panel, and click any shape for its source.
+    public records. Turn layers on and off in the layer list, click the map to see what is at that spot, or look up an address.
   </p>
 </div>
 
-<div class="map-wrap">
+<div class="map-wrap" id="mapwrap">
   <div id="map" role="application" aria-label="Interactive map of the TriTexas Logistics Park area"></div>
-  <div class="panel" data-pagefind-ignore>
+  <div class="panel" id="panel" data-pagefind-ignore>
+    <button type="button" class="panel-close" id="panel-close">Close</button>
     <h2>Background</h2>
     <div class="basemaps" id="basemaps"></div>
+    <label class="refrow" id="refrow"><input type="checkbox" id="refcb" checked> Road and place names</label>
     <h2>Layers</h2>
     <div id="layers"></div>
     <p class="pending">Tick a group name to turn on all of its layers. Hover a shape or a layer name to highlight it.
-      Developer-drawn layers are approximate; click any shape for its source.</p>
+      Click the map to list every switched-on layer at that spot, with its source. Developer-drawn layers are approximate.
+      Copy link saves the current view and layers as a link you can share.</p>
   </div>
 </div>
 
@@ -144,9 +182,12 @@ document.addEventListener('DOMContentLoaded', function () {
       approximate, as drawn by the developer.</li>
     <li><b>Development phases</b> are traced by color from Exhibit C: Conceptual Phasing Plan and placed with the same fit as
       Exhibit B; traced acreages are within about 6% of the labeled 825, 343 and 808 acres.</li>
-    <li><b>Earthship Project Irish</b> shows only the appraisal district parcels whose acreage matches a tract listed in the
-      October 23, 2025 development agreements. Those tracts were under purchase contract, not owned, when the agreements were
-      approved, and some listed tracts could not be matched to a parcel.</li>
+    <li><b>Earthship Project Irish</b> shows the 19 tracts listed in the October 23, 2025 development agreements (15 in Irish
+      North, 4 in Irish South). Sixteen are whole appraisal district parcels matched to the agreements' surveys by acreage,
+      location and deed. Three are parts of larger parcels: a 239-acre parcel was divided along the surveyed line between two
+      listed tracts, and the 358.23-acre Irish South tract was drawn from its 18 surveyed boundary calls and fit to parcel lines
+      (median difference about 3 feet). The tracts were under purchase contract, not owned, when the agreements were approved.
+      Owner names are not shown for the four small tracts owned by private individuals.</li>
     <li><b>Homes</b> are appraisal district parcels whose improvements carry a residential state code (single-family, mobile home,
       multifamily or rural home) or that have a homestead exemption, from the 2026 certified Caldwell CAD export. Homesteads are
       owner-occupied homes. Tracts over 25 acres are left off so whole farms are not shaded. No names or addresses are shown.</li>
@@ -173,21 +214,35 @@ document.addEventListener('DOMContentLoaded', function () {
     <li><b>San Marcos city limits and ETJ</b> are from the City of San Marcos GIS. <b>Floodplain</b> is FEMA's National Flood
       Hazard Layer (1% and 0.2% annual chance zones). <b>Pipelines</b> are from the Railroad Commission of Texas public
       pipeline map; the RRC notes its pipeline locations are approximate. <b>Rail</b> is from OpenStreetMap.</li>
+    <li><b>Possible area of the 319.589-acre removal request</b> is this site's own estimate and is unconfirmed. The City's record
+      for case PDA-22-07(B) says only "Removing approximately 319.589 acres of land from the development agreement" and gives no
+      location. The shape shown is the part of Reinvestment Zone #2 on Franklin Mountain's 660.503-acre tract, chosen because
+      its area on the appraisal map (about 318 acres) is close to the acreage in the application. It may be wrong.</li>
+    <li><b>Proposed annexation (AN-26-07)</b> is the outline the City of San Marcos draws for that case on its planning map
+      (Proposed Development layer), copied as of November 14, 2026. It is a pending request.</li>
+    <li><b>LCRA Timmerman Power Plant</b> shows the appraisal district parcels near Maxwell owned by the Lower Colorado River
+      Authority and LCRA Transmission Services Corporation (about 51.5 acres together). Plant details are from LCRA's website.</li>
+    <li><b>Address search</b> sends the text you type to Esri's address lookup service and marks the result on the map. This
+      site does not store it, and it is not added to shared links. The distance shown is a straight line to the nearest edge
+      of the Franklin Mountain land as drawn by the appraisal district.</li>
   </ul>
   <h3>Map colors</h3>
   <ul>
     <li>Developer land use uses the American Planning Association's standard land-use colors (industrial purple, commercial red,
-      open space green, residential yellow). Flood zones use FEMA's flood map colors. Water is blue, sewer green and gas
+      open space green, residential yellow, public facilities blue). Flood zones use FEMA's flood map colors. Water is blue, sewer green and gas
       yellow, following the utility industry's uniform color code. City limits are solid lines and ETJs dashed; incentive
       zones are pink, and other projects are white outlines.</li>
   </ul>
   <h3>Sources</h3>
   <ul>
-    <li>Caldwell County Commissioners Court, <a href="https://www.co.caldwell.tx.us/upload/page/0252/docs/Agenda%20Packets/11.12.26%20Agenda%20Packet_Reduced.pdf#page=268" target="_blank" rel="noopener">Nov. 12, 2026 agenda packet</a> (Order 01-2027 and Exhibit A) and <a href="https://www.co.caldwell.tx.us/upload/page/0252/docs/Agenda%20Packets/3.26.26%20Agenda%20Packet.pdf" target="_blank" rel="noopener">Mar. 26, 2026 agenda packet</a> (EDC Austin tax abatement, Zone #1).</li>
-    <li>City of San Marcos, Texas Economic Incentive Zones (2020) GIS layer (Enterprise Zone-eligible block groups and Opportunity Zone tracts).</li>
-    <li>Kimley-Horn, Exhibit B: Conceptual Land Use Plan, PDA-22-07(A) color exhibits (2023); Development Agreement (Res. 2023-20R), Section 1.07.F; Caldwell County Commissioners Court, <a href="https://www.co.caldwell.tx.us/upload/page/0245/docs/Agenda%20Packets/10.23.25%20Agenda%20Packet.pdf" target="_blank" rel="noopener">Oct. 23, 2025 agenda packet</a> (Earthship Irish North and South).</li>
-    <li>Caldwell Central Appraisal District parcel service and public GIS; City of San Marcos GIS (City Limit and ETJ layers); FEMA National Flood Hazard Layer; Railroad Commission of Texas public GIS (pipelines); OpenStreetMap contributors (rail).</li>
-    <li>Background imagery: U.S. Geological Survey, The National Map. Street map: &copy; OpenStreetMap contributors.</li>
+    <li>Caldwell County Commissioners Court, <a href="https://www.co.caldwell.tx.us/upload/page/0252/docs/Agenda%20Packets/11.12.26%20Agenda%20Packet_Reduced.pdf#page=268" target="_blank" rel="noopener">Nov. 12, 2026 agenda packet</a> (Order 01-2027 and Exhibit A), <a href="https://www.co.caldwell.tx.us/upload/page/0252/docs/Agenda%20Packets/3.26.26%20Agenda%20Packet.pdf" target="_blank" rel="noopener">Mar. 26, 2026 agenda packet</a> (EDC Austin tax abatement, Zone #1) and <a href="https://www.co.caldwell.tx.us/upload/page/0245/docs/Agenda%20Packets/10.23.25%20Agenda%20Packet.pdf" target="_blank" rel="noopener">Oct. 23, 2025 agenda packet</a> (Earthship Irish North and South agreements and surveys).</li>
+    <li>Kimley-Horn exhibits to the Development Agreement (Res. 2023-20R; PDA-22-07(A) color exhibits, 2023): Exhibit B Conceptual Land Use Plan, Exhibit C Conceptual Phasing Plan and Exhibit G cut and fill; Axis Detention and Water Quality Summary Exhibit; Development Agreement Section 1.07.F (fire station sites). The drawings are on the <a href="maps.html">Maps page</a>.</li>
+    <li>Caldwell Central Appraisal District: parcel service, public GIS (Martindale limits and ETJ, road centerlines) and the 2026 certified appraisal roll (homes).</li>
+    <li>City of San Marcos GIS: city limits, ETJ and the Texas Economic Incentive Zones (2020) layer (Enterprise Zone-eligible block groups and Opportunity Zone tracts); City exhibit "Ultimate Scenario Part 77 Surfaces, Runway 35 Ultimate."</li>
+    <li>Public Utility Commission of Texas, water and sewer CCN boundaries; Texas Commission on Environmental Quality, water district boundaries; Railroad Commission of Texas public GIS (pipelines).</li>
+    <li>FEMA National Flood Hazard Layer; U.S. Geological Survey National Hydrography Dataset (streams) and 3D Elevation Program (ground elevations).</li>
+    <li>U.S. Department of Labor, Gary Job Corps Center Draft Environmental Assessment (July 2022), Figure 5; U.S. Environmental Protection Agency, Site Inspection Prioritization report for the Gary Job Corps Center (1995). See the <a href="superfund.html">Groundwater contamination page</a>.</li>
+    <li>Background: Esri World Imagery (Esri, Vantor, Earthstar Geographics) with Esri road and place names; U.S. Geological Survey, The National Map (aerial and topographic); &copy; OpenStreetMap contributors (street map and rail). Address lookup: Esri World Geocoding Service.</li>
   </ul>
   <p style="margin-top:10px;">See also <a href="maps.html">Maps &amp; Site Exhibits</a> for the original engineering drawings.</p>
 </div>
@@ -215,9 +270,16 @@ document.addEventListener('DOMContentLoaded', function () {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script>
 (function () {
-  var map = L.map('map', { zoomControl: true, scrollWheelZoom: true, preferCanvas: false }).setView([29.868, -97.828], 14);
+  // Link format: #l=<layer ids>&v=<lat>,<lng>,<zoom>&b=<background>&r=0 (labels off). Missing parts fall back to the defaults.
+  var H = new URLSearchParams(location.hash.slice(1));
+  var hv = (H.get('v') || '').split(',').map(Number);
+  var hasView = hv.length === 3 && hv.every(isFinite);
+  var hl = H.has('l') ? H.get('l').split(',') : null;
+  var HOME = [[29.868, -97.828], 14];
+  var map = L.map('map', { zoomControl: false, scrollWheelZoom: true, preferCanvas: false })
+    .setView(hasView ? [hv[0], hv[1]] : HOME[0], hasView ? hv[2] : HOME[1]);
   L.control.scale({ imperial: true, metric: false }).addTo(map);
-  var DATA_VERSION = '2026-11-13p'; // bump when maps/data files change so browsers fetch fresh copies
+  var DATA_VERSION = '2026-11-14c'; // bump when maps/data files change so browsers fetch fresh copies
 
   var bases = {
     'Aerial 2025 (Esri)': L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
@@ -229,16 +291,32 @@ document.addEventListener('DOMContentLoaded', function () {
     'Streets (OSM)': L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',
       { maxZoom: 19, attribution: '&copy; OpenStreetMap contributors' })
   };
-  var current = bases['Aerial 2025 (Esri)'].addTo(map);
-  var bm = document.getElementById('basemaps');
-  Object.keys(bases).forEach(function (name, i) {
-    var b = document.createElement('button'); b.textContent = name; if (i === 0) b.className = 'on';
+  // Road and place names drawn over the two aerial backgrounds (the topo and street maps carry their own)
+  var refPane = map.createPane('p_ref'); refPane.style.zIndex = 250; refPane.style.pointerEvents = 'none';
+  var REF = 'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/';
+  var refs = ['World_Transportation', 'World_Boundaries_and_Places'].map(function (n) {
+    return L.tileLayer(REF + n + '/MapServer/tile/{z}/{y}/{x}', { pane: 'p_ref', maxZoom: 19, attribution: 'Labels: Esri' });
+  });
+  var baseNames = Object.keys(bases), baseIdx = Math.min(baseNames.length - 1, Math.max(0, parseInt(H.get('b'), 10) || 0));
+  var current = bases[baseNames[baseIdx]].addTo(map);
+  var bm = document.getElementById('basemaps'), refCb = document.getElementById('refcb'), refRow = document.getElementById('refrow');
+  refCb.checked = H.get('r') !== '0';
+  function syncRef() {
+    var aerial = baseIdx < 2;
+    refRow.style.display = aerial ? '' : 'none';
+    refs.forEach(function (r) { if (aerial && refCb.checked) r.addTo(map); else map.removeLayer(r); });
+  }
+  baseNames.forEach(function (name, i) {
+    var b = document.createElement('button'); b.type = 'button'; b.textContent = name; if (i === baseIdx) b.className = 'on';
     b.onclick = function () {
-      map.removeLayer(current); current = bases[name].addTo(map); current.bringToBack();
+      map.removeLayer(current); current = bases[name].addTo(map); current.bringToBack(); baseIdx = i;
       [].forEach.call(bm.children, function (c) { c.className = ''; }); b.className = 'on';
+      syncRef(); writeHash();
     };
     bm.appendChild(b);
   });
+  refCb.onchange = function () { syncRef(); writeHash(); };
+  syncRef();
 
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
   function acres(a) { return a ? Number(a).toLocaleString(undefined, { maximumFractionDigits: 2 }) + ' acres' : ''; }
@@ -251,6 +329,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var PKT1112 = 'https://www.co.caldwell.tx.us/upload/page/0252/docs/Agenda%20Packets/11.12.26%20Agenda%20Packet_Reduced.pdf';
   var PKT1023 = 'https://www.co.caldwell.tx.us/upload/page/0245/docs/Agenda%20Packets/10.23.25%20Agenda%20Packet.pdf';
   var EXB = 'https://smartterminalcommunityinfo.github.io/maps.html';
+  var PDAB = 'https://smgis.sanmarcostx.gov/arcgis/rest/services/Planning/PlanningFeatures/MapServer/15/query?where=CaseNumber%3D%27PDA-22-07%28B%29%27&outFields=CaseNumber,ProjectName,CaseType,Status,ProjectDescription,ApplicantBusiness,Address&returnGeometry=false&f=html';
   // Color scheme: one family per theme. Land use follows APA LBCS colors; flood zones follow FEMA's NFHL renderer;
   // utilities follow the APWA uniform color code (water blue, sewer green, gas yellow); other hues are Okabe-Ito.
   // Draw order is fixed by pane (large areas low, small shapes and lines high) so hover never reorders the map.
@@ -277,7 +356,7 @@ document.addEventListener('DOMContentLoaded', function () {
       popup: exbPopup };
   }
   function ccn(id, file, name, note, color, kindWord) {
-    return { id: id, file: file, name: name, note: note, on: false, kind: 'line', pane: 'p_bound',
+    return { id: id, file: file, name: name, note: note, on: false, kind: 'line', pane: 'p_bound', area: true,
       style: { color: color, weight: 2.5, dashArray: '10 6', fill: false, opacity: 0.95 },
       label: function (p) { return p.label_pt ? [p.label_pt, p.utility + ' (' + kindWord + ')'] : null; },
       popup: function (p) { return '<b>' + esc(p.utility) + '</b><br>' + (kindWord === 'sewer' ? 'Sewer' : 'Water') + ' CCN No. ' + esc(p.ccn_number) + ' (' + esc(p.status) + ')<br>A Certificate of Convenience and Necessity gives a utility the right, and the duty, to serve the area.<br>Source: ' + esc(p.source); } };
@@ -285,10 +364,10 @@ document.addEventListener('DOMContentLoaded', function () {
   var CASE = { color: '#0f172a', opacity: 0.55 };
   var groups = [
     { name: 'TriTexas site: land and plans', layers: [
-      { id: 'tri', file: 'tritexas_parcels.geojson', name: 'Franklin Mountain land', note: 'Caldwell CAD parcels; ~2,090 acres', on: true, kind: 'fill', pane: 'p_site', edge: true,
+      { id: 'tri', file: 'tritexas_parcels.geojson', name: 'Franklin Mountain land', note: 'Caldwell CAD parcels; ~2,058 acres', on: true, kind: 'fill', pane: 'p_site', edge: true,
         outline: { file: 'tritexas_outline.geojson', casing: 3, style: { color: '#D55E00', weight: 3.5, fillColor: '#D55E00', fillOpacity: 0.08 } },
         style: function (f) { var sep = f.properties.prop_id === 28052; return { color: '#D55E00', weight: 1.2, opacity: 0.85, dashArray: sep ? '6 5' : '3 4', fillOpacity: 0 }; },
-        popup: function (p) { return parcel(p, p.note ? '<br><i>' + esc(p.note) + '</i>' : ''); } },
+        popup: function (p) { return parcel(p, (p.note ? '<br><i>' + esc(p.note) + '</i>' : '') + '<br>Pending: an application filed Nov. 9, 2026 (PDA-22-07(B)) asks to remove approximately 319.589 acres from the Development Agreement. The City record does not say which land. <a href="' + PDAB + '" target="_blank" rel="noopener">City GIS record</a>'); } },
       { id: 'exb_landuse', file: 'exhibit_b_land_use.geojson', filter: function (f) { return /^(industrial|commercial|greenbelt)$/.test(f.properties.category); },
         name: 'Land use designations (Exhibit B)', note: 'As drawn on Exhibit B (approximate)', on: false, kind: 'fill', pane: 'p_plan', excl: 'plan',
         key: ['industrial', 'commercial', 'greenbelt'].map(function (c) { return [EXBC[c].fill, EXBC[c].name]; }),
@@ -302,6 +381,14 @@ document.addEventListener('DOMContentLoaded', function () {
         style: { color: '#ffffff', weight: 3, dashArray: '8 6', fillColor: '#ffffff', fillOpacity: 0 },
         label: function (p, l) { return [l.getBounds().getCenter(), p.phase]; },
         popup: function (p) { return '<b>' + esc(p.phase) + '</b><br>Labeled ' + esc(p.acres_label) + ' acres on the exhibit (about ' + esc(p.acres_drawn) + ' acres as traced)<br>' + esc(p.source) + '<br><small>Traced by color from the developer&#39;s exhibit and placed using the same fit as Exhibit B. Approximate.</small>'; } },
+      { id: 'annex', file: 'annexation_an2607.geojson', name: 'Proposed annexation (AN-26-07)', note: 'As drawn on the City planning map; in review, not approved', on: false, kind: 'fill', pane: 'p_plan',
+        style: { color: '#0072B2', weight: 2.5, dashArray: '3 5', fillColor: '#0072B2', fillOpacity: 0.45 },
+        label: function (p) { return [p.label_pt, 'Proposed annexation']; },
+        popup: function (p) { return '<b>Proposed annexation, case ' + esc(p.case) + '</b><br>&quot;' + esc(p.name) + ',&quot; about ' + esc(p.acres_city) + ' acres as drawn on the City of San Marcos planning map. Applicant: ' + esc(p.applicant) + '. Status: ' + esc(p.status) + '.<br>The City&#39;s record lists meeting dates of ' + p.meetings.map(function (d) { return new Date(d + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }); }).join('; ') + '.<br>The application was filed Oct. 15, 2026 and lists appraisal district parcel 27868. This is a request, not an approved annexation.<br><a href="https://smgis.sanmarcostx.gov/arcgis/rest/services/Planning/PlanningFeatures/MapServer/27/query?where=CASE_NUM%3D%27AN-26-07%27&outFields=CASE_NUM,PROJECT_NAME,FEATURE_TYPE,ACRES,LifeCycleStatus&returnGeometry=false&f=html" target="_blank" rel="noopener">City GIS record</a><br>Source: City of San Marcos GIS, Proposed Development layer; City permit portal (checked Nov. 14, 2026)'; } },
+      { id: 'pdab', file: 'pda_b_estimate.geojson', name: 'Possible area of the 319.589-acre removal request (unconfirmed)', note: 'This site\u2019s estimate, not from the City. The City record for PDA-22-07(B) gives no location', on: false, kind: 'fill', pane: 'p_plan',
+        style: { color: '#ffffff', weight: 2.5, dashArray: '2 6', fillColor: '#ffffff', fillOpacity: 0.3 },
+        label: function (p) { return [p.label_pt, 'Possible removal area (unconfirmed)']; },
+        popup: function (p) { return '<b>Possible area of the removal request (unconfirmed)</b><br><b>What the City record says:</b> on Nov. 9, 2026, Franklin Mountain San Marcos I, L.P. filed case PDA-22-07(B), &quot;Smart Terminal PDA Amendment #2 - Removing approximately 319.589 acres of land from the development agreement.&quot; Status: Submitted. The record does not say which land. <a href="' + PDAB + '" target="_blank" rel="noopener">City GIS record</a><br><b>What is speculation:</b> this shape. It is this site&#39;s estimate, not the City&#39;s or the applicant&#39;s. It is the part of Caldwell 142 Reinvestment Zone #2 that lies on Franklin Mountain&#39;s 660.503-acre tract, which measures about ' + esc(p.acres_drawn) + ' acres on the appraisal district map, close to the 319.589 acres in the application. The actual area may be different. It will be replaced when the application&#39;s legal description is available.'; } },
       exb('container', true),
       exb('buffer', true),
       { id: 'ponds', file: 'detention_ponds.geojson', name: 'Detention ponds and drainage channels (proposed)', note: 'As drawn on the Detention and Water Quality Summary Exhibit (approximate)', on: false, kind: 'fill', pane: 'p_small',
@@ -334,25 +421,27 @@ document.addEventListener('DOMContentLoaded', function () {
         casing: { weight: 3 },
         style: { color: '#ffffff', weight: 2.5, fillColor: '#ffffff', fillOpacity: 0.1 },
         popup: function (p) { return parcel(p, '<br>In Caldwell 142 Reinvestment Zone #1 (data center campus; County tax abatement approved Mar. 26, 2026). The zone is described in the order only by four corner points, so the land parcels are shown.'); } },
-      { id: 'irish', file: 'irish.geojson', name: 'Earthship Project Irish (North and South)', note: 'Tracts under contract; DAs approved Oct. 23, 2025', on: false, kind: 'fill', pane: 'p_parcel',
+      { id: 'irish', file: 'irish.geojson', name: 'Earthship Project Irish (North and South)', note: '19 tracts under contract; DAs approved Oct. 23, 2025', on: false, kind: 'fill', pane: 'p_parcel',
         casing: { weight: 3 },
         style: { color: '#ffffff', weight: 2.5, dashArray: '7 5', fillColor: '#ffffff', fillOpacity: 0.1 },
-        popup: function (p) { var s = p.project === 'Irish South'; return parcel(p, '<br><b>Project ' + esc(p.project) + '</b> (Earthship Corporation development agreement, approved 5-0 on Oct. 23, 2025). The agreement lists a ' + esc(p.da_tract_acres) + '-acre tract under purchase contract that matches this parcel. Not every listed tract could be matched to a parcel.<br><a href="' + PKT1023 + '#page=' + (s ? 373 : 318) + '" target="_blank" rel="noopener">Agreement (Oct. 23, 2025 packet)</a>'); } }
+        popup: function (p) { var s = p.project === 'Irish South';
+          var extra = '<br><b>Project ' + esc(p.project) + '</b> (Earthship Corporation development agreement, approved 5-0 on Oct. 23, 2025). The agreement lists a ' + esc(p.da_tract_acres) + '-acre tract under purchase contract ' + (p.partial ? 'that is part of this parcel.' : 'that matches this parcel.') + '<br><a href="' + PKT1023 + '#page=' + (s ? 373 : 318) + '" target="_blank" rel="noopener">Agreement (Oct. 23, 2025 packet)</a>' + (p.method ? '<br><small>' + esc(p.method) + '</small>' : '');
+          return p.private_owner ? '<b>Privately owned tract</b><br>' + acres(p.acres) + extra + '<br>Source: Caldwell Central Appraisal District parcel outline' : parcel(p, extra); } }
     ] },
     { name: 'Jurisdictions', layers: [
-      { id: 'city', file: 'city_limits.geojson', name: 'San Marcos city limits', note: 'City of San Marcos GIS', on: false, kind: 'line', pane: 'p_bound',
+      { id: 'city', file: 'city_limits.geojson', name: 'San Marcos city limits', note: 'City of San Marcos GIS', on: false, kind: 'line', pane: 'p_bound', area: true,
         style: { color: '#0072B2', weight: 2.5, fill: false },
         popup: function () { return '<b>San Marcos city limits</b><br>Source: City of San Marcos GIS'; } },
-      { id: 'etj', file: 'etj.geojson', name: 'San Marcos ETJ', note: 'Extraterritorial jurisdiction', on: false, kind: 'line', pane: 'p_bound',
+      { id: 'etj', file: 'etj.geojson', name: 'San Marcos ETJ', note: 'Extraterritorial jurisdiction', on: false, kind: 'line', pane: 'p_bound', area: true,
         style: { color: '#0072B2', weight: 2.5, dashArray: '8 6', fill: false },
         popup: function () { return '<b>San Marcos extraterritorial jurisdiction (ETJ)</b><br>Source: City of San Marcos GIS'; } },
-      { id: 'mcity', file: 'martindale_city_limits.geojson', name: 'Martindale city limits', note: 'Caldwell CAD GIS', on: false, kind: 'line', pane: 'p_bound',
+      { id: 'mcity', file: 'martindale_city_limits.geojson', name: 'Martindale city limits', note: 'Caldwell CAD GIS', on: false, kind: 'line', pane: 'p_bound', area: true,
         style: { color: '#E69F00', weight: 2.5, fill: false },
         popup: function () { return '<b>City of Martindale city limits</b><br>Source: Caldwell Central Appraisal District GIS'; } },
-      { id: 'metj', file: 'martindale_etj.geojson', name: 'Martindale ETJ', note: 'Caldwell CAD GIS', on: false, kind: 'line', pane: 'p_bound',
+      { id: 'metj', file: 'martindale_etj.geojson', name: 'Martindale ETJ', note: 'Caldwell CAD GIS', on: false, kind: 'line', pane: 'p_bound', area: true,
         style: { color: '#E69F00', weight: 2.5, dashArray: '8 6', fill: false },
         popup: function () { return '<b>Martindale extraterritorial jurisdiction (ETJ)</b><br>Source: Caldwell Central Appraisal District GIS'; } },
-      { id: 'mud', file: 'muds.geojson', name: 'Municipal utility districts', note: 'TCEQ official boundaries', on: false, kind: 'line', pane: 'p_bound',
+      { id: 'mud', file: 'muds.geojson', name: 'Municipal utility districts', note: 'TCEQ official boundaries', on: false, kind: 'line', pane: 'p_bound', area: true,
         style: { color: '#d1d5db', weight: 2.5, dashArray: '2 5', fill: false },
         popup: function (p) { return '<b>' + esc(p.name) + '</b><br>TCEQ district ' + esc(p.district_id) + (p.plat_acres ? ', ' + esc(Number(p.plat_acres).toLocaleString()) + ' acres' : '') + (p.boundary_change ? '<br>Boundary last changed ' + esc(p.boundary_change) : '') + (/Cotton Center MUD 1/.test(p.name) ? '<br>On May 3, 2024 the district excluded three tracts, including Franklin Mountain&#39;s 660.503 acres (Caldwell County Doc. 2024-003500).' : '') + '<br>Source: Texas Commission on Environmental Quality, water district boundaries'; } },
     ] },
@@ -392,7 +481,11 @@ document.addEventListener('DOMContentLoaded', function () {
         style: function (f) { var c = ['#BD0026', '#E31A1C', '#FC4E2A', '#FD8D3C', '#FEB24C', '#FED976', '#FFEDA0', '#FFF5C2', '#FFFBE0'][Math.round((f.properties.elev_low - 571.3) / 32.7)] || '#FED976'; return { color: '#ffffff', weight: 1, opacity: 0.8, fillColor: c, fillOpacity: 0.4 }; },
         popup: function (p) { return '<b>Runway 35 approach surface</b><br>In this band the surface is ' + esc(p.elev_low) + ' to ' + esc(p.elev_high) + ' feet above sea level. With the ground at about ' + esc(p.ground_ft) + ' feet, that is roughly ' + esc(p.agl_low) + ' to ' + esc(p.agl_high) + ' feet above ground.<br>The FAA Part 77 approach surface rises 1 foot for every 34 feet outward, from 1,000 feet wide at its start to 4,000 feet wide 10,000 feet out. Under 14 CFR Part 77, anything that would rise above it is treated as an obstruction and must go through an FAA hazard study.<br>Source: City of San Marcos exhibit, &quot;Ultimate Scenario Part 77 Surfaces, Runway 35 Ultimate&quot;; ground elevation from USGS 3DEP. <a href="maps.html">Original exhibit</a><br><small>Placed by matching the exhibit&#39;s parcel lines to appraisal district parcels (median difference about 8 feet). Approximate.</small>'; } }
     ] },
-    { name: 'Transportation and pipelines', layers: [
+    { name: 'Power, rail and pipelines', layers: [
+      { id: 'lcra', file: 'lcra_plant.geojson', name: 'LCRA Timmerman Power Plant', note: 'Natural gas peaker plant, about 380 megawatts; fully online April 2026', on: false, kind: 'fill', pane: 'p_small',
+        style: { color: '#ffffff', weight: 2, fillColor: '#FF0000', fillOpacity: 0.5 },
+        label: function (p, l) { return p.prop_id === 11709 ? [l.getBounds().getCenter(), 'LCRA power plant'] : null; },
+        popup: function (p) { return parcel(p, '<br><b>LCRA Timmerman Power Plant</b><br>A natural gas peaker plant of about 380 megawatts in two units, each with 10 reciprocating engines. The Lower Colorado River Authority says Unit 1 connected to the grid in August 2025 and Unit 2 in April 2026, on a 51-acre site near Maxwell. Shown are the appraisal district parcels there owned by LCRA and LCRA Transmission Services Corporation.<br><a href="https://www.lcra.org/energy/electric-power/facilities/timmerman-power-plant/" target="_blank" rel="noopener">LCRA: Timmerman Power Plant</a>'); } },
       { id: 'rail', file: 'railroad.geojson', name: 'Railroad', note: 'OpenStreetMap', on: true, kind: 'line', pane: 'p_line',
         casing: { weight: 3, color: '#111827', opacity: 1 },
         style: { color: '#ffffff', weight: 3, dashArray: '8 8' },
@@ -410,7 +503,10 @@ document.addEventListener('DOMContentLoaded', function () {
   ];
 
   var panel = document.getElementById('layers');
+  var wrap = document.getElementById('mapwrap');
   var all = {};
+  var ready = false;      // the link in the address bar is only rewritten after the first view is set
+  var siteGeo = null, siteBounds = null;
 
   function hexA(h, a) { var n = parseInt(h.slice(1), 16); return 'rgba(' + (n >> 16) + ',' + ((n >> 8) & 255) + ',' + (n & 255) + ',' + a + ')'; }
   function swatch(d) {
@@ -430,9 +526,10 @@ document.addEventListener('DOMContentLoaded', function () {
   }
   function tip(d, p) {
     var t = '<b>' + esc(d.name) + '</b>';
-    if (p.owner && d.id !== 'tri') t += '<br>' + esc(p.owner);
-    if (p.acres) t += '<br>' + acres(p.acres);
-    if (p.acres_drawn) t += '<br>About ' + esc(p.acres_drawn) + ' acres as drawn';
+    if (p.owner && d.id !== 'tri' && !p.private_owner) t += '<br>' + esc(p.owner);
+    if (p.partial && p.da_tract_acres) t += '<br>' + acres(p.da_tract_acres) + ' (part of a larger parcel)';
+    else if (p.acres) t += '<br>' + acres(p.acres);
+    if (p.acres_drawn && !p.partial) t += '<br>About ' + esc(p.acres_drawn) + ' acres as drawn';
     if (p.zone) t += '<br>Zone ' + esc(p.zone) + (p.subtype ? ' (' + esc(p.subtype) + ')' : '');
     if (p.ccn_number) t += '<br>' + esc(p.utility) + ' (CCN ' + esc(p.ccn_number) + ')';
     if (p.system) t += '<br>' + esc(p.system) + ', ' + esc(p.diameter_in) + '-inch';
@@ -450,12 +547,64 @@ document.addEventListener('DOMContentLoaded', function () {
     l.setStyle({ weight: (b.weight || 2) + 3, opacity: 1, color: d.outline ? d.outline.style.color : b.color, dashArray: d.outline ? null : b.dashArray,
       fillOpacity: b.fill === false ? 0 : Math.min(0.65, (b.fillOpacity || 0) + 0.25) });
   }
+  function each(fn) { groups.forEach(function (g) { g.layers.forEach(fn); }); }
   function syncAll() { groups.forEach(function (g) { if (g.sync) g.sync(); }); }
+
+  // Data files are fetched the first time a layer is switched on, and shared between layers that use the same file.
+  var cache = {};
+  function get(file) {
+    return cache[file] || (cache[file] = fetch('maps/data/' + file + '?v=' + DATA_VERSION).then(function (r) {
+      if (!r.ok) throw new Error(file + ': HTTP ' + r.status);
+      return r.json();
+    }).catch(function (e) { delete cache[file]; throw e; }));
+  }
+  function build(d, gj, og) {
+    var labels = L.layerGroup();
+    var opts = { filter: d.filter, pane: d.pane, style: d.style, onEachFeature: function (f, l) {
+      l.bindTooltip(tip(d, f.properties), { sticky: true, direction: 'top', opacity: 0.95 });
+      l.on('mouseover', function () { hi(l, d); d.row.classList.add('hot'); });
+      l.on('mouseout', function () { d.layer.resetStyle(l); d.row.classList.remove('hot'); });
+      if (d.label) {
+        var lb = d.label(f.properties, l);
+        if (lb) labels.addLayer(L.tooltip({ permanent: true, direction: lb[2] || 'center', offset: lb[2] ? [10, 0] : [0, 0], className: 'map-label', pane: 'p_label', interactive: false })
+          .setLatLng(Array.isArray(lb[0]) ? [lb[0][1], lb[0][0]] : lb[0]).setContent(esc(lb[1])));
+      }
+    } };
+    if (d.edge) opts.className = 'edge';  // huge areas answer hover only along their edge, so shapes inside stay reachable
+    opts.pointToLayer = function (f, ll) { var st = typeof d.style === 'function' ? d.style(f) : d.style; return L.circleMarker(ll, L.extend({ pane: d.pointPane || d.pane }, st)); };
+    d.layer = L.geoJSON(gj, opts);
+    d.parts = [d.layer, labels];
+    if (d.casing) {  // dark edge under the line so it reads on aerial imagery
+      var cs = d.casing;
+      d.parts.unshift(L.geoJSON(gj, { filter: d.filter, pane: d.pane, interactive: false,
+        style: function (f) { var b = typeof d.style === 'function' ? d.style(f) : d.style; return { color: cs.color || CASE.color, opacity: cs.opacity || CASE.opacity, weight: (b.weight || 2) + cs.weight, fill: false }; } }));
+    }
+    if (og) {  // one overall boundary under the faint parcel lines
+      var ost = d.outline.style;
+      d.parts.unshift(L.geoJSON(og, { pane: d.pane, interactive: false, style: ost }));
+      d.parts.unshift(L.geoJSON(og, { pane: d.pane, interactive: false, style: { color: CASE.color, opacity: CASE.opacity, weight: ost.weight + d.outline.casing, fill: false } }));
+    }
+  }
+  function load(d) {
+    if (d.loading) return d.loading;
+    d.row.classList.remove('fail'); d.row.classList.add('busy'); d.status.textContent = 'Loading...';
+    return (d.loading = Promise.all([get(d.file), d.outline ? get(d.outline.file) : null]).then(function (res) {
+      build(d, res[0], res[1]);
+      d.row.classList.remove('busy'); d.status.textContent = '';
+    }).catch(function (e) {
+      d.loading = null; d.cb.checked = false;
+      d.row.classList.remove('busy'); d.row.classList.add('fail');
+      d.status.textContent = 'This layer could not be loaded. Tick it again to retry.';
+      syncAll(); writeHash();
+      if (window.console) console.error('Layer ' + d.id + ' failed:', e);
+    }));
+  }
+  function show(d, on) { d.parts.forEach(function (x) { if (!on) map.removeLayer(x); else if (!map.hasLayer(x)) x.addTo(map); }); }
   function setOn(d, on) {
     d.cb.checked = on;
-    if (on && d.excl) groups.forEach(function (g) { g.layers.forEach(function (o) { if (o !== d && o.excl === d.excl && o.cb.checked) setOn(o, false); }); });
-    if (!d.parts) { d.want = on; return; }
-    d.parts.forEach(function (x) { if (on) x.addTo(map); else map.removeLayer(x); });
+    if (on && d.excl) each(function (o) { if (o !== d && o.excl === d.excl && o.cb.checked) setOn(o, false); });
+    if (d.parts) show(d, on);
+    else if (on) load(d).then(function () { if (d.parts) show(d, d.cb.checked); });
   }
 
   groups.forEach(function (g) {
@@ -476,54 +625,221 @@ document.addEventListener('DOMContentLoaded', function () {
     gcb.onchange = function () {  // plan layers are one at a time, so "show all" turns on only the first of them
       var seen = {}, on = gcb.checked;
       g.layers.forEach(function (d) { var v = on && !(d.excl && seen[d.excl]); if (v && d.excl) seen[d.excl] = 1; setOn(d, v); });
-      syncAll();
+      syncAll(); writeHash();
     };
 
     g.layers.forEach(function (d) {
-      all[d.id] = d; d.want = d.on;
-      var row = document.createElement('label'); row.className = 'layer';
-      var cb = document.createElement('input'); cb.type = 'checkbox'; cb.checked = d.on; d.cb = cb;
+      all[d.id] = d;
+      if (hl) d.on = hl.indexOf(d.id) >= 0;   // a shared link carries its own list of layers
+      var row = document.createElement('label'); row.className = 'layer'; d.row = row;
+      var cb = document.createElement('input'); cb.type = 'checkbox'; cb.checked = false; d.cb = cb;
       var txt = document.createElement('span'); txt.innerHTML = esc(d.name) + '<small>' + esc(d.note) + (d.excl ? '. One plan layer shows at a time.' : '') + '</small>' + (d.key ? d.key.map(function (k) { return '<small class="key"><i style="background:' + k[0] + '"></i>' + esc(k[1]) + '</small>'; }).join('') : '');
+      d.status = document.createElement('small'); d.status.className = 'st'; d.status.setAttribute('role', 'status'); txt.appendChild(d.status);
       row.appendChild(cb); row.appendChild(swatch(d)); row.appendChild(txt); kids.appendChild(row);
-      cb.addEventListener('change', function () { setOn(d, cb.checked); syncAll(); });
-      var get = function (file) { return fetch('maps/data/' + file + '?v=' + DATA_VERSION).then(function (r) { return r.json(); }); };
-      Promise.all([get(d.file), d.outline ? get(d.outline.file) : null]).then(function (res) {
-        var gj = res[0], og = res[1];
-        var labels = L.layerGroup();
-        var opts = { filter: d.filter, pane: d.pane, style: d.style, onEachFeature: function (f, l) {
-          l.bindPopup(d.popup(f.properties));
-          l.bindTooltip(tip(d, f.properties), { sticky: true, direction: 'top', opacity: 0.95 });
-          l.on('mouseover', function () { hi(l, d); row.classList.add('hot'); });
-          l.on('mouseout', function () { d.layer.resetStyle(l); row.classList.remove('hot'); });
-          if (d.label) {
-            var lb = d.label(f.properties, l);
-            if (lb) labels.addLayer(L.tooltip({ permanent: true, direction: lb[2] || 'center', offset: lb[2] ? [10, 0] : [0, 0], className: 'map-label', pane: 'p_label', interactive: false })
-              .setLatLng(Array.isArray(lb[0]) ? [lb[0][1], lb[0][0]] : lb[0]).setContent(esc(lb[1])));
-          }
-        } };
-        if (d.edge) opts.className = 'edge';  // huge areas answer hover only along their edge, so shapes inside stay reachable
-        opts.pointToLayer = function (f, ll) { var st = typeof d.style === 'function' ? d.style(f) : d.style; return L.circleMarker(ll, L.extend({ pane: d.pointPane || d.pane }, st)); };
-        d.layer = L.geoJSON(gj, opts);
-        d.parts = [d.layer, labels];
-        if (d.casing) {  // dark edge under the line so it reads on aerial imagery
-          var cs = d.casing;
-          d.parts.unshift(L.geoJSON(gj, { filter: d.filter, pane: d.pane, interactive: false,
-            style: function (f) { var b = typeof d.style === 'function' ? d.style(f) : d.style; return { color: cs.color || CASE.color, opacity: cs.opacity || CASE.opacity, weight: (b.weight || 2) + cs.weight, fill: false }; } }));
-        }
-        if (og) {  // one overall boundary under the faint parcel lines
-          var ost = d.outline.style;
-          d.parts.unshift(L.geoJSON(og, { pane: d.pane, interactive: false, style: ost }));
-          d.parts.unshift(L.geoJSON(og, { pane: d.pane, interactive: false, style: { color: CASE.color, opacity: CASE.opacity, weight: ost.weight + d.outline.casing, fill: false } }));
-        }
-        row.addEventListener('mouseenter', function () { if (map.hasLayer(d.layer)) d.layer.eachLayer(function (l) { hi(l, d); }); });
-        row.addEventListener('mouseleave', function () { d.layer.resetStyle(); });
-        if (cb.checked) d.parts.forEach(function (x) { x.addTo(map); });
-        if (d.id === 'tri' && !location.hash) map.fitBounds(d.layer.getBounds(), { padding: [30, 30] });  // open framed on the site
-      }).catch(function (e) { if (window.console) console.error('Layer ' + d.id + ' failed:', e); });
+      cb.addEventListener('change', function () { setOn(d, cb.checked); syncAll(); writeHash(); });
+      row.addEventListener('mouseenter', function () { if (d.layer && map.hasLayer(d.layer)) d.layer.eachLayer(function (l) { hi(l, d); }); });
+      row.addEventListener('mouseleave', function () { if (d.layer) d.layer.resetStyle(); });
     });
-    g.sync();
     if (!g.layers.some(function (d) { return d.on; })) tog.onclick();  // start collapsed when nothing in the group is on
   });
+  each(function (d) { if (d.on) setOn(d, true); });
+  syncAll();
+
+  // The site outline is always fetched: it frames the first view and is what distances are measured to.
+  get('tritexas_outline.geojson').then(function (og) {
+    var g = og.features[0].geometry;
+    siteGeo = g.type === 'Polygon' ? [g.coordinates] : g.coordinates;
+    siteBounds = L.geoJSON(og).getBounds();
+    if (!hasView) map.fitBounds(siteBounds, { padding: [30, 30], animate: false });
+  }).catch(function (e) { if (window.console) console.error('Site outline failed:', e); }).then(function () { ready = true; });
+
+  function writeHash() {
+    if (!ready || !window.history || !history.replaceState) return;
+    var c = map.getCenter(), on = [];
+    each(function (d) { if (d.cb.checked) on.push(d.id); });
+    history.replaceState(null, '', '#l=' + on.join(',') + '&v=' + c.lat.toFixed(4) + ',' + c.lng.toFixed(4) + ',' + map.getZoom() +
+      (baseIdx ? '&b=' + baseIdx : '') + (refCb.checked ? '' : '&r=0'));
+  }
+  map.on('moveend', writeHash);
+
+  // ---- What is here: every switched-on layer at the clicked spot ----
+  function paneZ(d) { return +map.getPane(d.pane).style.zIndex || 400; }
+  function inRing(ll, ring) {
+    var c = false, x = ll.lng, y = ll.lat;
+    for (var i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+      var a = ring[i], b = ring[j];
+      if ((a.lat > y) !== (b.lat > y) && x < (b.lng - a.lng) * (y - a.lat) / (b.lat - a.lat) + a.lng) c = !c;
+    }
+    return c;
+  }
+  function inPoly(ll, l) {
+    var g = l.getLatLngs(), polys = L.LineUtil.isFlat(g[0]) ? [g] : g;
+    return polys.some(function (rings) { var c = false; rings.forEach(function (r) { if (inRing(ll, r)) c = !c; }); return c; });
+  }
+  function near(l, pt, tol) { var c = l.closestLayerPoint(pt); return !!c && c.distance <= tol; }
+  function hitsAt(ll) {
+    var pt = map.latLngToLayerPoint(ll), out = [];
+    each(function (d) {
+      if (!d.layer || !map.hasLayer(d.layer)) return;
+      d.layer.eachLayer(function (l) {
+        var hit = false, inside = false;
+        if (l instanceof L.CircleMarker) hit = map.latLngToLayerPoint(l.getLatLng()).distanceTo(pt) <= l.getRadius() + 6;
+        else if (l instanceof L.Polygon) {
+          // outlines drawn without a fill count as areas only where being inside them means something (d.area)
+          if (baseStyle(d, l).fill === false && !d.area) hit = near(l, pt, 7);
+          else { hit = l.getBounds().contains(ll) && inPoly(ll, l); inside = hit && !!d.area; }
+        } else if (l instanceof L.Polyline) hit = near(l, pt, 8);
+        if (hit) out.push({ d: d, p: l.feature.properties, inside: inside });
+      });
+    });
+    return out.sort(function (a, b) { return paneZ(b.d) - paneZ(a.d); });
+  }
+  function sub(h) {
+    var p = h.p, s = p.utility || p.phase || p.name || (p.zone ? 'Zone ' + p.zone : '') || (h.d.key && p.label) || p.project || (p.max_ft ? 'up to ' + p.max_ft + ' feet' : '') || '';
+    return s ? ' <span>(' + esc(s) + ')</span>' : '';
+  }
+  function hereHtml(ll, head) {
+    var hits = hitsAt(ll).slice(0, 12);
+    if (!hits.length) return head ? head + '<div class="here-f">None of the layers that are switched on cover this spot.</div>' : '';
+    if (hits.length === 1 && !head) return hits[0].d.popup(hits[0].p);
+    return (head || '') + '<div class="here"><div class="here-h">' + hits.length + (hits.length > 1 ? ' layers' : ' layer') + ' at this spot</div>' +
+      hits.map(function (h, i) {
+        return '<details' + (i === 0 && !head ? ' open' : '') + '><summary>' + (h.inside ? 'Inside: ' : '') + esc(h.d.name) + sub(h) + '</summary><div>' + h.d.popup(h.p) + '</div></details>';
+      }).join('') + '<div class="here-f">Only layers that are switched on are listed.</div></div>';
+  }
+  function openHere(ll, head) {
+    var html = hereHtml(ll, head);
+    if (html) L.popup({ maxWidth: 330, maxHeight: 300 }).setLatLng(ll).setContent(html).openOn(map);
+  }
+  map.on('click', function (e) { if (measuring) addMeasure(e.latlng); else openHere(e.latlng); });
+
+  // ---- Distance from a point to the Franklin Mountain land (feet; 0 when inside) ----
+  function distToSite(ll) {
+    if (!siteGeo) return null;
+    var kx = 111320 * Math.cos(ll.lat * Math.PI / 180), ky = 110574, best = Infinity, inside = false;
+    siteGeo.forEach(function (poly) {
+      var c = false;
+      poly.forEach(function (ring) {
+        for (var i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+          var ax = (ring[i][0] - ll.lng) * kx, ay = (ring[i][1] - ll.lat) * ky, bx = (ring[j][0] - ll.lng) * kx, by = (ring[j][1] - ll.lat) * ky;
+          if ((ay > 0) !== (by > 0) && 0 < (bx - ax) * (0 - ay) / (by - ay) + ax) c = !c;
+          var dx = bx - ax, dy = by - ay, t = dx || dy ? Math.max(0, Math.min(1, -(ax * dx + ay * dy) / (dx * dx + dy * dy))) : 0;
+          best = Math.min(best, Math.sqrt(Math.pow(ax + t * dx, 2) + Math.pow(ay + t * dy, 2)));
+        }
+      });
+      if (c) inside = true;
+    });
+    return inside ? 0 : best * 3.28084;
+  }
+  function fmtFeet(ft) { return ft < 1000 ? Math.round(ft / 10) * 10 + ' feet' : (ft / 5280).toFixed(ft < 52800 ? 1 : 0) + ' miles'; }
+
+  // ---- Address search (Esri geocoding; the typed text is not stored by this site or put in the link) ----
+  map.createPane('p_tool').style.zIndex = 650; map.getPane('p_tool').style.pointerEvents = 'none';
+  var pin = null;
+  var Search = L.Control.extend({ options: { position: 'topleft' }, onAdd: function () {
+    var c = L.DomUtil.create('div', 'mapsearch');
+    c.innerHTML = '<form><input type="search" placeholder="Find an address" aria-label="Find an address" autocomplete="off"><button type="submit">Find</button></form><div class="mapsearch-msg" role="status"></div>';
+    var input = c.querySelector('input'), msg = c.querySelector('.mapsearch-msg');
+    function say(t) { msg.textContent = t; msg.style.display = t ? 'block' : 'none'; }
+    c.querySelector('form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var q = input.value.trim(); if (!q) return;
+      say('Searching...');
+      fetch('https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?f=json&maxLocations=1&countryCode=USA' +
+        '&searchExtent=-98.10,29.70,-97.60,30.05&location=-97.83,29.87&SingleLine=' + encodeURIComponent(q))
+        .then(function (r) { return r.json(); }).then(function (j) {
+          var m = (j.candidates || [])[0];
+          if (!m || m.score < 80) { say('No match near the site. Try a street number and road, for example 2862 FM 1984.'); return; }
+          say('');
+          var ll = L.latLng(m.location.y, m.location.x), ft = distToSite(ll);
+          if (pin) map.removeLayer(pin);
+          pin = L.circleMarker(ll, { pane: 'p_tool', radius: 8, color: '#ffffff', weight: 3, fillColor: '#1e3a5f', fillOpacity: 1, interactive: false }).addTo(map);
+          map.setView(ll, Math.max(map.getZoom(), 15), { animate: false });
+          openHere(ll, '<b>' + esc(m.address) + '</b><br>' + (ft === null ? '' : ft === 0 ? 'This spot is inside the Franklin Mountain land.' :
+            'About ' + fmtFeet(ft) + ' in a straight line from the nearest edge of the Franklin Mountain land.') +
+            '<br><small>Location from Esri&#39;s address lookup; approximate.</small>');
+        }).catch(function () { say('The address lookup is not available right now.'); });
+    });
+    L.DomEvent.disableClickPropagation(c); L.DomEvent.disableScrollPropagation(c);
+    return c;
+  } });
+  map.addControl(new Search());
+  L.control.zoom({ position: 'topleft' }).addTo(map);
+
+  // ---- Measure distance ----
+  var measuring = false, mPts = [], mLayer = L.layerGroup().addTo(map), hint, bMeasure, bFull, full = false;
+  function fmtLen(m) { var ft = m * 3.28084; return Math.round(ft).toLocaleString() + ' ft' + (ft >= 1000 ? ' (' + (ft / 5280).toFixed(2) + ' mi)' : ''); }
+  function drawMeasure() {
+    mLayer.clearLayers();
+    var tot = 0, i;
+    for (i = 1; i < mPts.length; i++) tot += map.distance(mPts[i - 1], mPts[i]);
+    if (mPts.length > 1) {
+      L.polyline(mPts, { pane: 'p_tool', color: '#111827', weight: 6, opacity: 0.6, interactive: false }).addTo(mLayer);
+      L.polyline(mPts, { pane: 'p_tool', color: '#FFD400', weight: 3, interactive: false }).addTo(mLayer);
+      L.tooltip({ permanent: true, direction: 'right', offset: [10, 0], className: 'map-label', pane: 'p_label', interactive: false })
+        .setLatLng(mPts[mPts.length - 1]).setContent(fmtLen(tot)).addTo(mLayer);
+    }
+    mPts.forEach(function (p) { L.circleMarker(p, { pane: 'p_tool', radius: 4, color: '#111827', weight: 2, fillColor: '#FFD400', fillOpacity: 1, interactive: false }).addTo(mLayer); });
+    hint.textContent = mPts.length > 1 ? 'Total: ' + fmtLen(tot) + '. Click to add a point. Press Measure again to clear.' : 'Click two or more points on the map.';
+  }
+  function addMeasure(ll) { mPts.push(ll); drawMeasure(); }
+  function setMeasure(on) {
+    measuring = on; mPts = []; mLayer.clearLayers();
+    bMeasure.classList.toggle('on', on); wrap.classList.toggle('measuring', on);
+    hint.style.display = on ? 'block' : 'none';
+    if (on) { map.closePopup(); map.doubleClickZoom.disable(); drawMeasure(); } else map.doubleClickZoom.enable();
+  }
+
+  // ---- Buttons on the map; the layer panel becomes a drawer on phones and while the map is in full screen ----
+  var phone = L.Browser.mobile, mq = window.matchMedia('(max-width: 860px)');
+  function syncDrawer() {
+    var dr = mq.matches || full;
+    wrap.classList.toggle('drawer', dr);
+    if (!dr) wrap.classList.remove('panel-open');
+  }
+  function setFull(on) {
+    full = on; wrap.classList.toggle('full', on); document.body.style.overflow = on ? 'hidden' : '';
+    bFull.textContent = on ? 'Exit full screen' : 'Full screen'; bFull.classList.toggle('on', on);
+    syncDrawer(); map.invalidateSize();
+    if (phone) { if (on) map.dragging.enable(); else map.dragging.disable(); }
+  }
+  var Btns = L.Control.extend({ options: { position: 'topright' }, onAdd: function () {
+    var c = L.DomUtil.create('div', 'mapbtns');
+    function mk(text, cls, fn) { var b = L.DomUtil.create('button', cls, c); b.type = 'button'; b.textContent = text; b.onclick = fn; return b; }
+    mk('Layers', 'only-drawer', function () { wrap.classList.toggle('panel-open'); });
+    bFull = mk('Full screen', '', function () { setFull(!full); });
+    mk('Reset view', '', function () { map.closePopup(); if (siteBounds) map.fitBounds(siteBounds, { padding: [30, 30] }); else map.setView(HOME[0], HOME[1]); });
+    bMeasure = mk('Measure', '', function () { setMeasure(!measuring); });
+    var bLink = mk('Copy link', '', function () {
+      ready = true; writeHash();
+      var done = function () { bLink.textContent = 'Link copied'; setTimeout(function () { bLink.textContent = 'Copy link'; }, 1800); };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(location.href).then(done, function () { window.prompt('Copy this link:', location.href); });
+      else window.prompt('Copy this link:', location.href);
+    });
+    bLink.title = 'Copies a link to this view with the layers that are switched on';
+    hint = L.DomUtil.create('div', 'maphint', c); hint.setAttribute('role', 'status');
+    L.DomEvent.disableClickPropagation(c); L.DomEvent.disableScrollPropagation(c);
+    return c;
+  } });
+  map.addControl(new Btns());
+  document.getElementById('panel-close').onclick = function () { wrap.classList.remove('panel-open'); };
+  if (mq.addEventListener) mq.addEventListener('change', syncDrawer); else if (mq.addListener) mq.addListener(syncDrawer);
+  syncDrawer();
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    if (measuring) setMeasure(false); else if (wrap.classList.contains('panel-open')) wrap.classList.remove('panel-open'); else if (full) setFull(false);
+  });
+
+  // On phones one finger scrolls the page and two fingers move the map, unless the map is in full screen.
+  if (phone) {
+    map.dragging.disable();
+    var th = L.DomUtil.create('div', 'touchhint', map.getContainer()), thT = null;
+    th.textContent = 'Use two fingers to move the map, or tap Full screen';
+    map.getContainer().addEventListener('touchmove', function (e) {
+      if (full || e.touches.length !== 1) return;
+      th.classList.add('show'); clearTimeout(thT); thT = setTimeout(function () { th.classList.remove('show'); }, 1400);
+    }, { passive: true });
+  }
 })();
 </script>
 </body>

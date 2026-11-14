@@ -329,6 +329,7 @@ document.addEventListener('DOMContentLoaded', function () {
       '<br>Source: Caldwell Central Appraisal District';
   }
   var PKT1112 = 'https://www.co.caldwell.tx.us/upload/page/0252/docs/Agenda%20Packets/11.12.26%20Agenda%20Packet_Reduced.pdf';
+  var PKT212 = 'https://www.co.caldwell.tx.us/upload/page/0252/docs/Agenda%20Packets/2.12.26%20Agenda%20Packet.pdf';
   var PKT409 = 'https://www.co.caldwell.tx.us/upload/page/0252/docs/Agenda%20Packets/4.9.26%20Agenda%20Packet%20FINAL.pdf';
   var PKT1023 = 'https://www.co.caldwell.tx.us/upload/page/0245/docs/Agenda%20Packets/10.23.25%20Agenda%20Packet.pdf';
   var EXB = 'https://smartterminalcommunityinfo.github.io/maps.html';
@@ -421,10 +422,9 @@ document.addEventListener('DOMContentLoaded', function () {
         popup: function (p) { return '<b>Texas Enterprise Zone (eligible area)</b><br>' + esc(p.county) + ' County, tract ' + esc(p.tract) + ', block group ' + esc(p.block_group) + '<br>Poverty rate: ' + Math.round((p.poverty_rate || 0) * 100) + '% (2020 Census)<br>Projects here can be nominated by a city or county for state sales and use tax refunds.<br>Source: City of San Marcos, Texas Economic Incentive Zones (2020)'; } }
     ] },
     { name: 'Other projects nearby', layers: [
-      { id: 'edc', file: 'edc_austin_parcels.geojson', name: 'Edged Energy data center (Zone #1)', note: '$7.3B County abatement, Mar. 26, 2026', on: false, kind: 'fill', pane: 'p_parcel',
-        casing: { weight: 3 },
-        style: { color: '#ffffff', weight: 2.5, fillColor: '#ffffff', fillOpacity: 0.1 },
-        popup: function (p) { return parcel(p, '<br>Edged Energy data center (EDC Austin LLC and EDC Austin LandCo LLC). In Caldwell 142 Reinvestment Zone #1 (County tax abatement approved Mar. 26, 2026). County development agreements approved Apr. 9, 2026: <a href="'+PKT409+'#page=182" target="_blank" rel="noopener">Phase I</a> (127.328 acres) and <a href="'+PKT409+'#page=198" target="_blank" rel="noopener">Phase II</a> (192.608 acres). The agreements’ surveys match these parcel outlines. The zone is described in the order only by four corner points, so the land parcels are shown.'); } },
+      { id: 'edc', file: 'edc_austin_parcels.geojson', name: 'Edged Energy data center / Reinvestment Zone #1', note: 'About 320 acres; zone Feb. 12, 2026; $7.3B County abatement Mar. 26, 2026', on: true, kind: 'fill', pane: 'p_zone',
+        style: { color: '#CC79A7', weight: 3, dashArray: '14 6', fillColor: '#CC79A7', fillOpacity: 0.15 },
+        popup: function (p) { return parcel(p, '<br>Edged Energy data center (EDC Austin LLC and EDC Austin LandCo LLC). In Caldwell 142 Reinvestment Zone #1 (County tax abatement approved Mar. 26, 2026). County development agreements approved Apr. 9, 2026: <a href="'+PKT409+'#page=182" target="_blank" rel="noopener">Phase I</a> (127.328 acres) and <a href="'+PKT409+'#page=198" target="_blank" rel="noopener">Phase II</a> (192.608 acres). The boundary of Reinvestment Zone #1 (Order 03-2026, Feb. 12, 2026) is a 319.937-acre Kimley-Horn survey of the same land (<a href="'+PKT212+'#page=160" target="_blank" rel="noopener">Exhibit A</a>). The zone and agreement surveys match these parcel outlines.'); } },
       { id: 'irish', file: 'irish.geojson', name: 'Earthship Project Irish (North and South)', note: 'Planned industrial, commercial and some residential; 19 tracts under contract; DAs approved Oct. 23, 2025', on: false, kind: 'fill', pane: 'p_parcel',
         casing: { weight: 3 },
         style: { color: '#ffffff', weight: 2.5, dashArray: '7 5', fillColor: '#ffffff', fillOpacity: 0.1 },

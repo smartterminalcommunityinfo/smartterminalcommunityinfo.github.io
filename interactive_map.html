@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <div class="notes">
   <h3>How the layers were made</h3>
   <ul>
-    <li><b>Parcels</b> (TriTexas ownership, EDC Austin, Project Irish) are the Caldwell Central Appraisal District's parcel
+    <li><b>Parcels</b> (TriTexas ownership, Edged Energy / EDC Austin, Project Irish) are the Caldwell Central Appraisal District's parcel
       outlines. Appraisal maps are close but are not surveys.</li>
     <li><b>Caldwell 142 Reinvestment Zone #2</b> is traced from the 23 recorded boundary calls in Exhibit A to Caldwell
       County Order 01-2027 (Kimley-Horn survey dated October 27, 2026). The traced boundary closes within 0.02 feet and
@@ -237,7 +237,7 @@ document.addEventListener('DOMContentLoaded', function () {
   </ul>
   <h3>Sources</h3>
   <ul>
-    <li>Caldwell County Commissioners Court, <a href="https://www.co.caldwell.tx.us/upload/page/0252/docs/Agenda%20Packets/11.12.26%20Agenda%20Packet_Reduced.pdf#page=268" target="_blank" rel="noopener">Nov. 12, 2026 agenda packet</a> (Order 01-2027 and Exhibit A), <a href="https://www.co.caldwell.tx.us/upload/page/0252/docs/Agenda%20Packets/3.26.26%20Agenda%20Packet.pdf" target="_blank" rel="noopener">Mar. 26, 2026 agenda packet</a> (EDC Austin tax abatement, Zone #1) and <a href="https://www.co.caldwell.tx.us/upload/page/0245/docs/Agenda%20Packets/10.23.25%20Agenda%20Packet.pdf" target="_blank" rel="noopener">Oct. 23, 2025 agenda packet</a> (Earthship Irish North and South agreements and surveys).</li>
+    <li>Caldwell County Commissioners Court, <a href="https://www.co.caldwell.tx.us/upload/page/0252/docs/Agenda%20Packets/11.12.26%20Agenda%20Packet_Reduced.pdf#page=268" target="_blank" rel="noopener">Nov. 12, 2026 agenda packet</a> (Order 01-2027 and Exhibit A), <a href="https://www.co.caldwell.tx.us/upload/page/0252/docs/Agenda%20Packets/3.26.26%20Agenda%20Packet.pdf" target="_blank" rel="noopener">Mar. 26, 2026 agenda packet</a> (Edged Energy / EDC Austin tax abatement, Zone #1) and <a href="https://www.co.caldwell.tx.us/upload/page/0245/docs/Agenda%20Packets/10.23.25%20Agenda%20Packet.pdf" target="_blank" rel="noopener">Oct. 23, 2025 agenda packet</a> (Earthship Irish North and South agreements and surveys).</li>
     <li>Kimley-Horn exhibits to the Development Agreement (Res. 2023-20R; PDA-22-07(A) color exhibits, 2023): Exhibit B Conceptual Land Use Plan, Exhibit C Conceptual Phasing Plan and Exhibit G cut and fill; Axis Detention and Water Quality Summary Exhibit; Development Agreement Section 1.07.F (fire station sites). The drawings are on the <a href="maps.html">Maps page</a>.</li>
     <li>Caldwell Central Appraisal District: parcel service, public GIS (Martindale limits and ETJ, road centerlines) and the 2026 certified appraisal roll (homes).</li>
     <li>City of San Marcos GIS: city limits, ETJ and the Texas Economic Incentive Zones (2020) layer (Enterprise Zone-eligible block groups and Opportunity Zone tracts); City exhibit "Ultimate Scenario Part 77 Surfaces, Runway 35 Ultimate."</li>
@@ -329,6 +329,7 @@ document.addEventListener('DOMContentLoaded', function () {
       '<br>Source: Caldwell Central Appraisal District';
   }
   var PKT1112 = 'https://www.co.caldwell.tx.us/upload/page/0252/docs/Agenda%20Packets/11.12.26%20Agenda%20Packet_Reduced.pdf';
+  var PKT409 = 'https://www.co.caldwell.tx.us/upload/page/0252/docs/Agenda%20Packets/4.9.26%20Agenda%20Packet%20FINAL.pdf';
   var PKT1023 = 'https://www.co.caldwell.tx.us/upload/page/0245/docs/Agenda%20Packets/10.23.25%20Agenda%20Packet.pdf';
   var EXB = 'https://smartterminalcommunityinfo.github.io/maps.html';
   var PDAB = 'https://smgis.sanmarcostx.gov/arcgis/rest/services/Planning/PlanningFeatures/MapServer/15/query?where=CaseNumber%3D%27PDA-22-07%28B%29%27&outFields=CaseNumber,ProjectName,CaseType,Status,ProjectDescription,ApplicantBusiness,Address&returnGeometry=false&f=html';
@@ -420,15 +421,15 @@ document.addEventListener('DOMContentLoaded', function () {
         popup: function (p) { return '<b>Texas Enterprise Zone (eligible area)</b><br>' + esc(p.county) + ' County, tract ' + esc(p.tract) + ', block group ' + esc(p.block_group) + '<br>Poverty rate: ' + Math.round((p.poverty_rate || 0) * 100) + '% (2020 Census)<br>Projects here can be nominated by a city or county for state sales and use tax refunds.<br>Source: City of San Marcos, Texas Economic Incentive Zones (2020)'; } }
     ] },
     { name: 'Other projects nearby', layers: [
-      { id: 'edc', file: 'edc_austin_parcels.geojson', name: 'EDC Austin data center (Zone #1)', note: '$7.3B County abatement, Mar. 26, 2026', on: false, kind: 'fill', pane: 'p_parcel',
+      { id: 'edc', file: 'edc_austin_parcels.geojson', name: 'Edged Energy data center (Zone #1)', note: '$7.3B County abatement, Mar. 26, 2026', on: false, kind: 'fill', pane: 'p_parcel',
         casing: { weight: 3 },
         style: { color: '#ffffff', weight: 2.5, fillColor: '#ffffff', fillOpacity: 0.1 },
-        popup: function (p) { return parcel(p, '<br>In Caldwell 142 Reinvestment Zone #1 (data center campus; County tax abatement approved Mar. 26, 2026). The zone is described in the order only by four corner points, so the land parcels are shown.'); } },
-      { id: 'irish', file: 'irish.geojson', name: 'Earthship Project Irish (North and South)', note: '19 tracts under contract; DAs approved Oct. 23, 2025', on: false, kind: 'fill', pane: 'p_parcel',
+        popup: function (p) { return parcel(p, '<br>Edged Energy data center (EDC Austin LLC and EDC Austin LandCo LLC). In Caldwell 142 Reinvestment Zone #1 (County tax abatement approved Mar. 26, 2026). County development agreements approved Apr. 9, 2026: <a href="'+PKT409+'#page=182" target="_blank" rel="noopener">Phase I</a> (127.328 acres) and <a href="'+PKT409+'#page=198" target="_blank" rel="noopener">Phase II</a> (192.608 acres). The agreements’ surveys match these parcel outlines. The zone is described in the order only by four corner points, so the land parcels are shown.'); } },
+      { id: 'irish', file: 'irish.geojson', name: 'Earthship Project Irish (North and South)', note: 'Planned industrial, commercial and some residential; 19 tracts under contract; DAs approved Oct. 23, 2025', on: false, kind: 'fill', pane: 'p_parcel',
         casing: { weight: 3 },
         style: { color: '#ffffff', weight: 2.5, dashArray: '7 5', fillColor: '#ffffff', fillOpacity: 0.1 },
         popup: function (p) { var s = p.project === 'Irish South';
-          var extra = '<br><b>Project ' + esc(p.project) + '</b> (Earthship Corporation development agreement, approved 5-0 on Oct. 23, 2025). The agreement lists a ' + esc(p.da_tract_acres) + '-acre tract under purchase contract ' + (p.partial ? 'that is part of this parcel.' : 'that matches this parcel.') + '<br><a href="' + PKT1023 + '#page=' + (s ? 373 : 318) + '" target="_blank" rel="noopener">Agreement (Oct. 23, 2025 packet)</a>' + (p.method ? '<br><small>' + esc(p.method) + '</small>' : '');
+          var extra = '<br><b>Project ' + esc(p.project) + '</b> (Earthship Corporation development agreement, approved 5-0 on Oct. 23, 2025). The agreement describes &quot;industrial, research, and development facilities&quot; for technology development and manufacturing, plus shared utilities, logistics and workforce facilities and limited residential. Its land use summary allows single-family homes on up to 30% of the land, up to 45 acres of multifamily and up to 75 acres of retail; all the rest is &quot;Manufacturing, Industrial, and Commercial Uses.&quot; <a href="' + PKT1023 + '#page=' + (s ? 376 : 321) + '" target="_blank" rel="noopener">Land use table</a><br>The agreement lists a ' + esc(p.da_tract_acres) + '-acre tract under purchase contract ' + (p.partial ? 'that is part of this parcel.' : 'that matches this parcel.') + '<br><a href="' + PKT1023 + '#page=' + (s ? 373 : 318) + '" target="_blank" rel="noopener">Agreement (Oct. 23, 2025 packet)</a>' + (p.method ? '<br><small>' + esc(p.method) + '</small>' : '');
           return p.private_owner ? '<b>Privately owned tract</b><br>' + acres(p.acres) + extra + '<br>Source: Caldwell Central Appraisal District parcel outline' : parcel(p, extra); } }
     ] },
     { name: 'Jurisdictions', layers: [

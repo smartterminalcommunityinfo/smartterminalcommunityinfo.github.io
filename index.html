@@ -704,7 +704,7 @@ document.addEventListener('DOMContentLoaded', function () {
     L.geoJSON(r[1], { style: { color: '#9E3D78', weight: 2.5, dashArray: '8 5', fillColor: '#CC79A7', fillOpacity: 0.35 } }).addTo(map)
       .bindPopup('<b>Caldwell 142 Reinvestment Zone #2</b><br>611 acres designated by Caldwell County on Nov. 12, 2026 (Order 01-2027) for a manufacturing and assembly facility. See <a href="businesses_summary.html#hercules">Project Hercules</a>.' + more('tri,zone2'));
     L.geoJSON(r[3], {
-      style: function (f) { return f.properties.part === 'lot' ? { color: '#0072B2', weight: 3, fillColor: '#0072B2', fillOpacity: 0.75 } : { color: '#0072B2', weight: 2.5, dashArray: '3 5', fillColor: '#0072B2', fillOpacity: 0.4 }; },
+      style: { color: '#0072B2', weight: 2.5, dashArray: '3 5', fillColor: '#0072B2', fillOpacity: 0.4 },
       onEachFeature: function (f, l) {
         l.bindPopup(f.properties.part === 'lot'
           ? '<b>Parcel listed on the annexation application (AN-26-07)</b><br>2862 FM 1984, appraisal district parcel 27868, 0.95 acres. It is the only parcel the City permit portal lists for the case, but the City&#39;s planning-map outline for the case does not include it.' + more('tri,city,annex')

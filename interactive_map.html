@@ -194,7 +194,10 @@ document.addEventListener('DOMContentLoaded', function () {
     <li><b>Martindale city limits and ETJ</b> are from the Caldwell Central
       Appraisal District's public GIS. The <b>Martindale ETJ release</b> is drawn from the survey description in the 2020
       San Marcos-Martindale settlement agreement (Exhibit Q) and closes at the stated 161.59 acres after two bearing typos are
-      corrected. <b>Streams</b> are from the USGS National Hydrography Dataset.</li>
+      corrected. <b>Traffic Impact Analysis</b> layers come from Kimley-Horn's August 2024 study (Version 4). Its phases
+      are traced from the study's Figure 1, and the four FM 1984 driveways are placed by their spacing on the study's exhibits,
+      since the study gives no exact locations. Off-site study intersections are placed at the road crossings in OpenStreetMap.
+      <b>Streams</b> are from the USGS National Hydrography Dataset.</li>
     <li><b>Former San Marcos Municipal Landfill</b> is traced from Figure 5 of the U.S. Department of Labor's Gary Job Corps
       Center Draft Environmental Assessment (July 2022). It was placed by fitting that figure's Tract IV and V outlines to the
       appraisal district parcels those tracts became (median difference about 14 feet). <b>Fuel dumps and military landfill
@@ -241,6 +244,7 @@ document.addEventListener('DOMContentLoaded', function () {
   <ul>
     <li>Caldwell County Commissioners Court, <a href="https://www.co.caldwell.tx.us/upload/page/0252/docs/Agenda%20Packets/11.12.26%20Agenda%20Packet_Reduced.pdf#page=268" target="_blank" rel="noopener">Nov. 12, 2026 agenda packet</a> (Order 01-2027 and Exhibit A), <a href="https://www.co.caldwell.tx.us/upload/page/0252/docs/Agenda%20Packets/3.26.26%20Agenda%20Packet.pdf" target="_blank" rel="noopener">Mar. 26, 2026 agenda packet</a> (Edged Energy / EDC Austin tax abatement, Zone #1) and <a href="https://www.co.caldwell.tx.us/upload/page/0245/docs/Agenda%20Packets/10.23.25%20Agenda%20Packet.pdf" target="_blank" rel="noopener">Oct. 23, 2025 agenda packet</a> (Earthship Irish North and South agreements and surveys).</li>
     <li>Kimley-Horn exhibits to the Development Agreement (Res. 2023-20R; PDA-22-07(A) color exhibits, 2023): Exhibit B Conceptual Land Use Plan, Exhibit C Conceptual Phasing Plan and Exhibit G cut and fill; Axis Detention and Water Quality Summary Exhibit; Development Agreement Section 1.07.F (fire station sites). The drawings are on the <a href="maps.html">Maps page</a>.</li>
+    <li>Kimley-Horn, Traffic Impact Analysis, Axis Logistics Park, Version 4 (Aug. 14, 2024), Figure 1, trip distribution exhibits, Tables 2 and 9 and Section 8; obtained through a public information request.</li>
     <li>City of San Marcos, Res. 2020-17R(b) and the Agreement Between San Marcos and Martindale (2020), Exhibit Q survey description, released Nov. 6, 2026 in response to public information request W030573.</li>
     <li>Caldwell Central Appraisal District: parcel service, public GIS (Martindale limits and ETJ, road centerlines) and the 2026 certified appraisal roll (homes).</li>
     <li>City of San Marcos GIS: city limits, ETJ and the Texas Economic Incentive Zones (2020) layer (Enterprise Zone-eligible block groups and Opportunity Zone tracts); City exhibit "Ultimate Scenario Part 77 Surfaces, Runway 35 Ultimate."</li>
@@ -284,7 +288,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var map = L.map('map', { zoomControl: false, scrollWheelZoom: true, preferCanvas: false })
     .setView(hasView ? [hv[0], hv[1]] : HOME[0], hasView ? hv[2] : HOME[1]);
   L.control.scale({ imperial: true, metric: false }).addTo(map);
-  var DATA_VERSION = '2026-11-15a'; // bump when maps/data files change so browsers fetch fresh copies
+  var DATA_VERSION = '2026-11-15b'; // bump when maps/data files change so browsers fetch fresh copies
 
   var bases = {
     'Aerial 2025 (Esri)': L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
@@ -388,8 +392,8 @@ document.addEventListener('DOMContentLoaded', function () {
         style: { color: '#ffffff', weight: 3, dashArray: '8 6', fillColor: '#ffffff', fillOpacity: 0 },
         label: function (p, l) { return [l.getBounds().getCenter(), p.phase]; },
         popup: function (p) { return '<b>' + esc(p.phase) + '</b><br>Labeled ' + esc(p.acres_label) + ' acres on the exhibit (about ' + esc(p.acres_drawn) + ' acres as traced)<br>' + esc(p.source) + '<br><small>Traced by color from the developer&#39;s exhibit and placed using the same fit as Exhibit B. Approximate.</small>'; } },
-      { id: 'annex', file: 'annexation_an2607.geojson', name: 'Proposed annexation (AN-26-07)', note: 'As drawn on the City planning map; in review, not approved', on: true, kind: 'fill', pane: 'p_plan',
-        style: function (f) { return f.properties.part === 'lot' ? { color: '#0072B2', weight: 3, fillColor: '#0072B2', fillOpacity: 0.75 } : { color: '#0072B2', weight: 2.5, dashArray: '3 5', fillColor: '#0072B2', fillOpacity: 0.45 }; },
+      { id: 'annex', file: 'annexation_an2607.geojson', name: 'Proposed annexation (AN-26-07)', note: 'As drawn on the City planning map; in review, not approved', on: true, kind: 'fill', pane: 'p_plan', hoverAll: true,
+        style: { color: '#0072B2', weight: 2.5, dashArray: '3 5', fillColor: '#0072B2', fillOpacity: 0.45 },
         label: function (p) { return p.part === 'lot' ? null : [p.label_pt, 'Proposed annexation']; },
         popup: function (p) { if (p.part === 'lot') return '<b>Parcel listed on the annexation application (AN-26-07)</b><br>' + esc(p.address) + ', appraisal district parcel <a href="https://esearch.caldwellcad.org/Property/View/' + p.prop_id + '" target="_blank" rel="noopener">' + p.prop_id + '</a>, ' + esc(p.acres_cad) + ' acres, owned by ' + esc(p.owner) + '.<br>The case is named &quot;2862 FM 1984 Annexation,&quot; and the City permit portal lists this as the only parcel on the application. The outline the City draws for the case on its planning map (about 461.7 acres) does not include this lot; the lot is about ' + p.gap_ft + ' feet from it.<br>Source: City of San Marcos permit portal and GIS; Caldwell Central Appraisal District (checked Nov. 14, 2026)';
           return '<b>Proposed annexation, case ' + esc(p.case) + '</b><br>&quot;' + esc(p.name) + ',&quot; about ' + esc(p.acres_city) + ' acres as drawn on the City of San Marcos planning map. Applicant: ' + esc(p.applicant) + '. Status: ' + esc(p.status) + '.<br>The City&#39;s record lists meeting dates of ' + p.meetings.map(function (d) { return new Date(d + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }); }).join('; ') + '.<br>The application was filed Oct. 15, 2026 and lists appraisal district parcel 27868. This is a request, not an approved annexation.<br><a href="https://smgis.sanmarcostx.gov/arcgis/rest/services/Planning/PlanningFeatures/MapServer/27/query?where=CASE_NUM%3D%27AN-26-07%27&outFields=CASE_NUM,PROJECT_NAME,FEATURE_TYPE,ACRES,LifeCycleStatus&returnGeometry=false&f=html" target="_blank" rel="noopener">City GIS record</a><br>Source: City of San Marcos GIS, Proposed Development layer; City permit portal (checked Nov. 14, 2026)'; } },
@@ -403,6 +407,19 @@ document.addEventListener('DOMContentLoaded', function () {
         key: [['#56B4E9', 'Detention pond'], ['#A6DCF5', 'Drainage channel']],
         style: function (f) { var c = f.properties.kind === 'drainage_channel'; return { color: c ? '#56B4E9' : '#ffffff', weight: c ? 1 : 1.5, fillColor: c ? '#A6DCF5' : '#56B4E9', fillOpacity: c ? 0.55 : 0.65 }; },
         popup: function (p) { return '<b>' + esc(p.label) + '</b><br>About ' + esc(p.acres_drawn) + ' acres as drawn<br>Kimley-Horn, Axis Detention and Water Quality Summary Exhibit<br><small>Placed with the same fit as Exhibits B and C; the exhibit&#39;s road lines up with the built Energy Parkway within about 20 feet. Approximate, as drawn by the developer.</small><br><a href="maps.html">Original exhibit</a>'; } }
+    ] },
+    { name: 'Traffic Impact Analysis (Aug. 2024)', layers: [
+      { id: 'tiaph', file: 'tia_phases.geojson', name: 'TIA phases A-G and planned uses', note: 'As drawn on TIA Figure 1 (approximate)', on: false, kind: 'fill', pane: 'p_plan', excl: 'plan',
+        style: { color: '#ffffff', weight: 3, dashArray: '8 6', fillColor: '#ffffff', fillOpacity: 0 },
+        label: function (p) { return [p.label_pt, 'Phase ' + p.phase + ', ' + p.year + ': ' + p.uses.map(function (u) { return u[0].toLowerCase(); }).join(' + ')]; },
+        popup: function (p) { return '<b>TIA Phase ' + esc(p.phase) + '</b> (anticipated completion ' + p.year + ')<br>' + p.uses.map(function (u) { return esc(u[0]) + ': ' + u[1].toLocaleString() + ' sq ft'; }).join('<br>') + '<br>About ' + p.acres_drawn + ' acres as traced.<br>Full build-out in the study: 880,000 sq ft industrial park, 3,554,000 sq ft warehousing and 2,824,000 sq ft data center (Table 2).<br>Source: Kimley-Horn, Traffic Impact Analysis, Axis Logistics Park, Version 4 (Aug. 14, 2024), marked &quot;Approved TIA&quot; on its cover; filed with City case PC-24-07 (TIA review project 2024-51056) and obtained through a public information request.<br><small>Traced from the study&#39;s Figure 1 and placed by matching its access points A and B to the two ends of Energy Parkway. Approximate. These are the traffic study&#39;s phases, not the Development Agreement&#39;s Exhibit C phases.</small>'; } },
+      { id: 'tiaacc', file: 'tia_points.geojson', filter: function (f) { return f.properties.kind === 'access'; }, name: 'Site access points A-F', note: 'Energy Parkway ends and four planned FM 1984 driveways', on: false, kind: 'point', pane: 'p_point',
+        style: { radius: 7, color: '#0f172a', weight: 2, fillColor: '#ffffff', fillOpacity: 1 },
+        label: function (p, l) { return [l.getLatLng(), p.id, 'right']; },
+        popup: function (p) { return '<b>Site Access ' + esc(p.id) + ': ' + esc(p.name) + '</b><br>' + p.improvements.map(esc).join('<br>') + (p.approx ? '<br><small>The study does not give driveway locations. This spot is placed by its spacing along FM 1984 on the study&#39;s exhibits (about 705 feet apart, which fits the 700-foot turn lane planned at each). Approximate.</small>' : '') + '<br>Source: Kimley-Horn, Traffic Impact Analysis, Version 4 (Aug. 2024), Table 9 and Section 8'; } },
+      { id: 'tiastudy', file: 'tia_points.geojson', filter: function (f) { return f.properties.kind === 'study'; }, name: 'Off-site study intersections', note: 'Intersections the study analyzed', on: false, kind: 'point', pane: 'p_point',
+        style: { radius: 6, color: '#ffffff', weight: 2, fillColor: '#1e3a5f', fillOpacity: 1 },
+        popup: function (p) { return '<b>' + esc(p.name) + '</b><br>Study intersection in the Traffic Impact Analysis. ' + esc(p.note) + '<br>Source: Kimley-Horn, Traffic Impact Analysis, Version 4 (Aug. 2024)'; } }
     ] },
     { name: 'TriTexas site: roads and public facilities', layers: [
       { id: 'energy', file: 'energy_parkway.geojson', name: 'Energy Parkway', note: 'Opened Sept. 29, 2026', on: true, kind: 'line', pane: 'p_line',
@@ -573,8 +590,9 @@ document.addEventListener('DOMContentLoaded', function () {
     var labels = L.layerGroup();
     var opts = { filter: d.filter, pane: d.pane, style: d.style, onEachFeature: function (f, l) {
       l.bindTooltip(tip(d, f.properties), { sticky: true, direction: 'top', opacity: 0.95 });
-      l.on('mouseover', function () { hi(l, d); d.row.classList.add('hot'); });
-      l.on('mouseout', function () { d.layer.resetStyle(l); d.row.classList.remove('hot'); });
+      // hoverAll: the layer's shapes are parts of one thing, so hovering any part lights up all of them
+      l.on('mouseover', function () { if (d.hoverAll) d.layer.eachLayer(function (o) { hi(o, d); }); else hi(l, d); d.row.classList.add('hot'); });
+      l.on('mouseout', function () { if (d.hoverAll) d.layer.resetStyle(); else d.layer.resetStyle(l); d.row.classList.remove('hot'); });
       if (d.label) {
         var lb = d.label(f.properties, l);
         if (lb) labels.addLayer(L.tooltip({ permanent: true, direction: lb[2] || 'center', offset: lb[2] ? [10, 0] : [0, 0], className: 'map-label', pane: 'p_label', interactive: false })

@@ -192,7 +192,9 @@ document.addEventListener('DOMContentLoaded', function () {
       multifamily or rural home) or that have a homestead exemption, from the 2026 certified Caldwell CAD export. Homesteads are
       owner-occupied homes. Tracts over 25 acres are left off so whole farms are not shaded. No names or addresses are shown.</li>
     <li><b>Martindale city limits and ETJ</b> are from the Caldwell Central
-      Appraisal District's public GIS. <b>Streams</b> are from the USGS National Hydrography Dataset.</li>
+      Appraisal District's public GIS. The <b>Martindale ETJ release</b> is drawn from the survey description in the 2020
+      San Marcos-Martindale settlement agreement (Exhibit Q) and closes at the stated 161.59 acres after two bearing typos are
+      corrected. <b>Streams</b> are from the USGS National Hydrography Dataset.</li>
     <li><b>Former San Marcos Municipal Landfill</b> is traced from Figure 5 of the U.S. Department of Labor's Gary Job Corps
       Center Draft Environmental Assessment (July 2022). It was placed by fitting that figure's Tract IV and V outlines to the
       appraisal district parcels those tracts became (median difference about 14 feet). <b>Fuel dumps and military landfill
@@ -239,6 +241,7 @@ document.addEventListener('DOMContentLoaded', function () {
   <ul>
     <li>Caldwell County Commissioners Court, <a href="https://www.co.caldwell.tx.us/upload/page/0252/docs/Agenda%20Packets/11.12.26%20Agenda%20Packet_Reduced.pdf#page=268" target="_blank" rel="noopener">Nov. 12, 2026 agenda packet</a> (Order 01-2027 and Exhibit A), <a href="https://www.co.caldwell.tx.us/upload/page/0252/docs/Agenda%20Packets/3.26.26%20Agenda%20Packet.pdf" target="_blank" rel="noopener">Mar. 26, 2026 agenda packet</a> (Edged Energy / EDC Austin tax abatement, Zone #1) and <a href="https://www.co.caldwell.tx.us/upload/page/0245/docs/Agenda%20Packets/10.23.25%20Agenda%20Packet.pdf" target="_blank" rel="noopener">Oct. 23, 2025 agenda packet</a> (Earthship Irish North and South agreements and surveys).</li>
     <li>Kimley-Horn exhibits to the Development Agreement (Res. 2023-20R; PDA-22-07(A) color exhibits, 2023): Exhibit B Conceptual Land Use Plan, Exhibit C Conceptual Phasing Plan and Exhibit G cut and fill; Axis Detention and Water Quality Summary Exhibit; Development Agreement Section 1.07.F (fire station sites). The drawings are on the <a href="maps.html">Maps page</a>.</li>
+    <li>City of San Marcos, Res. 2020-17R(b) and the Agreement Between San Marcos and Martindale (2020), Exhibit Q survey description, released Nov. 6, 2026 in response to public information request W030573.</li>
     <li>Caldwell Central Appraisal District: parcel service, public GIS (Martindale limits and ETJ, road centerlines) and the 2026 certified appraisal roll (homes).</li>
     <li>City of San Marcos GIS: city limits, ETJ and the Texas Economic Incentive Zones (2020) layer (Enterprise Zone-eligible block groups and Opportunity Zone tracts); City exhibit "Ultimate Scenario Part 77 Surfaces, Runway 35 Ultimate."</li>
     <li>Public Utility Commission of Texas, water and sewer CCN boundaries; Texas Commission on Environmental Quality, water district boundaries; Railroad Commission of Texas public GIS (pipelines).</li>
@@ -281,7 +284,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var map = L.map('map', { zoomControl: false, scrollWheelZoom: true, preferCanvas: false })
     .setView(hasView ? [hv[0], hv[1]] : HOME[0], hasView ? hv[2] : HOME[1]);
   L.control.scale({ imperial: true, metric: false }).addTo(map);
-  var DATA_VERSION = '2026-11-14d'; // bump when maps/data files change so browsers fetch fresh copies
+  var DATA_VERSION = '2026-11-15a'; // bump when maps/data files change so browsers fetch fresh copies
 
   var bases = {
     'Aerial 2025 (Esri)': L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
@@ -445,6 +448,10 @@ document.addEventListener('DOMContentLoaded', function () {
       { id: 'metj', file: 'martindale_etj.geojson', name: 'Martindale ETJ', note: 'Caldwell CAD GIS', on: false, kind: 'line', pane: 'p_bound', area: true,
         style: { color: '#E69F00', weight: 2.5, dashArray: '8 6', fill: false },
         popup: function () { return '<b>Martindale extraterritorial jurisdiction (ETJ)</b><br>Source: Caldwell Central Appraisal District GIS'; } },
+      { id: 'mrel', file: 'martindale_release.geojson', name: 'Martindale ETJ release (2020 settlement)', note: '161.59 acres moved from Martindale’s ETJ to San Marcos’s', on: false, kind: 'fill', pane: 'p_bound',
+        style: { color: '#E69F00', weight: 3, fillColor: '#E69F00', fillOpacity: 0.3 },
+        label: function (p) { return [p.label_pt, 'Martindale ETJ release']; },
+        popup: function (p) { return '<b>Martindale ETJ release, 161.59 acres</b><br>The City of Martindale had claimed this land, part of the &quot;Ohnheiser Property,&quot; as its extraterritorial jurisdiction (ETJ) since a 1983 resolution. San Marcos disputed that resolution, and the two cities also disputed each other&#39;s 2007 ETJ expansions. San Marcos initiated settlement talks in early 2019.<br>Under the settlement (San Marcos <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=4318421&GUID=EAEFBF48-6CF8-4333-8916-91BCC1263E06" target="_blank" rel="noopener">Res. 2020-17R(b)</a>, approved Feb. 4, 2020; Martindale release resolution, Jan. 2020):<br>&bull; Martindale released this tract, which became part of the San Marcos ETJ. The rest of the Ohnheiser Property stayed in Martindale&#39;s ETJ.<br>&bull; San Marcos accepted Martindale&#39;s 1983 resolution and its 2007 ETJ ordinances as valid; Martindale accepted San Marcos&#39;s 2007 3.5-mile ETJ resolution (2007-132R).<br>&bull; San Marcos pays Martindale 30% of the property tax it collects on this tract each year from 2021 through 2051, less tax rebates (Section 36).<br>The tract is now part of Franklin Mountain parcels 27881 and 28002. About 155 of its acres are inside the proposed annexation area (AN-26-07).<br><a href="project_timeline.html">Project timeline</a> (Feb. 4, 2020)<br><small>Drawn from the survey description in the agreement (Exhibit Q, Doucet &amp; Associates, July 15, 2019). Two calls were read as corrected: call 17 of the ETJ line as east, not west (a typo a City GIS technician reported on Feb. 7, 2020), and the first State Highway 80 call as N78&deg;02&#39;13&quot;W, not S78&deg;02&#39;13&quot;W, which closes the description. It then closes within 0.03 foot at 161.59 acres. Placed at the corner of the 2.000-acre tract the survey names (appraisal district parcel 35168); its far corner lands within ' + p.corner_check_ft + ' feet of the corner of the 1.00-acre tract it names (parcel 28097).</small>'; } },
       { id: 'mud', file: 'muds.geojson', name: 'Municipal utility districts', note: 'TCEQ official boundaries', on: false, kind: 'line', pane: 'p_bound', area: true,
         style: { color: '#d1d5db', weight: 2.5, dashArray: '2 5', fill: false },
         popup: function (p) { return '<b>' + esc(p.name) + '</b><br>TCEQ district ' + esc(p.district_id) + (p.plat_acres ? ', ' + esc(Number(p.plat_acres).toLocaleString()) + ' acres' : '') + (p.boundary_change ? '<br>Boundary last changed ' + esc(p.boundary_change) : '') + (/Cotton Center MUD 1/.test(p.name) ? '<br>On May 3, 2024 the district excluded three tracts, including Franklin Mountain&#39;s 660.503 acres (Caldwell County Doc. 2024-003500).' : '') + '<br>Source: Texas Commission on Environmental Quality, water district boundaries'; } },

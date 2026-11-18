@@ -38,3 +38,6 @@ compliance_report.html
 !favicon.ico
 !favicon-*.png
 !apple-touch-icon.png
+
+# Shared site menu script (loaded by every page)
+!site-menu.js

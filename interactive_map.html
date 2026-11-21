@@ -314,6 +314,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var map = L.map('map', { zoomControl: false, scrollWheelZoom: true, preferCanvas: false })
     .setView(hasView ? [hv[0], hv[1]] : HOME[0], hasView ? hv[2] : HOME[1]);
   L.control.scale({ imperial: true, metric: false }).addTo(map);
+  window.__map = map; // read by tools/map/snap (regenerates the map images used on other pages)
   var DATA_VERSION = '2026-11-21b'; // bump when maps/data files change so browsers fetch fresh copies
 
   var bases = {

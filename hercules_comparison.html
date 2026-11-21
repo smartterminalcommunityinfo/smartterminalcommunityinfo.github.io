@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Q1K0ZSQV73"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-Q1K0ZSQV73');
+</script>
+<title>Project Hercules - Comparison of Daimler's Truck Plants</title>
+<meta name="description" content="Daimler Truck North America's existing truck plants, from public permits, EPA data and news reports: size, air emissions, fuel and chemical storage, odor complaints, fires and runoff.">
+<meta property="og:title" content="Project Hercules - Comparison of Daimler's Truck Plants">
+<meta property="og:site_name" content="Citizens Against TriTexas">
+<meta property="og:description" content="Daimler Truck North America's existing truck plants, from public permits, EPA data and news reports: size, air emissions, fuel and chemical storage, odor complaints, fires and runoff.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://smartterminalcommunityinfo.github.io/hercules_comparison.html">
+<link rel="canonical" href="https://smartterminalcommunityinfo.github.io/hercules_comparison.html">
+<meta property="og:image" content="https://smartterminalcommunityinfo.github.io/maps/axis-detention-wq-summary-exhibit.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Project Hercules - Comparison of Daimler's Truck Plants">
+<meta name="twitter:description" content="Daimler Truck North America's existing truck plants, from public permits, EPA data and news reports: size, air emissions, fuel and chemical storage, odor complaints, fires and runoff.">
+<meta name="twitter:image" content="https://smartterminalcommunityinfo.github.io/maps/axis-detention-wq-summary-exhibit.jpg">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --navy:   #1e3a5f;
+  --amber:  #b45309;
+  --green:  #166534;
+  --bg:     #f1f4f8;
+  --card:   #ffffff;
+}
+
+body {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: #1a2330;
+  min-height: 100vh;
+}
+
+/* ── NAV ── */
+.site-nav {
+  background: var(--navy);
+  padding: 10px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.site-nav a {
+  color: #93c5fd;
+  text-decoration: none;
+  font-size: .85rem;
+  font-weight: 600;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  letter-spacing: .02em;
+}
+.site-nav a:hover { color: #fff; }
+.site-nav-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.site-nav .nav-btn { border: 1px solid #3b5f8a; border-radius: 20px; padding: 5px 14px; }
+.site-nav .nav-btn-search, .site-nav .nav-btn-donate {
+  border: none; font-weight: 700; border-radius: 20px; padding: 5px 14px;
+  font-family: 'Segoe UI', system-ui, sans-serif; font-size: .85rem; cursor: pointer;
+}
+.site-nav .nav-btn-search { background: #93c5fd; color: #1e3a5f; }
+.site-nav .nav-btn-donate { background: #fbbf24; color: #1e3a5f; }
+
+/* ── PAGE HEADER ── */
+.page-header {
+  background: var(--navy);
+  color: #fff;
+  padding: 36px 24px 30px;
+  text-align: center;
+}
+.page-header h1 {
+  font-size: 1.75rem;
+  font-weight: 900;
+  line-height: 1.25;
+  margin-bottom: 8px;
+}
+.page-header .sub {
+  font-size: .9rem;
+  color: #cbd5e1;
+  max-width: 680px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* ── DISCLAIMER BAND ── */
+.disclaimer-band {
+  background: #fef9c3;
+  border-bottom: 1px solid #fde047;
+  padding: 14px 24px;
+  text-align: center;
+  font-size: .83rem;
+  color: #713f12;
+  line-height: 1.65;
+}
+.disclaimer-band strong { font-weight: 700; }
+
+/* ── MAIN CONTENT ── */
+main {
+  max-width: 1200px;
+  margin: 40px auto 80px;
+  padding: 0 20px;
+}
+
+/* ── SECTION ── */
+.section {
+  background: var(--card);
+  border-radius: 12px;
+  padding: 28px 28px 24px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.09);
+  margin-bottom: 28px;
+  border-top: 4px solid var(--navy);
+}
+.section.amber  { border-top-color: var(--amber); }
+.section.red    { border-top-color: #be185d; }
+.section.green  { border-top-color: var(--green); }
+.section.teal   { border-top-color: #0f6b8e; }
+
+.section h2 {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #1a2330;
+  margin-bottom: 14px;
+  line-height: 1.3;
+}
+
+.section p {
+  font-size: .88rem;
+  color: #374151;
+  line-height: 1.7;
+  margin-bottom: 10px;
+}
+.section p:last-child { margin-bottom: 0; }
+
+/* ── HIGHLIGHT BOX ── */
+.highlight-box {
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  border-left: 4px solid var(--amber);
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin: 14px 0;
+  font-size: .86rem;
+  color: #431407;
+  line-height: 1.65;
+}
+.highlight-box.blue {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+  border-left-color: #1d4ed8;
+  color: #1e3a5f;
+}
+.highlight-box.red {
+  background: #fff1f2;
+  border-color: #fecdd3;
+  border-left-color: #be185d;
+  color: #4c0519;
+}
+.highlight-box.green {
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+  border-left-color: var(--green);
+  color: #14532d;
+}
+.highlight-box strong { font-weight: 700; }
+
+/* ── TIMELINE STRIP ── */
+.stat-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin: 16px 0;
+}
+.stat-box {
+  flex: 1;
+  min-width: 160px;
+  background: #f1f4f8;
+  border-radius: 8px;
+  padding: 14px 16px;
+  text-align: center;
+}
+.stat-box .stat-num { font-size: 1.3rem; font-weight: 800; color: #1a2330; line-height: 1.2; }
+.stat-box .stat-label { font-size: .74rem; color: #64748b; margin-top: 4px; line-height: 1.4; }
+
+/* ── QUOTE BLOCK ── */
+.quote-block {
+  background: #f8fafc;
+  border-left: 4px solid var(--navy);
+  border-radius: 0 8px 8px 0;
+  padding: 16px 20px;
+  margin: 14px 0;
+  font-size: .88rem;
+  color: #1a2330;
+  font-style: italic;
+  line-height: 1.7;
+}
+.quote-block .attrib {
+  display: block;
+  margin-top: 8px;
+  font-size: .78rem;
+  color: #64748b;
+  font-style: normal;
+  font-weight: 600;
+}
+
+/* ── SOURCES ── */
+.sources {
+  background: var(--card);
+  border-radius: 12px;
+  padding: 22px 28px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.09);
+  margin-bottom: 28px;
+}
+.sources h3 {
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: #94a3b8;
+  margin-bottom: 12px;
+}
+.sources ol {
+  padding-left: 18px;
+  font-size: .82rem;
+  color: #64748b;
+  line-height: 1.65;
+}
+.sources ol li { margin-bottom: 6px; }
+.sources ol li strong { color: #374151; }
+.sources a { color: inherit; text-decoration: none; border-bottom: 1px dotted currentColor; }
+
+/* ── FOOTER ── */
+footer {
+  text-align: center;
+  font-size: .78rem;
+  color: #94a3b8;
+  padding: 28px 20px 40px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.category-badge {
+  display: inline-block;
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+  background: rgba(190,24,93,.28);
+  color: #fecdd3;
+  border: 1px solid rgba(190,24,93,.7);
+}
+.page-header { border-top: 5px solid #b45309; }
+.category-badge { background: rgba(180,83,9,.3); color: #fde68a; border-color: rgba(251,191,36,.7); }
+.lead { font-size: 1rem !important; color: #1a2330 !important; }
+details.data { margin-top: 14px; border: 1px solid #e2e8f0; border-radius: 8px; background: #f8fafc; }
+details.data > summary { cursor: pointer; padding: 10px 14px; font-size: .84rem; font-weight: 700; color: #1e3a5f; list-style: none; }
+details.data > summary::-webkit-details-marker { display: none; }
+details.data > summary::before { content: "+"; display: inline-block; width: 18px; font-weight: 800; }
+details.data[open] > summary::before { content: "-"; }
+details.data > summary:focus-visible { outline: 2px solid #1e3a5f; outline-offset: 2px; }
+details.data .inner { padding: 4px 16px 16px; }
+.tbl { overflow-x: auto; margin: 8px 0; }
+.tbl table { border-collapse: collapse; width: 100%; font-size: .82rem; color: #1a2330; font-variant-numeric: tabular-nums; background: #fff; }
+.tbl th, .tbl td { text-align: left; vertical-align: top; padding: 7px 9px; border-bottom: 1px solid #e2e8f0; }
+.tbl thead th { border-bottom: 2px solid #1e3a5f; font-size: .78rem; }
+.tbl td.h, .tbl th.h { background: #fff7ed; }
+.small { font-size: .78rem !important; color: #64748b !important; }
+.fig { margin: 14px 0 4px; overflow-x: auto; }
+.fig svg { display: block; width: 100%; max-width: none; min-width: 560px; height: auto; }
+.fig svg text { font-family: 'Segoe UI', system-ui, sans-serif; }
+.fig svg text:not([fill]) { fill: #1a2330; }
+.compare { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin: 14px 0; }
+.compare > div { border-radius: 8px; padding: 14px 16px; font-size: .86rem; line-height: 1.6; min-width: 0; }
+.compare .now { background: #eff6ff; border: 1px solid #bfdbfe; }
+.compare .then { background: #fff7ed; border: 1px solid #fed7aa; }
+.compare h3 { font-size: .8rem; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 6px; color: #1e3a5f; }
+.compare .then h3 { color: #9a3412; }
+.compare ul { padding-left: 18px; }
+.sup { font-size: .7rem; vertical-align: super; line-height: 0; }
+.sup a { color: #1d4ed8; text-decoration: none; }
+.est { display: inline-block; font-size: .66rem; font-weight: 800; letter-spacing: .06em; color: #9a3412; border: 1px dashed #b45309; border-radius: 4px; padding: 0 5px; margin-left: 4px; vertical-align: 1px; white-space: nowrap; }
+.mapfig { display: block; margin: 12px 0 8px; border-radius: 8px; overflow: hidden; border: 1px solid #e2e8f0; }
+.mapfig img { display: block; width: 100%; height: auto; }
+.map-key { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: .8rem; color: #374151; margin-bottom: 8px; }
+.map-key span::before { content: ""; display: inline-block; width: 14px; height: 12px; margin-right: 6px; vertical-align: -1px; background: var(--k); border: 2px solid var(--kb, var(--k)); }
+.btn-map { display: inline-block; background: #1e3a5f; color: #fff !important; text-decoration: none; font-weight: 700; font-size: .85rem; padding: 8px 16px; border-radius: 20px; }
+.btn-map:hover, .btn-map:focus-visible { background: #2a4a73; }
+.sup + .sup::before { content: ","; color: #1d4ed8; }
+
+</style>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+</head>
+<body>
+<div id="site-search-overlay" style="display:none; position:fixed; inset:0; background:rgba(15,23,42,0.65); z-index:10000; padding:60px 20px; overflow-y:auto;">
+  <div style="max-width:640px; margin:0 auto; background:#fff; border-radius:10px; padding:20px; box-shadow:0 10px 40px rgba(0,0,0,0.3);">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+      <strong style="color:#1e3a5f; font-family:'Segoe UI',system-ui,sans-serif;">Search this site</strong>
+      <button id="site-search-close" style="background:none; border:none; font-size:1.2rem; cursor:pointer; color:#1e3a5f;">&times;</button>
+    </div>
+    <div id="site-search"></div>
+  </div>
+</div>
+<link href="/pagefind/pagefind-ui.css" rel="stylesheet">
+<script src="/pagefind/pagefind-ui.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  new PagefindUI({ element: "#site-search", showSubResults: true, showImages: false });
+  var overlay = document.getElementById('site-search-overlay');
+  document.getElementById('site-search-open').addEventListener('click', function () {
+    overlay.style.display = 'block';
+  });
+  document.getElementById('site-search-close').addEventListener('click', function () {
+    overlay.style.display = 'none';
+  });
+  overlay.addEventListener('click', function (e) {
+    if (e.target === overlay) overlay.style.display = 'none';
+  });
+});
+</script>
+
+<nav class="site-nav">
+  <a href="index.html">&#8592; Citizens Against TriTexas</a>
+  <div class="site-nav-actions">
+    <a class="nav-btn-donate" href="https://givebutter.com/casa-smtx" target="_blank" rel="noopener">Donate</a>
+    <a class="nav-btn" href="https://linktr.ee/casa.smtx" target="_blank" rel="noopener">Linktree</a>
+    <a class="nav-btn" href="https://www.instagram.com/casa.smtx" target="_blank" rel="noopener">Instagram</a>
+    <a class="nav-btn" href="mailto:smartterminalcommunityinfo@gmail.com">Email</a>
+    <button id="site-search-open" class="nav-btn-search" aria-label="Search this site">Search</button>
+  </div>
+</nav>
+
+<div class="page-header">
+  <span class="category-badge">PROJECT HERCULES</span>
+  <h1>Comparison of Daimler's Existing Truck Plants</h1>
+  <p class="sub">
+    The City of San Marcos says Project Hercules is a Daimler Truck North America truck plant on about 611 acres near SH 80 and SH 142.
+    Daimler already runs truck plants in North Carolina and Oregon. Their public permits, EPA reports and news coverage are summarized below.
+  </p>
+</div>
+
+<main>
+
+  <div class="section amber">
+    <h2>At a glance</h2>
+    <div class="stat-row">
+      <div class="stat-box"><div class="stat-num">~60 homes within&nbsp;&frac12;&nbsp;mile</div><div class="stat-label">of the site's edge; the closest house is about 240 feet away</div></div>
+      <div class="stat-box"><div class="stat-num">~1,200 people within&nbsp;1&nbsp;mile</div><div class="stat-label">in the 2020 Census; about 3,800 within 2 miles</div></div>
+      <div class="stat-box"><div class="stat-num">Up to 351 tons of air pollution a&nbsp;year</div><div class="stat-label">from paints and solvents at Daimler's Cleveland, NC truck plant, which North Carolina calls a "major source"</div></div>
+      <div class="stat-box"><div class="stat-num">7 fires at Daimler&nbsp;plants</div><div class="stat-label">at 4 plants in news reports since 2012</div></div>
+    </div>
+    <p class="small">Each section below has a short summary. Select "Show the data and sources" to see the full figures and where they come from. The site and the homes around it are shown in the <a href="#map">map below</a>.</p>
+  </div>
+
+  <!-- MAP -->
+  <div class="section teal" id="map">
+    <h2>Where the site is, and the homes around it</h2>
+    <p class="lead">The Hercules site is Caldwell County's Reinvestment Zone #2, 611 acres north of SH 142 between SH 80 and FM 1984.<span class="sup"><a href="#src21">21</a></span> About 1,200 people lived within 1 mile of the site's edge and about 3,800 within 2 miles in the 2020 Census.<span class="sup"><a href="#src38">38</a></span></p>
+    <div class="map-key"><span style="--k:rgba(236,72,153,.15);--kb:#ec4899">Hercules site (Reinvestment Zone #2)</span><span style="--k:#e5e510;--kb:#1f2937">Homes: residential parcels, and buildings on home tracts over 25 acres (2026 Caldwell CAD roll)</span><span style="--k:#ffffff;--kb:#64748b">Dashed rings: 1/2, 1 and 2 miles from the edge of the site</span></div>
+    <a class="mapfig" href="interactive_map.html#l=zone2,z2rings,homes&amp;v=29.8655,-97.8317,13&amp;b=0" aria-label="Open the interactive map at the Hercules site"><img src="maps/hercules-site-homes.jpg" width="865" height="721" alt="Aerial map of the 611-acre Hercules site with dashed rings at one-half, one and two miles from its edge and homes highlighted in yellow, including neighborhoods along SH 80, Martindale to the south, Reedville to the north and Maxwell to the northeast." loading="lazy"></a>
+    <p><a class="btn-map" href="interactive_map.html#l=zone2,z2rings,homes&amp;v=29.8655,-97.8317,13&amp;b=0">Open the interactive map &rarr;</a></p>
+    <details class="data"><summary>Show the data and sources</summary><div class="inner">
+      <div class="tbl"><table>
+        <thead><tr><th>From the edge of the site</th><th>People (2020 Census)</th><th>Residential parcels</th><th>Buildings on home tracts over 25 acres</th></tr></thead>
+        <tbody>
+          <tr><th>Within 1/2 mile</th><td>about 150 to 230</td><td>57</td><td>6</td></tr>
+          <tr><th>Within 1 mile</th><td>about 1,200</td><td>206</td><td>152</td></tr>
+          <tr><th>Within 2 miles</th><td>about 3,700 to 3,900</td><td>884</td><td>194</td></tr>
+        </tbody>
+      </table></div>
+      <p class="small">People: 2020 Census block populations (Caldwell and Hays counties) within each ring; ranges show two counting methods (share of each block's area inside the ring, and blocks whose center is inside the ring).<span class="sup"><a href="#src38">38</a></span> Homes: 2026 Caldwell CAD certified roll and Microsoft building footprints, Caldwell County only, as shown on the interactive map. Three homes are within 0.1 mile; the closest house is about 240 feet from the boundary. A home is a parcel whose appraisal record shows a house or mobile home, or that has a homestead exemption. All counts are this site's measurements.</p>
+      <p><strong>Places within 2 miles of the site's edge</strong> (OpenStreetMap):<span class="sup"><a href="#src40">40</a></span></p>
+      <ul style="font-size:.86rem;line-height:1.7;padding-left:18px">
+        <li>Immaculate Heart of Mary Catholic Church, Martindale: about 1.2 miles</li>
+        <li>A second church west of the site: about 1.2 miles</li>
+        <li>Gary Job Corps campus: about 1.9 miles</li>
+      </ul>
+    </div></details>
+    <p class="small">Rings are measured outward from the edge of the 611-acre zone and were drawn by this site. The interactive map opens at this view with the site, distance rings, homes, streams and floodplain turned on. Zoom out or use the layer list to see city limits, the ETJ and other layers. Imagery: Esri.</p>
+  </div>
+
+  <!-- RULES -->
+  <div class="section red" id="rules">
+    <h2>What rules apply on the site</h2>
+    <p class="lead">About 319 of the site's 611 acres are covered by the SMART Terminal development agreement, which sets limits on that land. The rest of the site is unincorporated Caldwell County. The City says annexation would come "after construction is completed."<span class="sup"><a href="#src1">1</a></span></p>
+    <div class="compare">
+      <div class="now">
+        <h3>About 319 acres: SMART Terminal agreement today</h3>
+        <ul>
+          <li>Impervious cover: "shall not exceed 70 percent of the entire gross acreage," and 90 percent of any lot (Section 2.03)</li>
+          <li>Noise limits under the City's development code, Section 7.4.2.1 (Section 2.05)</li>
+          <li>No "storage of hazardous materials or explosives, except for fuels contained in vehicles" (Exhibit D, #5)</li>
+          <li>No "bulk storage of fuel, liquified petroleum and flammable liquids" (Exhibit D, #23)</li>
+        </ul>
+        <p class="small" style="margin-top:6px">Source<span class="sup"><a href="#src19">19</a></span></p>
+      </div>
+      <div class="then">
+        <h3>About 292 acres: Caldwell County, until annexed</h3>
+        <ul>
+          <li>"The County has no building code, fire code, zoning, or water quality regulations." (Commissioner Ed Theriot, 2023)<span class="sup"><a href="#src20">20</a></span></li>
+          <li>The company "has agreed to petition for annexation into the City Limits after construction is completed." (City FAQ)<span class="sup"><a href="#src1">1</a></span></li>
+        </ul>
+      </div>
+    </div>
+    <p>On November 9, 2026, Franklin Mountain applied to remove "approximately 319.589 acres of land from the development agreement" (case PDA-22-07(B)).<span class="sup"><a href="#src39">39</a></span> City staff said in a November 20, 2026 meeting with residents that this is the Franklin Mountain land in the Hercules site. Land removed from the agreement would no longer be subject to its terms.</p>
+    <p class="small">The 319-acre figure is this site's measurement of the overlap between the zone and the development agreement land.</p>
+  </div>
+
+  <!-- 1. SIZE -->
+  <div class="section" id="size">
+    <h2>1. Hercules would be larger than Daimler's largest U.S. truck plant</h2>
+    <p class="lead">Daimler says the Hercules building would be about 2 million square feet on about 611 acres.<span class="sup"><a href="#src2">2</a></span> Its Cleveland, North Carolina plant is about 1.2 million square feet on about 178 acres.<span class="sup"><a href="#src4">4</a></span></p>
+    <div class="fig">
+      <svg viewBox="0 0 720 200" role="img" aria-label="Bars drawn to scale: site 611 acres for Hercules and 178 for Cleveland; building 2.0 million square feet for Hercules and 1.2 million for Cleveland.">
+        <text x="0" y="18" font-size="14" font-weight="700">Site (acres)</text>
+        <text x="0" y="46" font-size="13">Hercules</text><rect x="90" y="32" width="520" height="22" fill="#b45309"/><text x="618" y="48" font-size="13" font-weight="700">611</text>
+        <text x="0" y="76" font-size="13">Cleveland</text><rect x="90" y="62" width="151.5" height="22" fill="#1e3a5f"/><text x="249" y="78" font-size="13" font-weight="700">178</text>
+        <text x="0" y="118" font-size="14" font-weight="700">Building (million sq ft)</text>
+        <text x="0" y="146" font-size="13">Hercules</text><rect x="90" y="132" width="520" height="22" fill="#b45309"/><text x="618" y="148" font-size="13" font-weight="700">2.0</text>
+        <text x="0" y="176" font-size="13">Cleveland</text><rect x="90" y="162" width="312" height="22" fill="#1e3a5f"/><text x="410" y="178" font-size="13" font-weight="700">1.2</text>
+      </svg>
+    </div>
+    <details class="data"><summary>Show the data and sources</summary><div class="inner">
+      <div class="tbl"><table>
+        <thead><tr><th></th><th class="h">Hercules (proposed)</th><th>Cleveland, NC</th><th>Mount Holly, NC</th></tr></thead>
+        <tbody>
+          <tr><th>Builds</th><td class="h">Medium and heavy-duty trucks<span class="sup"><a href="#src2">2</a></span></td><td>Class 6-8 diesel trucks<span class="sup"><a href="#src5">5</a></span></td><td>Medium-duty box trucks<span class="sup"><a href="#src6">6</a></span></td></tr>
+          <tr><th>Site</th><td class="h">~611 acres<span class="sup"><a href="#src2">2</a></span></td><td>~178 acres<span class="sup"><a href="#src4">4</a></span></td><td></td></tr>
+          <tr><th>Building</th><td class="h">~2 million sq ft<span class="sup"><a href="#src2">2</a></span></td><td>~1.2 million sq ft<span class="sup"><a href="#src4">4</a></span></td><td></td></tr>
+          <tr><th>Workers</th><td class="h">"thousands"<span class="sup"><a href="#src2">2</a></span></td><td>~2,200<span class="sup"><a href="#src5">5</a></span></td><td>~1,650<span class="sup"><a href="#src6">6</a></span></td></tr>
+          <tr><th>Trucks per day</th><td class="h"></td><td>~85<span class="sup"><a href="#src5">5</a></span></td><td>~110<span class="sup"><a href="#src6">6</a></span></td></tr>
+          <tr><th>VOC emissions</th><td class="h">390-585 tons/yr <span class="est">ESTIMATE</span></td><td>233-351 tons/yr (2019-2024)<span class="sup"><a href="#src5">5</a></span><span class="sup"><a href="#src41">41</a></span></td><td>123-175 tons/yr<span class="sup"><a href="#src6">6</a></span></td></tr>
+          <tr><th>Toxic chemicals to air</th><td class="h">~50,000 lbs/yr <span class="est">ESTIMATE</span></td><td>29,166 lbs (2024)<span class="sup"><a href="#src8">8</a></span></td><td></td></tr>
+          <tr><th>Hazardous waste</th><td class="h">~250 tons/yr <span class="est">ESTIMATE</span></td><td>~152 tons (2023)<span class="sup"><a href="#src9">9</a></span></td><td>~87 tons (2023)<span class="sup"><a href="#src9">9</a></span></td></tr>
+          <tr><th>Water use</th><td class="h">~300,000 gal/day<span class="sup"><a href="#src2">2</a></span></td><td></td><td></td></tr>
+          <tr><th>Schedule</th><td class="h">Construction 2027, operations 2029<span class="sup"><a href="#src2">2</a></span></td><td>Opened 1989<span class="sup"><a href="#src4">4</a></span></td><td></td></tr>
+        </tbody>
+      </table></div>
+      <p class="small">Rows marked <span class="est">ESTIMATE</span> are this site's calculations: Cleveland's figures scaled by building size (2.0 &divide; 1.2 million sq ft, about 1.7 times). They are not figures from Daimler or any agency. Daimler's CEO said in August 2026 that the new plant will be the company's largest U.S. truck plant.<span class="sup"><a href="#src3">3</a></span></p>
+    </div></details>
+  </div>
+
+  <!-- 2. AIR -->
+  <div class="section" id="air">
+    <h2>2. Cleveland is permitted as a "major source" of air pollution</h2>
+    <p class="lead">North Carolina's permit review calls the Cleveland plant "a major source for volatile organic compounds (VOCs) and hazardous air pollutants (HAPs)."<span class="sup"><a href="#src5">5</a></span> Daimler says the main air emissions at Hercules would come from "vehicle painting and coating operations."<span class="sup"><a href="#src2">2</a></span></p>
+    <div class="fig">
+      <svg viewBox="0 0 860 300" role="img" aria-label="Cleveland plant VOC emissions, 2019 to 2024: 351, 233, 260, 298, 328 and 305 tons per year. The six industrial sites in Caldwell and Hays counties that report to TCEQ, combined, in 2024: 245 tons (Caldwell 80, Hays 165). This site's estimate for Hercules: 390 to 585 tons per year. Reference lines: 100 tons, Title V major source; 250 tons, PSD major source.">
+        <!-- plot x 60..700; y: 0 at 260, 600 at 20 => 0.4 px/ton -->
+        <g font-size="12" fill="#64748b" text-anchor="end"><text x="52" y="264">0</text><text x="52" y="184">200</text><text x="52" y="104">400</text><text x="52" y="24">600</text></g>
+        <g stroke="#e2e8f0"><line x1="60" y1="180" x2="700" y2="180"/><line x1="60" y1="100" x2="700" y2="100"/><line x1="60" y1="20" x2="700" y2="20"/></g>
+        <line x1="60" y1="260" x2="700" y2="260" stroke="#1a2330"/>
+        <!-- 250 PSD (y 160), 100 Title V (y 220) -->
+        <line x1="60" y1="160" x2="700" y2="160" stroke="#c2410c" stroke-width="1.5" stroke-dasharray="6 4"/>
+        <line x1="60" y1="220" x2="700" y2="220" stroke="#64748b" stroke-width="1.2" stroke-dasharray="2 3"/>
+        <g fill="#1e3a5f">
+          <rect x="68" y="119.6" width="50" height="140.4"/><rect x="132" y="166.8" width="50" height="93.2"/><rect x="196" y="156" width="50" height="104"/><rect x="260" y="140.8" width="50" height="119.2"/><rect x="324" y="128.8" width="50" height="131.2"/><rect x="388" y="138" width="50" height="122"/>
+        </g>
+        <g font-size="13" text-anchor="middle" font-weight="700"><text x="93" y="113">351</text><text x="221" y="149">260</text><text x="285" y="134">298</text><text x="349" y="122">328</text><text x="413" y="131">305</text></g>
+        <text x="157" y="186" font-size="13" text-anchor="middle" font-weight="700" fill="#fff">233</text>
+        <g font-size="12" text-anchor="middle" fill="#64748b"><text x="93" y="278">2019</text><text x="157" y="278">2020</text><text x="221" y="278">2021</text><text x="285" y="278">2022</text><text x="349" y="278">2023</text><text x="413" y="278">2024</text></g>
+        <text x="253" y="296" font-size="12" text-anchor="middle">Cleveland, actual (tons per year)</text>
+        <!-- Caldwell + Hays 2024: 80 + 165 = 245 -->
+        <rect x="470" y="228" width="74" height="32" fill="#70b7aa"/>
+        <rect x="470" y="162" width="74" height="66" fill="#0f6b8e"/>
+        <text x="507" y="248" font-size="11" text-anchor="middle" font-weight="700" fill="#10302b">Caldwell 80</text>
+        <text x="507" y="199" font-size="11" text-anchor="middle" font-weight="700" fill="#fff">Hays 165</text>
+        <text x="507" y="153" font-size="13" text-anchor="middle" font-weight="700" fill="#0f6b8e">245</text>
+        <text x="507" y="278" font-size="12" text-anchor="middle" fill="#0f6b8e" font-weight="700">Caldwell + Hays</text>
+        <text x="507" y="296" font-size="12" text-anchor="middle" fill="#0f6b8e">6 sites, 2024</text>
+        <rect x="590" y="104" width="80" height="156" fill="#fff7ed" stroke="#b45309" stroke-width="1.5"/>
+        <rect x="590" y="26" width="80" height="78" fill="none" stroke="#b45309" stroke-width="1.5" stroke-dasharray="5 4"/>
+        <text x="630" y="18" font-size="13" text-anchor="middle" font-weight="700" fill="#9a3412">390-585</text>
+        <text x="630" y="278" font-size="12" text-anchor="middle" fill="#9a3412" font-weight="700">Hercules</text>
+        <text x="630" y="296" font-size="12" text-anchor="middle" fill="#9a3412">ESTIMATE</text>
+        <text x="708" y="157" font-size="11.5" fill="#c2410c" font-weight="700">250: PSD major source</text>
+        <text x="708" y="174" font-size="11" fill="#c2410c">(full federal review)</text>
+        <text x="708" y="224" font-size="11.5" fill="#64748b" font-weight="700">100: Title V major source</text>
+      </svg>
+    </div>
+    <p><strong>For perspective:</strong> the six industrial sites in Caldwell and Hays counties that report to TCEQ's emissions inventory together emitted 245 tons of VOCs in 2024 (Caldwell 80, Hays 165), shown by the blue column. This does not include vehicles or smaller businesses below TCEQ's reporting thresholds. The Cleveland plant alone emitted 328 tons in 2023.<span class="sup"><a href="#src35">35</a></span><span class="sup"><a href="#src5">5</a></span></p>
+    <p class="small">The 100-ton and 250-ton lines are the permitting thresholds explained below. The Hercules bar is this site's estimate: Cleveland's 2019-2024 range scaled by building size (2.0 &divide; 1.2, about 1.7 times). It is not a figure from Daimler or TCEQ; actual emissions depend on production volume and paint technology.</p>
+    <details class="data"><summary>Show the data and sources</summary><div class="inner">
+      <div class="tbl"><table>
+        <thead><tr><th>VOC emissions (tons/yr)</th><th>2019</th><th>2020</th><th>2021</th><th>2022</th><th>2023</th><th>2024</th><th>Permit limit</th></tr></thead>
+        <tbody>
+          <tr><th>Cleveland, NC<span class="sup"><a href="#src5">5</a></span></th><td>351</td><td>233</td><td>260</td><td>298</td><td>328</td><td>305<span class="sup"><a href="#src41">41</a></span></td><td>1,406</td></tr>
+          <tr><th>Mount Holly, NC<span class="sup"><a href="#src6">6</a></span></th><td>175</td><td>123</td><td>175</td><td>164</td><td>157</td><td>170<span class="sup"><a href="#src41">41</a></span></td><td>750</td></tr>
+          <tr><th>Hercules <span class="est">ESTIMATE</span></th><td colspan="6">390 to 585 tons per year (Cleveland range &times; 1.7)</td><td>not yet public</td></tr>
+        </tbody>
+      </table></div>
+      <p><strong>Industrial VOC emissions reported to TCEQ, 2024</strong> (all sites meeting state reporting requirements):<span class="sup"><a href="#src35">35</a></span></p>
+      <div class="tbl"><table>
+        <thead><tr><th>County</th><th>VOC (tons)</th><th>Largest reporting sites</th></tr></thead>
+        <tbody>
+          <tr><th>Caldwell</th><td>80</td><td>Oasis Pipeline, Prairie Lea Compressor Station (48); Flint Hills Resources, Mustang Ridge Terminal (22); Permian Highway Pipeline, Lockhart Compressor Station (7); 130 Environmental Park (3)</td></tr>
+          <tr><th>Hays</th><td>165</td><td>Texas Lehigh Cement (121); Hays Energy Facility (44)</td></tr>
+          <tr><th>Caldwell + Hays</th><td><strong>245</strong></td><td></td></tr>
+          <tr><th>Travis</th><td>359</td><td></td></tr>
+        </tbody>
+      </table></div>
+      <p class="small">Under the Clean Air Act, a plant that can emit 100 tons a year of a regulated pollutant is a major source.<span class="sup"><a href="#src11">11</a></span></p>
+      <p><strong>Toxic chemicals Cleveland released to the air in 2024</strong> (EPA Toxics Release Inventory):<span class="sup"><a href="#src8">8</a></span></p>
+      <div class="tbl"><table>
+        <thead><tr><th>Chemical</th><th>Pounds</th><th>What federal health agencies say</th></tr></thead>
+        <tbody>
+          <tr><th>Xylene</th><td>10,956</td><td>Headaches, dizziness, nose and throat irritation, impaired reaction time, memory and vision. "Breathing low levels over a long period of time can cause similar effects." Xylenes "can travel through soil and can get into groundwater."<span class="sup"><a href="#src14">14</a></span></td></tr>
+          <tr><th>n-Butyl alcohol</th><td>10,611</td><td>Eye, nose and throat irritation, headache, dizziness, drowsiness.<span class="sup"><a href="#src16">16</a></span></td></tr>
+          <tr><th>1,2,4-Trimethylbenzene</th><td>7,435</td><td>EPA lists the nervous system as a critical effect, with a long-term reference concentration of 0.06 mg/m&sup3;.<span class="sup"><a href="#src15">15</a></span></td></tr>
+          <tr><th>Methanol</th><td>164</td><td></td></tr>
+          <tr><th>Total</th><td><strong>29,166</strong></td><td></td></tr>
+          <tr><th>Hercules <span class="est">ESTIMATE</span></th><td>~50,000</td><td>Cleveland's 2024 total &times; 1.7</td></tr>
+        </tbody>
+      </table></div>
+      <p class="small">VOCs react with nitrogen oxides in sunlight to form ground-level ozone, which can aggravate asthma and other lung diseases.<span class="sup"><a href="#src12">12</a></span> Caldwell, Hays and Travis counties are designated attainment/unclassifiable for the 2015 ozone standard.<span class="sup"><a href="#src13">13</a></span> Cleveland was a large quantity generator of hazardous waste, about 152 tons in 2023.<span class="sup"><a href="#src9">9</a></span> EPA's compliance database lists no formal enforcement actions at the Cleveland or Mount Holly plants in its current reporting period.<span class="sup"><a href="#src10">10</a></span></p>
+    </div></details>
+    <!-- PERMITTING (part of section 2) -->
+    <h3 id="permits" style="margin:22px 0 6px">How TCEQ permits a plant like this</h3>
+    <p>TCEQ does not set a fixed emissions cap for a truck plant. The company applies for the limits it wants, and TCEQ reviews the application. The size of the request decides how much review it gets.</p>
+    <div class="tbl"><table>
+      <thead><tr><th style="width:24%">VOC emissions</th><th>What applies</th></tr></thead>
+      <tbody>
+        <tr><th>Any new plant this size</th><td>A state New Source Review air permit before construction, including Best Available Control Technology (BACT).<span class="sup"><a href="#src36">36</a></span><span class="sup"><a href="#src37">37</a></span></td></tr>
+        <tr><th>100 tons per year or more</th><td>A "major source" needing a federal Title V operating permit (also triggered at 10 tons of one hazardous air pollutant, or 25 tons combined).<span class="sup"><a href="#src11">11</a></span> Cleveland and Mount Holly are Title V plants.<span class="sup"><a href="#src5">5</a></span><span class="sup"><a href="#src6">6</a></span></td></tr>
+        <tr><th>250 tons per year or more</th><td>A "major source" under Prevention of Significant Deterioration (PSD), the full federal review for a new plant in an area that meets air quality standards. 250 tons applies to source types that are not among the federally named categories.<span class="sup"><a href="#src36">36</a></span></td></tr>
+      </tbody>
+    </table></div>
+    <details class="data"><summary>Show the data and sources</summary><div class="inner">
+      <p>TCEQ: "A minor source is a named or un-named source with regulated pollutant emissions that are less than the major source thresholds (100 tpy for named sources or 250 tpy for un-named sources)." A source that is major for one regulated pollutant is major for all regulated pollutants.<span class="sup"><a href="#src36">36</a></span></p>
+      <p>Caldwell, Hays and Travis counties are designated attainment/unclassifiable for the 2015 ozone standard.<span class="sup"><a href="#src13">13</a></span> Nonattainment review, which requires emission offsets, applies in areas that do not meet a standard.<span class="sup"><a href="#src36">36</a></span></p>
+      <p>Cleveland's permit sets a plantwide VOC limit of 1,406.4 tons per year; its actual emissions were 233 to 351 tons per year from 2019 to 2024.<span class="sup"><a href="#src5">5</a></span><span class="sup"><a href="#src41">41</a></span></p>
+    </div></details>
+  </div>
+
+  <!-- 3. STORAGE -->
+  <div class="section" id="storage">
+    <h2>3. Fuel and chemical storage</h2>
+    <p class="lead">The SMART Terminal development agreement prohibits hazardous material storage and bulk fuel storage on its land, which includes about 319 acres of the Hercules site.</p>
+    <div class="compare">
+      <div class="now">
+        <h3>SMART agreement, Exhibit D: prohibited uses</h3>
+        <ul>
+          <li>#5: "Manufacturing or storage of hazardous materials or explosives, except for fuels contained in vehicles, locomotives, or railcars"</li>
+          <li>#23: "Refining or retail sale or bulk storage of fuel, liquified petroleum and flammable liquids"</li>
+        </ul>
+        <p class="small" style="margin-top:6px">Source<span class="sup"><a href="#src19">19</a></span></p>
+      </div>
+      <div class="then">
+        <h3>Daimler's plans and Cleveland's permit</h3>
+        <ul>
+          <li>Hercules: a hazardous material "storage facility" with "secondary containment"<span class="sup"><a href="#src2">2</a></span></li>
+          <li>Cleveland: three 10,000-gallon diesel tanks and four 10,000-gallon solvent tanks<span class="sup"><a href="#src7">7</a></span></li>
+        </ul>
+      </div>
+    </div>
+    <details class="data"><summary>Show the data and sources</summary><div class="inner">
+      <p><strong>Storage and equipment listed in Cleveland's air permit review:</strong><span class="sup"><a href="#src7">7</a></span> three 10,000-gallon diesel fuel tanks; four 10,000-gallon purge (solvent) tanks; one 4,000-gallon butanol tank; one 10,000-gallon antifreeze tank; two solvent distillation units; three dynamometers; two diesel fire pumps; one emergency generator.</p>
+      <p><strong>Mount Holly's permit review lists:</strong><span class="sup"><a href="#src6">6</a></span> two 10,000-gallon diesel tanks; one 10,000-gallon and one 750-gallon gasoline tank; three 10,000-gallon purge solvent tanks; two 10,000-gallon antifreeze tanks; 15 paint spray booths; an e-coat line; three diesel fire pumps; three emergency generators.</p>
+      <p><strong>Daimler's FAQ</strong>, asked "Does the company have a plan for hazardous material storage?": "Engineering standards include a state-of-the-art storage facility equipped with security measures, secondary containment, fire protection systems, and other engineered controls designed to prevent releases and minimize risk."<span class="sup"><a href="#src2">2</a></span></p>
+      <p><strong>Caldwell County</strong> Commissioner Ed Theriot to the City, April 21, 2023: "The County has no building code, fire code, zoning, or water quality regulations."<span class="sup"><a href="#src20">20</a></span> The City's FAQ says the company "has agreed to petition for annexation into the City Limits after construction is completed."<span class="sup"><a href="#src1">1</a></span></p>
+    </div></details>
+  </div>
+
+  <!-- 4. ODOR -->
+  <div class="section" id="odor">
+    <h2>4. Homes near Hercules are as close as the Portland homes that reported odors</h2>
+    <p class="lead">Neighbors who complained about paint odors from Daimler's Portland, Oregon truck plant lived 0.2 to 0.3 miles from it, and University of Portland students detected the odor 0.7 miles away.<span class="sup"><a href="#src18">18</a></span><span class="sup"><a href="#src33">33</a></span> Near the Hercules site, about 155 homes are within 0.7 miles of the site's edge, including about 60 within half a mile. The Portland plant drew more odor complaints than any other facility in Oregon after 2010, and Oregon's environmental agency confirmed Daimler was the source of the paint smell.<span class="sup"><a href="#src18">18</a></span> Under a 2020 agreement, Daimler moved its top and clear coat painting "to its North Carolina location" and cut its Portland paint booths from five to one.<span class="sup"><a href="#src17">17</a></span></p>
+    <div class="stat-row">
+      <div class="stat-box"><div class="stat-num">"Hundreds" of complaints</div><div class="stat-label">filed by neighbors about the Portland plant (OPB, 2016)<span class="sup"><a href="#src18">18</a></span></div></div>
+      <div class="stat-box"><div class="stat-num">Most in Oregon</div><div class="stat-label">more air quality complaints than any other Oregon facility, 2010-2016<span class="sup"><a href="#src18">18</a></span></div></div>
+      <div class="stat-box"><div class="stat-num">2nd most, 2016-2017</div><div class="stat-label">of 8,270 pollution complaints statewide in DEQ's records (KGW)<span class="sup"><a href="#src42">42</a></span></div></div>
+      <div class="stat-box"><div class="stat-num">Up to 20% of the time</div><div class="stat-label">odor detected near the plant in winter, in nearly 24,000 University of Portland student observations<span class="sup"><a href="#src18">18</a></span></div></div>
+    </div>
+    <h3 style="margin:18px 0 0">Comparison of where odors were reported around Portland and where homes are around Hercules</h3>
+    <div class="fig">
+      <svg viewBox="0 0 720 196" role="img" aria-label="Two distance tracks on the same scale, 0 to 1.2 miles. Top, Portland plant: odor complaints came from neighborhoods 0.2 to 0.3 miles from the plant and odor was detected at the University of Portland 0.7 miles away; that 0.2 to 0.7 mile range is shaded. Bottom, Hercules site, measured from the site edge: nearest homes under 0.1 mile, about 60 homes within one-half mile, about 155 within 0.7 mile, neighborhoods about 1 mile. The shaded range carries down onto the Hercules track.">
+        <!-- shared scale: 0 mi at x=120, 1.2 mi at x=700 -->
+        <g stroke="#94a3b8"><line x1="120.0" y1="26" x2="120.0" y2="32"/><line x1="240.8" y1="26" x2="240.8" y2="32"/><line x1="361.7" y1="26" x2="361.7" y2="32"/><line x1="482.5" y1="26" x2="482.5" y2="32"/><line x1="603.3" y1="26" x2="603.3" y2="32"/><line x1="120" y1="32" x2="700" y2="32"/></g>
+        <g font-size="11" fill="#64748b" text-anchor="middle"><text x="120.0" y="20">0</text><text x="240.8" y="20">0.25 mi</text><text x="361.7" y="20">0.5 mi</text><text x="482.5" y="20">0.75 mi</text><text x="603.3" y="20">1 mi</text></g>
+        <rect x="216.7" y="40" width="241.7" height="112" fill="#1e3a5f" fill-opacity="0.07"/>
+        <g stroke="#1e3a5f" stroke-width="1.2" stroke-dasharray="4 4" stroke-opacity="0.6"><line x1="216.7" y1="40" x2="216.7" y2="152"/><line x1="458.3" y1="40" x2="458.3" y2="152"/></g>
+        <text x="0" y="64" font-size="13" font-weight="700" fill="#1e3a5f">Portland plant</text><text x="0" y="78" font-size="10.5" fill="#64748b">from the plant</text>
+        <rect x="120" y="55" width="580" height="14" rx="7" fill="#e2e8f0"/>
+        <rect x="216.7" y="55" width="241.7" height="14" rx="7" fill="#1e3a5f"/>
+        <text x="337.5" y="66" font-size="10.5" font-weight="700" text-anchor="middle" fill="#ffffff">odor reported</text>
+        <text x="221.7" y="90" font-size="11.5" fill="#1e3a5f">Complaints: 0.2-0.3 mi</text>
+        <text x="453.3" y="106" font-size="11.5" text-anchor="end" fill="#1e3a5f">Odor detected at Univ. of Portland: 0.7 mi</text>
+        <text x="0" y="142" font-size="13" font-weight="700" fill="#9a3412">Hercules site</text><text x="0" y="156" font-size="10.5" fill="#64748b">from the site edge</text>
+        <rect x="120" y="133" width="580" height="14" rx="7" fill="#e2e8f0"/>
+        <circle cx="141.8" cy="140" r="8" fill="#b45309" stroke="#ffffff" stroke-width="2"/>
+        <text x="133.8" y="170" font-size="12" font-weight="700" text-anchor="start" fill="#9a3412">Nearest homes</text><text x="133.8" y="184" font-size="11.5" text-anchor="start" fill="#9a3412">under 0.1 mi</text>
+        <circle cx="361.7" cy="140" r="8" fill="#b45309" stroke="#ffffff" stroke-width="2"/>
+        <text x="361.7" y="170" font-size="12" font-weight="700" text-anchor="middle" fill="#9a3412">~60 homes</text><text x="361.7" y="184" font-size="11.5" text-anchor="middle" fill="#9a3412">within 1/2 mi</text>
+        <circle cx="458.3" cy="140" r="8" fill="#b45309" stroke="#ffffff" stroke-width="2"/>
+        <text x="458.3" y="170" font-size="12" font-weight="700" text-anchor="middle" fill="#9a3412">~155 homes</text><text x="458.3" y="184" font-size="11.5" text-anchor="middle" fill="#9a3412">within 0.7 mi</text>
+        <circle cx="603.3" cy="140" r="8" fill="#b45309" stroke="#ffffff" stroke-width="2"/>
+        <text x="603.3" y="170" font-size="12" font-weight="700" text-anchor="middle" fill="#9a3412">Neighborhoods</text><text x="603.3" y="184" font-size="11.5" text-anchor="middle" fill="#9a3412">about 1 mi</text>
+      </svg>
+    </div>
+    <h3 style="margin:18px 0 6px">What Oregon required of the Portland paint shop</h3>
+    <p>To settle the odor case, Oregon wrote paint shop requirements into the Portland plant's air permit. Cleveland's North Carolina permit, which covers the plant where the top and clear coat painting went, has none of them.<span class="sup"><a href="#src50">50</a></span><span class="sup"><a href="#src52">52</a></span></p>
+    <div class="tbl"><table>
+      <thead><tr><th>Requirement</th><th>Portland, OR (permit 26-2197-TV-01, 2021)</th><th>Cleveland, NC (permit 04625T40, 2025)</th></tr></thead>
+      <tbody>
+        <tr><th>High-solids coatings</th><td>"Continue to use only high-solids pre-mixed coatings"; study and switch to high-solids clear coat. Daimler told DEQ in June 2021 it "has successfully converted to the use of high solids clear coat."<span class="sup"><a href="#src50">50</a></span><span class="sup"><a href="#src51">51</a></span></td><td>No such condition</td></tr>
+        <tr><th>Spray guns</th><td>Reduced pressure (lower overspray) spray guns for all surface coating, with a preventive maintenance plan<span class="sup"><a href="#src50">50</a></span></td><td>No such condition</td></tr>
+        <tr><th>New or changed coatings</th><td>"Evaluate the odor potential of the revised coating" and use odor mitigation if it is worse<span class="sup"><a href="#src50">50</a></span></td><td>No such condition</td></tr>
+        <tr><th>Complaints</th><td>Daimler hotline; complaints sent to DEQ within 48 hours; complaint log kept and filed with DEQ each year<span class="sup"><a href="#src17">17</a></span><span class="sup"><a href="#src50">50</a></span></td><td>No such condition</td></tr>
+        <tr><th>Paint booths</th><td>Five booths cut to one after top and clear coat painting moved to North Carolina<span class="sup"><a href="#src17">17</a></span></td><td>25 paint spray booths; the permit lists no add-on air pollution control for any of them<span class="sup"><a href="#src52">52</a></span></td></tr>
+        <tr><th>VOC limit</th><td>Cut from 470 to 86 tons per year starting Jan. 1, 2023, "to reflect moving the majority of cab painting off-site and out of Oregon to other facilities owned by the permittee"<span class="sup"><a href="#src50">50</a></span></td><td>1,405 tons per year; coatings must average no more than 3.5 pounds of VOC per gallon each month<span class="sup"><a href="#src52">52</a></span></td></tr>
+      </tbody>
+    </table></div>
+    <p class="small">The Portland requirements came from a 2020 Best Work Practices Agreement under Oregon's nuisance odor rules and are enforceable only by the State of Oregon.<span class="sup"><a href="#src50">50</a></span> The public North Carolina permit documents reviewed do not say which clear coat the Cleveland plant uses.</p>
+    <details class="data"><summary>Show the data and sources</summary><div class="inner">
+      <div class="tbl"><table>
+        <thead><tr><th></th><th>Portland plant</th><th class="h">Hercules site</th></tr></thead>
+        <tbody>
+          <tr><th>Measured from</th><td>The plant</td><td class="h">The edge of the 611-acre site (the plant's location on the site has not been made public)</td></tr>
+          <tr><th>Nearest homes</th><td>University Park and Overlook boundaries about 0.2 miles; Arbor Lodge about 0.3 miles; University of Portland about 0.7 miles<span class="sup"><a href="#src33">33</a></span></td><td class="h">3 homes within 0.1 mile; the closest house about 240 feet from the boundary</td></tr>
+          <tr><th>Within 1/2 mile</th><td></td><td class="h">57 residential parcels and 6 buildings on larger home tracts</td></tr>
+          <tr><th>Within 0.7 mile</th><td>University of Portland, where students detected the odor up to 20% of the time in winter<span class="sup"><a href="#src18">18</a></span></td><td class="h">123 residential parcels and 32 buildings on larger home tracts</td></tr>
+          <tr><th>Within 1 mile</th><td class="h">206 residential parcels and 152 buildings on larger home tracts; Butterfly Meadows and Hobson Ranch about 1 mile and Skyview less than 1 mile, as stated by a speaker at the County's Nov. 12, 2026 hearing<span class="sup"><a href="#src34">34</a></span></td></tr>
+          <tr><th>Homes within 2 miles</th><td></td><td class="h">884 residential parcels, plus 194 buildings on home tracts over 25 acres, in Caldwell County (see the <a href="#map">map</a>)</td></tr>
+        </tbody>
+      </table></div>
+      <p class="small">Hercules counts are this site's measurements from the map's homes layer (2026 Caldwell CAD roll and building footprints), Caldwell County only. <a href="interactive_map.html#l=zone2,z2rings,homes&amp;v=29.8655,-97.8317,13&amp;b=0">See the homes around the Hercules site on the interactive map.</a> Portland distances were measured on OpenStreetMap from the plant at 6936 N Fathom St. to the neighborhood boundaries.</p>
+      <p>OPB/EarthFix reported in 2016 that neighbors on the bluff above the plant described paint fumes that made their eyes water and gave them headaches, and that one family had filed almost 40 complaints in six years.<span class="sup"><a href="#src18">18</a></span></p>
+      <p>OPB/EarthFix also reported that neighbors had "filed hundreds of complaints about the company," and that Oregon DEQ had received "more than 2,000 such air quality complaints since 2010" statewide, with Daimler the target of more than any other facility. During DEQ's odor study, "State investigators made 760 total attempts to detect odor," and "DEQ found odors during 3 percent of its observations." University of Portland students made "nearly 24,000" observations over a year; in winter months, "odor detections near Daimler were as high as 20 percent."<span class="sup"><a href="#src18">18</a></span> KGW analyzed DEQ's complaint databases for 2016 and 2017 (8,270 complaints statewide) and reported that Daimler's North Portland plant drew the second-most, behind a railroad-tie treatment plant with more than 500. The top three facilities had "at least 1,380 complaints among them"; KGW did not give a separate number for Daimler.<span class="sup"><a href="#src42">42</a></span></p>
+      <p>Oregon DEQ: "Daimler will transition all top and clear coating activities to its North Carolina location by December 2022. The Portland facility will continue to operate one booth, down from five, to service older, legacy model cabs." Daimler set up a complaint hotline and "is required to submit all complaints received through their hotline to DEQ within 48 hours."<span class="sup"><a href="#src17">17</a></span> In 2026 Daimler announced the end of truck production in Portland, with that work moving to North Carolina and South Carolina.<span class="sup"><a href="#src3">3</a></span></p>
+    </div></details>
+  </div>
+
+  <!-- 5. FIRES -->
+  <div class="section red" id="fires">
+    <h2>5. Fires at Daimler truck plants</h2>
+    <p class="lead">News reports describe seven fires at four Daimler plants since 2012. The largest, at Cleveland on August 30, 2025, drew at least 20 agencies from three counties; a firefighter fell into a pit in the paint booth area and was hospitalized.<span class="sup"><a href="#src4">4</a></span></p>
+    <div class="fig">
+      <svg viewBox="0 0 720 150" role="img" aria-label="Timeline 2012 to 2026, each fire placed by date: Gastonia October 2012, Mount Holly February 2013, Portland January 2015, Gastonia November 2018, and Cleveland May 2023, August 2024 and August 2025 (three-alarm).">
+        <!-- Jan 1 2012 at x=40, Jan 1 2027 at x=700 -> 44.00 px/yr; fires placed by exact date -->
+        <line x1="40" y1="78" x2="700" y2="78" stroke="#94a3b8" stroke-width="2"/>
+        <g stroke="#94a3b8" stroke-width="1.2"><line x1="40.0" y1="73" x2="40.0" y2="83"/><line x1="84.0" y1="75" x2="84.0" y2="81"/><line x1="128.0" y1="73" x2="128.0" y2="83"/><line x1="172.0" y1="75" x2="172.0" y2="81"/><line x1="216.0" y1="73" x2="216.0" y2="83"/><line x1="260.0" y1="75" x2="260.0" y2="81"/><line x1="304.0" y1="73" x2="304.0" y2="83"/><line x1="348.0" y1="75" x2="348.0" y2="81"/><line x1="392.0" y1="73" x2="392.0" y2="83"/><line x1="436.0" y1="75" x2="436.0" y2="81"/><line x1="480.0" y1="73" x2="480.0" y2="83"/><line x1="524.0" y1="75" x2="524.0" y2="81"/><line x1="568.0" y1="73" x2="568.0" y2="83"/><line x1="612.0" y1="75" x2="612.0" y2="81"/><line x1="656.0" y1="73" x2="656.0" y2="83"/><line x1="700.0" y1="75" x2="700.0" y2="81"/></g>
+        <g font-size="11" fill="#64748b" text-anchor="middle"><text x="40.0" y="142">2012</text><text x="128.0" y="142">2014</text><text x="216.0" y="142">2016</text><text x="304.0" y="142">2018</text><text x="392.0" y="142">2020</text><text x="480.0" y="142">2022</text><text x="568.0" y="142">2024</text><text x="656.0" y="142">2026</text></g>
+        <line x1="74.6" y1="71" x2="74.6" y2="46" stroke="#64748b" stroke-width="1.2"/>
+        <text x="74.6" y="26" font-size="11.5" font-weight="700" text-anchor="middle" fill="#334155">Gastonia</text><text x="74.6" y="40" font-size="10.5" text-anchor="middle" fill="#334155">Oct. 2012</text>
+        <circle cx="74.6" cy="78" r="7" fill="#64748b"/>
+        <line x1="91.0" y1="85" x2="91.0" y2="104" stroke="#64748b" stroke-width="1.2"/>
+        <text x="91.0" y="116" font-size="11.5" font-weight="700" text-anchor="middle" fill="#334155">Mt. Holly</text><text x="91.0" y="129" font-size="10.5" text-anchor="middle" fill="#334155">Feb. 2013</text>
+        <circle cx="91.0" cy="78" r="7" fill="#64748b"/>
+        <line x1="175.1" y1="71" x2="175.1" y2="46" stroke="#64748b" stroke-width="1.2"/>
+        <text x="175.1" y="26" font-size="11.5" font-weight="700" text-anchor="middle" fill="#334155">Portland</text><text x="175.1" y="40" font-size="10.5" text-anchor="middle" fill="#334155">Jan. 2015</text>
+        <circle cx="175.1" cy="78" r="7" fill="#64748b"/>
+        <line x1="341.5" y1="71" x2="341.5" y2="46" stroke="#64748b" stroke-width="1.2"/>
+        <text x="341.5" y="26" font-size="11.5" font-weight="700" text-anchor="middle" fill="#334155">Gastonia</text><text x="341.5" y="40" font-size="10.5" text-anchor="middle" fill="#334155">Nov. 2018</text>
+        <circle cx="341.5" cy="78" r="7" fill="#64748b"/>
+        <line x1="541.5" y1="71" x2="541.5" y2="46" stroke="#be185d" stroke-width="1.2"/>
+        <text x="541.5" y="26" font-size="11.5" font-weight="700" text-anchor="middle" fill="#9d174d">Cleveland</text><text x="541.5" y="40" font-size="10.5" text-anchor="middle" fill="#9d174d">May 2023</text>
+        <circle cx="541.5" cy="78" r="7" fill="#be185d"/>
+        <line x1="597.0" y1="85" x2="597.0" y2="104" stroke="#be185d" stroke-width="1.2"/>
+        <text x="597.0" y="116" font-size="11.5" font-weight="700" text-anchor="middle" fill="#9d174d">Cleveland</text><text x="597.0" y="129" font-size="10.5" text-anchor="middle" fill="#9d174d">Aug. 2024</text>
+        <circle cx="597.0" cy="78" r="7" fill="#be185d"/>
+        <line x1="641.1" y1="67" x2="641.1" y2="46" stroke="#be185d" stroke-width="1.2"/>
+        <text x="641.1" y="26" font-size="11.5" font-weight="700" text-anchor="middle" fill="#9d174d">Cleveland</text><text x="641.1" y="40" font-size="10.5" text-anchor="middle" fill="#9d174d">Aug. 2025</text>
+        <circle cx="641.1" cy="78" r="11" fill="#be185d"/>
+      </svg>
+    </div>
+    <details class="data"><summary>Show the data and sources</summary><div class="inner">
+      <div class="tbl"><table>
+        <thead><tr><th style="white-space:nowrap">Date</th><th>Plant</th><th>What was reported</th></tr></thead>
+        <tbody>
+          <tr><td style="white-space:nowrap">Oct. 2012</td><td>Gastonia, NC (parts)</td><td>Overnight fire, about $100,000 damage; officials believed a welding spark was pulled into the ventilation system.<span class="sup"><a href="#src26">26</a></span></td></tr>
+          <tr><td style="white-space:nowrap">Feb. 28, 2013</td><td>Mount Holly, NC</td><td>Overnight fire; firefighters worked from the roof. No injuries.<span class="sup"><a href="#src27">27</a></span></td></tr>
+          <tr><td style="white-space:nowrap">Jan. 27, 2015</td><td>Portland, OR</td><td>Fire burned through a paint booth. No injuries.<span class="sup"><a href="#src28">28</a></span></td></tr>
+          <tr><td style="white-space:nowrap">Nov. 8, 2018</td><td>Gastonia, NC (parts)</td><td>Three-alarm fire during equipment demolition; flames "raced through the facility's roof."<span class="sup"><a href="#src29">29</a></span></td></tr>
+          <tr><td style="white-space:nowrap">May 26, 2023</td><td>Cleveland, NC</td><td>Material rack fire spread into a building and burned the roof "above the sprinkler system"; propane tanks were in the rack area.<span class="sup"><a href="#src23">23</a></span></td></tr>
+          <tr><td style="white-space:nowrap">Aug. 29, 2024</td><td>Cleveland, NC</td><td>Paint booth room fire set off sprinklers; crews put it out with foam after staff pulled up the floor.<span class="sup"><a href="#src24">24</a></span></td></tr>
+          <tr><td style="white-space:nowrap"><strong>Aug. 30, 2025</strong></td><td><strong>Cleveland, NC</strong></td><td><strong>Three-alarm fire, at least 20 agencies from Rowan, Iredell and Davie counties.</strong> A firefighter fell into a pit in the paint booth area and was hospitalized; others had heat exhaustion. The State Bureau of Investigation and State Fire Marshal assisted in the investigation.<span class="sup"><a href="#src4">4</a></span> The plant's union local wrote that workers returned after about three weeks and that a damaged assembly line "may take 8-10 months" to be fully operational.<span class="sup"><a href="#src25">25</a></span></td></tr>
+        </tbody>
+      </table></div>
+      <p class="small">Fires found in news coverage, 2012 to 2026. The local department at all three Cleveland fires was the Cleveland Community Volunteer Fire Department.<span class="sup"><a href="#src4">4</a></span><span class="sup"><a href="#src23">23</a></span><span class="sup"><a href="#src24">24</a></span></p>
+    </div></details>
+  </div>
+
+  <!-- 6. WATER -->
+  <div class="section teal" id="water">
+    <h2>6. Runoff from the site drains to the San Marcos River</h2>
+    <p class="lead">Hemphill Creek and its floodplain cross the Hercules site. Downstream, the creek runs along and through the City of Martindale's wellhead protection area, joins Morrison Creek about 2.1 miles from the site, and Morrison Creek reaches the San Marcos River about 4.3 miles farther south, near Staples. Texas lists this part of the river as a sole-source drinking water supply.<span class="sup"><a href="#src1">1</a></span><span class="sup"><a href="#src21">21</a></span><span class="sup"><a href="#src22">22</a></span><span class="sup"><a href="#src46">46</a></span><span class="sup"><a href="#src49">49</a></span></p>
+    <a class="mapfig" href="interactive_map.html#l=zone2,whpa,streams&amp;v=29.835,-97.836,13&amp;b=0" aria-label="Open the interactive map with the Hercules site, Martindale&#39;s wellhead protection area and streams"><img src="maps/hercules-runoff-wellhead.jpg" width="1100" height="790" alt="Aerial map: the Hercules site, Hemphill Creek highlighted running south past the Martindale wellhead protection area and Martindale&#39;s wells B and C, joining Morrison Creek, which joins the San Marcos River near Staples." loading="lazy"></a>
+    <p class="small">Flow path traced with the U.S. Geological Survey&#39;s Network-Linked Data Index (NHDPlus flowlines).<span class="sup"><a href="#src22">22</a></span> Wellhead protection area traced by this site from the state figure (approximate).<span class="sup"><a href="#src49">49</a></span> Imagery: Esri. <a href="interactive_map.html#l=zone2,whpa,streams&amp;v=29.835,-97.836,13&amp;b=0">Open this view on the interactive map.</a></p>
+    <div class="fig">
+      <svg viewBox="0 0 720 120" role="img" aria-label="Diagram: the Hercules site drains to Hemphill Creek, which runs past Martindale&#39;s wellhead protection area for 2.1 miles to Morrison Creek, which runs 4.3 miles to the San Marcos River, a drinking water supply.">
+        <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#0f6b8e"/></marker></defs>
+        <rect x="1" y="22" width="140" height="76" rx="8" fill="#fff7ed" stroke="#b45309"/>
+        <text x="71" y="56" font-size="14" font-weight="700" text-anchor="middle">Hercules site</text><text x="71" y="76" font-size="11.5" text-anchor="middle">611 acres</text>
+        <line x1="142" y1="60" x2="182" y2="60" stroke="#0f6b8e" stroke-width="3" marker-end="url(#ar)"/>
+        <rect x="186" y="16" width="176" height="88" rx="8" fill="#ecfeff" stroke="#0f6b8e"/>
+        <text x="274" y="42" font-size="14" font-weight="700" text-anchor="middle">Hemphill Creek</text><text x="274" y="60" font-size="11.5" text-anchor="middle">past and through</text><text x="274" y="74" font-size="11.5" text-anchor="middle">Martindale&#39;s wellhead</text><text x="274" y="88" font-size="11.5" text-anchor="middle">protection area; 2.1 mi</text>
+        <line x1="363" y1="60" x2="403" y2="60" stroke="#0f6b8e" stroke-width="3" marker-end="url(#ar)"/>
+        <rect x="407" y="26" width="128" height="68" rx="8" fill="#ecfeff" stroke="#0f6b8e"/>
+        <text x="471" y="54" font-size="14" font-weight="700" text-anchor="middle">Morrison Creek</text><text x="471" y="74" font-size="11.5" text-anchor="middle">4.3 mi</text>
+        <line x1="536" y1="60" x2="576" y2="60" stroke="#0f6b8e" stroke-width="3" marker-end="url(#ar)"/>
+        <rect x="580" y="22" width="139" height="76" rx="8" fill="#0f6b8e"/>
+        <text x="649" y="52" font-size="14" font-weight="700" text-anchor="middle" fill="#ffffff">San Marcos River</text><text x="649" y="70" font-size="11.5" text-anchor="middle" fill="#ffffff">drinking water</text><text x="649" y="84" font-size="11.5" text-anchor="middle" fill="#ffffff">supply</text>
+      </svg>
+    </div>
+    <h3 style="margin:18px 0 6px">Copper in stormwater: Cleveland's results and the Texas rule</h3>
+    <p>The Cleveland plant tests its own stormwater and reports to North Carolina. One of its outfalls has been in the state's highest response tier for copper since at least 2022.<span class="sup"><a href="#src43">43</a></span> The Texas permit that would cover a truck plant sets no copper benchmark; its legal limit is 200 times North Carolina's benchmark, checked with one sample a year.<span class="sup"><a href="#src44">44</a></span></p>
+    <div class="tbl"><table>
+      <thead><tr><th>Copper in stormwater (total, mg/L)</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td>North Carolina benchmark for the Cleveland plant (freshwater)</td><td>0.010</td></tr>
+        <tr><td>Cleveland outfall 002, March 12, 2026 sample (report says "Tier III, ongoing")<span class="sup"><a href="#src43">43</a></span></td><td>0.0113</td></tr>
+        <tr><td class="h">Texas benchmark for truck manufacturing (Sector AB)<span class="sup"><a href="#src44">44</a></span><span class="sup"><a href="#src45">45</a></span></td><td class="h">none</td></tr>
+        <tr><td class="h">Texas legal limit for all permitted industrial sites, discharges to inland waters (one sample a year)<span class="sup"><a href="#src44">44</a></span></td><td class="h">2.0</td></tr>
+      </tbody>
+    </table></div>
+    <p class="small">Zinc: North Carolina benchmark 0.126 mg/L; Texas legal limit 6.0 mg/L. A North Carolina benchmark is a trigger for required inspections and more frequent sampling, not a legal limit.<span class="sup"><a href="#src43">43</a></span><span class="sup"><a href="#src44">44</a></span> <a href="interactive_map.html#l=zone2,whpa,streams&amp;v=29.852,-97.848,14&amp;b=0">See Martindale's wellhead protection area and Hemphill Creek on the interactive map.</a></p>
+    <details class="data"><summary>Show the data and sources</summary><div class="inner">
+      <p>Drainage was traced with the U.S. Geological Survey's Network-Linked Data Index from a grid of points inside the 611-acre zone; every point drains to the San Marcos River. Following the main flow path downstream, Hemphill Creek runs about 2.1 miles from the edge of the zone to Morrison Creek just southeast of Martindale, and Morrison Creek runs about 4.3 miles to the San Marcos River near Staples, about 6.4 miles in all. In a straight line, the river is about 1.5 miles from the site.<span class="sup"><a href="#src22">22</a></span> The floodplain is FEMA Zone A.<span class="sup"><a href="#src21">21</a></span></p>
+      <p>In 2024 the Cleveland plant reported no TRI chemicals released directly to water or sent to a sewer plant; its solvent wastes were sent off site for recycling and energy recovery.<span class="sup"><a href="#src8">8</a></span> Its stormwater is covered by a general industrial stormwater permit.<span class="sup"><a href="#src10">10</a></span> At Hercules, the City would be the wastewater provider, and Daimler says it "will install and operate wastewater treatment systems, as needed."<span class="sup"><a href="#src2">2</a></span></p>
+      <p><strong>Cleveland stormwater results.</strong> The Cleveland plant is covered by North Carolina's general stormwater permit for metal fabrication (certificate NCG030039) and drains to Third Creek in the Yadkin Pee-Dee River basin. The plant or its contractor samples each outfall during qualifying rain events and reports the results to the state. In August 2022 its consultant reported that outfall 001 had exited Tier Three "for Copper" and that the facility "remains in Tier Three ... at SDO #002 for Copper and Zinc." The plant's April 2026 report lists March 2026 results of 0.0068 mg/L copper and 0.049 mg/L zinc at outfall 001 and 0.0113 mg/L copper and 0.107 mg/L zinc at outfall 002, with the note "SDO 002: Copper benchmark exceedance" and the tier response marked "III, ongoing." A state compliance inspection on July 12, 2023 found the facility compliant with the permit.<span class="sup"><a href="#src43">43</a></span></p>
+      <p><strong>The Texas permit.</strong> In TCEQ's industrial stormwater general permit (TXR050000, issued Aug. 14, 2021), truck manufacturing (SIC 3711) is in Sector AB. Sector AB has no benchmark monitoring; its only added requirement is a site map showing "vents and stacks from metal processing and similar areas." TCEQ's October 2025 draft renewal keeps Sector AB the same. Every covered facility must meet the permit's hazardous metals limits (copper 2.0 mg/L, zinc 6.0 mg/L, lead 1.5 mg/L for inland waters), tested with one grab sample a year, unless it certifies for a waiver that it does not use the metal or that the metal is never exposed to stormwater.<span class="sup"><a href="#src44">44</a></span><span class="sup"><a href="#src45">45</a></span></p>
+      <p><strong>Martindale's wellhead protection area.</strong> A state source water figure for the City of Martindale's public water system (PWS 0280013) shows a wellhead protection area of about 2,000 acres (1,675 in Caldwell County and 323 in Guadalupe County) around its wells B and C beside the San Marcos River, with modeled groundwater flow paths to the wells. As traced by this site, the area's edge is about 0.3 mile from the 611-acre zone, the wells are about 1.5 miles away, and Hemphill Creek runs about 1 kilometer inside the area and another 1.5 kilometers along its eastern edge.<span class="sup"><a href="#src49">49</a></span><span class="sup"><a href="#src22">22</a></span></p>
+      <p><strong>The river downstream.</strong> The Texas Surface Water Quality Standards list the San Marcos River (segment 1808, Caldwell, Gonzales, Guadalupe and Hays counties) as a sole-source surface drinking water supply.<span class="sup"><a href="#src46">46</a></span> The Guadalupe-Blanco River Authority tests dissolved metals, including copper and zinc, once a year at the San Marcos River at the Luling Water Treatment Plant (station 12626), downstream of the site.<span class="sup"><a href="#src47">47</a></span> TCEQ's draft 2026 water quality assessment for this part of the river lists no copper or zinc results.<span class="sup"><a href="#src48">48</a></span></p>
+      <p><strong>Firefighting foam.</strong> The Interstate Technology and Regulatory Council lists fire suppression systems and firefighting foam among PFAS sources, with releases through stormwater, wastewater and spills.<span class="sup"><a href="#src30">30</a></span> EPA researchers write that "PFAS persistence and rebound within AFFF systems will likely result in continued PFAS discharge long after initial cleaning attempts."<span class="sup"><a href="#src31">31</a></span> A 2025 Texas bill to limit PFAS foam in training and testing (SB 1898) did not pass.<span class="sup"><a href="#src32">32</a></span></p>
+    </div></details>
+  </div>
+
+  <div class="sources" id="sources">
+    <h3>Sources</h3>
+    <ol>
+      <li id="src1"><strong>City of San Marcos</strong>, <a href="https://www.sanmarcostx.gov/4854/City-of-San-Marcos-Project-FAQs" target="_blank" rel="noopener">Project Hercules FAQs</a> and <a href="https://www.sanmarcostx.gov/4851/Project-Hercules" target="_blank" rel="noopener">project page</a> (Nov. 19, 2026).</li>
+      <li id="src2"><strong>Information from DTNA</strong> on the City's <a href="https://www.sanmarcostx.gov/4851/Project-Hercules" target="_blank" rel="noopener">Project Hercules page</a> (Nov. 19, 2026); archived copy: <a href="docs/city-project-hercules-dtna-faq-2026-11-20.pdf" target="_blank" rel="noopener">PDF</a>.</li>
+      <li id="src3"><strong>Transport Topics</strong>, <a href="https://www.ttnews.com/articles/dtna-new-truck-plant-2029" target="_blank" rel="noopener">"DTNA to open new U.S. truck manufacturing plant in 2029"</a> (Aug. 2026).</li>
+      <li id="src4"><strong>Firehouse</strong>, <a href="https://www.firehouse.com/operations-training/video/55313496/mayday-called-during-3-alarm-fire-at-cleveland-nc-freightliner-plant" target="_blank" rel="noopener">"Mayday Called During 3-Alarm Fire at Cleveland, NC, Freightliner Plant"</a> (Aug. 31, 2025).</li>
+      <li id="src5"><strong>NC DEQ</strong>, <a href="https://www.epa.gov/system/files/documents/2025-04/aq_f_8000045_20250206_prmt_pmtrvw_t40.pdf" target="_blank" rel="noopener">air permit review, Cleveland plant, Permit 04625T40</a> (Feb. 2025).</li>
+      <li id="src6"><strong>NC DEQ</strong>, <a href="https://www.epa.gov/system/files/documents/2025-05/aq_f_3600153_20250324_prmt_pmtrvw_t50.pdf" target="_blank" rel="noopener">air permit review, Mount Holly plant, Permit 03926T50</a> (Mar. 2025).</li>
+      <li id="src7"><strong>NC DEQ</strong>, <a href="https://deq.nc.gov/air-quality/permits/public-communication/notices/draft-review/20220512daimlerrevpdf/open" target="_blank" rel="noopener">draft permit review, Cleveland plant</a> (May 2022).</li>
+      <li id="src8"><strong>EPA</strong>, <a href="https://www.epa.gov/toxics-release-inventory-tri-program/tri-data-and-tools" target="_blank" rel="noopener">Toxics Release Inventory</a>, 2024 reporting year (Cleveland facility 27013FRGHTHWY70).</li>
+      <li id="src9"><strong>EPA</strong> RCRA Biennial Report, 2023, via <a href="https://enviro.epa.gov/" target="_blank" rel="noopener">Envirofacts</a> (Cleveland NCD018652339).</li>
+      <li id="src10"><strong>EPA ECHO</strong> detailed facility reports: <a href="https://echo.epa.gov/detailed-facility-report?fid=110000345083" target="_blank" rel="noopener">Cleveland</a>, <a href="https://echo.epa.gov/detailed-facility-report?fid=110000348669" target="_blank" rel="noopener">Mount Holly</a>.</li>
+      <li id="src11"><strong>EPA</strong>, <a href="https://www.epa.gov/title-v-operating-permits/who-has-obtain-title-v-permit" target="_blank" rel="noopener">Who has to obtain a Title V permit</a>.</li>
+      <li id="src12"><strong>EPA</strong>, <a href="https://www.epa.gov/ground-level-ozone-pollution/health-effects-ozone-pollution" target="_blank" rel="noopener">Health Effects of Ozone Pollution</a>.</li>
+      <li id="src13"><strong>TCEQ</strong>, <a href="https://www.tceq.texas.gov/airquality/sip/aus/aus-status" target="_blank" rel="noopener">Austin-Round Rock: Current Attainment Status</a>.</li>
+      <li id="src14"><strong>ATSDR (CDC)</strong>, <a href="https://wwwn.cdc.gov/TSP/ToxFAQs/ToxFAQsDetails.aspx?faqid=295&amp;toxid=53" target="_blank" rel="noopener">ToxFAQs for Xylenes</a>.</li>
+      <li id="src15"><strong>EPA IRIS</strong>, <a href="https://iris.epa.gov/ChemicalLanding/&amp;substance_nmbr=1037" target="_blank" rel="noopener">Trimethylbenzenes</a> (2016).</li>
+      <li id="src16"><strong>NIOSH</strong> Pocket Guide, <a href="https://www.cdc.gov/niosh/npg/npgd0076.html" target="_blank" rel="noopener">n-Butyl alcohol</a>.</li>
+      <li id="src17"><strong>Oregon DEQ</strong>, <a href="https://www.oregon.gov/deq/programs/pages/daimler-trucks.aspx" target="_blank" rel="noopener">Daimler Trucks</a>.</li>
+      <li id="src18"><strong>OPB / EarthFix</strong>, <a href="https://www.opb.org/news/series/portland-oregon-air-pollution-glass/neighbors-to-north-portland-polluter-say-deq-ignored-their-complaints" target="_blank" rel="noopener">"Neighbors To North Portland Polluter Say DEQ Ignored Their Complaints"</a> (Apr. 21, 2016).</li>
+      <li id="src19"><strong>First Amended &amp; Restated SMART Terminal Development Agreement</strong>, Exhibit D, Prohibited Uses #5 and #23. <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5992444&amp;GUID=6531CEE6-087C-4281-969F-7D41FC50252E" target="_blank" rel="noopener">Res. 2023-20R / PDA-22-07</a>.</li>
+      <li id="src20"><strong>Caldwell County Commissioner Ed Theriot</strong>, email to the City, Apr. 21, 2023, in <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=6189032&amp;GUID=9CD355A7-2F2B-445B-AC8F-0D29988A0E49" target="_blank" rel="noopener">Legistar ID#23-314</a>.</li>
+      <li id="src21"><strong>FEMA</strong> <a href="https://msc.fema.gov/portal/home" target="_blank" rel="noopener">Flood Map Service Center</a>; <strong>Caldwell County</strong> <a href="https://www.co.caldwell.tx.us/upload/page/0252/docs/Agenda%20Packets/11.12.26%20Agenda%20Packet_Reduced.pdf#page=268" target="_blank" rel="noopener">Order 01-2027 and survey</a> of the 611-acre zone.</li>
+      <li id="src22"><strong>USGS</strong>, <a href="https://api.water.usgs.gov/nldi/" target="_blank" rel="noopener">Network-Linked Data Index</a>, downstream navigation.</li>
+      <li id="src23"><strong>Salisbury Post</strong>, <a href="https://www.salisburypost.com/?p=606032" target="_blank" rel="noopener">"Fire at Daimler Freightliner"</a> (May 27, 2023).</li>
+      <li id="src24"><strong>Salisbury Post</strong>, <a href="https://salisburypost.com/?p=663606" target="_blank" rel="noopener">"Thursday fire extinguished at Freightliner"</a> (Aug. 29, 2024).</li>
+      <li id="src25"><strong>UAW Local 3520</strong>, <a href="https://region8.uaw.org/uaw-local-3520/blog/horrific-fire-takes-freightliner-surprise" target="_blank" rel="noopener">"Horrific fire takes Freightliner by surprise"</a>.</li>
+      <li id="src26"><strong>FleetOwner</strong>, <a href="https://www.fleetowner.com/safety/article/21683990/small-fire-at-dtnas-gastonia-plant-quickly-extinguished" target="_blank" rel="noopener">"Small fire at DTNA's Gastonia plant quickly extinguished"</a> (Oct. 25, 2012).</li>
+      <li id="src27"><strong>Firehouse</strong>, <a href="https://www.firehouse.com/community-risk/news/10886815/fire-hits-freightliner-truck-plant-in-mount-holly-north-carolina" target="_blank" rel="noopener">"Fire Hits Freightliner Truck Plant in Mount Holly, North Carolina"</a> (Mar. 1, 2013).</li>
+      <li id="src28"><strong>KATU</strong>, <a href="https://katu.com/news/local/fire-in-paint-booth-at-western-star-trucks-manufacturing-11-20-2015" target="_blank" rel="noopener">"Fire in paint booth at Western Star Trucks manufacturing"</a> (Jan. 27, 2015).</li>
+      <li id="src29"><strong>WSOC-TV</strong>, <a href="https://wsoctv.com/news/local/3-alarm-fire-damages-freightliner-plant-in-gastonia/868967355" target="_blank" rel="noopener">"3-alarm fire engulfs Freightliner plant in Gastonia"</a> (Nov. 8, 2018).</li>
+      <li id="src30"><strong>Interstate Technology and Regulatory Council</strong>, <a href="https://pfas-1.itrcweb.org/2-6-pfas-releases-to-the-environment/" target="_blank" rel="noopener">PFAS releases to the environment</a>.</li>
+      <li id="src31"><strong>EPA</strong>, <a href="https://www.epa.gov/emergency-response-research/remediating-and-reducing-pfas-fire-suppression-systems" target="_blank" rel="noopener">Remediating and Reducing PFAS in Fire Suppression Systems</a>.</li>
+      <li id="src32"><strong>Texas Legislature</strong>, <a href="https://capitol.texas.gov/tlodocs/89R/analysis/html/SB01898H.htm" target="_blank" rel="noopener">SB 1898 bill analysis</a> (2025); <strong>Environmental Health News</strong>, <a href="https://www.ehn.org/texas-lawmakers-reject-all-proposals-to-restrict-or-study-pfas-pollution" target="_blank" rel="noopener">"Texas lawmakers reject all proposals to restrict or study PFAS pollution"</a>.</li>
+      <li id="src33"><strong>OpenStreetMap</strong>, <a href="https://www.openstreetmap.org/#map=15/45.5735/-122.7140" target="_blank" rel="noopener">Swan Island and North Portland</a>.</li>
+      <li id="src34"><strong>Caldwell County Commissioners Court</strong>, <a href="https://caldwellcountytx.new.swagit.com/videos/408509" target="_blank" rel="noopener">Nov. 12, 2026 meeting video</a>, public hearing on Reinvestment Zone #2.</li>
+      <li id="src35"><strong>TCEQ</strong>, <a href="https://www.tceq.texas.gov/airquality/point-source-ei/point-source-emissions-data" target="_blank" rel="noopener">Point Source Emissions Inventory</a>, statewide summary 2010-2024 (2024 reporting year, VOC tons per year by site).</li>
+      <li id="src36"><strong>TCEQ</strong>, <a href="https://www.tceq.texas.gov/downloads/permitting/air/publications/nsr/factsheets/rg-636-factsheet-psd-na.pdf" target="_blank" rel="noopener">Federal New Source Review: PSD and Nonattainment fact sheet (RG-636)</a>.</li>
+      <li id="src37"><strong>TCEQ</strong>, <a href="https://www.tceq.texas.gov/assets/public/permitting/air/Guidance/NewSourceReview/airpoll_guidance.pdf" target="_blank" rel="noopener">Air permit guidance for new source review</a>.</li>
+      <li id="src38"><strong>U.S. Census Bureau</strong>, 2020 Census block populations (POP100), via <a href="https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/Tracts_Blocks/MapServer" target="_blank" rel="noopener">TIGERweb</a>.</li>
+      <li id="src39"><strong>City of San Marcos</strong>, planning case PDA-22-07(B), "Smart Terminal PDA Amendment #2," created Nov. 9, 2026 (City GIS Planning Case layer and MGO Connect). See the <a href="project_timeline.html">Project Timeline</a>.</li>
+      <li id="src40"><strong>OpenStreetMap</strong>, places of worship and schools near the site (<a href="https://www.openstreetmap.org/way/1145292793" target="_blank" rel="noopener">Immaculate Heart of Mary</a>, <a href="https://www.openstreetmap.org/node/343342755" target="_blank" rel="noopener">Gary Job Corps</a>); distances measured by this site from the edge of the zone.</li>
+      <li id="src41"><strong>NC DEQ Division of Air Quality</strong>, <a href="https://deq.nc.gov/about/divisions/air-quality/air-quality-science-and-data/emission-inventories/reported-and-assumed-emission-inventories" target="_blank" rel="noopener">CY2024 Reported and Assumed Emission Inventory</a> (VOC reported for 2024: Cleveland, facility 8000045, 304.68 tons; Mount Holly, facility 3600153, 169.78 tons).</li>
+      <li id="src42"><strong>KGW</strong>, <a href="https://kgw.com/article/news/investigations/a-foul-fight-oregons-last-resort-to-tackle-pollutersfocuses-on-odors/283-591581046" target="_blank" rel="noopener">"A foul fight: Oregon's last resort to tackle polluters focuses on odors"</a> (Sept. 6, 2018).</li>
+      <li id="src43"><strong>NC DEQ</strong>, Division of Energy, Mineral and Land Resources, stormwater file NCG030039 (Daimler Trucks North America, Cleveland): <a href="https://edocs.deq.nc.gov/WaterResources/DocView.aspx?id=4678869&amp;dbid=0&amp;repo=WaterResources" target="_blank" rel="noopener">Stormwater Discharge Monitoring Report</a> (Apr. 15, 2026); <a href="https://edocs.deq.nc.gov/WaterResources/DocView.aspx?id=2479801&amp;dbid=0&amp;repo=WaterResources" target="_blank" rel="noopener">Tier Three letters</a> (Aug. 2022); <a href="https://edocs.deq.nc.gov/WaterResources/DocView.aspx?id=3322055&amp;dbid=0&amp;repo=WaterResources" target="_blank" rel="noopener">compliance inspection</a> (July 28, 2023).</li>
+      <li id="src44"><strong>TCEQ</strong>, <a href="https://www.tceq.texas.gov/downloads/permitting/stormwater/general/multi-sector/txr050000.pdf" target="_blank" rel="noopener">Multi-Sector General Permit TXR050000</a> (issued Aug. 14, 2021): Part III Section C, Table 1; Part V, Sector AB.</li>
+      <li id="src45"><strong>TCEQ</strong>, <a href="https://www.tceq.texas.gov/downloads/permitting/stormwater/general/multi-sector/draft-msgp-2025-10-13.docx" target="_blank" rel="noopener">draft renewal of TXR050000</a> (Oct. 13, 2025), Sector AB.</li>
+      <li id="src46"><strong>TCEQ</strong>, Texas Surface Water Quality Standards, 30 TAC Chapter 307 (2022), Appendix B, Sole-source Surface Drinking Water Supplies; <a href="https://www.epa.gov/system/files/documents/2023-12/txwqs-2022.pdf" target="_blank" rel="noopener">EPA-approved copy</a>.</li>
+      <li id="src47"><strong>Guadalupe-Blanco River Authority</strong>, <a href="https://www.gbra.org/environmental/water-quality/sites/caldwell/" target="_blank" rel="noopener">Caldwell County monitoring sites</a> (station 12626, San Marcos River at Luling Water Treatment Plant).</li>
+      <li id="src48"><strong>TCEQ</strong>, <a href="https://www.tceq.texas.gov/downloads/water-quality/assessment/2026-integrated-report/draft-2026-basin18.pdf" target="_blank" rel="noopener">draft 2026 Texas Integrated Report, Basin 18 assessment results</a>, segment 1808 (Aug. 5, 2026).</li>
+      <li id="src49"><strong>CDM</strong>, Figure 2-1, "Wellhead Protection Area, Martindale, PWS ID No. 0280013," <a href="maps/wellhead_protect_area_.pdf" target="_blank" rel="noopener">PDF</a> (on this site's <a href="maps.html">Maps page</a>); traced and placed on the <a href="interactive_map.html#l=zone2,whpa,streams&amp;v=29.852,-97.848,14&amp;b=0">interactive map</a> by this site (approximate).</li>
+      <li id="src50"><strong>Oregon DEQ</strong>, <a href="https://www.oregon.gov/deq/Programs/Documents/DTNATitleV.pdf" target="_blank" rel="noopener">Title V Operating Permit 26-2197-TV-01 and review report</a>, Daimler Trucks North America, Portland (May 17, 2021): Conditions 14, 27 and 28; review report item 13.</li>
+      <li id="src51"><strong>Daimler Trucks North America</strong>, <a href="https://www.oregon.gov/deq/Programs/Documents/Daimler-LetterConfirmHighSolidsClearcoat.pdf" target="_blank" rel="noopener">letter to Oregon DEQ, "Best Work Practices Agreement: High Solids Clear Coat"</a> (June 14, 2021).</li>
+      <li id="src52"><strong>NC DEQ</strong>, <a href="https://www.epa.gov/system/files/documents/2025-04/04625t40_final.pdf" target="_blank" rel="noopener">Air Quality Permit 04625T40</a>, Daimler Trucks North America, Cleveland (2025): Section 1 source table; Section 2.1 B.4 (BACT).</li>
+    </ol>
+  </div>
+
+</main>
+
+<nav class="sitewide-links" data-pagefind-ignore aria-label="All pages" style="max-width:1200px; margin:0 auto; padding:26px 20px 4px; font-family:'Segoe UI',system-ui,sans-serif; font-size:.85rem; line-height:2.1; border-top:1px solid #e2e8f0;">
+  <strong style="display:block; margin-bottom:8px; color:#64748b; font-size:.72rem; letter-spacing:.08em; text-transform:uppercase;">Explore the site</strong>
+  <a href="index.html" style="color:#1e3a5f; text-decoration:none; border-bottom:1px solid #cbd5e1;">Home</a>
+  &middot;
+  <a href="development_agreement_issues.html" style="color:#1e3a5f; text-decoration:none; border-bottom:1px solid #cbd5e1;">Development Agreement: Legal Issues</a>
+  &middot;
+  <a href="impact_fees.html" style="color:#1e3a5f; text-decoration:none; border-bottom:1px solid #cbd5e1;">Impact Fees &amp; the 2019 Freeze</a>
+  &middot;
+  <a href="land_use.html" style="color:#1e3a5f; text-decoration:none; border-bottom:1px solid #cbd5e1;">Permitted &amp; Prohibited Uses</a>
+  &middot;
+  <a href="data_center.html" style="color:#1e3a5f; text-decoration:none; border-bottom:1px solid #cbd5e1;">Data Center Exemption</a>
+  &middot;
+  <a href="businesses_summary.html" style="color:#1e3a5f; text-decoration:none; border-bottom:1px solid #cbd5e1;">Prospective Tenants</a>
+  &middot;
+  <a href="hercules_comparison.html" style="color:#1e3a5f; text-decoration:none; border-bottom:1px solid #cbd5e1;">Project Hercules: Daimler Plants</a>
+  &middot;
+  <a href="key_players.html" style="color:#1e3a5f; text-decoration:none; border-bottom:1px solid #cbd5e1;">Key Players</a>
+  &middot;
+  <a href="ownership_structure.html" style="color:#1e3a5f; text-decoration:none; border-bottom:1px solid #cbd5e1;">Ownership Structure</a>
+  &middot;
+  <a href="political_influence.html" style="color:#1e3a5f; text-decoration:none; border-bottom:1px solid #cbd5e1;">Political Contributions</a>
+  &middot;
+  <a href="superfund.html" style="color:#1e3a5f; text-decoration:none; border-bottom:1px solid #cbd5e1;">Groundwater Contamination</a>
+  &middot;
+  <a href="maps.html" style="color:#1e3a5f; text-decoration:none; border-bottom:1px solid #cbd5e1;">Maps &amp; Site Exhibits</a>
+  &middot;
+  <a href="interactive_map.html" style="color:#1e3a5f; text-decoration:none; border-bottom:1px solid #cbd5e1;">Interactive Map</a>
+  &middot;
+  <a href="documents.html" style="color:#1e3a5f; text-decoration:none; border-bottom:1px solid #cbd5e1;">Key Documents</a>
+  &middot;
+  <a href="project_timeline.html" style="color:#1e3a5f; text-decoration:none; border-bottom:1px solid #cbd5e1;">Project Timeline</a>
+</nav>
+<footer>
+  Citizens Against TriTexas - San Marcos, Texas - smartterminalcommunityinfo.github.io
+</footer>
+
+<script src="site-menu.js"></script>
+</body>
+</html>

@@ -189,8 +189,8 @@ document.addEventListener('DOMContentLoaded', function () {
       (median difference about 3 feet). The tracts were under purchase contract, not owned, when the agreements were approved.
       Owner names are not shown for the four small tracts owned by private individuals.</li>
     <li><b>Homes</b> are appraisal district parcels whose improvements carry a residential state code (single-family, mobile home,
-      multifamily or rural home) or that have a homestead exemption, from the 2026 certified Caldwell CAD export. Homesteads are
-      owner-occupied homes. Tracts over 25 acres are left off so whole farms are not shaded. No names or addresses are shown.</li>
+      multifamily or rural home) and include a house or mobile home, or that have a homestead exemption, from the 2026 certified Caldwell CAD export. Homesteads are
+      owner-occupied homes. On tracts over 25 acres the whole tract is not shaded; instead its buildings over about 650 sq ft are drawn from Microsoft's Global ML Building Footprints (2026 release), so barns and garages may appear too. No names or addresses are shown.</li>
     <li><b>Martindale city limits and ETJ</b> are from the Caldwell Central
       Appraisal District's public GIS. The <b>Martindale ETJ release</b> is drawn from the survey description in the 2020
       San Marcos-Martindale settlement agreement (Exhibit Q) and closes at the stated 161.59 acres after two bearing typos are
@@ -252,6 +252,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <li>Kimley-Horn, Traffic Impact Analysis, Axis Logistics Park, Version 4 (Aug. 14, 2024), Figure 1, trip distribution exhibits, Tables 2 and 9 and Section 8; obtained through a public information request.</li>
     <li>City of San Marcos, Res. 2020-17R(b) and the Agreement Between San Marcos and Martindale (2020), Exhibit Q survey description, released Nov. 6, 2026 in response to public information request W030573.</li>
     <li>Caldwell Central Appraisal District: parcel service, public GIS (Martindale limits and ETJ, road centerlines) and the 2026 certified appraisal roll (homes).</li>
+    <li>Microsoft, <a href="https://github.com/microsoft/GlobalMLBuildingFootprints" target="_blank" rel="noopener">Global ML Building Footprints</a> (buildings on home tracts over 25 acres).</li>
     <li>City of San Marcos GIS: city limits, ETJ and the Texas Economic Incentive Zones (2020) layer (Enterprise Zone-eligible block groups and Opportunity Zone tracts); City exhibit "Ultimate Scenario Part 77 Surfaces, Runway 35 Ultimate."</li>
     <li>Public Utility Commission of Texas, water and sewer CCN boundaries; Texas Commission on Environmental Quality, water district boundaries; Railroad Commission of Texas public GIS (pipelines).</li>
     <li>FEMA National Flood Hazard Layer; U.S. Geological Survey National Hydrography Dataset (streams) and 3D Elevation Program (ground elevations).</li>
@@ -305,7 +306,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var map = L.map('map', { zoomControl: false, scrollWheelZoom: true, preferCanvas: false })
     .setView(hasView ? [hv[0], hv[1]] : HOME[0], hasView ? hv[2] : HOME[1]);
   L.control.scale({ imperial: true, metric: false }).addTo(map);
-  var DATA_VERSION = '2026-11-15e'; // bump when maps/data files change so browsers fetch fresh copies
+  var DATA_VERSION = '2026-11-20d'; // bump when maps/data files change so browsers fetch fresh copies
 
   var bases = {
     'Aerial 2025 (Esri)': L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
@@ -564,9 +565,9 @@ document.addEventListener('DOMContentLoaded', function () {
         popup: function (p) { return '<b>' + esc(p.name) + '</b><br>Study intersection in the Traffic Impact Analysis. ' + esc(p.note) + '<br>Source: Kimley-Horn, Traffic Impact Analysis, Version 4 (Aug. 2024)'; } }
     ] },
     { name: 'Community', layers: [
-      { id: 'homes', file: 'homes.geojson', name: 'Homes (residential parcels)', note: 'Homestead = owner-occupied; 2026 CAD roll', on: false, kind: 'fill', pane: 'p_home',
-        style: { color: '#1f2937', weight: 0.8, fillColor: '#FFFF00', fillOpacity: 0.5 },
-        popup: function (p) { return p.kind === 'homestead' ? '<b>Homestead</b><br>A residential parcel with a homestead exemption (owner-occupied home) on the 2026 Caldwell CAD certified roll.' : '<b>Residential parcel</b><br>Residential state code on the 2026 Caldwell CAD certified roll, without a homestead exemption (for example a rental, second home or new home).'; } }
+      { id: 'homes', file: 'homes.geojson', name: 'Homes (residential parcels)', note: 'Homestead = owner-occupied; 2026 CAD roll. On tracts over 25 acres, the buildings are shown instead of the whole tract', on: false, kind: 'fill', pane: 'p_home',
+        style: function (f) { return /_bldg$/.test(f.properties.kind || '') ? { color: '#FFFF00', weight: 4, opacity: 0.95, fillColor: '#FFFF00', fillOpacity: 0.9 } : { color: '#1f2937', weight: 0.8, fillColor: '#FFFF00', fillOpacity: 0.5 }; },
+        popup: function (p) { if (p.kind === 'homestead_bldg' || p.kind === 'residential_bldg') return '<b>Building on a home tract over 25 acres</b><br>' + (p.kind === 'homestead_bldg' ? 'The tract has a homestead exemption (owner-occupied home)' : 'The tract has a residential improvement code') + ' on the 2026 Caldwell CAD certified roll. The whole tract is not shaded; its buildings over about 650 sq ft are shown from Microsoft\'s building footprint data, so barns and garages may appear too.'; return p.kind === 'homestead' ? '<b>Homestead</b><br>A residential parcel with a homestead exemption (owner-occupied home) on the 2026 Caldwell CAD certified roll.' : '<b>Residential parcel</b><br>Residential state code on the 2026 Caldwell CAD certified roll, without a homestead exemption (for example a rental, second home or new home).'; } }
     ] }
   ];
 

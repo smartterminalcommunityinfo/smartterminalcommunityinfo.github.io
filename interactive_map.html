@@ -99,6 +99,7 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); co
 .leaflet-container path.leaflet-interactive:focus:not(:focus-visible) { outline: none; }
 .leaflet-tooltip.map-label { background: rgba(15,23,42,.72); color: #fff; border: none; box-shadow: none; font-size: .72rem; font-weight: 600; padding: 2px 6px; white-space: nowrap; }
 .leaflet-tooltip.map-label::before { display: none; }
+.road-shield { background: #fff; color: #1f2937; border: 1px solid #4b5563; border-radius: 3px; font: 700 10px/14px Arial, sans-serif; text-align: center; box-shadow: 0 0 0 1px rgba(255,255,255,.6); }
 .leaflet-popup-content { font-size: .82rem; line-height: 1.45; }
 .leaflet-popup-content b { color: var(--navy); }
 footer { text-align: center; font-size: .78rem; color: #94a3b8; padding: 28px 20px 40px; border-top: 1px solid #e2e8f0; }
@@ -331,6 +332,16 @@ document.addEventListener('DOMContentLoaded', function () {
   var refs = ['World_Transportation', 'World_Boundaries_and_Places'].map(function (n) {
     return L.tileLayer(REF + n + '/MapServer/tile/{z}/{y}/{x}', { pane: 'p_ref', maxZoom: 19, attribution: 'Labels: Esri' });
   });
+  // Esri's road tiles stop short of most of FM 110 (SH 21 to near IH 35, including the stretch to SH 80 by the site).
+  // Draw that stretch in Esri's road colors from TxDOT's centerline (Roadway Inventory, FM0110-KG), with route shields.
+  var FM110 = [[29.94001,-97.87229],[29.93352,-97.86500],[29.93244,-97.86397],[29.93122,-97.86314],[29.92978,-97.86249],[29.92891,-97.86222],[29.92713,-97.86201],[29.92584,-97.86216],[29.92455,-97.86248],[29.92350,-97.86292],[29.92209,-97.86378],[29.92049,-97.86526],[29.91485,-97.87072],[29.91313,-97.87220],[29.90384,-97.87935],[29.90248,-97.88013],[29.90104,-97.88066],[29.90005,-97.88086],[29.89052,-97.88221],[29.88907,-97.88231],[29.88796,-97.88226],[29.88645,-97.88204],[29.88463,-97.88156],[29.88338,-97.88106],[29.87900,-97.87912],[29.87771,-97.87869],[29.87634,-97.87843],[29.86780,-97.87748],[29.86705,-97.87750],[29.86598,-97.87767],[29.86336,-97.87829],[29.86146,-97.87881],[29.86062,-97.87911],[29.85942,-97.87966],[29.85871,-97.88009],[29.85777,-97.88075],[29.85656,-97.88178],[29.85527,-97.88317],[29.85389,-97.88500],[29.85145,-97.88778],[29.84982,-97.88931],[29.84792,-97.89086],[29.84707,-97.89167],[29.84563,-97.89342],[29.84452,-97.89524],[29.84405,-97.89626],[29.84242,-97.90022],[29.84140,-97.90300],[29.84068,-97.90444],[29.84025,-97.90517],[29.83910,-97.90682],[29.83682,-97.90949],[29.83630,-97.91024],[29.83581,-97.91112],[29.83535,-97.91212],[29.83451,-97.91425],[29.83035,-97.92676],[29.83003,-97.92787],[29.82977,-97.92912],[29.82961,-97.93070],[29.82961,-97.93216],[29.83047,-97.94507]];
+  refs.push(L.layerGroup([
+    L.polyline(FM110, { pane: 'p_ref', interactive: false, color: '#E8A888', weight: 5, opacity: 0.95, lineCap: 'round', lineJoin: 'round' }),
+    L.polyline(FM110, { pane: 'p_ref', interactive: false, color: '#FAE8D0', weight: 3, opacity: 0.95, lineCap: 'round', lineJoin: 'round' })
+  ].concat([[29.92782, -97.86206], [29.85777, -97.88075], [29.82789, -97.95627]].map(function (ll) {
+    return L.marker(ll, { pane: 'p_ref', interactive: false, keyboard: false,
+      icon: L.divIcon({ className: 'road-shield', html: '110', iconSize: [26, 16], iconAnchor: [13, 8] }) });
+  }))));
   var baseNames = Object.keys(bases), baseIdx = Math.min(baseNames.length - 1, Math.max(0, parseInt(H.get('b'), 10) || 0));
   var current = bases[baseNames[baseIdx]].addTo(map);
   var bm = document.getElementById('basemaps'), refCb = document.getElementById('refcb'), refRow = document.getElementById('refrow');

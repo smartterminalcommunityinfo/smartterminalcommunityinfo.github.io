@@ -192,34 +192,39 @@ main {
 }
 
 .uses-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 6px 12px;
+  columns: 260px;
+  column-gap: 12px;
   list-style: none;
   margin: 0;
   padding: 0;
+  counter-reset: exd;
 }
 
 .uses-list li {
   font-size: .82rem;
   color: #374151;
-  padding: 5px 8px 5px 28px;
+  padding: 5px 8px 5px 38px;
   border-radius: 5px;
   position: relative;
   line-height: 1.45;
+  counter-increment: exd;
+  break-inside: avoid;
+  margin-bottom: 6px;
 }
 .uses-list li::before {
-  content: '';
+  content: counter(exd) ".";
   position: absolute;
-  left: 10px;
-  top: 10px;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
+  left: 4px;
+  top: 5px;
+  width: 26px;
+  text-align: right;
+  font-weight: 700;
+  font-size: .78rem;
+  font-variant-numeric: tabular-nums;
 }
 
-.permitted-list li::before { background: #16a34a; }
-.prohibited-list li::before { background: #dc2626; }
+.permitted-list li::before { color: #15803d; }
+.prohibited-list li::before { color: #b91c1c; }
 
 .uses-list li:hover { background: #f8fafc; }
 
@@ -322,7 +327,7 @@ document.addEventListener('DOMContentLoaded', function () {
 </div>
 
 <div class="intro-band">
-  Source: <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5992444&GUID=6531CEE6-087C-4281-969F-7D41FC50252E" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;border-bottom:1px dotted currentColor;">Res. 2023-20R / PDA-22-07</a>, Exhibit D. Uses are defined by Subpart B of the San Marcos Development Code unless the agreement provides its own definition.
+  Source: <a href="https://san-marcos-tx.legistar.com/LegislationDetail.aspx?ID=5992444&GUID=6531CEE6-087C-4281-969F-7D41FC50252E" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;border-bottom:1px dotted currentColor;">Res. 2023-20R / PDA-22-07</a>, Exhibit D. Uses are defined by Subpart B of the San Marcos Development Code unless the agreement provides its own definition. Item numbers below match the numbering in Exhibit D; the west-of-Loop-110 list is numbered separately, as in the agreement.
 </div>
 
 <main>
@@ -353,7 +358,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <h2><span class="badge permitted">Permitted</span> All parcels - property-wide</h2>
     <p class="card-note">The following uses are permitted by right under Exhibit D across the entire ~2,017-acre site, regardless of any subsequent city ordinance changes during the agreement term.</p>
 
-    <ul class="uses-list permitted-list">
+    <ol class="uses-list permitted-list">
       <li>Office (Health Services)</li>
       <li>Offices (Medical Office)</li>
       <li>Offices (Professional)</li>
@@ -405,7 +410,7 @@ document.addEventListener('DOMContentLoaded', function () {
       <li>Railroad tracks; team, spur, loading or storage</li>
       <li>Terminal, truck, freight or rail</li>
       <li>All Heavy Industrial Uses authorized by the COSM Zoning Code<span class="note">Not specifically prohibited by Exhibit D Subsection (B)</span></li>
-    </ul>
+    </ol>
 
     <div class="footnote-box">
       <strong>* Data Center - custom definition in the agreement:</strong> "A facility of networked computer systems and associated components, such as telecommunications and storage systems, that businesses or other organizations use to organize, process, store and disseminate large amounts of data." This definition was added because the term was not defined in the SMDC at the time of execution. The SMDC's subsequently adopted definition (§5.1.7.10) is broader and explicitly includes cryptocurrency mining; the agreement's narrower definition controls on this property.
@@ -418,7 +423,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <h2><span class="badge conditional">Geographic Restriction</span> Parcels west of Loop 110 only</h2>
     <p class="card-note">These service and retail uses are permitted only on portions of the property located west of Loop 110.</p>
 
-    <ul class="uses-list permitted-list">
+    <ol class="uses-list permitted-list">
       <li>Bank or Savings and Loan (w/o drive-thru)</li>
       <li>Convenience Store (w/o Gas Sales)</li>
       <li>Restaurant/Prepared Food Sales</li>
@@ -427,16 +432,16 @@ document.addEventListener('DOMContentLoaded', function () {
       <li>Retail Store (over 100,000 sq.ft.) outside sales</li>
       <li>Retail Store (under 100,000 sq.ft.) outside sales</li>
       <li>Retail Store (under 100,000 sq.ft.) no outside sales</li>
-    </ul>
+    </ol>
   </div>
 
   <div class="alert-box">
     <div class="alert-title">Confirmed Enforcement - 2026 Prospective Tenant Rejections</div>
     Three 2026 RFI responses show these prohibited-use provisions being actively applied to turn away prospective tenants (see the <a href="businesses_summary.html">full RFI tracker</a>):
     <ul style="margin:8px 0 0 18px; padding:0;">
-      <li><strong>Project Apex Graphite</strong> (Allied Graphite, graphite anode refining) - rejected May 8, 2026 citing the property's covenant restrictions; matches the listed prohibition on <em>"Manufacturing of carbon batteries."</em></li>
-      <li><strong>Project Hat Trick</strong> (metal smelting) - withdrawn from submission because the industry "is listed under the site's prohibited uses," matching <em>"Smelting of iron, tin, zinc, copper or other ores."</em></li>
-      <li><strong>Project Skate Board</strong> (advanced PCB manufacturing) - unresolved as of May 2026; city planning staff have not determined whether the project's wet-etch chemistry would trigger the <em>"Acid manufacturing"</em> prohibition.</li>
+      <li><strong>Project Apex Graphite</strong> (Allied Graphite, graphite anode refining) - rejected May 8, 2026 citing the property's covenant restrictions; matches prohibited use no. 7, <em>"Manufacturing of carbon batteries."</em></li>
+      <li><strong>Project Hat Trick</strong> (metal smelting) - withdrawn from submission because the industry "is listed under the site's prohibited uses," matching prohibited use no. 17, <em>"Smelting of iron, tin, zinc, copper or other ores."</em></li>
+      <li><strong>Project Skate Board</strong> (advanced PCB manufacturing) - unresolved as of May 2026; city planning staff have not determined whether the project's wet-etch chemistry would trigger prohibited use no. 1, <em>"Acid manufacturing."</em></li>
     </ul>
   </div>
 
@@ -446,7 +451,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <h2><span class="badge prohibited">Prohibited</span> Expressly forbidden - entire property</h2>
     <p class="card-note">The following uses are expressly prohibited on the property regardless of what would otherwise be permitted under the SMDC or city zoning.</p>
 
-    <ul class="uses-list prohibited-list">
+    <ol class="uses-list prohibited-list">
       <li>Acid manufacturing</li>
       <li>Gas manufacturing</li>
       <li>Vehicle wrecking yard</li>
@@ -473,7 +478,7 @@ document.addEventListener('DOMContentLoaded', function () {
       <li>Manufacturing of cement, lime, and gypsum plaster</li>
       <li>Rock crushers</li>
       <li>Sugar refining</li>
-    </ul>
+    </ol>
   </div>
 
 </main>

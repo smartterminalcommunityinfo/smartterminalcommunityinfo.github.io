@@ -1,0 +1,197 @@
+{
+ "type": "FeatureCollection",
+ "features": [
+  {
+   "type": "Feature",
+   "properties": {
+    "well": "6710201",
+    "src": "GWDB",
+    "why": "edge",
+    "use": "Domestic",
+    "depth_ft": 25,
+    "aquifer": "Leona Formation",
+    "creek": "Morrison Creek",
+    "creek_ft": 310,
+    "flood": "A",
+    "site_ft": 130,
+    "whpa": false,
+    "note": "Beside Morrison Creek along the site&#39;s east side, at about the same ground level as the nearest site edge. A strip of the site&#39;s edge drains overland toward this spot."
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -97.82055,
+     29.86278
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "well": "164963",
+    "src": "SDR",
+    "why": "edge",
+    "use": "Irrigation",
+    "depth_ft": 32,
+    "aquifer": "",
+    "creek": "Morrison Creek",
+    "creek_ft": 110,
+    "flood": "A",
+    "site_ft": 600,
+    "whpa": false,
+    "note": "Beside Morrison Creek along the site&#39;s east side, about 2 feet lower than the nearest site edge."
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -97.81917,
+     29.86
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "well": "715335",
+    "src": "SDR",
+    "why": "path",
+    "use": "Public Supply",
+    "depth_ft": 45,
+    "aquifer": "",
+    "creek": "Morrison Creek",
+    "creek_ft": 170,
+    "flood": "AE FLOODWAY",
+    "site_ft": 7360,
+    "whpa": false,
+    "note": "Near where Hemphill Creek, which drains the site, joins Morrison Creek southeast of Martindale."
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -97.8298,
+     29.83556
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "well": "6710501",
+    "src": "GWDB",
+    "why": "path",
+    "use": "Domestic",
+    "depth_ft": 35,
+    "aquifer": "Alluvium",
+    "creek": "Morrison Creek",
+    "creek_ft": 240,
+    "flood": "AE FLOODWAY",
+    "site_ft": 9480,
+    "whpa": false,
+    "note": "Beside Morrison Creek below where Hemphill Creek, which drains the site, joins it."
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -97.82611,
+     29.82972
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "well": "675361",
+    "src": "SDR",
+    "why": "path",
+    "use": "Domestic",
+    "depth_ft": 50,
+    "aquifer": "",
+    "creek": "Morrison Creek",
+    "creek_ft": 330,
+    "flood": "AE FLOODWAY",
+    "site_ft": 11880,
+    "whpa": false,
+    "note": "Beside Morrison Creek below where Hemphill Creek, which drains the site, joins it."
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -97.82347,
+     29.82331
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "well": "6710502",
+    "src": "GWDB",
+    "why": "path",
+    "use": "Domestic",
+    "depth_ft": 21,
+    "aquifer": "Leona Formation",
+    "creek": "Morrison Creek",
+    "creek_ft": 950,
+    "flood": "AE",
+    "site_ft": 9930,
+    "whpa": false,
+    "note": "Beside Morrison Creek below where Hemphill Creek, which drains the site, joins it."
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -97.81833,
+     29.82972
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "well": "6710503",
+    "src": "GWDB",
+    "why": "path",
+    "use": "Stock",
+    "depth_ft": 18,
+    "aquifer": "Quaternary Alluvium",
+    "creek": "Morrison Creek",
+    "creek_ft": 900,
+    "flood": "",
+    "site_ft": 10270,
+    "whpa": false,
+    "note": "Beside Morrison Creek below where Hemphill Creek, which drains the site, joins it."
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -97.81778,
+     29.82889
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "well": "6710105",
+    "src": "GWDB",
+    "why": "path",
+    "use": "Irrigation",
+    "depth_ft": 33,
+    "aquifer": "Quaternary Alluvium",
+    "creek": "Hemphill Creek",
+    "creek_ft": 1230,
+    "flood": "X 0.2 PCT ANNUAL CHANCE FLOOD HAZARD",
+    "site_ft": 5810,
+    "whpa": true,
+    "note": "Inside the City of Martindale&#39;s wellhead protection area, west of Hemphill Creek below the site."
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -97.84083,
+     29.84445
+    ]
+   }
+  }
+ ]
+}

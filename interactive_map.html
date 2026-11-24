@@ -202,7 +202,11 @@ document.addEventListener('DOMContentLoaded', function () {
       centerlines, and the developer's gravity sewer is traced from Kimley-Horn's 2023 sewer planning exhibit. The
       <b>proposed CLOMR floodplain limit</b> is traced from a screenshot of the developer's FEMA work map in City emails, placed by
       matching its FEMA flood zones to the FEMA layer; only the part in the screenshot is drawn.
-      <b>Streams</b> are from the USGS National Hydrography Dataset.</li>
+      <b>Streams</b> are from the USGS National Hydrography Dataset.
+      <b>Wells at risk from Hercules site runoff</b> are Texas Water Development Board well records (Groundwater Database and
+      Submitted Driller's Reports) in the Morrison Creek watershed that sit beside the site or within about 1,000 feet of the
+      creeks that drain it (about 1,200 feet at most), mostly in the FEMA floodplain, and are 18 to 50 feet deep. Drainage from the site was traced with the
+      USGS Network-Linked Data Index. Wells upstream of the site or in other drainages are not shown.</li>
     <li><b>Former San Marcos Municipal Landfill</b> is traced from Figure 5 of the U.S. Department of Labor's Gary Job Corps
       Center Draft Environmental Assessment (July 2022). It was placed by fitting that figure's Tract IV and V outlines to the
       appraisal district parcels those tracts became (median difference about 14 feet). <b>Fuel dumps and military landfill
@@ -316,7 +320,7 @@ document.addEventListener('DOMContentLoaded', function () {
     .setView(hasView ? [hv[0], hv[1]] : HOME[0], hasView ? hv[2] : HOME[1]);
   L.control.scale({ imperial: true, metric: false }).addTo(map);
   window.__map = map; // read by tools/map/snap (regenerates the map images used on other pages)
-  var DATA_VERSION = '2026-11-21b'; // bump when maps/data files change so browsers fetch fresh copies
+  var DATA_VERSION = '2026-11-24'; // bump when maps/data files change so browsers fetch fresh copies
 
   var bases = {
     'Aerial 2025 (Esri)': L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
@@ -579,6 +583,15 @@ document.addEventListener('DOMContentLoaded', function () {
           if (p.kind === 'well') return '<b>Martindale public water supply wells B and C</b><br>Public water system 0280013, next to the San Marcos River. Location as shown on the state figure (approximate).' + src;
           if (p.kind === 'captureB' || p.kind === 'captureC') return '<b>' + esc(p.name) + '</b><br>The area covered by the figure&#39;s modeled groundwater flow paths (&quot;particle path lines&quot;) that lead to the well.' + src;
           return '<b>Martindale wellhead protection area</b><br>Public water system 0280013 (City of Martindale). The figure&#39;s table lists 1,675 acres in Caldwell County and 323 acres in Guadalupe County. Hemphill Creek, which drains the Reinvestment Zone #2 (Hercules) site, runs along and through the area&#39;s east side, then joins Morrison Creek, which reaches the San Marcos River near Staples.' + src; } },
+      { id: 'wellrisk', file: 'wells_runoff.geojson', name: 'Wells at risk from Hercules site runoff', note: 'Shallow wells beside the site or beside the creeks that drain it; Texas Water Development Board records', on: false, kind: 'point', pane: 'p_point',
+        key: [['#E69F00', 'Well beside the site or beside the creeks below it']],
+        style: { radius: 7, color: '#111827', weight: 2, fillColor: '#E69F00', fillOpacity: 1 },
+        popup: function (p) {
+          var fl = { 'A': 'In the FEMA 100-year floodplain (Zone A).', 'AE': 'In the FEMA 100-year floodplain (Zone AE).', 'AE FLOODWAY': 'In the FEMA floodway (100-year floodplain, Zone AE).' }[p.flood] || (/0\.2/.test(p.flood) ? 'In the FEMA 500-year floodplain.' : 'Outside the FEMA floodplain.');
+          var src = p.src === 'GWDB' ? 'Texas Water Development Board Groundwater Database, state well number ' + esc(p.well) + '. These are historic inventory records; the well may no longer be in use.' : 'Texas Water Development Board Submitted Driller&#39;s Reports, well report ' + esc(p.well) + '.';
+          return '<b>Well at risk from site runoff: ' + esc(p.use.toLowerCase()) + ' well, ' + p.depth_ft + ' feet deep</b><br>' + p.note + '<br>About ' + p.creek_ft.toLocaleString() + ' feet from ' + esc(p.creek) + '; about ' + (p.site_ft < 5280 ? p.site_ft.toLocaleString() + ' feet' : (p.site_ft / 5280).toFixed(1) + ' miles') + ' from the edge of the Reinvestment Zone #2 (Hercules) site. ' + fl + (p.aquifer ? '<br>Aquifer: ' + esc(p.aquifer) + '.' : '') +
+            '<br>Why at risk: wells this shallow draw from creek-bottom sand and gravel that is usually connected to the creek, so polluted runoff in the creek can seep toward them, and floodwater can reach wellheads in the floodplain.' +
+            '<br><small>Source: ' + src + ' Location as reported to the state. Search the record on the <a href="https://www3.twdb.texas.gov/apps/WaterDataInteractive/GroundWaterDataViewer" target="_blank" rel="noopener">TWDB Water Data Interactive viewer</a>. Drainage traced with the USGS Network-Linked Data Index; distances measured to USGS National Hydrography Dataset streams.</small>'; } },
       { id: 'flood', file: 'floodplain.geojson', name: 'FEMA floodplain', note: 'FEMA map colors', on: false, kind: 'fill', pane: 'p_flood',
         key: [['#00E6FF', '1% annual chance (100-year)'], ['#FF8000', '0.2% annual chance (500-year)'], ['#FF0000', 'Floodway']],
         style: function (f) { var s = f.properties.subtype || '', c = /FLOODWAY/.test(s) ? '#FF0000' : (/0\.2/.test(s) ? '#FF8000' : '#00E6FF'); return { color: c, weight: 0.8, fillColor: c, fillOpacity: /0\.2/.test(s) ? 0.3 : 0.35 }; },

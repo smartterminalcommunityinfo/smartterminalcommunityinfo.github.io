@@ -41,3 +41,6 @@ compliance_report.html
 
 # Shared site menu script (loaded by every page)
 !site-menu.js
+
+# Local-only map tool input (read by tools/map/airport_zones.py, not used by the site)
+maps/data/grading_rd4_area.geojson

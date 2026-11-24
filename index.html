@@ -449,11 +449,11 @@ document.addEventListener('DOMContentLoaded', function () {
         <li><i class="k-site"></i>Franklin Mountain land, about 2,058 acres</li>
         <li><i class="k-zone"></i>County Reinvestment Zone #2, 611 acres (Project Hercules, Daimler Truck North America per the City)</li>
         <li><i class="k-annex"></i>Proposed annexation (AN-26-07), about 461.7 acres as drawn by the City, plus the 0.95-acre lot the application lists</li>
-        <li><i class="k-rem"></i>Possible area of the 319.589-acre removal request (this site's unconfirmed estimate)</li>
+        <li><i class="k-rem"></i>Land to be removed from the Development Agreement, about 319.589 acres on the Project Hercules site (boundary approximate)</li>
         <li><i class="k-road"></i>Energy Parkway, opened Sept. 29, 2026</li>
         <li><i class="k-city"></i>San Marcos city limits</li>
       </ul>
-      <figcaption>Drawn from public records: appraisal district parcels, Caldwell County Order 01-2027 and City of San Marcos GIS. Two requests are pending at the City: an annexation (AN-26-07, in review) and an application to remove approximately 319.589 acres from the Development Agreement (PDA-22-07(B), submitted Nov. 9, 2026). The City's record for the removal gives no location, so the area shown for it is this site's estimate and may be wrong. The <a href="interactive_map.html">full interactive map</a> adds the Development Agreement's land use and phasing plans, ETJs, utility service areas, the FEMA floodplain, former landfills, the airport approach surface and an address lookup. The Exhibit C Conceptual Phasing Plan is on the <a href="maps.html">Maps page</a>.</figcaption>
+      <figcaption>Drawn from public records: appraisal district parcels, Caldwell County Order 01-2027 and City of San Marcos GIS. Two requests are pending at the City: an annexation (AN-26-07, in review) and an application to remove approximately 319.589 acres from the Development Agreement (PDA-22-07(B), submitted Nov. 9, 2026). The City's hearing notice places the land to be removed on the Project Hercules site; it has not released the legal description, so that boundary is approximate. The <a href="interactive_map.html">full interactive map</a> adds the Development Agreement's land use and phasing plans, ETJs, utility service areas, the FEMA floodplain, former landfills, the airport approach surface and an address lookup. The Exhibit C Conceptual Phasing Plan is on the <a href="maps.html">Maps page</a>.</figcaption>
     </figure>
 
     <div class="facts-grid">
@@ -717,14 +717,14 @@ document.addEventListener('DOMContentLoaded', function () {
           : '<b>Proposed annexation (AN-26-07)</b><br>About 461.7 acres as drawn on the City of San Marcos planning map. Filed Oct. 15, 2026; in review, not approved. The application itself lists only the 0.95-acre lot at 2862 FM 1984, which this outline does not include.' + more('tri,city,annex'));
       } }).addTo(map);
     L.geoJSON(r[4], { style: { color: '#1f2937', weight: 2.5, dashArray: '2 6', fillColor: '#ffffff', fillOpacity: 0.55 } }).addTo(map)
-      .bindPopup('<b>Possible area of the removal request (unconfirmed)</b><br>On Nov. 9, 2026, Franklin Mountain applied to remove approximately 319.589 acres from the Development Agreement (PDA-22-07(B)). The <a href="https://smgis.sanmarcostx.gov/arcgis/rest/services/Planning/PlanningFeatures/MapServer/15/query?where=CaseNumber%3D%27PDA-22-07%28B%29%27&amp;outFields=CaseNumber,ProjectName,CaseType,Status,ProjectDescription,ApplicantBusiness,Address&amp;returnGeometry=false&amp;f=html" target="_blank" rel="noopener">City record</a> does not say which land. This shape is this site&#39;s estimate, not the City&#39;s: the part of Reinvestment Zone #2 on Franklin Mountain land, about 318 acres. It may be wrong.' + more('tri,zone2,pdab'));
+      .bindPopup('<b>Land to be removed from the Development Agreement (approximate)</b><br>On Nov. 9, 2026, Franklin Mountain applied to remove approximately 319.589 acres from the Development Agreement (PDA-22-07(B)). The City&#39;s <a href="https://sanmarcostx.gov/m/newsflash/home/detail/2650" target="_blank" rel="noopener">hearing notice</a> places the land on the Project Hercules site, and Council holds a public hearing on it on Dec. 1, 2026. The <a href="https://smgis.sanmarcostx.gov/arcgis/rest/services/Planning/PlanningFeatures/MapServer/15/query?where=CaseNumber%3D%27PDA-22-07%28B%29%27&amp;outFields=CaseNumber,ProjectName,CaseType,Status,ProjectDescription,ApplicantBusiness,Address&amp;returnGeometry=false&amp;f=html" target="_blank" rel="noopener">City record</a>.<br>This shape is the part of Reinvestment Zone #2 on Franklin Mountain land, about 318 acres. The City has not released the legal description, so the edges are approximate.' + more('tri,zone2,pdab'));
     L.geoJSON(r[2], { style: { color: '#1e3a5f', weight: 4 } }).addTo(map)
       .bindPopup('<b>Energy Parkway</b><br>The first road on the site. It opened to traffic on Sept. 29, 2026.' + more('tri,energy'));
     map.fitBounds(site.getBounds(), { padding: [45, 45], animate: false });
     label([29.8772, -97.8470], 'TriTexas Logistics Park site<small>Franklin Mountain land</small>');
     label([29.8605, -97.8275], 'Reinvestment Zone #2<small>Project Hercules, 611 acres</small>', true);
     label([29.8662, -97.8740], 'Proposed annexation<small>AN-26-07, in review</small>', true);
-    label([29.8700, -97.8362], 'Possible removal area<small>unconfirmed estimate</small>', true);
+    label([29.8700, -97.8362], 'Removal area<small>PDA-22-07(B), approximate</small>', true);
     low();
   }).catch(function () { el.innerHTML = '<p style="padding:20px;font-size:.9rem;">The map could not be loaded. <a href="interactive_map.html">Open the interactive map</a>.</p>'; });
 })();

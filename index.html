@@ -447,7 +447,7 @@ document.addEventListener('DOMContentLoaded', function () {
       </div>
       <ul class="home-map-key">
         <li><i class="k-site"></i>Franklin Mountain land, about 2,058 acres</li>
-        <li><i class="k-zone"></i>County Reinvestment Zone #2, 611 acres (Project Hercules, Daimler Truck North America per the City)</li>
+        <li><i class="k-zone"></i>Project Hercules, Daimler Truck North America: County Reinvestment Zone #2, 611 acres</li>
         <li><i class="k-annex"></i>Proposed annexation (AN-26-07), about 461.7 acres as drawn by the City, plus the 0.95-acre lot the application lists</li>
         <li><i class="k-rem"></i>Land to be removed from the Development Agreement, about 319.589 acres on the Project Hercules site (boundary approximate)</li>
         <li><i class="k-road"></i>Energy Parkway, opened Sept. 29, 2026</li>
@@ -708,7 +708,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var site = L.geoJSON(r[0], { style: { color: '#D55E00', weight: 3, fillColor: '#D55E00', fillOpacity: 0.2 } }).addTo(map)
       .bindPopup('<b>TriTexas Logistics Park site</b><br>Land owned by Franklin Mountain: about 2,058 acres in Caldwell Central Appraisal District parcels.' + more('tri,energy,fire'));
     L.geoJSON(r[1], { style: { color: '#9E3D78', weight: 2.5, dashArray: '8 5', fillColor: '#CC79A7', fillOpacity: 0.35 } }).addTo(map)
-      .bindPopup('<b>Caldwell 142 Reinvestment Zone #2</b><br>611 acres designated by Caldwell County on Nov. 12, 2026 (Order 01-2027) for a manufacturing and assembly facility. The City of San Marcos <a href="https://www.sanmarcostx.gov/4851/Project-Hercules" target="_blank" rel="noopener">Project Hercules page</a> names the company as Daimler Truck North America (truck manufacturing). See <a href="businesses_summary.html#hercules">Project Hercules</a>.' + more('tri,zone2'));
+      .bindPopup('<b>Project Hercules: Daimler Truck North America</b><br>Caldwell 142 Reinvestment Zone #2: 611 acres designated by Caldwell County on Nov. 12, 2026 (Order 01-2027) for a manufacturing and assembly facility. The City of San Marcos <a href="https://www.sanmarcostx.gov/4851/Project-Hercules" target="_blank" rel="noopener">Project Hercules page</a> names the company as Daimler Truck North America (truck manufacturing). See <a href="businesses_summary.html#hercules">Project Hercules</a>.' + more('tri,zone2'));
     L.geoJSON(r[3], {
       style: { color: '#0072B2', weight: 2.5, dashArray: '3 5', fillColor: '#0072B2', fillOpacity: 0.4 },
       onEachFeature: function (f, l) {
@@ -722,7 +722,7 @@ document.addEventListener('DOMContentLoaded', function () {
       .bindPopup('<b>Energy Parkway</b><br>The first road on the site. It opened to traffic on Sept. 29, 2026.' + more('tri,energy'));
     map.fitBounds(site.getBounds(), { padding: [45, 45], animate: false });
     label([29.8772, -97.8470], 'TriTexas Logistics Park site<small>Franklin Mountain land</small>');
-    label([29.8605, -97.8275], 'Reinvestment Zone #2<small>Project Hercules, 611 acres</small>', true);
+    label([29.8605, -97.8275], 'Project Hercules (Daimler)<small>Reinvestment Zone #2, 611 acres</small>', true);
     label([29.8662, -97.8740], 'Proposed annexation<small>AN-26-07, in review</small>', true);
     label([29.8700, -97.8362], 'Removal area<small>PDA-22-07(B), approximate</small>', true);
     low();

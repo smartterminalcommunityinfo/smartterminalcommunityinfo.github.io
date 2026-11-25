@@ -11,6 +11,7 @@
     ]},
     { group: 'People and companies', items: [
       ['businesses_summary.html', 'Prospective Tenants'],
+      ['hercules.html', 'Project Hercules: The Agreements'],
       ['hercules_comparison.html', 'Project Hercules: Daimler Plants'],
       ['key_players.html', 'Key Players'],
       ['ownership_structure.html', 'Ownership Structure'],
